@@ -171,10 +171,10 @@ func TestIntegrationDakshinaAccuracy(t *testing.T) {
 	}
 
 	// Target: 80% accuracy on native Hindi
-	// Current baseline: ~50% (after V_VS_W fix)
-	// TODO: Raise threshold as we fix issues (MISSING_SCHWA, MISSING_FINAL_A, etc.)
-	if nativePct < 50 {
-		t.Errorf("Native Hindi accuracy %.1f%% is below 50%% baseline", nativePct)
+	// Current baseline: ~58% (after MISSING_SCHWA fix)
+	// TODO: Raise threshold as we fix issues (MISSING_FINAL_A, EXTRA_SCHWA, etc.)
+	if nativePct < 58 {
+		t.Errorf("Native Hindi accuracy %.1f%% is below 58%% baseline", nativePct)
 	}
 }
 
