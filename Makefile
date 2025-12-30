@@ -1,7 +1,7 @@
 # Gomanize - Hindi Transliteration Library
 # Development workflow Makefile
 
-.PHONY: help init hooks hooks-update build test test-quick test-verbose test-cover test-dakshina test-analysis bench clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets
+.PHONY: help init hooks hooks-update build version test test-quick test-verbose test-cover test-dakshina test-analysis bench clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets
 
 # Go parameters
 GOCMD := go
@@ -11,6 +11,12 @@ GOFMT := $(GOCMD) fmt
 GOVET := $(GOCMD) vet
 GOMOD := $(GOCMD) mod
 BINARY := gomanize
+
+# Version info (injected at build time)
+VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
+BUILD_TIME := $(shell date -u '+%Y-%m-%dT%H:%M:%SZ')
+GIT_COMMIT := $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+LDFLAGS := -ldflags "-X main.version=$(VERSION) -X main.date=$(BUILD_TIME) -X main.commit=$(GIT_COMMIT)"
 
 help: ## Show this help message
 	@echo "Gomanize - Available Commands:"
@@ -49,9 +55,14 @@ hooks-update: ## Update pre-commit hook versions
 # ============================================================================
 
 build: ## Build the gomanize binary
-	@echo "Building $(BINARY)..."
-	@$(GOBUILD) -o $(BINARY) ./cmd/main.go
+	@echo "Building $(BINARY) $(VERSION)..."
+	@$(GOBUILD) $(LDFLAGS) -o $(BINARY) ./cmd/main.go
 	@echo "✓ Build complete: ./$(BINARY)"
+
+version: ## Show version info
+	@echo "Version: $(VERSION)"
+	@echo "Build time: $(BUILD_TIME)"
+	@echo "Git commit: $(GIT_COMMIT)"
 
 install: build ## Install gomanize to GOPATH/bin
 	@echo "Installing $(BINARY)..."
