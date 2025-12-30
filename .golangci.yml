@@ -1,0 +1,56 @@
+# Gomanize - golangci-lint configuration (v2)
+# https://golangci-lint.run/usage/configuration/
+
+version: "2"
+
+run:
+  timeout: 5m
+  go: '1.21'
+
+linters:
+  enable:
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - misspell
+    - unconvert
+    - unparam
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - std-error-handling
+    rules:
+      # Exclude test files from most linters
+      - path: _test\.go
+        linters:
+          - errcheck
+          - unparam
+          - staticcheck
+      # Exclude legacy code
+      - path: hindi-orig\.go
+        linters:
+          - errcheck
+          - unparam
+          - ineffassign
+          - staticcheck
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+
+linters-settings:
+  goimports:
+    local-prefixes: github.com/budhash/gomanize
+  misspell:
+    locale: US
+
+output:
+  formats:
+    colored-line-number:
+      path-prefix: ""
+  print-issued-lines: true
+  print-linter-name: true

@@ -1,0 +1,82 @@
+# Pre-commit hooks for Gomanize
+# Uses Makefile targets for consistency across dev/CI/pre-commit
+#
+# Installation:
+#   make init  # Installs pre-commit hooks
+#
+# Usage:
+#   Hooks run automatically on `git commit`
+#   Run manually: pre-commit run --all-files
+#   Skip hooks: git commit --no-verify
+#   Update hooks: pre-commit autoupdate
+
+repos:
+  # Prevent commits to main/master branch
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: no-commit-to-branch
+        name: Prevent commits to main/master
+        args: [--branch, main, --branch, master]
+
+  # Run make fmt - Auto-fix formatting issues
+  - repo: local
+    hooks:
+      - id: make-fmt
+        name: Format code (make fmt)
+        entry: make
+        args: [fmt]
+        language: system
+        types: [go]
+        pass_filenames: false
+        always_run: true
+
+  # Run make lint - Linting with golangci-lint
+  - repo: local
+    hooks:
+      - id: make-lint
+        name: Lint code (make lint)
+        entry: make
+        args: [lint]
+        language: system
+        types: [go]
+        pass_filenames: false
+        always_run: true
+
+  # Built-in hooks for common issues
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+        args: [--maxkb=500]
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+# Exclude patterns
+exclude: |
+  (?x)^(
+      \.git/|
+      datasets/|
+      testbed/dakshina/.*\.tsv|
+      vendor/
+  )$
+
+# Minimum pre-commit version
+minimum_pre_commit_version: '3.4.0'
+
+# Performance note:
+# - make fmt runs gofmt on all files (fast)
+# - make lint runs golangci-lint (includes vet, checks)
+# - Both use project-wide analysis for consistency
+#
+# Why pass_filenames: false and always_run: true?
+# - pass_filenames=false because make targets operate on whole project
+# - always_run=true ensures hooks run even if no Go files changed
+#   (important for consistency with CI)

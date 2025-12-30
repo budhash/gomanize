@@ -1,0 +1,28 @@
+
+# Downloaded datasets (large files)
+datasets/
+*.tar
+
+# Build artifacts
+gomanize
+*.exe
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Test artifacts
+*.test
+*.out
+coverage.html
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp files
+.temp/
+testbed/tmp
+testbed/ushuaia
+testbed/dakshina/failures.tsv
