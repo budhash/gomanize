@@ -7,7 +7,7 @@ A Go library and CLI tool for transliterating Devanagari script (Hindi) to Latin
 **Purpose**: Romanize Hindi text from Devanagari script into readable Latin characters for singing along, international audiences, or systems without Devanagari support.
 
 **Author**: Budhaditya (budhash@gmail.com)
-**License**: MIT (2023)
+**License**: MIT (2023-2025)
 **Go Version**: 1.21+
 
 ## Quick Start
