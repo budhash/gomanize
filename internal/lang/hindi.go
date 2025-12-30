@@ -240,12 +240,21 @@ func (s *Symbols) PeekN(n int) (string, *SymbolInfo, bool) {
 		return "", nil, false
 	} else {
 		sym := ""
+		hasHalant := false
 		if nextToNext < s.len() && (s.runes[nextToNext] == '़' || s.runes[nextToNext] == '्') {
 			sym = string([]rune{s.runes[next], s.runes[nextToNext]})
+			hasHalant = s.runes[nextToNext] == '्'
 		} else {
 			sym = string(s.runes[next])
 		}
 		si, found := symbols[sym]
+		// If consonant+halant combined form not in map, use base consonant info
+		if !found && hasHalant {
+			baseSym := string(s.runes[next])
+			if baseSi, baseFound := symbols[baseSym]; baseFound {
+				return sym, &baseSi, true
+			}
+		}
 		return sym, &si, found
 	}
 }
@@ -284,13 +293,18 @@ func (l Hindi) Transliterate(word string) string {
 				nxtRaw, nxtSi, nxtExists := sb.PeekN(nxtIndex)
 				rom := si.hun
 
+				// Check if this consonant follows a halant (part of a conjunct)
+				// If so, it carries the syllable's vowel and shouldn't have schwa suppressed
+				isAfterHalant := sb.index > 0 && sb.runes[sb.index-1] == '्'
+
 				// र् = 'र'+'्' (reph) is handled automatically
 				// consonant + '्' + 'र' (rakar) needs to be handled
 				if nxtExists && nxtSi.isConsonant() {
 					// get next to next
 					nxtToNxtIndex := nxtIndex + utf8.RuneCountInString(nxtRaw)
 					_, nxtToNxtSi, nxtToNxtExists := sb.PeekN(nxtToNxtIndex)
-					if sb.index != 0 && nxtToNxtExists && nxtToNxtSi.isVowel() {
+					// Suppress schwa only if: not at start, not after halant, and followed by C+V
+					if sb.index != 0 && !isAfterHalant && nxtToNxtExists && nxtToNxtSi.isVowel() {
 						converted = converted + rom
 					} else {
 						converted = converted + rom + "a"

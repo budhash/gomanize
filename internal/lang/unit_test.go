@@ -295,7 +295,7 @@ func TestUnitCommonWords(t *testing.T) {
 		input    string
 		expected string
 	}{
-		{"नमस्ते", "namste"},
+		{"नमस्ते", "namaste"},
 		{"भारत", "bharat"},
 		{"हिंदी", "hindi"},
 		{"और", "aur"},
