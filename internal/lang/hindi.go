@@ -109,8 +109,9 @@ var symbols = map[string]SymbolInfo{
 	"ल": {ctg: consonant, hun: "l"},                   // U+0932
 	"ळ": {ctg: consonant, hun: "l"},                   // U+0933
 	"ऴ": {ctg: consonant, hun: "lh", nuqta: true},     // U+0934
-	// TODO: In Marathi, [w], except [v] before [i]; [v], [ʋ], [w] allophony in Hindi
-	"व": {ctg: consonant, hun: "w"},               // U+0935
+	// Note: Using 'v' for colloquial Hindi (not Hunterian 'w')
+	// In Marathi, [w] except [v] before [i]; Hindi uses [v] in most contexts
+	"व": {ctg: consonant, hun: "v"},               // U+0935
 	"श": {ctg: consonant, hun: "sh"},              // U+0936
 	"ष": {ctg: consonant, hun: "sh"},              // U+0937
 	"स": {ctg: consonant, hun: "s"},               // U+0938
@@ -282,10 +283,6 @@ func (l Hindi) Transliterate(word string) string {
 				nxtIndex := utf8.RuneCountInString(currentRaw)
 				nxtRaw, nxtSi, nxtExists := sb.PeekN(nxtIndex)
 				rom := si.hun
-				// handle "व" at word start - use "v" instead of "w"
-				if currentRaw == "व" && sb.index == 0 {
-					rom = "v"
-				}
 
 				// र् = 'र'+'्' (reph) is handled automatically
 				// consonant + '्' + 'र' (rakar) needs to be handled
