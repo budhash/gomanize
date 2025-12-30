@@ -28,7 +28,7 @@ jobs:
       - name: Install golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
-          version: latest
+          version: v2.0.2
           args: --version  # Just install, don't run yet
 
       - name: Download dependencies

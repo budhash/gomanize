@@ -103,7 +103,7 @@ See [Claude.md](Claude.md) for detailed failure analysis and roadmap.
 
 ## License
 
-MIT License - Copyright (c) 2023 Budhaditya
+MIT License - Copyright (c) 2023-2025 Budhaditya
 
 ## Author
 
