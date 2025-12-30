@@ -29,7 +29,9 @@ jobs:
         uses: golangci/golangci-lint-action@v7
         with:
           version: v2.0.2
-          args: --version  # Just install, don't run yet
+          install-mode: binary
+          skip-cache: true
+          args: ""  # Just install, don't run
 
       - name: Download dependencies
         run: go mod download
