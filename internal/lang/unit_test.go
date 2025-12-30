@@ -267,8 +267,11 @@ func TestUnitVaWa(t *testing.T) {
 		expected string
 		note     string
 	}{
-		// Word-initial व → v (current behavior)
+		// व → v in all positions (colloquial Hindi)
 		{"initial_v", "वन", "van", "Word-initial व → v"},
+		{"medial_v", "देव", "dev", "Medial व → v"},
+		{"medial_v_2", "उत्सव", "utsav", "Medial व → v"},
+		{"final_v", "कवि", "kavi", "व before vowel → v"},
 	}
 
 	for _, tc := range tests {
@@ -276,34 +279,6 @@ func TestUnitVaWa(t *testing.T) {
 			result := h.Transliterate(tc.input)
 			if result != tc.expected {
 				t.Errorf("%s (%s): got %q, want %q", tc.input, tc.note, result, tc.expected)
-			}
-		})
-	}
-}
-
-// Known bugs for व handling
-func TestUnitVaWaKnownBugs(t *testing.T) {
-	h := Hindi{}
-
-	knownBugs := []struct {
-		name     string
-		input    string
-		current  string
-		expected string
-		issue    string
-	}{
-		{"medial_v", "देव", "dew", "dev", "V_VS_W: Medial व should be v"},
-		{"medial_v_2", "उत्सव", "utsaw", "utsav", "V_VS_W: Medial व should be v"},
-		{"final_v", "कवि", "kawi", "kavi", "V_VS_W: व before vowel should be v"},
-	}
-
-	for _, tc := range knownBugs {
-		t.Run(tc.name, func(t *testing.T) {
-			result := h.Transliterate(tc.input)
-			if result == tc.expected {
-				t.Logf("BUG FIXED! %s now correctly produces %q", tc.input, tc.expected)
-			} else if result == tc.current {
-				t.Logf("Known bug: %s → %q (should be %q) [%s]", tc.input, result, tc.expected, tc.issue)
 			}
 		})
 	}
