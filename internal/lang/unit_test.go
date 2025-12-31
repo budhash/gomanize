@@ -176,10 +176,9 @@ func TestUnitConjuncts(t *testing.T) {
 		expected string
 	}{
 		{"क्ष (ksha)", "क्ष", "ksh"},
-		{"त्र (tra)", "त्र", "tr"},
-		// Note: These are current behaviors, may need adjustment
+		{"त्र (tra)", "त्र", "tra"}, // Final र after halant gets schwa (Sanskrit pattern)
 		{"ज्ञ (gya/jnya)", "ज्ञ", "jny"},
-		{"श्र (shra)", "श्र", "shr"},
+		{"श्र (shra)", "श्र", "shra"}, // Final र after halant gets schwa (Sanskrit pattern)
 	}
 
 	for _, tc := range tests {
