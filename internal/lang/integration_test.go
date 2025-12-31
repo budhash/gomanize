@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"os"
 	"path/filepath"
-	"regexp"
 	"runtime"
 	"sort"
 	"strings"
@@ -100,28 +99,22 @@ func TestIntegrationOriginalTestSuite(t *testing.T) {
 }
 
 // -----------------------------------------------------------------------------
-// Dakshina Dataset Tests
+// Dakshina Dataset Tests (using pre-split test files)
 // -----------------------------------------------------------------------------
 
-// isEnglishLoanword checks if the expected romanization is an English word
-func isEnglishLoanword(expected string) bool {
-	englishWords := regexp.MustCompile(`(?i)^(uncle|update|attack|authority|undercover|idea|online|army|event|indian?|america|april|internet|email|mobile|computer|software|laptop|download|upload|facebook|google|twitter|youtube|whatsapp|instagram|iphone|android|windows|office|manager|director|doctor|engineer|officer|player|singer|actor|driver|teacher|lawyer|captain|president|minister|member|leader|master|super|power|system|program|project|process|product|service|center|control|report|record|result|research|science|technology|business|market|company|industry|economy|policy|society|culture|education|information|organization|government|development|management|performance|experience|knowledge|community|environment|opportunity|id|ipl|ipc|iso|off|inter|india|england|israel|iraq|iran|italy)s?$`)
-	return englishWords.MatchString(expected)
-}
-
-func TestIntegrationDakshinaAccuracy(t *testing.T) {
-	filePath := getDakshinaPath("all_high_conf.tsv")
+// TestIntegrationNativeHindi tests against native Hindi words only
+func TestIntegrationNativeHindi(t *testing.T) {
+	filePath := getDakshinaPath("native_hindi.tsv")
 	file, err := os.Open(filePath)
 	if err != nil {
-		t.Skipf("Dakshina test file not found: %v (run 'make setup-testdata' first)", err)
+		t.Skipf("Native Hindi test file not found: %v (run split_loanwords.go first)", err)
 		return
 	}
 	defer file.Close()
 
 	h := Hindi{}
-	nativePass, nativeFail := 0, 0
-	loanPass, loanFail := 0, 0
-	var nativeFailures []string
+	pass, fail := 0, 0
+	var failures []string
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
@@ -134,48 +127,127 @@ func TestIntegrationDakshinaAccuracy(t *testing.T) {
 		hindi := parts[0]
 		expected := parts[1]
 		result := h.Transliterate(hindi)
-		isLoan := isEnglishLoanword(expected)
 
 		if result == expected {
-			if isLoan {
-				loanPass++
-			} else {
-				nativePass++
-			}
+			pass++
 		} else {
-			if isLoan {
-				loanFail++
-			} else {
-				nativeFail++
-				if len(nativeFailures) < 10 {
-					nativeFailures = append(nativeFailures, hindi+" → "+result+" (expected: "+expected+")")
-				}
+			fail++
+			if len(failures) < 10 {
+				failures = append(failures, hindi+" → "+result+" (expected: "+expected+")")
 			}
 		}
 	}
 
-	nativeTotal := nativePass + nativeFail
-	loanTotal := loanPass + loanFail
-	nativePct := float64(nativePass) * 100 / float64(nativeTotal)
+	total := pass + fail
+	pct := float64(pass) * 100 / float64(total)
 
-	t.Logf("=== Dakshina Dataset Results ===")
-	t.Logf("Native Hindi: %d / %d (%.1f%%)", nativePass, nativeTotal, nativePct)
-	t.Logf("English Loanwords: %d / %d (%.1f%%) [not targeted]",
-		loanPass, loanTotal, float64(loanPass)*100/float64(loanTotal))
+	t.Logf("=== Native Hindi Results ===")
+	t.Logf("Passed: %d / %d (%.1f%%)", pass, total, pct)
 
-	if len(nativeFailures) > 0 {
-		t.Logf("Sample native Hindi failures:")
-		for _, f := range nativeFailures {
+	if len(failures) > 0 {
+		t.Logf("Sample failures:")
+		for _, f := range failures {
 			t.Logf("  %s", f)
 		}
 	}
 
 	// Target: 80% accuracy on native Hindi
-	// Current baseline: ~60% (after MISSING_FINAL_A fix)
-	// TODO: Raise threshold as we fix issues (EXTRA_SCHWA, etc.)
-	if nativePct < 60 {
-		t.Errorf("Native Hindi accuracy %.1f%% is below 60%% baseline", nativePct)
+	// Current baseline: ~60% (after MISSING_SCHWA, V_VS_W, MISSING_FINAL_A, EXTRA_SCHWA fixes)
+	if pct < 60 {
+		t.Errorf("Native Hindi accuracy %.1f%% is below 60%% baseline", pct)
 	}
+}
+
+// TestIntegrationEnglishLoanwords tests against English loanwords (for info only)
+func TestIntegrationEnglishLoanwords(t *testing.T) {
+	filePath := getDakshinaPath("english_loanwords.tsv")
+	file, err := os.Open(filePath)
+	if err != nil {
+		t.Skipf("English loanwords test file not found: %v (run split_loanwords.go first)", err)
+		return
+	}
+	defer file.Close()
+
+	h := Hindi{}
+	pass, fail := 0, 0
+	var failures []string
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		parts := strings.Split(line, "\t")
+		if len(parts) < 2 {
+			continue
+		}
+
+		hindi := parts[0]
+		expected := parts[1]
+		result := h.Transliterate(hindi)
+
+		if result == expected {
+			pass++
+		} else {
+			fail++
+			if len(failures) < 5 {
+				failures = append(failures, hindi+" → "+result+" (expected: "+expected+")")
+			}
+		}
+	}
+
+	total := pass + fail
+	pct := float64(pass) * 100 / float64(total)
+
+	t.Logf("=== English Loanwords Results (informational) ===")
+	t.Logf("Passed: %d / %d (%.1f%%)", pass, total, pct)
+	t.Logf("Note: English loanwords are OUT OF SCOPE for phonetic transliteration")
+
+	if len(failures) > 0 {
+		t.Logf("Sample failures (expected - these require English spelling):")
+		for _, f := range failures {
+			t.Logf("  %s", f)
+		}
+	}
+	// No threshold check - English loanwords are out of scope
+}
+
+// TestIntegrationDakshinaAccuracy tests combined accuracy for comparison
+func TestIntegrationDakshinaAccuracy(t *testing.T) {
+	filePath := getDakshinaPath("all_high_conf.tsv")
+	file, err := os.Open(filePath)
+	if err != nil {
+		t.Skipf("Dakshina test file not found: %v (run 'make setup-testdata' first)", err)
+		return
+	}
+	defer file.Close()
+
+	h := Hindi{}
+	pass, fail := 0, 0
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		parts := strings.Split(line, "\t")
+		if len(parts) < 2 {
+			continue
+		}
+
+		hindi := parts[0]
+		expected := parts[1]
+		result := h.Transliterate(hindi)
+
+		if result == expected {
+			pass++
+		} else {
+			fail++
+		}
+	}
+
+	total := pass + fail
+	pct := float64(pass) * 100 / float64(total)
+
+	t.Logf("=== Combined Dakshina Results ===")
+	t.Logf("Passed: %d / %d (%.1f%%)", pass, total, pct)
+	t.Logf("Note: Includes English loanwords which skew results lower")
 }
 
 // -----------------------------------------------------------------------------
@@ -230,10 +302,10 @@ func categorizeFailure(hindi, got, expected string) string {
 }
 
 func TestIntegrationFailureAnalysis(t *testing.T) {
-	filePath := getDakshinaPath("all_high_conf.tsv")
+	filePath := getDakshinaPath("native_hindi.tsv")
 	file, err := os.Open(filePath)
 	if err != nil {
-		t.Skipf("Dakshina test file not found: %v", err)
+		t.Skipf("Native Hindi test file not found: %v (run split_loanwords.go first)", err)
 		return
 	}
 	defer file.Close()
@@ -252,11 +324,6 @@ func TestIntegrationFailureAnalysis(t *testing.T) {
 
 		hindi := parts[0]
 		expected := parts[1]
-
-		// Skip English loanwords
-		if isEnglishLoanword(expected) {
-			continue
-		}
 
 		result := h.Transliterate(hindi)
 		if result == expected {
