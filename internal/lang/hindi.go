@@ -330,11 +330,11 @@ func (l Hindi) Transliterate(word string) string {
 				} else {
 					// Add schwa if:
 					// - followed by anusvara, OR
-					// - at word end AND part of final conjunct ending in र or य
-					//   (Sanskrit words like mantra, chandra, karya, anya retain final 'a')
+					// - at word end AND part of final conjunct ending in र, य, or व
+					//   (Sanskrit words like mantra, chandra, karya, kshetra, indra retain final 'a')
 					isWordEnd := !nxtExists || nxtRaw == ""
-					isFinalRaYa := currentRaw == "र" || currentRaw == "य"
-					if nxtRaw == "ं" || (isWordEnd && isAfterHalant && isFinalRaYa) {
+					isSonorousFinal := currentRaw == "र" || currentRaw == "य" || currentRaw == "व"
+					if nxtRaw == "ं" || (isWordEnd && isAfterHalant && isSonorousFinal) {
 						converted = converted + rom + "a"
 					} else {
 						converted = converted + rom
