@@ -294,8 +294,26 @@ func (l Hindi) Transliterate(word string) string {
 				rom := si.hun
 
 				// Check if this consonant follows a halant (part of a conjunct)
-				// If so, it carries the syllable's vowel and shouldn't have schwa suppressed
+				// Only protect schwa for word-initial conjuncts:
+				// - Halant at index 1: C्C pattern (e.g., प्र in प्रकाश)
+				// - After independent vowel: अC्C pattern (e.g., अध्य in अध्यक्ष)
 				isAfterHalant := sb.index > 0 && sb.runes[sb.index-1] == '्'
+				isWordInitialConjunct := false
+				if isAfterHalant {
+					halantIdx := sb.index - 1
+					// Word-initial if halant is at index 1 (C्C)
+					// or at index 2 after independent vowel (अC्C)
+					switch halantIdx {
+					case 1:
+						isWordInitialConjunct = true
+					case 2:
+						// Check if index 0 is independent vowel (अ-औ)
+						firstChar := sb.runes[0]
+						if firstChar >= 0x0905 && firstChar <= 0x0914 {
+							isWordInitialConjunct = true
+						}
+					}
+				}
 
 				// र् = 'र'+'्' (reph) is handled automatically
 				// consonant + '्' + 'र' (rakar) needs to be handled
@@ -303,8 +321,8 @@ func (l Hindi) Transliterate(word string) string {
 					// get next to next
 					nxtToNxtIndex := nxtIndex + utf8.RuneCountInString(nxtRaw)
 					_, nxtToNxtSi, nxtToNxtExists := sb.PeekN(nxtToNxtIndex)
-					// Suppress schwa only if: not at start, not after halant, and followed by C+V
-					if sb.index != 0 && !isAfterHalant && nxtToNxtExists && nxtToNxtSi.isVowel() {
+					// Suppress schwa only if: not at start, not word-initial conjunct, and followed by C+V
+					if sb.index != 0 && !isWordInitialConjunct && nxtToNxtExists && nxtToNxtSi.isVowel() {
 						converted = converted + rom
 					} else {
 						converted = converted + rom + "a"
