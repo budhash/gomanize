@@ -1,0 +1,120 @@
+#!/bin/bash
+#
+# ushuaia - Compare gomanize output with ushuaia.pl Hunterian transliteration
+#
+# Usage:
+#   ./scripts/ushuaia <hindi_word>
+#   ./scripts/ushuaia <hindi_word> --all     # Show all schemes (Hunterian, ISO, Polish)
+#   ./scripts/ushuaia <hindi_word> --iso     # Show ISO-15919 only
+#   ./scripts/ushuaia <hindi_word> --compare # Compare with gomanize
+#
+# Examples:
+#   ./scripts/ushuaia "नमस्ते"
+#   ./scripts/ushuaia "काम" --compare
+#   ./scripts/ushuaia "ज्ञान" --all
+#
+# Requires: curl, python3 (for URL encoding)
+
+set -e
+
+COOKIE_FILE="/tmp/ushuaia_cookies.txt"
+BASE_URL="https://www.ushuaia.pl/transliterate"
+
+# Ensure we have a session cookie
+ensure_session() {
+    if [[ ! -f "$COOKIE_FILE" ]] || [[ $(find "$COOKIE_FILE" -mmin +60 2>/dev/null) ]]; then
+        curl -s -c "$COOKIE_FILE" "${BASE_URL}/?ln=en" > /dev/null
+    fi
+}
+
+# URL encode text
+url_encode() {
+    python3 -c "import urllib.parse; print(urllib.parse.quote('$1'))"
+}
+
+# Transliterate using ushuaia.pl
+transliterate() {
+    local text="$1"
+    local lang="$2"
+    local encoded
+    encoded=$(url_encode "$text")
+
+    curl -s "${BASE_URL}/transliterate.php" \
+        -X POST \
+        -H 'content-type: application/x-www-form-urlencoded' \
+        -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' \
+        -H "referer: ${BASE_URL}/" \
+        -b "$COOKIE_FILE" \
+        -d "text=${encoded}&lang=${lang}"
+}
+
+# Main
+main() {
+    if [[ $# -lt 1 ]]; then
+        echo "Usage: ushuaia <hindi_word> [--all|--iso|--compare]"
+        echo ""
+        echo "Options:"
+        echo "  --all      Show all transliteration schemes"
+        echo "  --iso      Show ISO-15919 transliteration"
+        echo "  --compare  Compare with gomanize output"
+        echo ""
+        echo "Examples:"
+        echo "  ushuaia \"नमस्ते\""
+        echo "  ushuaia \"काम\" --compare"
+        exit 1
+    fi
+
+    local text="$1"
+    local mode="${2:-hunterian}"
+
+    ensure_session
+
+    case "$mode" in
+        --all)
+            local hunt iso polish
+            hunt=$(transliterate "$text" "devanagari_hunt_transcribe")
+            iso=$(transliterate "$text" "devanagari_iso_transliterate")
+            polish=$(transliterate "$text" "devanagari_hindi_pl_transcribe")
+
+            echo "Input:     $text"
+            echo "Hunterian: $hunt"
+            echo "ISO-15919: $iso"
+            echo "Polish:    $polish"
+            ;;
+        --iso)
+            transliterate "$text" "devanagari_iso_transliterate"
+            ;;
+        --compare)
+            local hunt goman
+            hunt=$(transliterate "$text" "devanagari_hunt_transcribe")
+
+            # Get gomanize output (assuming script is run from repo root)
+            local script_dir
+            script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+            local repo_root
+            repo_root="$(dirname "$script_dir")"
+
+            if [[ -x "${repo_root}/gomanize" ]]; then
+                goman=$("${repo_root}/gomanize" "$text")
+            else
+                goman=$(go run "${repo_root}/cmd/main.go" "$text" 2>/dev/null || echo "(build gomanize first)")
+            fi
+
+            echo "Input:     $text"
+            echo "Hunterian: $hunt"
+            echo "Gomanize:  $goman"
+
+            if [[ "$hunt" == "$goman" ]]; then
+                echo "Status:    ✓ Match"
+            else
+                echo "Status:    ✗ Different"
+            fi
+            ;;
+        *)
+            # Default: Hunterian only
+            transliterate "$text" "devanagari_hunt_transcribe"
+            ;;
+    esac
+}
+
+main "$@"
