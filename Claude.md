@@ -79,8 +79,11 @@ gomanize/
 ├── testbed/
 │   ├── hindi-common.txt           # Original test data (1,036 pairs)
 │   ├── dakshina/                  # Google Dakshina dataset
-│   │   └── all_high_conf.tsv      # High-confidence pairs (1,923 entries)
+│   │   ├── native_hindi.tsv       # Native Hindi words (1,335 entries)
+│   │   └── english_loanwords.tsv  # English loanwords (588 entries)
 │   └── ISSUES.md                  # Documented failure patterns
+├── scripts/
+│   └── ushuaia                    # Compare with ushuaia.pl Hunterian
 ├── datasets/                      # Downloaded datasets (gitignored)
 │   └── dakshina_dataset_v1.0/     # Full Dakshina dataset
 ├── .claude/                       # Claude Code configuration
@@ -99,40 +102,35 @@ gomanize/
 
 ## Current Status
 
-### Test Results (Baseline)
+### Test Results
 
 | Dataset | Passed | Total | Accuracy |
 |---------|--------|-------|----------|
-| Original (hindi-common.txt) | 590 | 1,036 | 56.9% |
-| Dakshina (native Hindi) | 914 | 1,872 | **48.8%** |
-| Current Threshold | - | - | 45% |
-| Target | - | - | **80%+** |
+| Original (hindi-common.txt) | 613 | 1,036 | 59.2% |
+| Dakshina (native Hindi) | 1,102 | 1,335 | **82.5%** |
+| Target | - | - | **80%+** ✓ |
 
-### Failure Pattern Analysis
+### Remaining Failure Patterns
 
-| Issue | Count | % of Failures | Priority |
-|-------|-------|---------------|----------|
-| MISSING_SCHWA | 243 | 25.4% | **HIGH** |
-| V_VS_W | 59 | 6.2% | MEDIUM |
-| MISSING_FINAL_A | 31 | 3.2% | MEDIUM |
-| EXTRA_SCHWA | 13 | 1.4% | MEDIUM |
-| OTHER | 612 | 63.9% | (compound issues) |
+| Issue | Count | % of Failures | Notes |
+|-------|-------|---------------|-------|
+| OTHER | 116 | 49.8% | Compound issues |
+| MISSING_SCHWA | 66 | 28.3% | Medial schwa variations |
+| EXTRA_SCHWA | 30 | 12.9% | Over-retention |
+| V_VS_W | 15 | 6.4% | व mapping edge cases |
+| MISSING_FINAL_A | 6 | 2.6% | Sanskrit endings |
 
-### Key Issues to Fix
+### Key Differences from Hunterian
 
-1. **First Syllable Schwa** (HIGH) - Never delete schwa in first syllable
-   - `प्रकाश → prkash` should be `prakash`
-   - `अध्यक्ष → adhyksh` should be `adhyaksh`
+Based on comparison with [ushuaia.pl](https://www.ushuaia.pl/transliterate/) Hunterian:
 
-2. **व Mapping** (MEDIUM) - Should be 'v' in most cases, not 'w'
-   - `देव → dew` should be `dev`
-   - `उत्सव → utsaw` should be `utsav`
-
-3. **Word-final Schwa** (MEDIUM) - Retain for Sanskrit-origin words
-   - `चंद्र → chandr` should be `chandra`
-   - `मंत्र → mantr` should be `mantra`
-
-4. **Number Mapping** - ९ (9) missing from character map
+| Word | Hunterian | Gomanize | Issue |
+|------|-----------|----------|-------|
+| देव | dew | dev | व → w vs v |
+| ऐश्वर्या | aishwrya | aishvarya | व → w vs v |
+| मंत्र | mantr | mantra | Final schwa |
+| चंद्र | chandr | chandra | Final schwa |
+| समझना | samjhana | samajhna | Medial schwa |
 
 ## Transliteration Standards
 
@@ -171,6 +169,40 @@ make test-analysis     # Failure breakdown
 make test-original     # Original hindi-common.txt
 make bench             # Benchmarks
 ```
+
+### Ushuaia Comparison Tool
+
+Compare gomanize output against [ushuaia.pl](https://www.ushuaia.pl/transliterate/) Hunterian transliteration:
+
+```bash
+# Compare single word
+./scripts/ushuaia "नमस्ते" --compare
+# Input:     नमस्ते
+# Hunterian: namste
+# Gomanize:  namaste
+# Status:    ✗ Different
+
+# Show all schemes (Hunterian, ISO-15919, Polish)
+./scripts/ushuaia "ऐश्वर्या" --all
+# Input:     ऐश्वर्या
+# Hunterian: aishwrya
+# ISO-15919: aiśvaryā
+# Polish:    ajśwrja
+
+# Get Hunterian only
+./scripts/ushuaia "काम"
+# kām
+
+# Get ISO-15919 only
+./scripts/ushuaia "काम" --iso
+# kāma
+```
+
+Available language codes (for reference):
+- `devanagari_hunt_transcribe` - Hunterian transcription
+- `devanagari_iso_transliterate` - ISO-15919 transliteration
+- `devanagari_hindi_pl_transcribe` - Polish transcription
+- `devanagari_iast_transliterate` - Sanskrit IAST
 
 ## Key Files
 
@@ -248,19 +280,23 @@ CLI supports version flag:
 
 ## Roadmap
 
-### Phase 1: Fix Core Issues (Current)
-- [ ] Fix first syllable schwa deletion
-- [ ] Fix व → v mapping
-- [ ] Fix word-final schwa for Sanskrit words
+### Phase 1: Core Accuracy ✓ (Complete)
+- [x] Fix first syllable schwa deletion
+- [x] Fix word-final schwa for Sanskrit words (र, य, व endings)
 - [x] Add missing number ९ → 9
-- [ ] Target: 80%+ accuracy
+- [x] Add long vowel "aa" rule for ा+C+END
+- [x] Target: 80%+ accuracy ✓ (81.7%)
 
-### Phase 2: Enhancements
+### Phase 2: Refinements (Current)
+- [ ] Evaluate व → w mapping (Hunterian uses 'w')
+- [ ] Fine-tune schwa deletion rules
 - [ ] Multiple transliteration schemes (IAST option)
+
+### Phase 3: Enhancements
 - [ ] Bidirectional (Roman → Devanagari)
 - [ ] Additional languages (Marathi, Nepali)
 
-### Phase 3: Distribution
+### Phase 4: Distribution
 - [ ] Web API
 - [ ] WASM build for browser
 - [ ] npm package via wasm

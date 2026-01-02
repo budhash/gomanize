@@ -314,6 +314,18 @@ func (l Hindi) Transliterate(word string) string {
 				nxtRaw, nxtSi, nxtExists := sb.PeekN(nxtIndex)
 				rom := si.hun
 
+				// Special handling for व: use 'w' only in specific conjuncts (स्व, श्व, द्व, ख्व)
+				// These conjuncts have a semivowel 'w' sound in Hindi
+				// Examples: स्वागत→swagat, ऐश्वर्या→aishwarya, द्वार→dwaar, ख्वाब→khwaab
+				// But NOT for र्व, त्व, etc. which keep 'v' sound (पर्वत→parvat, तत्व→tatva)
+				if currentRaw == "व" && sb.index > 1 && sb.runes[sb.index-1] == '्' {
+					prevConsonant := sb.runes[sb.index-2]
+					// Use 'w' only after स, श, द, ख (common semivowel conjuncts)
+					if prevConsonant == 'स' || prevConsonant == 'श' || prevConsonant == 'द' || prevConsonant == 'ख' {
+						rom = "w"
+					}
+				}
+
 				// Check if this consonant follows a halant (part of a conjunct)
 				// Only protect schwa for word-initial conjuncts:
 				// - Halant at index 1: C्C pattern (e.g., प्र in प्रकाश)
