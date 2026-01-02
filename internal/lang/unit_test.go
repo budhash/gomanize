@@ -204,9 +204,9 @@ func TestUnitSchwaBasic(t *testing.T) {
 		expected string
 		note     string
 	}{
-		// Word-final schwa deletion (correct behavior)
-		{"word_final_delete", "राम", "ram", "Word-final schwa deleted"},
-		{"word_final_delete_2", "नाम", "nam", "Word-final schwa deleted"},
+		// Word-final schwa deletion with long vowel "aa" (ा + C + END)
+		{"word_final_delete", "राम", "raam", "Word-final aa-matra before consonant"},
+		{"word_final_delete_2", "नाम", "naam", "Word-final aa-matra before consonant"},
 
 		// Schwa between consonant+vowel (correct behavior)
 		{"cv_pattern", "कमल", "kamal", "Schwa retained before vowel"},
@@ -234,7 +234,7 @@ func TestUnitSchwaKnownBugs(t *testing.T) {
 		expected string // What we should get (correct)
 		issue    string
 	}{
-		{"first_syllable_1", "प्रकाश", "prkash", "prakash", "MISSING_SCHWA: First syllable schwa deleted"},
+		{"first_syllable_1", "प्रकाश", "prkash", "prakaash", "MISSING_SCHWA: First syllable schwa deleted"},
 		{"first_syllable_2", "अध्यक्ष", "adhyksh", "adhyaksh", "MISSING_SCHWA: First syllable schwa deleted"},
 		{"first_syllable_3", "गर्भ", "grbh", "garbh", "MISSING_SCHWA: First syllable schwa deleted"},
 	}

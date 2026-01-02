@@ -286,8 +286,29 @@ func (l Hindi) Transliterate(word string) string {
 			converted = converted + currentRaw
 		} else {
 			switch si.ctg {
-			case number, vowel:
+			case number:
 				converted = converted + si.hun
+			case vowel:
+				// Special handling for ा (aa-matra): use "aa" when followed by consonant at word end
+				// This represents the long /aː/ vowel in final closed syllables
+				// Examples: काम→kaam, इंसान→insaan, अभिमान→abhimaan
+				if currentRaw == "ा" {
+					// Check if followed by consonant at word end (ा + C + END)
+					nxtRaw, nxtSi, nxtExists := sb.PeekN(1)
+					if nxtExists && nxtSi.isConsonant() {
+						// Check if that consonant is at word end
+						nxtNxtRaw, _, nxtNxtExists := sb.PeekN(1 + utf8.RuneCountInString(nxtRaw))
+						if !nxtNxtExists || nxtNxtRaw == "" {
+							converted = converted + "aa"
+						} else {
+							converted = converted + si.hun
+						}
+					} else {
+						converted = converted + si.hun
+					}
+				} else {
+					converted = converted + si.hun
+				}
 			case consonant, conjuncts:
 				nxtIndex := utf8.RuneCountInString(currentRaw)
 				nxtRaw, nxtSi, nxtExists := sb.PeekN(nxtIndex)
