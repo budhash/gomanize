@@ -120,17 +120,23 @@ gomanize/
 | V_VS_W | 15 | 6.4% | व mapping edge cases |
 | MISSING_FINAL_A | 6 | 2.6% | Sanskrit endings |
 
-### Key Differences from Hunterian
+### Deliberate Divergences
 
-Based on comparison with [ushuaia.pl](https://www.ushuaia.pl/transliterate/) Hunterian:
+Some romanization choices prioritize phonetic accuracy over matching Dakshina or Hunterian:
 
-| Word | Hunterian | Gomanize | Issue |
-|------|-----------|----------|-------|
-| देव | dew | dev | व → w vs v |
-| ऐश्वर्या | aishwrya | aishvarya | व → w vs v |
-| मंत्र | mantr | mantra | Final schwa |
-| चंद्र | chandr | chandra | Final schwa |
-| समझना | samjhana | samajhna | Medial schwa |
+| Pattern | Dakshina/Hunterian | Gomanize | Rationale |
+|---------|-------------------|----------|-----------|
+| गाना | gaana | gana | Current rule: ा→aa only in ा+C+END |
+| बनाना | banaana | banana | Same as above |
+| मंत्र | mantr | mantra | Final 'a' for readability |
+| चंद्र | chandr | chandra | Final 'a' for readability |
+
+### To Investigate
+
+| Pattern | Example | Current | Expected | Notes |
+|---------|---------|---------|----------|-------|
+| Broader ा→aa | गाना | gana | gaana | Would affect ~45% of words |
+| Medial schwa | समझना | samajhna | samjhana | Complex rules needed |
 
 ## Transliteration Standards
 
@@ -285,11 +291,12 @@ CLI supports version flag:
 - [x] Fix word-final schwa for Sanskrit words (र, य, व endings)
 - [x] Add missing number ९ → 9
 - [x] Add long vowel "aa" rule for ा+C+END
-- [x] Target: 80%+ accuracy ✓ (81.7%)
+- [x] व → w for conjuncts only (स्व, श्व, द्व, ख्व)
+- [x] Target: 80%+ accuracy ✓ (82.5%)
 
 ### Phase 2: Refinements (Current)
-- [ ] Evaluate व → w mapping (Hunterian uses 'w')
-- [ ] Fine-tune schwa deletion rules
+- [ ] Investigate broader ा→aa rule (गाना→gaana pattern)
+- [ ] Fine-tune medial schwa deletion rules
 - [ ] Multiple transliteration schemes (IAST option)
 
 ### Phase 3: Enhancements

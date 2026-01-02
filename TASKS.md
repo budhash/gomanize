@@ -1,52 +1,53 @@
 # Gomanize Tasks
 
-## Current Sprint: Accuracy Improvement
+## Current Status
 
-Goal: Improve Dakshina accuracy from 48.8% to 80%+
+**Accuracy: 82.5%** (Target: 80%+ ✓)
 
-### In Progress
+## Phase 2: Refinements (Current)
 
-### Pending
+### To Investigate
 
-- [ ] **Fix V_VS_W**: Change व from 'w' to 'v'
-  - File: `internal/lang/hindi.go:113`
-  - Change `hun: "w"` to `hun: "v"`
-  - Remove word-initial special case (lines 285-288)
-  - Expected: 48.8% → 55%
+- [ ] **Broader ा→aa rule**: गाना→gaana pattern
+  - Currently: ा→aa only in ा+C+END (काम→kaam)
+  - Proposed: ा→aa in more positions (गाना→gaana, बनाना→banaana)
+  - Impact: Would affect ~45% of words - needs careful analysis
 
-- [ ] **Fix MISSING_SCHWA**: Protect first-syllable schwa
-  - File: `internal/lang/hindi.go:281-307`
-  - Track syllable position
-  - Never delete schwa in first syllable
-  - Expected: 55% → 76%
+- [ ] **Medial schwa fine-tuning**
+  - Current failures: समझना→samajhna (expected: samjhana)
+  - Complex rules needed for consonant clusters
 
-- [ ] **Fix MISSING_FINAL_A**: Retain schwa for Sanskrit word endings
-  - File: `internal/lang/hindi.go:296-307`
-  - Detect consonant cluster endings (त्र, द्र, न्य, र्य)
-  - Retain final 'a' for these patterns
-  - Expected: 76% → 79%
+- [ ] **Multiple transliteration schemes**
+  - Add IAST option for scholarly use
+  - Reference: docs/reference/Hindi-Marathi-Nepali-Transliteration.pdf
 
-- [ ] **Fix EXTRA_SCHWA**: Improve VC+CV schwa suppression
-  - File: `internal/lang/hindi.go:281-295`
-  - Refine consonant cluster detection
-  - Expected: 79% → 80%+
+### Remaining Failure Patterns
 
-### Completed
+| Issue | Count | % of Failures | Notes |
+|-------|-------|---------------|-------|
+| OTHER | 116 | 49.8% | Compound issues |
+| MISSING_SCHWA | 66 | 28.3% | Medial schwa variations |
+| EXTRA_SCHWA | 30 | 12.9% | Over-retention |
+| V_VS_W | 15 | 6.4% | Edge cases (e.g., गुवाहाटी) |
+| MISSING_FINAL_A | 6 | 2.6% | Sanskrit endings |
 
-- [x] Initial project setup
-- [x] CI/CD infrastructure (GitHub Actions, GoReleaser)
-- [x] Pre-commit hooks
-- [x] golangci-lint v2 configuration
-- [x] v0.1.0 release
-- [x] Algorithm improvement plan (ALGORITHM_FIXES.md)
+## Completed (Phase 1)
 
-## Backlog
+- [x] Fix first syllable schwa deletion (प्रकाश→prakash)
+- [x] Fix word-final schwa for Sanskrit words (मंत्र→mantra)
+- [x] Add missing number ९ → 9
+- [x] Add long vowel "aa" rule for ा+C+END (काम→kaam)
+- [x] व→w for conjuncts only (स्व→sw, श्व→shw, द्व→dw, ख्व→khw)
+- [x] Ushuaia comparison tool (scripts/ushuaia)
+- [x] Reference documentation (docs/reference/)
 
-- [ ] Add branch protection rules
-- [ ] Dependabot configuration
-- [ ] Multiple transliteration schemes (IAST option)
+## Backlog (Phase 3+)
+
 - [ ] Bidirectional transliteration (Roman → Devanagari)
 - [ ] Additional languages (Marathi, Nepali)
+- [ ] Web API
+- [ ] WASM build for browser
+- [ ] npm package via wasm
 
 ## Commands
 
@@ -55,4 +56,5 @@ make test-unit      # Fast unit tests
 make test-dakshina  # Accuracy test
 make test-analysis  # Failure breakdown
 make ci             # Full CI pipeline
+./scripts/ushuaia "word" --compare  # Compare with Hunterian
 ```
