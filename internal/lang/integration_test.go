@@ -152,9 +152,9 @@ func TestIntegrationNativeHindi(t *testing.T) {
 	}
 
 	// Target: 80% accuracy on native Hindi
-	// Current baseline: ~60% (after MISSING_SCHWA, V_VS_W, MISSING_FINAL_A, EXTRA_SCHWA fixes)
-	if pct < 60 {
-		t.Errorf("Native Hindi accuracy %.1f%% is below 60%% baseline", pct)
+	// Current: 82.5% (after व→w conjuncts and long vowel rules)
+	if pct < 82 {
+		t.Errorf("Native Hindi accuracy %.1f%% is below 82%% threshold", pct)
 	}
 }
 

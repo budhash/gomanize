@@ -41,9 +41,9 @@ cat << 'EOF'
    make ci
 
 5. CURRENT STATUS
-   Native Hindi accuracy: ~49% (Target: 80%+)
-   Key issues: MISSING_SCHWA, V_VS_W, MISSING_FINAL_A
-   See Claude.md and testbed/ISSUES.md for details.
+   Native Hindi accuracy: 82.5% (Target: 80%+ ✓)
+   Phase 2: Investigating broader ा→aa rule (गाना→gaana)
+   See Claude.md for roadmap and divergences.
 
 ==========================================
 
