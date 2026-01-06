@@ -176,8 +176,8 @@ func TestUnitConjuncts(t *testing.T) {
 		expected string
 	}{
 		{"क्ष (ksha)", "क्ष", "ksh"},
-		{"त्र (tra)", "त्र", "tra"}, // Final र after halant gets schwa (Sanskrit pattern)
-		{"ज्ञ (gya/jnya)", "ज्ञ", "jny"},
+		{"त्र (tra)", "त्र", "tra"},   // Final र after halant gets schwa (Sanskrit pattern)
+		{"ज्ञ (gya)", "ज्ञ", "gy"},    // Special conjunct: ज्ञ → gy (not jny)
 		{"श्र (shra)", "श्र", "shra"}, // Final र after halant gets schwa (Sanskrit pattern)
 	}
 
