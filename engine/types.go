@@ -122,11 +122,23 @@ func (r *ConsonantRun) HasDeletion() bool {
 	return r.DeletedAt >= 0
 }
 
+// Options configures transliteration behavior.
+type Options struct {
+	// LongVowels outputs "aa" for all ा (aa-matra) positions.
+	LongVowels bool
+}
+
+// DefaultOptions returns the default transliteration options.
+func DefaultOptions() Options {
+	return Options{LongVowels: false}
+}
+
 // Word is the complete parsed representation of an input word.
 type Word struct {
 	Units    []*Unit         // All parsed units in order
 	Runs     []*ConsonantRun // Consonant runs for schwa coordination
 	Original string          // Original input string
+	Options  Options         // Transliteration options
 }
 
 // NewWord creates a new empty Word.

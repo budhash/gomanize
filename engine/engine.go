@@ -54,9 +54,15 @@ func New(lang Language) *Engine {
 	return e
 }
 
-// Transliterate converts Devanagari text to romanized form.
+// Transliterate converts Devanagari text to romanized form using default options.
 func (e *Engine) Transliterate(input string) string {
+	return e.TransliterateWithOptions(input, DefaultOptions())
+}
+
+// TransliterateWithOptions converts Devanagari text to romanized form with custom options.
+func (e *Engine) TransliterateWithOptions(input string, opts Options) string {
 	word := e.parser.Parse(input)
+	word.Options = opts
 	IdentifyRuns(word)
 	e.ruleEngine.Apply(word)
 	return e.renderer.Render(word)

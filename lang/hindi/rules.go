@@ -246,6 +246,29 @@ func Rules() []engine.Rule {
 
 		// === PhaseVowel Rules ===
 
+		// long-aa-all (Scheme:60)
+		// ा→aa for all positions when LongVowels option is enabled: गाना→gaana, बनाना→banaana
+		{
+			Name:     "long-aa-all",
+			Phase:    engine.PhaseVowel,
+			Scope:    engine.ScopeScheme,
+			Priority: 60,
+			Mode:     engine.ModeAlways,
+			Condition: func(u *engine.Unit, w *engine.Word) bool {
+				if !w.Options.LongVowels {
+					return false
+				}
+				if u.Type != engine.UnitVowel {
+					return false
+				}
+				// Check if this is ा (aa matra)
+				return len(u.Runes) == 1 && u.Runes[0] == 'ा'
+			},
+			Action: func(u *engine.Unit, w *engine.Word) {
+				u.BaseRom = "aa"
+			},
+		},
+
 		// long-aa-closed-final (Language:50)
 		// ा→aa when followed by consonant at word end: काम→kaam, इंसान→insaan
 		{
