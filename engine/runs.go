@@ -1,0 +1,106 @@
+package engine
+
+// IdentifyRuns groups consecutive consonants/conjuncts between vowels into ConsonantRuns.
+// This enables coordinated schwa deletion decisions within each run.
+func IdentifyRuns(word *Word) {
+	var currentRun *ConsonantRun
+	var prevVowel *Unit
+
+	for _, unit := range word.Units {
+		switch unit.Type {
+		case UnitConsonant, UnitConjunct:
+			// Start new run if not in one
+			if currentRun == nil {
+				currentRun = NewConsonantRun()
+				currentRun.PrevVowel = prevVowel
+				word.Runs = append(word.Runs, currentRun)
+			}
+
+			// Add consonant to run
+			unit.Run = currentRun
+			unit.RunIndex = len(currentRun.Units)
+			currentRun.Units = append(currentRun.Units, unit)
+
+		case UnitVowel:
+			// Close current run if open
+			if currentRun != nil {
+				currentRun.NextVowel = unit
+				currentRun = nil
+			}
+			prevVowel = unit
+
+		default:
+			// Numbers and symbols don't affect runs
+			// But they do close any open run (conservative approach)
+			if currentRun != nil {
+				currentRun = nil
+			}
+		}
+	}
+	// Note: word-final runs have NextVowel = nil (handled correctly)
+}
+
+// RunStats returns statistics about consonant runs in the word.
+type RunStats struct {
+	TotalRuns        int
+	WordInitialRuns  int // Runs with PrevVowel == nil
+	WordFinalRuns    int // Runs with NextVowel == nil
+	MaxRunLength     int
+	SingleConsonants int // Runs with exactly one consonant
+}
+
+// GetRunStats calculates statistics about consonant runs.
+func GetRunStats(word *Word) RunStats {
+	stats := RunStats{
+		TotalRuns: len(word.Runs),
+	}
+
+	for _, run := range word.Runs {
+		if run.PrevVowel == nil {
+			stats.WordInitialRuns++
+		}
+		if run.NextVowel == nil {
+			stats.WordFinalRuns++
+		}
+		if len(run.Units) > stats.MaxRunLength {
+			stats.MaxRunLength = len(run.Units)
+		}
+		if len(run.Units) == 1 {
+			stats.SingleConsonants++
+		}
+	}
+
+	return stats
+}
+
+// IsInConjunct returns true if this unit is part of a multi-consonant sequence
+// (i.e., it came after a halant in the original text).
+func (u *Unit) IsInConjunct() bool {
+	return u.AfterHalant
+}
+
+// IsRunInitial returns true if this is the first consonant in its run.
+func (u *Unit) IsRunInitial() bool {
+	return u.Run != nil && u.RunIndex == 0
+}
+
+// IsRunFinal returns true if this is the last consonant in its run.
+func (u *Unit) IsRunFinal() bool {
+	return u.Run != nil && u.RunIndex == len(u.Run.Units)-1
+}
+
+// PrevInRun returns the previous consonant in the same run, or nil.
+func (u *Unit) PrevInRun() *Unit {
+	if u.Run == nil || u.RunIndex == 0 {
+		return nil
+	}
+	return u.Run.Units[u.RunIndex-1]
+}
+
+// NextInRun returns the next consonant in the same run, or nil.
+func (u *Unit) NextInRun() *Unit {
+	if u.Run == nil || u.RunIndex >= len(u.Run.Units)-1 {
+		return nil
+	}
+	return u.Run.Units[u.RunIndex+1]
+}
