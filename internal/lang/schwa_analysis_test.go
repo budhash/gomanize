@@ -6,12 +6,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/budhash/gomanize/engine"
+	"github.com/budhash/gomanize/core"
 	newHindi "github.com/budhash/gomanize/lang/hindi"
+	"github.com/budhash/gomanize/scheme/colloquial"
 )
 
 func TestCompareEngines(t *testing.T) {
-	newEng := engine.New(newHindi.Hindi{})
+	newEng := core.NewEngine(newHindi.Hindi{}, colloquial.Colloquial{})
 	oldEng := Hindi{}
 
 	file, err := os.Open("../../testbed/dakshina/native_hindi.tsv")

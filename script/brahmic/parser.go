@@ -1,27 +1,35 @@
 package brahmic
 
+import "github.com/budhash/gomanize/core"
+
 // Parser converts Brahmic script text into a Word structure.
 // Handles halant tracking and nukta combinations.
+// Implements core.Parser interface.
 type Parser struct {
-	symbols   SymbolMap
 	multiChar []string
 	halant    string
 	nukta     string
 }
 
-// NewParser creates a parser with the given symbol map and configuration.
-func NewParser(symbols SymbolMap, multiChar []string, halant, nukta string) *Parser {
+// NewParser creates a parser with the given configuration.
+func NewParser(config interface{}) *Parser {
+	cfg := config.(Config)
 	return &Parser{
-		symbols:   symbols,
-		multiChar: multiChar,
-		halant:    halant,
-		nukta:     nukta,
+		halant:    cfg.Halant,
+		nukta:     cfg.Nukta,
+		multiChar: cfg.MultiChar,
 	}
 }
 
+// SetMultiChar sets the multi-character sequences to match.
+func (p *Parser) SetMultiChar(mc []string) {
+	p.multiChar = mc
+}
+
 // Parse converts input text into a Word with linked Units.
-func (p *Parser) Parse(input string) *Word {
-	word := NewWord(input)
+// Implements core.Parser interface.
+func (p *Parser) Parse(input string, symbols core.SymbolMap) *core.Word {
+	word := core.NewWord(input)
 	runes := []rune(input)
 	pos := 0
 	runeIdx := 0
@@ -36,7 +44,7 @@ func (p *Parser) Parse(input string) *Word {
 			mcRunes := []rune(mc)
 			if pos+len(mcRunes) <= len(runes) && string(runes[pos:pos+len(mcRunes)]) == mc {
 				// Found a multi-char match
-				unit := p.createUnit(mc, mcRunes, runeIdx, afterHalant)
+				unit := p.createUnit(mc, mcRunes, runeIdx, afterHalant, symbols)
 				word.AddUnit(unit)
 
 				pos += len(mcRunes)
@@ -57,7 +65,7 @@ func (p *Parser) Parse(input string) *Word {
 		// Check for character + nukta combination
 		if p.nukta != "" && pos+1 < len(runes) && string(runes[pos+1]) == p.nukta {
 			combined := char + p.nukta
-			if info, ok := p.symbols.Lookup(combined); ok {
+			if info, ok := symbols[combined]; ok {
 				unit := p.createUnitWithInfo([]rune{runes[pos], runes[pos+1]}, runeIdx, afterHalant, info)
 				word.AddUnit(unit)
 				pos += 2
@@ -68,7 +76,7 @@ func (p *Parser) Parse(input string) *Word {
 		}
 
 		// Single character lookup
-		if info, ok := p.symbols.Lookup(char); ok {
+		if info, ok := symbols[char]; ok {
 			// Handle halant specially - don't create a unit, just track it
 			if info.Category == CatHalant {
 				afterHalant = true
@@ -82,15 +90,18 @@ func (p *Parser) Parse(input string) *Word {
 			afterHalant = false
 		} else {
 			// Unknown character - create a symbol unit
-			unit := &Unit{
-				Runes:       []rune{runes[pos]},
-				Start:       runeIdx,
-				End:         runeIdx + 1,
-				Type:        UnitSymbol,
-				BaseRom:     char,
-				AfterHalant: afterHalant,
-				Schwa:       SchwaPending,
+			bd := NewBrahmicData()
+			bd.AfterHalant = afterHalant
+			bd.Schwa = SchwaKeep // Unknown symbols don't have schwa decisions
+
+			unit := &core.Unit{
+				Runes:   []rune{runes[pos]},
+				Start:   core.Position{Rune: runeIdx},
+				End:     core.Position{Rune: runeIdx + 1},
+				Type:    core.UnitSymbol,
+				BaseRom: char,
 			}
+			SetBrahmicData(unit, bd)
 			word.AddUnit(unit)
 			afterHalant = false
 		}
@@ -103,29 +114,31 @@ func (p *Parser) Parse(input string) *Word {
 }
 
 // createUnit creates a Unit from a character string.
-func (p *Parser) createUnit(char string, runes []rune, runeIdx int, afterHalant bool) *Unit {
-	info, _ := p.symbols.Lookup(char)
+func (p *Parser) createUnit(char string, runes []rune, runeIdx int, afterHalant bool, symbols core.SymbolMap) *core.Unit {
+	info := symbols[char]
 	return p.createUnitWithInfo(runes, runeIdx, afterHalant, info)
 }
 
 // createUnitWithInfo creates a Unit with a pre-looked-up SymbolInfo.
-func (p *Parser) createUnitWithInfo(runes []rune, runeIdx int, afterHalant bool, info SymbolInfo) *Unit {
+func (p *Parser) createUnitWithInfo(runes []rune, runeIdx int, afterHalant bool, info core.SymbolInfo) *core.Unit {
 	unitType := CategoryToUnitType(info.Category)
 
-	unit := &Unit{
-		Runes:       runes,
-		Start:       runeIdx,
-		End:         runeIdx + len(runes),
-		Type:        unitType,
-		BaseRom:     info.BaseRom,
-		AfterHalant: afterHalant,
-		Schwa:       SchwaPending,
-	}
+	bd := NewBrahmicData()
+	bd.AfterHalant = afterHalant
 
 	// Only consonants and conjuncts need schwa tracking
-	if unitType != UnitConsonant && unitType != UnitConjunct {
-		unit.Schwa = SchwaKeep // Vowels/numbers/symbols don't have schwa decisions
+	if unitType != core.UnitConsonant && unitType != core.UnitConjunct {
+		bd.Schwa = SchwaKeep // Vowels/numbers/symbols don't have schwa decisions
 	}
+
+	unit := &core.Unit{
+		Runes:   runes,
+		Start:   core.Position{Rune: runeIdx},
+		End:     core.Position{Rune: runeIdx + len(runes)},
+		Type:    unitType,
+		BaseRom: info.BaseRom,
+	}
+	SetBrahmicData(unit, bd)
 
 	return unit
 }

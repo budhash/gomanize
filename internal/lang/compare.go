@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/budhash/gomanize/engine"
-	"github.com/budhash/gomanize/lang/hindi"
+	"github.com/budhash/gomanize/core"
+	hindiLang "github.com/budhash/gomanize/lang/hindi"
+	"github.com/budhash/gomanize/scheme/colloquial"
 )
 
 // CompareResult holds the output of comparing old and new engines.
@@ -18,15 +19,15 @@ type CompareResult struct {
 
 // Comparer runs both old and new engines for comparison.
 type Comparer struct {
-	oldEngine Hindi          // existing implementation
-	newEngine *engine.Engine // new engine
+	oldEngine Hindi        // existing implementation (internal/lang)
+	newEngine *core.Engine // new core engine
 }
 
 // NewComparer creates a new Comparer instance.
 func NewComparer() *Comparer {
 	return &Comparer{
 		oldEngine: Hindi{},
-		newEngine: engine.New(hindi.Hindi{}),
+		newEngine: core.NewEngine(hindiLang.Hindi{}, colloquial.Colloquial{}),
 	}
 }
 
@@ -44,10 +45,11 @@ func (c *Comparer) Compare(input string) CompareResult {
 }
 
 // CompareWithDebug returns comparison with debug info from new engine.
+// Note: Debug output is no longer available in core.Engine - returns empty string.
 func (c *Comparer) CompareWithDebug(input string) (CompareResult, string) {
 	result := c.Compare(input)
-	debug := c.newEngine.TransliterateDebug(input)
-	return result, debug
+	// Debug output is not available in core.Engine
+	return result, ""
 }
 
 // FormatResult formats a CompareResult for display.

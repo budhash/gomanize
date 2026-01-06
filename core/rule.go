@@ -1,4 +1,4 @@
-package engine
+package core
 
 import (
 	"fmt"
@@ -36,7 +36,7 @@ type RuleScope int
 
 const (
 	ScopeUniversal RuleScope = iota // Base 0: applies to all languages
-	ScopeScript                     // Base 100: script-specific (Devanagari)
+	ScopeScript                     // Base 100: script-specific (Brahmic)
 	ScopeLanguage                   // Base 200: language-specific (Hindi)
 	ScopeScheme                     // Base 300: scheme-specific (IAST)
 )
@@ -101,11 +101,14 @@ type RuleEngine struct {
 	active   map[RulePhase][]Rule // Filtered and sorted per phase
 }
 
-// NewRuleEngine creates a new empty rule engine.
-func NewRuleEngine() *RuleEngine {
-	return &RuleEngine{
-		active: make(map[RulePhase][]Rule),
+// NewRuleEngine creates a new rule engine with the given rules.
+func NewRuleEngine(rules []Rule) *RuleEngine {
+	e := &RuleEngine{
+		allRules: append([]Rule{}, rules...),
+		active:   make(map[RulePhase][]Rule),
 	}
+	e.rebuildActive()
+	return e
 }
 
 // AddRule adds a rule to the engine.
@@ -121,16 +124,6 @@ func (e *RuleEngine) AddRule(r Rule) error {
 	}
 	e.allRules = append(e.allRules, r)
 	e.rebuildActive()
-	return nil
-}
-
-// AddRules adds multiple rules to the engine.
-func (e *RuleEngine) AddRules(rules []Rule) error {
-	for _, r := range rules {
-		if err := e.AddRule(r); err != nil {
-			return err
-		}
-	}
 	return nil
 }
 
