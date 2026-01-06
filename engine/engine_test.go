@@ -272,3 +272,43 @@ func TestRunHelpers(t *testing.T) {
 		t.Error("ल.NextInRun() should be nil")
 	}
 }
+
+func TestLongVowelsOption(t *testing.T) {
+	eng := engine.New(hindi.Hindi{})
+
+	tests := []struct {
+		input      string
+		wantNormal string
+		wantLong   string
+	}{
+		// Words with medial aa-matra: default uses "a", --long-vowels uses "aa" everywhere
+		{"गाना", "gana", "gaanaa"},      // ga-naa vs gaa-naa
+		{"बनाना", "banana", "banaanaa"}, // ba-na-naa vs ba-naa-naa
+		{"खाना", "khana", "khaanaa"},    // kha-naa vs khaa-naa
+		{"जाना", "jana", "jaanaa"},      // ja-naa vs jaa-naa
+
+		// Words with final aa-matra in closed syllable: both use "aa"
+		{"काम", "kaam", "kaam"},
+		{"राम", "raam", "raam"},
+
+		// Words without aa-matra: no difference
+		{"नमस्ते", "namaste", "namaste"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.input, func(t *testing.T) {
+			// Test with default options (no long vowels)
+			gotNormal := eng.Transliterate(tt.input)
+			if gotNormal != tt.wantNormal {
+				t.Errorf("Transliterate(%q) = %q, want %q", tt.input, gotNormal, tt.wantNormal)
+			}
+
+			// Test with long vowels option
+			opts := engine.Options{LongVowels: true}
+			gotLong := eng.TransliterateWithOptions(tt.input, opts)
+			if gotLong != tt.wantLong {
+				t.Errorf("TransliterateWithOptions(%q, LongVowels=true) = %q, want %q", tt.input, gotLong, tt.wantLong)
+			}
+		})
+	}
+}
