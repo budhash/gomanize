@@ -184,10 +184,9 @@ var symbols = map[string]SymbolInfo{
 	"ऱ": {ctg: conjuncts, hun: "rh"},
 	"ऴ": {ctg: conjuncts, hun: "lh"},
 	// conjuncts - additional
-	"क्ष": {ctg: conjuncts, hun: "ksh"},
-	"त्र": {ctg: conjuncts, hun: "tr"},
+	// Only ज्ञ needs special handling (ज+ञ would give "jny" but "gy" is correct)
+	// क्ष, त्र, श्र work correctly as component-wise (क्ष=ksh, त्र=tr, श्र=shr)
 	"ज्ञ": {ctg: conjuncts, hun: "gy"},
-	"श्र": {ctg: conjuncts, hun: "sr"},
 }
 
 type Symbols struct {
@@ -203,25 +202,48 @@ func (s *Symbols) Next() bool {
 	next := s.index + 1
 	if next >= s.len() {
 		return false
-	} else {
-		// s.runes[next] == '्'
-		if s.runes[next] == '़' || s.runes[next] == '्' {
-			if s.index+2 >= s.len() {
-				return false
-			} else {
-				s.index = s.index + 2
-			}
-		} else {
-			s.index = s.index + 1
-		}
-		return true
 	}
+
+	// Check for conjuncts: consonant + halant + consonant (e.g., ज्ञ, क्ष, त्र)
+	// If we just processed a conjunct, skip 3 characters
+	if next+1 < s.len() && s.runes[next] == '्' {
+		conjunct := string([]rune{s.runes[s.index], s.runes[next], s.runes[next+1]})
+		if _, found := symbols[conjunct]; found {
+			if s.index+3 >= s.len() {
+				return false
+			}
+			s.index = s.index + 3
+			return true
+		}
+	}
+
+	// Check for nuqta or halant: skip 2 characters
+	if s.runes[next] == '़' || s.runes[next] == '्' {
+		if s.index+2 >= s.len() {
+			return false
+		}
+		s.index = s.index + 2
+	} else {
+		s.index = s.index + 1
+	}
+	return true
 }
 
 func (s *Symbols) Item() (string, SymbolInfo, bool) {
 	next := s.index + 1
 	sym := ""
-	if next < s.len() && (s.runes[next] == '़') {
+
+	// Check for conjuncts: consonant + halant + consonant (e.g., ज्ञ, क्ष, त्र)
+	if next+1 < s.len() && s.runes[next] == '्' {
+		// Try to match a 3-character conjunct
+		conjunct := string([]rune{s.runes[s.index], s.runes[next], s.runes[next+1]})
+		if si, found := symbols[conjunct]; found {
+			return conjunct, si, true
+		}
+	}
+
+	// Check for nuqta: consonant + nuqta (e.g., क़, ख़)
+	if next < s.len() && s.runes[next] == '़' {
 		sym = string([]rune{s.runes[s.index], s.runes[next]})
 	} else {
 		sym = string(s.runes[s.index])
@@ -388,9 +410,20 @@ func (l Hindi) TransliterateWithOptions(word string, opts Options) string {
 					// - followed by anusvara, OR
 					// - at word end AND part of final conjunct ending in र, य, or व
 					//   (Sanskrit words like mantra, chandra, karya, kshetra, indra retain final 'a')
+					// - at word end AND य follows ी (adjective suffix -iya: केंद्रीय→kendriya)
 					isWordEnd := !nxtExists || nxtRaw == ""
 					isSonorousFinal := currentRaw == "र" || currentRaw == "य" || currentRaw == "व"
-					if nxtRaw == "ं" || (isWordEnd && isAfterHalant && isSonorousFinal) {
+
+					// Check for ीय pattern (adjective ending)
+					isIyaEnding := false
+					if isWordEnd && currentRaw == "य" && sb.index > 0 {
+						prevChar := sb.runes[sb.index-1]
+						if prevChar == 'ी' { // long i matra
+							isIyaEnding = true
+						}
+					}
+
+					if nxtRaw == "ं" || (isWordEnd && isAfterHalant && isSonorousFinal) || isIyaEnding {
 						converted = converted + rom + "a"
 					} else {
 						converted = converted + rom
