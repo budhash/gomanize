@@ -23,27 +23,42 @@ type Language interface {
 	Halant() string
 }
 
+// RuleProvider is an optional interface for languages that provide rules.
+type RuleProvider interface {
+	// Rules returns the transliteration rules for this language.
+	Rules() []Rule
+}
+
 // Engine is the main romanization engine.
 type Engine struct {
-	language Language
-	parser   *Parser
-	renderer *Renderer
+	language   Language
+	parser     *Parser
+	renderer   *Renderer
+	ruleEngine *RuleEngine
 }
 
 // New creates a new Engine for the given language.
 func New(lang Language) *Engine {
-	return &Engine{
-		language: lang,
-		parser:   NewParser(lang.Symbols(), lang.MultiChar(), lang.Halant()),
-		renderer: NewRenderer(),
+	e := &Engine{
+		language:   lang,
+		parser:     NewParser(lang.Symbols(), lang.MultiChar(), lang.Halant()),
+		renderer:   NewRenderer(),
+		ruleEngine: NewRuleEngine(),
 	}
+
+	// If language provides rules, add them
+	if rp, ok := lang.(RuleProvider); ok {
+		_ = e.ruleEngine.AddRules(rp.Rules())
+	}
+
+	return e
 }
 
 // Transliterate converts Devanagari text to romanized form.
 func (e *Engine) Transliterate(input string) string {
 	word := e.parser.Parse(input)
 	IdentifyRuns(word)
-	// Phase 2 will add: ApplyRules(word, scheme)
+	e.ruleEngine.Apply(word)
 	return e.renderer.Render(word)
 }
 
@@ -51,6 +66,7 @@ func (e *Engine) Transliterate(input string) string {
 func (e *Engine) TransliterateDebug(input string) string {
 	word := e.parser.Parse(input)
 	IdentifyRuns(word)
+	e.ruleEngine.Apply(word)
 	return e.renderer.RenderDebug(word)
 }
 

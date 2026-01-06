@@ -162,3 +162,9 @@ func (h Hindi) MultiChar() []string {
 func (h Hindi) Halant() string {
 	return Halant
 }
+
+// Rules returns the Hindi transliteration rules.
+// This implements engine.RuleProvider.
+func (h Hindi) Rules() []engine.Rule {
+	return Rules()
+}
