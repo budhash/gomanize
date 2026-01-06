@@ -1,6 +1,10 @@
 package brahmic
 
-import "github.com/budhash/gomanize/core"
+import (
+	"fmt"
+
+	"github.com/budhash/gomanize/core"
+)
 
 // Parser converts Brahmic script text into a Word structure.
 // Handles halant tracking and nukta combinations.
@@ -12,8 +16,12 @@ type Parser struct {
 }
 
 // NewParser creates a parser with the given configuration.
+// Panics if config is not a brahmic.Config type.
 func NewParser(config interface{}) *Parser {
-	cfg := config.(Config)
+	cfg, ok := config.(Config)
+	if !ok {
+		panic(fmt.Sprintf("brahmic.NewParser: expected brahmic.Config, got %T", config))
+	}
 	return &Parser{
 		halant:    cfg.Halant,
 		nukta:     cfg.Nukta,

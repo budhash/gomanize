@@ -107,7 +107,21 @@ type RuleEngine struct {
 }
 
 // NewRuleEngine creates a new rule engine with the given rules.
+// Panics if any rule has nil Condition or Action functions.
 func NewRuleEngine(rules []Rule) *RuleEngine {
+	// Validate all rules have required functions
+	for i, r := range rules {
+		if r.Condition == nil {
+			panic(fmt.Sprintf("core.NewRuleEngine: rule %d (%q) has nil Condition", i, r.Name))
+		}
+		if r.Action == nil {
+			panic(fmt.Sprintf("core.NewRuleEngine: rule %d (%q) has nil Action", i, r.Name))
+		}
+		if r.Priority < 0 || r.Priority > 99 {
+			panic(fmt.Sprintf("core.NewRuleEngine: rule %d (%q) has invalid Priority %d (must be 0-99)", i, r.Name, r.Priority))
+		}
+	}
+
 	e := &RuleEngine{
 		allRules: append([]Rule{}, rules...),
 		active:   make(map[RulePhase][]Rule),
@@ -117,8 +131,19 @@ func NewRuleEngine(rules []Rule) *RuleEngine {
 }
 
 // AddRule adds a rule to the engine.
-// Returns error if there's a priority conflict.
+// Returns error if there's a priority conflict or invalid rule.
 func (e *RuleEngine) AddRule(r Rule) error {
+	// Validate rule
+	if r.Condition == nil {
+		return fmt.Errorf("rule %q has nil Condition", r.Name)
+	}
+	if r.Action == nil {
+		return fmt.Errorf("rule %q has nil Action", r.Name)
+	}
+	if r.Priority < 0 || r.Priority > 99 {
+		return fmt.Errorf("rule %q has invalid Priority %d (must be 0-99)", r.Name, r.Priority)
+	}
+
 	// Check for priority conflicts within same phase
 	for _, existing := range e.allRules {
 		if existing.Phase == r.Phase &&
@@ -205,14 +230,14 @@ func (e *RuleEngine) applyPhase(phase RulePhase, word *Word) {
 	}
 }
 
-// Rules returns all registered rules.
+// Rules returns a copy of all registered rules.
 func (e *RuleEngine) Rules() []Rule {
-	return e.allRules
+	return append([]Rule{}, e.allRules...)
 }
 
-// RulesForPhase returns rules for a specific phase, sorted by priority.
+// RulesForPhase returns a copy of rules for a specific phase, sorted by priority.
 func (e *RuleEngine) RulesForPhase(phase RulePhase) []Rule {
-	return e.active[phase]
+	return append([]Rule{}, e.active[phase]...)
 }
 
 // SetDebugMetaExtractor sets a function to extract script-specific metadata.

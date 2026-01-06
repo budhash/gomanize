@@ -12,14 +12,18 @@ type Engine struct {
 }
 
 // NewEngine creates an engine for a language + scheme combination.
+// Panics if the language returns a nil Script.
 func NewEngine(lang Language, scheme Scheme) *Engine {
+	script := lang.Script()
+	if script == nil {
+		panic("core.NewEngine: lang.Script() returned nil")
+	}
+
 	// Get language's complete rule catalog
 	catalog := lang.Rules()
 
 	// Scheme selects which rules to use
 	selectedRules := scheme.SelectRules(catalog)
-
-	script := lang.Script()
 
 	return &Engine{
 		lang:       lang,
