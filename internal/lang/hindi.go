@@ -410,9 +410,20 @@ func (l Hindi) TransliterateWithOptions(word string, opts Options) string {
 					// - followed by anusvara, OR
 					// - at word end AND part of final conjunct ending in र, य, or व
 					//   (Sanskrit words like mantra, chandra, karya, kshetra, indra retain final 'a')
+					// - at word end AND य follows ी (adjective suffix -iya: केंद्रीय→kendriya)
 					isWordEnd := !nxtExists || nxtRaw == ""
 					isSonorousFinal := currentRaw == "र" || currentRaw == "य" || currentRaw == "व"
-					if nxtRaw == "ं" || (isWordEnd && isAfterHalant && isSonorousFinal) {
+
+					// Check for ीय pattern (adjective ending)
+					isIyaEnding := false
+					if isWordEnd && currentRaw == "य" && sb.index > 0 {
+						prevChar := sb.runes[sb.index-1]
+						if prevChar == 'ी' { // long i matra
+							isIyaEnding = true
+						}
+					}
+
+					if nxtRaw == "ं" || (isWordEnd && isAfterHalant && isSonorousFinal) || isIyaEnding {
 						converted = converted + rom + "a"
 					} else {
 						converted = converted + rom
