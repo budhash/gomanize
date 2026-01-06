@@ -544,40 +544,180 @@ var Hindi = Language{
 ```go
 type Scheme struct {
     Name      string
-    Overrides map[string]string  // Symbol → output override
+    SymbolMap map[string]string  // 1:1 symbol overrides (applied at render)
+    Rules     []Rule             // Context-dependent transforms
+}
+```
+
+### Scheme Design: Hybrid Approach
+
+Schemes use a **hybrid** of symbol overrides and rules:
+
+| Mechanism | Purpose | Applied At |
+|-----------|---------|------------|
+| `SymbolMap` | Unconditional 1:1 mappings | Render time |
+| `Rules` | Context-dependent transforms | Rule engine |
+
+**Why hybrid?**
+- IAST needs ~30 symbol overrides (श→ś, आ→ā, etc.)
+- Writing 30 trivial rules is boilerplate
+- But some transforms ARE context-dependent (ज्ञ→gya vs jña)
+
+### Scheme Examples
+
+```go
+// Colloquial: Default for Hindi (song lyrics, casual use)
+// - No diacritics (aa not ā)
+// - Phonetic conjuncts (ज्ञ → gya)
+// - Aggressive schwa deletion
+var Colloquial = Scheme{
+    Name:      "colloquial",
+    SymbolMap: nil,  // Uses Language.Symbols BaseRom as-is
+    Rules:     nil,  // Default schwa rules
 }
 
+// Hunterian: Official India government standard
+// - Macrons for long vowels (ā, ī, ū)
+// - Traditional conjunct spellings
+// - Less schwa deletion
 var Hunterian = Scheme{
     Name: "hunterian",
-    // No overrides - uses BaseRom
-}
-
-var IAST = Scheme{
-    Name: "iast",
-    Overrides: map[string]string{
-        "आ": "ā",
-        "ई": "ī",
-        "ऊ": "ū",
-        "श": "ś",
-        "ष": "ṣ",
-        // etc.
+    SymbolMap: map[string]string{
+        // Long vowels with macron
+        "आ": "ā", "ई": "ī", "ऊ": "ū",
+        "ा": "ā", "ी": "ī", "ू": "ū",
+        // Diphthongs
+        "ऐ": "ai", "औ": "au",
+        "ै": "ai", "ौ": "au",
+    },
+    Rules: []Rule{
+        // ज्ञ → jñ (not gya)
+        {
+            Name:  "hunterian-jnya",
+            Phase: PhaseConsonant,
+            Condition: func(u *Unit, w *Word) bool {
+                return string(u.Runes) == "ज्ञ"
+            },
+            Action: func(u *Unit, w *Word) { u.BaseRom = "jñ" },
+        },
     },
 }
 
-// Note: Scheme.Overrides vs Scheme Rules
-// - Overrides: Simple 1:1 character substitutions applied at Render time
-//   Use for: Direct mappings like श→ś that don't depend on context
-// - Scheme Rules: Complex transformations that need conditions
-//   Use for: Context-dependent changes like "aa→ā only in certain positions"
-// In practice, prefer Rules for new schemes (more explicit and testable)
+// IAST: International scholarly standard
+// - Full diacritics (ś, ṣ, ṛ, etc.)
+// - Preserves more schwas
+var IAST = Scheme{
+    Name: "iast",
+    SymbolMap: map[string]string{
+        // Vowels
+        "आ": "ā", "इ": "i", "ई": "ī", "उ": "u", "ऊ": "ū",
+        "ऋ": "ṛ", "ए": "e", "ऐ": "ai", "ओ": "o", "औ": "au",
+        // Matras
+        "ा": "ā", "ि": "i", "ी": "ī", "ु": "u", "ू": "ū",
+        "े": "e", "ै": "ai", "ो": "o", "ौ": "au",
+        // Sibilants
+        "श": "ś", "ष": "ṣ", "स": "s",
+        // Retroflex
+        "ट": "ṭ", "ठ": "ṭh", "ड": "ḍ", "ढ": "ḍh", "ण": "ṇ",
+        // Anusvara/Visarga
+        "ं": "ṃ", "ः": "ḥ",
+    },
+    Rules: []Rule{
+        // ज्ञ → jña
+        {Name: "iast-jnya", ...},
+        // Preserve final schwa in certain contexts
+        {Name: "iast-final-schwa", ...},
+    },
+}
 ```
+
+### Rendering with Scheme
+
+```go
+func (w *Word) Render(scheme *Scheme) string {
+    var out strings.Builder
+    for _, u := range w.Units {
+        // 1. Check scheme symbol override first
+        if scheme.SymbolMap != nil {
+            if override, ok := scheme.SymbolMap[string(u.Runes)]; ok {
+                out.WriteString(override)
+                continue  // Skip to next unit
+            }
+        }
+
+        // 2. Use BaseRom (possibly modified by rules)
+        switch u.Type {
+        case UnitConsonant, UnitConjunct:
+            out.WriteString(u.BaseRom)
+            if u.Next == nil || u.Next.Type != UnitVowel {
+                if u.Schwa == SchwaKeep {
+                    out.WriteString("a")
+                }
+            }
+        case UnitVowel, UnitNumber, UnitSymbol:
+            out.WriteString(u.BaseRom)
+        }
+    }
+    return out.String()
+}
+```
+
+### Language Default Scheme
+
+Each language specifies its default scheme:
+
+```go
+type Language struct {
+    Name          string
+    Script        string
+    Symbols       SymbolMap
+    MultiChar     []string
+    Rules         []Rule
+    DefaultScheme string    // "colloquial" for Hindi
+    Schemes       []string  // Available: ["colloquial", "hunterian", "iast"]
+}
+
+var Hindi = Language{
+    Name:          "hindi",
+    Script:        "devanagari",
+    DefaultScheme: "colloquial",
+    Schemes:       []string{"colloquial", "hunterian", "iast"},
+    // ...
+}
+```
+
+### CLI Usage
+
+```bash
+# Default scheme (colloquial for Hindi)
+gomanize "भारत"                      # bharat
+
+# Explicit scheme
+gomanize --scheme hunterian "भारत"   # bhārat
+gomanize --scheme iast "भारत"        # bhārata
+
+# List available schemes
+gomanize --list-schemes              # colloquial*, hunterian, iast
+```
+
+### Current Gomanize = Colloquial
+
+The current gomanize implementation is the "colloquial" scheme:
+
+| Aspect | Colloquial (current) | Hunterian | IAST |
+|--------|---------------------|-----------|------|
+| ज्ञ | gya | jñ | jña |
+| आ | aa | ā | ā |
+| Schwa | Aggressive deletion | Less deletion | Minimal deletion |
+| Target | Song lyrics, casual | Official docs | Scholarly |
 
 ### Options (Runtime Flags)
 
 ```go
 type Options struct {
-    LongVowels bool  // --long-vowels flag
-    // Future flags...
+    Scheme     string  // --scheme flag (default from Language)
+    LongVowels bool    // --long-vowels flag
+    Trace      bool    // --trace flag
 }
 ```
 
@@ -597,8 +737,8 @@ func (t *Transliterator) Transliterate(input string) string {
     word := t.parse(input)       // Uses lang.Symbols, lang.MultiChar
     word.Options = t.options
     word.identifyRuns()
-    t.engine.Apply(word)         // Uses filtered rules
-    return word.Render(t.scheme) // Applies scheme overrides
+    t.engine.Apply(word)         // Uses filtered rules (including scheme rules)
+    return word.Render(t.scheme) // Applies scheme SymbolMap overrides
 }
 ```
 
@@ -624,36 +764,9 @@ type Trace struct {
 }
 ```
 
-### Rendering Logic: Consonant + Vowel
+### Schwa and Rendering
 
-A critical detail: **schwa rules only decide schwa state for consonants NOT followed by explicit vowels**. When a consonant IS followed by a vowel unit, the rendering logic handles it:
-
-```go
-func (w *Word) Render(scheme *Scheme) string {
-    var out strings.Builder
-    for _, u := range w.Units {
-        switch u.Type {
-        case UnitConsonant, UnitConjunct:
-            out.WriteString(u.BaseRom)
-            // Only add schwa if NOT followed by vowel
-            if u.Next == nil || u.Next.Type != UnitVowel {
-                if u.Schwa == SchwaKeep {
-                    out.WriteString("a")
-                }
-                // SchwaDelete = no schwa added
-            }
-            // If followed by vowel, the vowel provides the sound
-        case UnitVowel:
-            out.WriteString(u.BaseRom)
-        case UnitNumber, UnitSymbol:
-            out.WriteString(u.BaseRom)
-        }
-    }
-    return out.String()
-}
-```
-
-This means:
+Schwa rules only decide state for consonants NOT followed by explicit vowels. The rendering logic (shown in Part 4) handles:
 - **Consonant + Vowel** → consonant only (vowel provides sound)
 - **Consonant + Consonant** → schwa rules decide (Keep/Delete)
 - **Consonant + END** → schwa-delete-word-final rule fires
