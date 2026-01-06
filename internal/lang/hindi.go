@@ -398,9 +398,43 @@ func (l Hindi) TransliterateWithOptions(word string, opts Options) string {
 				if nxtExists && nxtSi.isConsonant() {
 					// get next to next
 					nxtToNxtIndex := nxtIndex + utf8.RuneCountInString(nxtRaw)
-					_, nxtToNxtSi, nxtToNxtExists := sb.PeekN(nxtToNxtIndex)
-					// Suppress schwa only if: not at start, not word-initial conjunct, and followed by C+V
-					if sb.index != 0 && !isWordInitialConjunct && nxtToNxtExists && nxtToNxtSi.isVowel() {
+					nxtToNxtRaw, nxtToNxtSi, nxtToNxtExists := sb.PeekN(nxtToNxtIndex)
+
+					// Schwa deletion rules for C + C sequences:
+					// 1. C + C + V: Delete schwa when followed by consonant + vowel
+					//    Examples: जनता→janta, कमला→kamla
+					// 2. C + C + C + END: Delete schwa only in words that END with consonants
+					//    Examples: मकसद→maksad, झटपट→jhatpat, सरगम→sargam
+					//    This rule only applies at index 1 (second character) to avoid
+					//    cascading deletions in longer words.
+
+					shouldDeleteSchwa := false
+					if sb.index != 0 && !isWordInitialConjunct {
+						if nxtToNxtExists && nxtToNxtSi.isVowel() {
+							// Case 1: C + C + V - delete schwa
+							shouldDeleteSchwa = true
+						} else if nxtToNxtExists && nxtToNxtSi.isConsonant() && sb.index == 1 {
+							// Case 2: C + C + C at index 1
+							// Only delete if word ends in consonant (no trailing vowel)
+							// Check by looking ahead to see if there's a vowel anywhere after
+							hasTrailingVowel := false
+							checkIdx := nxtToNxtIndex + utf8.RuneCountInString(nxtToNxtRaw)
+							for checkIdx < sb.len() {
+								checkChar := sb.runes[checkIdx]
+								checkSym := string(checkChar)
+								if checkSi, found := symbols[checkSym]; found && checkSi.isVowel() {
+									hasTrailingVowel = true
+									break
+								}
+								checkIdx++
+							}
+							if !hasTrailingVowel {
+								shouldDeleteSchwa = true
+							}
+						}
+					}
+
+					if shouldDeleteSchwa {
 						converted = converted + rom
 					} else {
 						converted = converted + rom + "a"
