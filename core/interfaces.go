@@ -31,6 +31,11 @@ type Script interface {
 
 	// Categories returns script-specific categories.
 	Categories() []Category
+
+	// DebugMetaExtractor returns a function that extracts script-specific
+	// metadata for debugging (e.g., schwa state for Brahmic).
+	// Returns nil if no metadata is available.
+	DebugMetaExtractor() func(*Unit) string
 }
 
 // Language defines language-specific behavior within a script.

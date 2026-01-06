@@ -99,6 +99,11 @@ func (r *Rule) EffectivePriority() int {
 type RuleEngine struct {
 	allRules []Rule
 	active   map[RulePhase][]Rule // Filtered and sorted per phase
+
+	// Debug support
+	traces       []RuleTrace
+	debugEnabled bool
+	debugMeta    func(*Unit) string // Script-specific metadata extractor
 }
 
 // NewRuleEngine creates a new rule engine with the given rules.
@@ -161,34 +166,40 @@ func (e *RuleEngine) applyPhase(phase RulePhase, word *Word) {
 	acted := make(map[*Unit]bool)
 
 	// First pass: Exclusive and Always rules (highest priority first)
-	for _, rule := range rules {
+	for i := range rules {
+		rule := &rules[i]
 		if rule.Mode == ModeFallback {
 			continue
 		}
-		for _, unit := range word.Units {
+		for idx, unit := range word.Units {
 			// Skip if already acted on and this is Exclusive mode
 			if rule.Mode == ModeExclusive && acted[unit] {
 				continue
 			}
 			if rule.Condition(unit, word) {
+				before := unit.BaseRom
 				rule.Action(unit, word)
 				acted[unit] = true
+				e.traceRule(phase, rule, unit, idx, before)
 			}
 		}
 	}
 
 	// Second pass: Fallback rules (only for units not acted on)
-	for _, rule := range rules {
+	for i := range rules {
+		rule := &rules[i]
 		if rule.Mode != ModeFallback {
 			continue
 		}
-		for _, unit := range word.Units {
+		for idx, unit := range word.Units {
 			if acted[unit] {
 				continue
 			}
 			if rule.Condition(unit, word) {
+				before := unit.BaseRom
 				rule.Action(unit, word)
 				acted[unit] = true
+				e.traceRule(phase, rule, unit, idx, before)
 			}
 		}
 	}
@@ -202,4 +213,46 @@ func (e *RuleEngine) Rules() []Rule {
 // RulesForPhase returns rules for a specific phase, sorted by priority.
 func (e *RuleEngine) RulesForPhase(phase RulePhase) []Rule {
 	return e.active[phase]
+}
+
+// SetDebugMetaExtractor sets a function to extract script-specific metadata.
+func (e *RuleEngine) SetDebugMetaExtractor(fn func(*Unit) string) {
+	e.debugMeta = fn
+}
+
+// EnableDebug enables debug trace collection.
+func (e *RuleEngine) EnableDebug(enabled bool) {
+	e.debugEnabled = enabled
+	if enabled {
+		e.traces = nil // Reset traces
+	}
+}
+
+// Traces returns collected debug traces (call after Apply).
+func (e *RuleEngine) Traces() []RuleTrace {
+	return e.traces
+}
+
+// traceRule records a rule application if debugging is enabled.
+func (e *RuleEngine) traceRule(phase RulePhase, rule *Rule, unit *Unit, unitIdx int, before string) {
+	if !e.debugEnabled {
+		return
+	}
+	meta := ""
+	if e.debugMeta != nil {
+		meta = e.debugMeta(unit)
+	}
+	trace := RuleTrace{
+		Phase:    phase.String(),
+		Rule:     rule.Name,
+		Unit:     string(unit.Runes),
+		UnitIdx:  unitIdx,
+		Before:   before,
+		After:    unit.BaseRom,
+		Metadata: meta,
+	}
+	// Only record if something changed or it's a schwa rule
+	if before != unit.BaseRom || phase == PhaseSchwa {
+		e.traces = append(e.traces, trace)
+	}
 }

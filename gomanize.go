@@ -19,10 +19,14 @@ func NewOptions() Options {
 	return core.DefaultOptions()
 }
 
+// DebugInfo contains debugging information from transliteration.
+type DebugInfo = core.DebugInfo
+
 type Romanizer interface {
 	Name() string
 	Transliterate(word string) string
 	TransliterateWithOptions(word string, opts Options) string
+	TransliterateDebug(word string, opts Options) (string, *DebugInfo)
 	Info()
 }
 
@@ -74,6 +78,11 @@ func (g Gomanize) Translit(sentence string) string {
 	return strings.Join(result, " ")
 }
 
+// TranslitDebug transliterates a word and returns debug information.
+func (g Gomanize) TranslitDebug(word string) (string, *DebugInfo) {
+	return g.romanizer.TransliterateDebug(word, g.options)
+}
+
 // coreEngineAdapter adapts a core.Engine to the Romanizer interface.
 type coreEngineAdapter struct {
 	name   string
@@ -90,6 +99,10 @@ func (a *coreEngineAdapter) Transliterate(word string) string {
 
 func (a *coreEngineAdapter) TransliterateWithOptions(word string, opts Options) string {
 	return a.engine.TransliterateWithOptions(word, opts)
+}
+
+func (a *coreEngineAdapter) TransliterateDebug(word string, opts Options) (string, *DebugInfo) {
+	return a.engine.TransliterateDebug(word, opts)
 }
 
 func (a *coreEngineAdapter) Info() {
@@ -117,6 +130,12 @@ func (a *legacyAdapter) TransliterateWithOptions(word string, opts Options) stri
 	return a.legacy.TransliterateWithOptions(word, legacyOpts)
 }
 
+func (a *legacyAdapter) TransliterateDebug(word string, opts Options) (string, *DebugInfo) {
+	// Legacy adapter doesn't support debug, return nil debug info
+	result := a.TransliterateWithOptions(word, opts)
+	return result, nil
+}
+
 func (a *legacyAdapter) Info() {
 	a.legacy.Info()
 }
@@ -138,6 +157,12 @@ func (a *hindiOrigAdapter) TransliterateWithOptions(word string, opts Options) s
 	// HindiOrig doesn't support LongVowels well, just use plain transliterate
 	legacyOpts := lang.Options{LongVowels: opts.LongVowels}
 	return a.legacy.TransliterateWithOptions(word, legacyOpts)
+}
+
+func (a *hindiOrigAdapter) TransliterateDebug(word string, opts Options) (string, *DebugInfo) {
+	// HindiOrig adapter doesn't support debug, return nil debug info
+	result := a.TransliterateWithOptions(word, opts)
+	return result, nil
 }
 
 func (a *hindiOrigAdapter) Info() {

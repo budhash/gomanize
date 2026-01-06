@@ -39,6 +39,18 @@ func (e *Engine) Transliterate(input string) string {
 
 // TransliterateWithOptions converts script text to romanized form with custom options.
 func (e *Engine) TransliterateWithOptions(input string, opts Options) string {
+	result, _ := e.transliterateInternal(input, opts)
+	return result
+}
+
+// TransliterateDebug converts script text and returns debug information.
+func (e *Engine) TransliterateDebug(input string, opts Options) (string, *DebugInfo) {
+	opts.Debug = true
+	return e.transliterateInternal(input, opts)
+}
+
+// transliterateInternal is the core transliteration logic.
+func (e *Engine) transliterateInternal(input string, opts Options) (string, *DebugInfo) {
 	// 1. Parse (Script handles script-specific parsing)
 	parser := e.script.NewParser(e.config)
 	word := parser.Parse(input, e.symbols)
@@ -47,11 +59,56 @@ func (e *Engine) TransliterateWithOptions(input string, opts Options) string {
 	// 2. Prepare (Script-specific processing, e.g., IdentifyRuns)
 	e.script.PrepareWord(word)
 
+	// Enable debug if requested
+	if opts.Debug {
+		e.ruleEngine.EnableDebug(true)
+		// Set metadata extractor from script
+		if metaFn := e.script.DebugMetaExtractor(); metaFn != nil {
+			e.ruleEngine.SetDebugMetaExtractor(metaFn)
+		}
+	}
+
 	// 3. Apply rules (selected by Scheme from Language catalog)
 	e.ruleEngine.Apply(word)
 
 	// 4. Render (Script handles script-specific rendering)
-	return e.renderer.Render(word)
+	result := e.renderer.Render(word)
+
+	// Collect debug info if enabled
+	var debug *DebugInfo
+	if opts.Debug {
+		debug = e.collectDebugInfo(word, input, result)
+		e.ruleEngine.EnableDebug(false) // Reset for next call
+	}
+
+	return result, debug
+}
+
+// collectDebugInfo gathers debugging information after transliteration.
+func (e *Engine) collectDebugInfo(word *Word, input, output string) *DebugInfo {
+	info := &DebugInfo{
+		Input:  input,
+		Output: output,
+		Traces: e.ruleEngine.Traces(),
+	}
+
+	// Collect unit info
+	metaFn := e.script.DebugMetaExtractor()
+	for i, unit := range word.Units {
+		ud := UnitDebug{
+			Index:   i,
+			Chars:   string(unit.Runes),
+			Type:    unit.Type.String(),
+			BaseRom: unit.BaseRom,
+			RunePos: unit.Start.Rune,
+		}
+		if metaFn != nil {
+			ud.Metadata = metaFn(unit)
+		}
+		info.Units = append(info.Units, ud)
+	}
+
+	return info
 }
 
 // Language returns the engine's language.

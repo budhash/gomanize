@@ -53,3 +53,18 @@ func (s *Script) Categories() []core.Category {
 		CatConjunct,
 	}
 }
+
+// DebugMetaExtractor returns a function that extracts Brahmic-specific metadata.
+func (s *Script) DebugMetaExtractor() func(*core.Unit) string {
+	return func(u *core.Unit) string {
+		if u.Type != core.UnitConsonant && u.Type != core.UnitConjunct {
+			return ""
+		}
+		schwa := GetSchwa(u)
+		afterHalant := ""
+		if IsAfterHalant(u) {
+			afterHalant = " after-halant"
+		}
+		return schwa.String() + afterHalant
+	}
+}
