@@ -25,22 +25,9 @@ func (r *Renderer) Render(word *Word) string {
 
 		// Schwa handling for consonants/conjuncts
 		if unit.Type == UnitConsonant || unit.Type == UnitConjunct {
-			// Skip schwa if followed by matra (dependent vowel provides the sound)
-			// Exception: anusvara (ं) and chandrabindu (ँ) are nasal modifiers that
-			// come AFTER the inherent vowel, not instead of it
+			// Skip schwa if followed by vowel/matra (vowel provides the sound)
+			// Note: UnitModifier (anusvara, visarga, chandrabindu) does NOT suppress schwa
 			if unit.Next != nil && unit.Next.Type == UnitVowel {
-				// Check if it's a nasal modifier (anusvara or chandrabindu)
-				if len(unit.Next.Runes) == 1 {
-					nextRune := unit.Next.Runes[0]
-					if nextRune == 'ं' || nextRune == 'ँ' {
-						// Nasal modifier: use schwa state from rules
-						if unit.Schwa != SchwaDelete {
-							sb.WriteString("a")
-						}
-						continue
-					}
-				}
-				// Regular matra: skip schwa
 				continue
 			}
 

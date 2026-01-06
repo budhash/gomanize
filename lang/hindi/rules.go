@@ -84,6 +84,7 @@ func Rules() []engine.Rule {
 
 		// schwa-delete-ccv (Script:50)
 		// Delete medial schwa in C+C+V pattern: जनता→janta, कमला→kamla, अपना→apna
+		// Also applies for C+C+Modifier (anusvara/chandrabindu): झारखंड→jharkhand
 		{
 			Name:     "schwa-delete-ccv",
 			Phase:    engine.PhaseSchwa,
@@ -111,9 +112,12 @@ func Rules() []engine.Rule {
 				if next == nil || !isConsonantOrConjunct(next) {
 					return false
 				}
-				// That consonant must be followed by a vowel
+				// That consonant must be followed by a vowel or modifier (anusvara, etc.)
 				afterNext := next.Next
-				if afterNext == nil || afterNext.Type != engine.UnitVowel {
+				if afterNext == nil {
+					return false
+				}
+				if afterNext.Type != engine.UnitVowel && afterNext.Type != engine.UnitModifier {
 					return false
 				}
 				return true
@@ -176,28 +180,8 @@ func Rules() []engine.Rule {
 			},
 		},
 
-		// schwa-keep-before-anusvara (Script:40)
-		// Keep schwa when followed by anusvara: सुमन→suman (not sumn)
-		{
-			Name:     "schwa-keep-before-anusvara",
-			Phase:    engine.PhaseSchwa,
-			Scope:    engine.ScopeScript,
-			Priority: 40,
-			Mode:     engine.ModeExclusive,
-			Condition: func(u *engine.Unit, w *engine.Word) bool {
-				if !isConsonantOrConjunct(u) || u.Schwa != engine.SchwaPending {
-					return false
-				}
-				// Check if next unit is anusvara (ं)
-				if u.Next != nil && len(u.Next.Runes) == 1 && u.Next.Runes[0] == 'ं' {
-					return true
-				}
-				return false
-			},
-			Action: func(u *engine.Unit, w *engine.Word) {
-				u.Schwa = engine.SchwaKeep
-			},
-		},
+		// Note: No rule needed for anusvara/chandrabindu - they are UnitModifier type
+		// which doesn't suppress schwa in the renderer. The default fallback keeps schwa.
 
 		// schwa-delete-word-final (Universal:10)
 		// Delete schwa at word end (unless protected by higher rules)
