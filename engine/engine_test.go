@@ -176,9 +176,9 @@ func TestBasicRender(t *testing.T) {
 		input string
 		want  string
 	}{
-		// Simple consonants (inherent 'a')
-		{"क", "ka"},
-		{"म", "ma"},
+		// Simple consonants (word-final schwa deleted)
+		{"क", "k"},
+		{"म", "m"},
 
 		// Consonant + matra
 		{"का", "ka"}, // क + ा → k + a (matra replaces inherent)
@@ -195,8 +195,8 @@ func TestBasicRender(t *testing.T) {
 		{"आ", "aa"},
 		{"इ", "i"},
 
-		// Conjuncts
-		{"ज्ञ", "gya"}, // ज्ञ as unit + inherent a
+		// Conjuncts (word-final schwa deleted)
+		{"ज्ञ", "gy"}, // ज्ञ as unit, word-final schwa deleted
 	}
 
 	for _, tt := range tests {

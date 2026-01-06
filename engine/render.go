@@ -16,25 +16,33 @@ func NewRenderer() *Renderer {
 }
 
 // Render converts a Word to its romanized string representation.
-// For Phase 1, this is a simple concatenation of BaseRom values.
-// Schwa handling will be added in Phase 2 with rules.
+// Uses SchwaState decisions from the rule engine to determine schwa output.
 func (r *Renderer) Render(word *Word) string {
 	var sb strings.Builder
 
 	for _, unit := range word.Units {
 		sb.WriteString(unit.BaseRom)
 
-		// Basic schwa insertion for consonants/conjuncts
-		// Phase 1: Simple inherent vowel 'a' after each consonant
-		// This will be refined by schwa deletion rules in Phase 2
-		if (unit.Type == UnitConsonant || unit.Type == UnitConjunct) && !unit.AfterHalant {
-			// Only add schwa if not suppressed
+		// Schwa handling for consonants/conjuncts
+		if unit.Type == UnitConsonant || unit.Type == UnitConjunct {
+			// Skip schwa if followed by matra (dependent vowel provides the sound)
+			if unit.Next != nil && unit.Next.Type == UnitVowel {
+				continue
+			}
+
+			// Skip schwa if next unit is part of a conjunct (came after halant)
+			// This means current consonant + halant + next consonant form a cluster
+			// Example: प्र in प्रकाश - प has no schwa because ् + र follows
+			if unit.Next != nil && unit.Next.AfterHalant {
+				continue
+			}
+
+			// Use SchwaState decision from rules
+			// - SchwaKeep: add "a"
+			// - SchwaDelete: no schwa
+			// - SchwaPending: treat as Keep (rules didn't run or fallback applies)
 			if unit.Schwa != SchwaDelete {
-				// Check if followed by a matra (dependent vowel)
-				// If so, don't add schwa
-				if unit.Next == nil || unit.Next.Type != UnitVowel {
-					sb.WriteString("a")
-				}
+				sb.WriteString("a")
 			}
 		}
 	}
