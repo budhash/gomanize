@@ -9,7 +9,13 @@
       "Bash(make:*)",
       "Bash(make ci:*)",
       "Bash(make fmt:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(gh pr view:*)",
+      "Bash(./scripts/ushuaia:*)",
+      "Bash(for word in \"काम\" \"गाना\" \"बनाना\" \"खाना\" \"जाना\" \"आना\" \"कामना\" \"राजा\" \"माला\" \"बाला\" \"काला\" \"साला\" \"नाना\" \"दादा\" \"मामा\" \"चाचा\")",
+      "Bash(do)",
+      "Bash(echo:*)",
+      "Bash(done)"
     ]
   }
 }

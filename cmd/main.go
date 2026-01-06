@@ -17,21 +17,38 @@ var (
 )
 
 func main() {
-	// Handle version flag
-	if len(os.Args) > 1 && (os.Args[1] == "-v" || os.Args[1] == "--version" || os.Args[1] == "version") {
-		fmt.Printf("gomanize %s (commit: %s, built: %s)\n", version, commit, date)
-		os.Exit(0)
+	args := os.Args[1:]
+	opts := gomanize.NewOptions()
+	var textArgs []string
+
+	// Parse flags and collect text arguments
+	for _, arg := range args {
+		switch arg {
+		case "-v", "--version", "version":
+			fmt.Printf("gomanize %s (commit: %s, built: %s)\n", version, commit, date)
+			os.Exit(0)
+		case "-h", "--help", "help":
+			printUsage()
+			os.Exit(0)
+		case "--long-vowels":
+			opts.LongVowels = true
+		default:
+			if strings.HasPrefix(arg, "-") {
+				fmt.Fprintf(os.Stderr, "Unknown flag: %s\n", arg)
+				printUsage()
+				os.Exit(1)
+			}
+			textArgs = append(textArgs, arg)
+		}
 	}
 
-	input := getInput()
+	input := getInput(textArgs)
 	if input == "" {
-		fmt.Fprintln(os.Stderr, "Usage: gomanize <text>")
-		fmt.Fprintln(os.Stderr, "       echo <text> | gomanize")
-		fmt.Fprintln(os.Stderr, "       gomanize --version")
+		printUsage()
 		os.Exit(1)
 	}
 
-	g, err := gomanize.New("hindi")
+	g, err := gomanize.NewWithOptions("hindi", opts)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		os.Exit(1)
@@ -41,9 +58,18 @@ func main() {
 	fmt.Println(output)
 }
 
-func getInput() string {
-	args := os.Args[1:]
-	if len(args) == 0 {
+func printUsage() {
+	fmt.Fprintln(os.Stderr, "Usage: gomanize [options] <text>")
+	fmt.Fprintln(os.Stderr, "       echo <text> | gomanize [options]")
+	fmt.Fprintln(os.Stderr, "")
+	fmt.Fprintln(os.Stderr, "Options:")
+	fmt.Fprintln(os.Stderr, "  --long-vowels  Use 'aa' for all ा positions (e.g., गाना→gaana)")
+	fmt.Fprintln(os.Stderr, "  --version      Show version information")
+	fmt.Fprintln(os.Stderr, "  --help         Show this help message")
+}
+
+func getInput(textArgs []string) string {
+	if len(textArgs) == 0 {
 		// Check if there's data on stdin
 		stat, _ := os.Stdin.Stat()
 		if (stat.Mode() & os.ModeCharDevice) == 0 {
@@ -57,5 +83,5 @@ func getInput() string {
 		}
 		return ""
 	}
-	return strings.Join(args, " ")
+	return strings.Join(textArgs, " ")
 }
