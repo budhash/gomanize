@@ -110,8 +110,10 @@ func (m SymbolMap) IsNumber(s string) bool {
 // CategoryToUnitType converts a symbol Category to a UnitType.
 func CategoryToUnitType(cat Category) UnitType {
 	switch cat {
-	case CatVowel, CatMatra, CatAnusvara, CatVisarga, CatChandrabindu:
+	case CatVowel, CatMatra:
 		return UnitVowel
+	case CatAnusvara, CatVisarga, CatChandrabindu:
+		return UnitModifier // Modifiers don't suppress preceding schwa
 	case CatConsonant:
 		return UnitConsonant
 	case CatConjunct:

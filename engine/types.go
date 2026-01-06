@@ -33,7 +33,8 @@ func (s SchwaState) String() string {
 type UnitType int
 
 const (
-	UnitVowel     UnitType = iota // Vowels and vowel-like modifiers (matras, anusvara, visarga, chandrabindu)
+	UnitVowel     UnitType = iota // Vowels and matras that replace inherent schwa
+	UnitModifier                  // Modifiers that follow the vowel (anusvara, visarga, chandrabindu)
 	UnitConsonant                 // Single consonant
 	UnitConjunct                  // Multi-character conjunct (e.g., ज्ञ)
 	UnitNumber                    // Devanagari numeral
@@ -44,6 +45,8 @@ func (t UnitType) String() string {
 	switch t {
 	case UnitVowel:
 		return "Vowel"
+	case UnitModifier:
+		return "Modifier"
 	case UnitConsonant:
 		return "Consonant"
 	case UnitConjunct:

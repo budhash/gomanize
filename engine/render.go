@@ -25,7 +25,8 @@ func (r *Renderer) Render(word *Word) string {
 
 		// Schwa handling for consonants/conjuncts
 		if unit.Type == UnitConsonant || unit.Type == UnitConjunct {
-			// Skip schwa if followed by matra (dependent vowel provides the sound)
+			// Skip schwa if followed by vowel/matra (vowel provides the sound)
+			// Note: UnitModifier (anusvara, visarga, chandrabindu) does NOT suppress schwa
 			if unit.Next != nil && unit.Next.Type == UnitVowel {
 				continue
 			}

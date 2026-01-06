@@ -8,19 +8,28 @@ func Rules() []engine.Rule {
 		// === PhaseSchwa Rules ===
 		// Rules are ordered by effective priority (highest first within each scope)
 
-		// schwa-keep-initial-conjunct (Script:80)
-		// Keep schwa for word-initial conjuncts: प्रकाश→prakaash (not prkaash)
+		// schwa-keep-internal-conjunct (Script:80)
+		// Keep schwa for internal conjuncts (not at word end): प्रकाश→prakaash, अध्यक्ष→adhyaksh
+		// Word-final conjuncts are handled separately by schwa-delete-word-final
 		{
-			Name:     "schwa-keep-initial-conjunct",
+			Name:     "schwa-keep-internal-conjunct",
 			Phase:    engine.PhaseSchwa,
 			Scope:    engine.ScopeScript,
 			Priority: 80,
 			Mode:     engine.ModeExclusive,
 			Condition: func(u *engine.Unit, w *engine.Word) bool {
-				return isConsonantOrConjunct(u) &&
-					u.Schwa == engine.SchwaPending &&
-					u.AfterHalant &&
-					u.RunIndex <= 1
+				if !isConsonantOrConjunct(u) || u.Schwa != engine.SchwaPending {
+					return false
+				}
+				// Must be after halant (part of conjunct)
+				if !u.AfterHalant {
+					return false
+				}
+				// NOT word-final (word-final is handled by schwa-delete-word-final)
+				if u.IsWordFinal() {
+					return false
+				}
+				return true
 			},
 			Action: func(u *engine.Unit, w *engine.Word) {
 				u.Schwa = engine.SchwaKeep
@@ -74,7 +83,8 @@ func Rules() []engine.Rule {
 		},
 
 		// schwa-delete-ccv (Script:50)
-		// Delete medial schwa in C+C+V pattern: जनता→janta, कमला→kamla
+		// Delete medial schwa in C+C+V pattern: जनता→janta, कमला→kamla, अपना→apna
+		// Also applies for C+C+Modifier (anusvara/chandrabindu): झारखंड→jharkhand
 		{
 			Name:     "schwa-delete-ccv",
 			Phase:    engine.PhaseSchwa,
@@ -85,8 +95,12 @@ func Rules() []engine.Rule {
 				if !isConsonantOrConjunct(u) || u.Schwa != engine.SchwaPending {
 					return false
 				}
-				// Must be in a run and not word-initial
-				if u.Run == nil || u.RunIndex == 0 {
+				// Must not be at absolute word start (first character)
+				if u.IsWordInitial() {
+					return false
+				}
+				// Must be in a run
+				if u.Run == nil {
 					return false
 				}
 				// Only one deletion per run
@@ -98,9 +112,12 @@ func Rules() []engine.Rule {
 				if next == nil || !isConsonantOrConjunct(next) {
 					return false
 				}
-				// That consonant must be followed by a vowel
+				// That consonant must be followed by a vowel or modifier (anusvara, etc.)
 				afterNext := next.Next
-				if afterNext == nil || afterNext.Type != engine.UnitVowel {
+				if afterNext == nil {
+					return false
+				}
+				if afterNext.Type != engine.UnitVowel && afterNext.Type != engine.UnitModifier {
 					return false
 				}
 				return true
@@ -113,12 +130,13 @@ func Rules() []engine.Rule {
 			},
 		},
 
-		// schwa-delete-ccc-final (Script:45)
-		// Delete schwa in C+C+C+END pattern (consonant-ending words)
-		// Examples: मकसद→maksad, झटपट→jhatpat, सरगम→sargam
-		// Only applies at index 1 to avoid cascading deletions
+		// schwa-delete-cccc-final (Script:45)
+		// Delete schwa in C+C+C+C+END pattern (4+ consonant words ending in consonants)
+		// Examples: मकसद→maksad, झटपट→jhatpat
+		// Only applies at index 1 (second consonant) and requires at least 2 more consonants after
+		// This does NOT apply to 3-consonant words like कमल→kamal, गरम→garam
 		{
-			Name:     "schwa-delete-ccc-final",
+			Name:     "schwa-delete-cccc-final",
 			Phase:    engine.PhaseSchwa,
 			Scope:    engine.ScopeScript,
 			Priority: 45,
@@ -135,14 +153,18 @@ func Rules() []engine.Rule {
 				if u.Run.HasDeletion() {
 					return false
 				}
-				// Must have a following consonant
+				// Must have TWO following consonants (CCCC pattern, not CCC)
 				next := u.Next
 				if next == nil || !isConsonantOrConjunct(next) {
 					return false
 				}
+				afterNext := next.Next
+				if afterNext == nil || !isConsonantOrConjunct(afterNext) {
+					return false
+				}
 				// Check if word ends in consonants (no trailing vowel)
 				hasTrailingVowel := false
-				for cur := next.Next; cur != nil; cur = cur.Next {
+				for cur := afterNext.Next; cur != nil; cur = cur.Next {
 					if cur.Type == engine.UnitVowel {
 						hasTrailingVowel = true
 						break
@@ -158,31 +180,12 @@ func Rules() []engine.Rule {
 			},
 		},
 
-		// schwa-keep-before-anusvara (Script:40)
-		// Keep schwa when followed by anusvara: सुमन→suman (not sumn)
-		{
-			Name:     "schwa-keep-before-anusvara",
-			Phase:    engine.PhaseSchwa,
-			Scope:    engine.ScopeScript,
-			Priority: 40,
-			Mode:     engine.ModeExclusive,
-			Condition: func(u *engine.Unit, w *engine.Word) bool {
-				if !isConsonantOrConjunct(u) || u.Schwa != engine.SchwaPending {
-					return false
-				}
-				// Check if next unit is anusvara (ं)
-				if u.Next != nil && len(u.Next.Runes) == 1 && u.Next.Runes[0] == 'ं' {
-					return true
-				}
-				return false
-			},
-			Action: func(u *engine.Unit, w *engine.Word) {
-				u.Schwa = engine.SchwaKeep
-			},
-		},
+		// Note: No rule needed for anusvara/chandrabindu - they are UnitModifier type
+		// which doesn't suppress schwa in the renderer. The default fallback keeps schwa.
 
 		// schwa-delete-word-final (Universal:10)
 		// Delete schwa at word end (unless protected by higher rules)
+		// Note: schwa-keep-sonorous-final (Script:70) runs first to protect र, य, व
 		{
 			Name:     "schwa-delete-word-final",
 			Phase:    engine.PhaseSchwa,
@@ -192,8 +195,7 @@ func Rules() []engine.Rule {
 			Condition: func(u *engine.Unit, w *engine.Word) bool {
 				return isConsonantOrConjunct(u) &&
 					u.Schwa == engine.SchwaPending &&
-					u.IsWordFinal() &&
-					!u.AfterHalant // Not protected by sonorous-final rule
+					u.IsWordFinal()
 			},
 			Action: func(u *engine.Unit, w *engine.Word) {
 				u.Schwa = engine.SchwaDelete

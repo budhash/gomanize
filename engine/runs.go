@@ -21,7 +21,8 @@ func IdentifyRuns(word *Word) {
 			unit.RunIndex = len(currentRun.Units)
 			currentRun.Units = append(currentRun.Units, unit)
 
-		case UnitVowel:
+		case UnitVowel, UnitModifier:
+			// Vowels and modifiers (anusvara, visarga, chandrabindu) close runs
 			// Close current run if open
 			if currentRun != nil {
 				currentRun.NextVowel = unit
