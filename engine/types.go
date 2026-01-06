@@ -33,7 +33,7 @@ func (s SchwaState) String() string {
 type UnitType int
 
 const (
-	UnitVowel     UnitType = iota // Independent vowel or vowel matra
+	UnitVowel     UnitType = iota // Vowels and vowel-like modifiers (matras, anusvara, visarga, chandrabindu)
 	UnitConsonant                 // Single consonant
 	UnitConjunct                  // Multi-character conjunct (e.g., ज्ञ)
 	UnitNumber                    // Devanagari numeral
@@ -112,6 +112,11 @@ func NewConsonantRun() *ConsonantRun {
 	return &ConsonantRun{
 		DeletedAt: -1,
 	}
+}
+
+// HasDeletion returns true if a schwa has been deleted in this run.
+func (r *ConsonantRun) HasDeletion() bool {
+	return r.DeletedAt >= 0
 }
 
 // Word is the complete parsed representation of an input word.

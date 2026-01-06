@@ -1,6 +1,9 @@
 package engine
 
-import "strings"
+import (
+	"strconv"
+	"strings"
+)
 
 // Renderer converts a parsed Word into romanized output.
 type Renderer struct {
@@ -50,7 +53,7 @@ func (r *Renderer) RenderDebug(word *Word) string {
 
 	for i, unit := range word.Units {
 		sb.WriteString("  [")
-		sb.WriteString(string(rune('0' + i)))
+		sb.WriteString(strconv.Itoa(i))
 		sb.WriteString("] ")
 		sb.WriteString(string(unit.Runes))
 		sb.WriteString(" → ")
@@ -64,7 +67,7 @@ func (r *Renderer) RenderDebug(word *Word) string {
 		}
 		if unit.Run != nil {
 			sb.WriteString(" [run:")
-			sb.WriteString(string(rune('0' + unit.RunIndex)))
+			sb.WriteString(strconv.Itoa(unit.RunIndex))
 			sb.WriteString("]")
 		}
 		if unit.Type == UnitConsonant || unit.Type == UnitConjunct {
@@ -78,7 +81,7 @@ func (r *Renderer) RenderDebug(word *Word) string {
 		sb.WriteString("Runs:\n")
 		for i, run := range word.Runs {
 			sb.WriteString("  Run ")
-			sb.WriteString(string(rune('0' + i)))
+			sb.WriteString(strconv.Itoa(i))
 			sb.WriteString(": ")
 
 			for j, u := range run.Units {

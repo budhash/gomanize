@@ -95,10 +95,17 @@ func (c *Comparer) BatchCompare(inputs []string) BatchStats {
 // FormatBatchStats formats batch comparison statistics.
 func FormatBatchStats(stats BatchStats) string {
 	var sb strings.Builder
+
+	// Guard against division by zero for empty input
+	var matchPct float64
+	if stats.Total > 0 {
+		matchPct = float64(stats.Matches) / float64(stats.Total) * 100
+	}
+
 	sb.WriteString(fmt.Sprintf("Total: %d, Matches: %d (%.1f%%), Mismatches: %d\n",
 		stats.Total,
 		stats.Matches,
-		float64(stats.Matches)/float64(stats.Total)*100,
+		matchPct,
 		stats.Mismatches))
 
 	if stats.Mismatches > 0 {

@@ -122,11 +122,11 @@ func (p *Parser) createUnitWithInfo(runes []rune, runeIdx int, afterHalant bool,
 	unit := &Unit{
 		Runes: runes,
 		Start: Position{
-			Offset: -1, // Calculated lazily if needed
+			Offset: -1, // Not calculated for known symbols (Rune index suffices)
 			Rune:   runeIdx,
 		},
 		End: Position{
-			Offset: -1,
+			Offset: -1, // Not calculated for known symbols
 			Rune:   runeIdx + len(runes),
 		},
 		Type:        unitType,
