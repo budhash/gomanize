@@ -189,7 +189,13 @@ func (l HindiOrig) Info() {
 	}
 }
 
+// Transliterate converts a word using default options.
 func (l HindiOrig) Transliterate(word string) string {
+	return l.TransliterateWithOptions(word, DefaultOptions())
+}
+
+// TransliterateWithOptions converts a word (options ignored in legacy implementation).
+func (l HindiOrig) TransliterateWithOptions(word string, _ Options) string {
 	runes := []rune(word)
 
 	var converted []rune

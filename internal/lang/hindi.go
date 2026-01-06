@@ -259,6 +259,17 @@ func (s *Symbols) PeekN(n int) (string, *SymbolInfo, bool) {
 	}
 }
 
+// Options configures transliteration behavior.
+type Options struct {
+	// LongVowels outputs "aa" for all ा (aa-matra) positions.
+	LongVowels bool
+}
+
+// DefaultOptions returns the default transliteration options.
+func DefaultOptions() Options {
+	return Options{LongVowels: false}
+}
+
 type Hindi struct {
 }
 
@@ -274,7 +285,13 @@ func (l Hindi) Info() {
 	}
 }
 
+// Transliterate converts a word using default options.
 func (l Hindi) Transliterate(word string) string {
+	return l.TransliterateWithOptions(word, DefaultOptions())
+}
+
+// TransliterateWithOptions converts a word using the specified options.
+func (l Hindi) TransliterateWithOptions(word string, opts Options) string {
 	sb := &Symbols{[]rune(word), -1}
 	// ्
 	var converted = ""
@@ -289,22 +306,28 @@ func (l Hindi) Transliterate(word string) string {
 			case number:
 				converted = converted + si.hun
 			case vowel:
-				// Special handling for ा (aa-matra): use "aa" when followed by consonant at word end
-				// This represents the long /aː/ vowel in final closed syllables
-				// Examples: काम→kaam, इंसान→insaan, अभिमान→abhimaan
+				// Special handling for ा (aa-matra)
+				// Default: "aa" only when followed by consonant at word end (ा + C + END)
+				// With LongVowels: "aa" for all ा positions
 				if currentRaw == "ा" {
-					// Check if followed by consonant at word end (ा + C + END)
-					nxtRaw, nxtSi, nxtExists := sb.PeekN(1)
-					if nxtExists && nxtSi.isConsonant() {
-						// Check if that consonant is at word end
-						nxtNxtRaw, _, nxtNxtExists := sb.PeekN(1 + utf8.RuneCountInString(nxtRaw))
-						if !nxtNxtExists || nxtNxtRaw == "" {
-							converted = converted + "aa"
+					if opts.LongVowels {
+						// LongVowels mode: always use "aa" for ा
+						converted = converted + "aa"
+					} else {
+						// Default mode: "aa" only in closed final syllables
+						// Examples: काम→kaam, इंसान→insaan, but गाना→gana
+						nxtRaw, nxtSi, nxtExists := sb.PeekN(1)
+						if nxtExists && nxtSi.isConsonant() {
+							// Check if that consonant is at word end
+							nxtNxtRaw, _, nxtNxtExists := sb.PeekN(1 + utf8.RuneCountInString(nxtRaw))
+							if !nxtNxtExists || nxtNxtRaw == "" {
+								converted = converted + "aa"
+							} else {
+								converted = converted + si.hun
+							}
 						} else {
 							converted = converted + si.hun
 						}
-					} else {
-						converted = converted + si.hun
 					}
 				} else {
 					converted = converted + si.hun

@@ -284,6 +284,44 @@ func TestUnitVaWa(t *testing.T) {
 }
 
 // -----------------------------------------------------------------------------
+// Options: LongVowels
+// -----------------------------------------------------------------------------
+
+func TestUnitLongVowelsOption(t *testing.T) {
+	h := Hindi{}
+
+	tests := []struct {
+		name         string
+		input        string
+		defaultOut   string // without LongVowels
+		longVowelOut string // with LongVowels
+	}{
+		{"gaana", "गाना", "gana", "gaanaa"},
+		{"raja", "राजा", "raja", "raajaa"},
+		{"kaam", "काम", "kaam", "kaam"},         // already "aa" in closed syllable
+		{"insaan", "इंसान", "insaan", "insaan"}, // already "aa" in closed syllable
+		{"banana", "बनाना", "banana", "banaanaa"},
+		{"khana", "खाना", "khana", "khaanaa"},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name+"_default", func(t *testing.T) {
+			result := h.TransliterateWithOptions(tc.input, DefaultOptions())
+			if result != tc.defaultOut {
+				t.Errorf("%s (default): got %q, want %q", tc.input, result, tc.defaultOut)
+			}
+		})
+		t.Run(tc.name+"_longvowels", func(t *testing.T) {
+			opts := Options{LongVowels: true}
+			result := h.TransliterateWithOptions(tc.input, opts)
+			if result != tc.longVowelOut {
+				t.Errorf("%s (LongVowels): got %q, want %q", tc.input, result, tc.longVowelOut)
+			}
+		})
+	}
+}
+
+// -----------------------------------------------------------------------------
 // Common Words (Smoke Test)
 // -----------------------------------------------------------------------------
 
