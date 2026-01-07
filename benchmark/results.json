@@ -1,0 +1,63 @@
+{
+  "updated": "2025-01-07",
+  "datasets": {
+    "curated_hi": {
+      "description": "Curated native Hindi words (no loanwords, 4+ attestations)",
+      "total": 1335,
+      "results": {
+        "pure": {
+          "passed": 1138,
+          "accuracy": 85.2
+        },
+        "with_overrides": {
+          "passed": 1165,
+          "accuracy": 87.3,
+          "overrides": 32,
+          "ignored": 0
+        }
+      }
+    },
+    "dakshina_hi": {
+      "description": "Full Dakshina Hindi dataset (4+ attestations, includes loanwords)",
+      "total": 2184,
+      "results": {
+        "passed": 1287,
+        "accuracy": 58.9,
+        "ignored": 0
+      },
+      "note": "Lower accuracy due to English loanwords (uncle, attack, etc.)"
+    },
+    "aksharantar_hi": {
+      "description": "Aksharantar Hindi dataset (human-verified, score >= 0)",
+      "total": 357010,
+      "results": {
+        "passed": 78005,
+        "accuracy": 21.8,
+        "ignored": 0
+      },
+      "note": "Large dataset with varied romanization conventions"
+    }
+  },
+  "failure_patterns": {
+    "source": "curated_hi with overrides",
+    "total_failures": 170,
+    "categories": {
+      "OTHER": { "count": 80, "percent": 47.1 },
+      "MISSING_SCHWA": { "count": 57, "percent": 33.5 },
+      "EXTRA_SCHWA": { "count": 33, "percent": 19.4 }
+    }
+  },
+  "threshold": {
+    "dataset": "curated_hi",
+    "target": 82.0,
+    "current": 87.3,
+    "status": "PASS"
+  },
+  "files": {
+    "curated_hi.csv": "Native Hindi words only (no English loanwords)",
+    "dakshina_hi.csv": "Full Dakshina (includes loanwords)",
+    "aksharantar_hi.csv": "Large Aksharantar dataset",
+    "override_hi.csv": "Manual romanization corrections",
+    "ignore_hi.csv": "Words to skip in benchmarks"
+  }
+}
