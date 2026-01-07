@@ -1,7 +1,7 @@
 # Gomanize - Hindi Transliteration Library
 # Development workflow Makefile
 
-.PHONY: help init hooks hooks-update build version test test-quick test-verbose test-cover test-dakshina test-analysis bench clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets
+.PHONY: help init hooks hooks-update build version test test-quick test-verbose test-cover test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets
 
 # Go parameters
 GOCMD := go
@@ -108,16 +108,21 @@ test-dakshina: ## Run Dakshina accuracy test
 
 test-analysis: ## Run failure analysis (shows breakdown of issues)
 	@echo "Running failure pattern analysis..."
-	@$(GOTEST) ./internal/legacy_lang/... -v -run "TestIntegrationFailureAnalysis"
+	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkFailureAnalysis"
 
 test-original: ## Run original test suite (hindi-common.txt)
 	@echo "Running original test suite..."
 	@$(GOTEST) ./internal/legacy_lang/... -v -run "TestIntegrationOriginalTestSuite"
 
-bench: ## Run benchmarks
-	@echo "Running benchmarks..."
-	@$(GOTEST) ./internal/legacy_lang/... -bench=. -benchmem
+bench: ## Run performance benchmarks
+	@echo "Running performance benchmarks..."
+	@$(GOTEST) ./benchmark/... -bench=. -benchmem
 	@echo "✓ Benchmarks complete"
+
+benchmark: ## Run accuracy benchmarks (must pass threshold)
+	@echo "Running accuracy benchmarks..."
+	@$(GOTEST) ./benchmark/... -v -run "TestBenchmark"
+	@echo "✓ Accuracy benchmarks complete"
 
 # ============================================================================
 # Code Quality
@@ -161,7 +166,7 @@ dev: check test ## Full development workflow (format, vet, test)
 dev-quick: fmt test-quick ## Quick development workflow
 	@echo "✓ Quick development workflow complete"
 
-ci: fmt-check lint build test-cover ## Full CI pipeline (format, lint, build, test)
+ci: fmt-check lint build test-cover benchmark ## Full CI pipeline (format, lint, build, test, benchmark)
 	@echo "✓ CI pipeline complete"
 
 # ============================================================================

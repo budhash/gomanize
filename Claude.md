@@ -149,6 +149,13 @@ This project follows **colloquial/phonetic Hindi romanization** (not scholarly I
 - [Hunterian Transliteration](https://en.wikipedia.org/wiki/Hunterian_transliteration) - Official India standard
 - [Schwa Deletion Rules](https://en.wikipedia.org/wiki/Schwa_deletion_in_Indo-Aryan_languages)
 - [Google Dakshina Dataset](https://github.com/google-research-datasets/dakshina) - Test data source
+- [Aksharantar Dataset](https://huggingface.co/datasets/ai4bharat/Aksharantar) - Largest Indic transliteration dataset (26M pairs)
+- [IndicXlit Paper](https://arxiv.org/abs/2205.03018) - "Aksharantar: Towards Building Open Transliteration Tools for the Next Billion Users"
+- [IndicXlit Model](https://github.com/AI4Bharat/IndicXlit) - Neural transliteration model (11M params, 21 languages)
+- [AI4Bharat Tools](https://ai4bharat.iitm.ac.in/tools) - Online transliteration demo and other NLP tools
+- [LDCIL](https://ldcil.org/) - Linguistic Data Consortium for Indian Languages
+- [LDCIL Data Portal](https://data.ldcil.org/) - Indian language datasets and corpora
+- [Anuvadika](https://anuvadika.ciil.org/index.php) - CIIL transliteration tool
 
 ## Test Data
 
