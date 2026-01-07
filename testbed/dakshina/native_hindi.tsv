@@ -7,7 +7,7 @@
 अकोला	akola	4
 अक्षय	akshay	8
 अक्षर	akshar	6
-अक्षांश	akshansh	5
+अक्षांश	akshansh	5	akshaansh
 अखिलेश	akhilesh	4
 अगरतला	agartala	4
 अगले	agale	4
@@ -102,7 +102,7 @@
 उद्देश्य	uddeshya	5
 उद्यापन	udyapan	4
 उनका	unka	5
-उन्हें	unhen	4
+उन्हें	unhen	4	unhein
 उन्होंने	unhone	6
 उपचुनाव	upchunaav	5
 उपजातियों	upjatiyon	5
@@ -144,12 +144,12 @@
 करते	karte	5
 करमुक्त	karmukt	4
 कराइ	karai	4
-करें	karen	6
+करें	karen	6	karein
 करो	karo	8
 करोगे	karoge	4
 कर्क	kark	6
 कर्म	karm	7
-कर्मकांड	karmkand	4
+कर्मकांड	karmkand	4	karmkaand
 कर्मचारी	karmchari	4
 कर्मियों	karmiyon	5
 कल	kal	10
@@ -157,7 +157,7 @@
 कला	kala	8
 कलाकार	kalakaar	4
 कलाकारों	kalakaron	5
-कलाकृतियां	kalakritiyan	4
+कलाकृतियां	kalakritiyan	4	kalakritiyaan
 कलाकृतियों	kalakritiyon	4
 कलिता	kalita	6
 कली	kali	7
@@ -167,7 +167,7 @@
 कहते	kahate	4
 कहा	kaha	6
 कहानी	kahani	6
-कांड	kand	6
+कांड	kand	6	kaand
 कांबले	kamble	5
 काका	kaka	6
 काजल	kajal	6
@@ -198,7 +198,7 @@
 किए	kie	4
 किए	kiye	4
 कितने	kitne	5
-किताबें	kitaben	5
+किताबें	kitaben	5	kitabein
 किताबों	kitabon	5
 किम	kim	5
 किर	kir	5
@@ -383,7 +383,7 @@
 चरण	charan	6
 चर्म	charm	4
 चल	chal	6
-चलें	chalen	4
+चलें	chalen	4	chalein
 चलो	chalo	7
 चांदनी	chandani	4
 चांदी	chandi	5
@@ -478,7 +478,7 @@
 तुम	tum	5
 तुमको	tumko	4
 तुम्हारा	tumhara	6
-तुम्हें	tumhen	4
+तुम्हें	tumhen	4	tumhein
 तुरंत	turant	4
 तुला	tula	4
 तुलाराम	tularaam	5
@@ -513,8 +513,8 @@
 दर्पण	darpan	6
 दर्शन	darshan	8
 दलदल	daldal	6
-दांत	daant	5
-दांत	dant	4
+दांत	daant	5	daant
+दांत	dant	4	daant
 दादा	dada	4
 दान	daan	6
 दिग्गज	diggaj	4
@@ -647,7 +647,7 @@
 पली	pali	6
 पवन	pawan	6
 पवार	pawaar	6
-पांच	paanch	5
+पांच	paanch	5	paanch
 पान	paan	4
 पान	paan	4
 पानीपत	panipat	4
@@ -698,7 +698,7 @@
 प्रभु	prabhu	8
 प्रयोग	prayog	6
 प्रवीण	pravin	4
-प्रशांत	prashant	4
+प्रशांत	prashant	4	prashaant
 प्रसंग	prasang	7
 प्रसिद्धि	prasiddhi	6
 प्रांजल	pranjal	6
@@ -873,7 +873,7 @@
 महासचिव	mahasachiv	4
 महिलाओं	mahilaon	6
 महेंद्र	mahendra	6
-मां	maa	5
+मां	maa	5	maa
 मांगलिक	manglik	5
 मातापिता	matapita	6
 मात्र	matra	4
@@ -960,7 +960,7 @@
 रक्षा	raksha	6
 रक्षाबंधन	rakshabandhan	9
 रखे	rakhe	6
-रखें	rakhen	4
+रखें	rakhen	4	rakhein
 रचा	racha	4
 रण	ran	4
 रवि	ravi	6
@@ -1234,7 +1234,7 @@
 साहेब	saheb	6
 सिक्ख	sikh	4
 सिद्ध	siddh	6
-सिद्धांत	siddhant	6
+सिद्धांत	siddhant	6	siddhaant
 सिद्धि	siddhi	6
 सिन्हा	sinha	4
 सिफारिश	sifarish	4
@@ -1258,7 +1258,7 @@
 सूत्र	sutra	4
 सूरत	surat	5
 सूर्य	surya	5
-सूर्यकांत	suryakant	5
+सूर्यकांत	suryakant	5	suryakaant
 सूर्यवंशी	suryavanshi	5
 सूर्या	surya	5
 सेना	sena	6

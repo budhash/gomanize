@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/budhash/gomanize/core"
-	"github.com/budhash/gomanize/internal/lang"
+	legacyLang "github.com/budhash/gomanize/internal/legacy_lang"
 	hindiLang "github.com/budhash/gomanize/lang/hindi"
 	"github.com/budhash/gomanize/scheme/colloquial"
 )
@@ -111,9 +111,9 @@ func (a *coreEngineAdapter) Info() {
 	fmt.Printf("Scheme: %s\n", a.engine.Scheme().Name())
 }
 
-// legacyOptionsAdapter adapts core.Options to legacy lang.Options.
+// legacyAdapter adapts the legacy engine to the Romanizer interface.
 type legacyAdapter struct {
-	legacy *lang.Hindi
+	legacy *legacyLang.Hindi
 }
 
 func (a *legacyAdapter) Name() string {
@@ -125,8 +125,7 @@ func (a *legacyAdapter) Transliterate(word string) string {
 }
 
 func (a *legacyAdapter) TransliterateWithOptions(word string, opts Options) string {
-	// Convert core.Options to lang.Options
-	legacyOpts := lang.Options{LongVowels: opts.LongVowels}
+	legacyOpts := legacyLang.Options{LongVowels: opts.LongVowels}
 	return a.legacy.TransliterateWithOptions(word, legacyOpts)
 }
 
@@ -137,35 +136,6 @@ func (a *legacyAdapter) TransliterateDebug(word string, opts Options) (string, *
 }
 
 func (a *legacyAdapter) Info() {
-	a.legacy.Info()
-}
-
-// hindiOrigAdapter adapts HindiOrig to use core.Options.
-type hindiOrigAdapter struct {
-	legacy *lang.HindiOrig
-}
-
-func (a *hindiOrigAdapter) Name() string {
-	return a.legacy.Name()
-}
-
-func (a *hindiOrigAdapter) Transliterate(word string) string {
-	return a.legacy.Transliterate(word)
-}
-
-func (a *hindiOrigAdapter) TransliterateWithOptions(word string, opts Options) string {
-	// HindiOrig doesn't support LongVowels well, just use plain transliterate
-	legacyOpts := lang.Options{LongVowels: opts.LongVowels}
-	return a.legacy.TransliterateWithOptions(word, legacyOpts)
-}
-
-func (a *hindiOrigAdapter) TransliterateDebug(word string, opts Options) (string, *DebugInfo) {
-	// HindiOrig adapter doesn't support debug, return nil debug info
-	result := a.TransliterateWithOptions(word, opts)
-	return result, nil
-}
-
-func (a *hindiOrigAdapter) Info() {
 	a.legacy.Info()
 }
 
@@ -180,10 +150,7 @@ func loadRomanizers() map[string]Romanizer {
 	}
 
 	// Legacy implementation (for comparison/reference)
-	romanizers["hindi-legacy"] = &legacyAdapter{legacy: &lang.Hindi{}}
-
-	// Original legacy implementation
-	romanizers["hindiorig"] = &hindiOrigAdapter{legacy: &lang.HindiOrig{}}
+	romanizers["hindi-legacy"] = &legacyAdapter{legacy: &legacyLang.Hindi{}}
 
 	return romanizers
 }

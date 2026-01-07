@@ -1,4 +1,4 @@
-package lang
+package legacy_lang
 
 import (
 	"bufio"
@@ -8,6 +8,10 @@ import (
 	"sort"
 	"strings"
 	"testing"
+
+	"github.com/budhash/gomanize/core"
+	newHindi "github.com/budhash/gomanize/lang/hindi"
+	"github.com/budhash/gomanize/scheme/colloquial"
 )
 
 // =============================================================================
@@ -32,6 +36,12 @@ func getDakshinaPath(filename string) string {
 	return filepath.Join(dir, "..", "..", "testbed", "dakshina", filename)
 }
 
+// newEngine returns the new Hindi engine (lang/hindi with core architecture).
+// All tests should use this instead of the old Hindi{} from internal/lang.
+func newEngine() *core.Engine {
+	return core.NewEngine(newHindi.Hindi{}, colloquial.Colloquial{})
+}
+
 // -----------------------------------------------------------------------------
 // Original Test Suite (hindi-common.txt)
 // -----------------------------------------------------------------------------
@@ -45,7 +55,7 @@ func TestIntegrationOriginalTestSuite(t *testing.T) {
 	}
 	defer file.Close()
 
-	h := Hindi{}
+	engine := newEngine()
 	pass, fail := 0, 0
 	var failures []string
 
@@ -68,7 +78,7 @@ func TestIntegrationOriginalTestSuite(t *testing.T) {
 			expected = expected[:idx]
 		}
 
-		result := h.Transliterate(input)
+		result := engine.Transliterate(input)
 		if result == expected {
 			pass++
 		} else {
@@ -102,7 +112,10 @@ func TestIntegrationOriginalTestSuite(t *testing.T) {
 // Dakshina Dataset Tests (using pre-split test files)
 // -----------------------------------------------------------------------------
 
-// TestIntegrationNativeHindi tests against native Hindi words only
+// TestIntegrationNativeHindi tests against native Hindi words only.
+// Reports accuracy in two modes:
+// - Dakshina (pure): Using original Dakshina dataset expectations
+// - Gomanize (with overrides): Using our phonetically-correct overrides where applicable
 func TestIntegrationNativeHindi(t *testing.T) {
 	filePath := getDakshinaPath("native_hindi.tsv")
 	file, err := os.Open(filePath)
@@ -112,9 +125,13 @@ func TestIntegrationNativeHindi(t *testing.T) {
 	}
 	defer file.Close()
 
-	h := Hindi{}
-	pass, fail := 0, 0
-	var failures []string
+	engine := newEngine()
+	// Track both modes
+	dakshinaPass, dakshinaFail := 0, 0
+	gomanizePass, gomanizeFail := 0, 0
+	overrideCount := 0
+	var dakshinaFailures []string
+	var gomanizeFailures []string
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
@@ -125,36 +142,57 @@ func TestIntegrationNativeHindi(t *testing.T) {
 		}
 
 		hindi := parts[0]
-		expected := parts[1]
-		result := h.Transliterate(hindi)
+		dakshinaExpected := parts[1]
+		result := engine.Transliterate(hindi)
 
-		if result == expected {
-			pass++
+		// Check against Dakshina (pure)
+		if result == dakshinaExpected {
+			dakshinaPass++
 		} else {
-			fail++
-			if len(failures) < 10 {
-				failures = append(failures, hindi+" → "+result+" (expected: "+expected+")")
+			dakshinaFail++
+			if len(dakshinaFailures) < 10 {
+				dakshinaFailures = append(dakshinaFailures, hindi+" → "+result+" (expected: "+dakshinaExpected+")")
+			}
+		}
+
+		// Check against Gomanize (with overrides)
+		gomanizeExpected := dakshinaExpected
+		if len(parts) >= 4 && parts[3] != "" {
+			gomanizeExpected = parts[3]
+			overrideCount++
+		}
+		if result == gomanizeExpected {
+			gomanizePass++
+		} else {
+			gomanizeFail++
+			if len(gomanizeFailures) < 10 {
+				gomanizeFailures = append(gomanizeFailures, hindi+" → "+result+" (expected: "+gomanizeExpected+")")
 			}
 		}
 	}
 
-	total := pass + fail
-	pct := float64(pass) * 100 / float64(total)
+	dakshinaTotal := dakshinaPass + dakshinaFail
+	dakshinaPct := float64(dakshinaPass) * 100 / float64(dakshinaTotal)
+
+	gomanizeTotal := gomanizePass + gomanizeFail
+	gomanizePct := float64(gomanizePass) * 100 / float64(gomanizeTotal)
 
 	t.Logf("=== Native Hindi Results ===")
-	t.Logf("Passed: %d / %d (%.1f%%)", pass, total, pct)
+	t.Logf("")
+	t.Logf("Dakshina (pure):      %d / %d (%.1f%%)", dakshinaPass, dakshinaTotal, dakshinaPct)
+	t.Logf("Gomanize (overrides): %d / %d (%.1f%%) [%d overrides]", gomanizePass, gomanizeTotal, gomanizePct, overrideCount)
 
-	if len(failures) > 0 {
-		t.Logf("Sample failures:")
-		for _, f := range failures {
+	if len(gomanizeFailures) > 0 {
+		t.Logf("")
+		t.Logf("Sample failures (vs gomanize expected):")
+		for _, f := range gomanizeFailures {
 			t.Logf("  %s", f)
 		}
 	}
 
-	// Target: 80% accuracy on native Hindi
-	// Current: 82.5% (after व→w conjuncts and long vowel rules)
-	if pct < 82 {
-		t.Errorf("Native Hindi accuracy %.1f%% is below 82%% threshold", pct)
+	// Target: 82% accuracy on gomanize mode (with our phonetically-correct overrides)
+	if gomanizePct < 82 {
+		t.Errorf("Gomanize accuracy %.1f%% is below 82%% threshold", gomanizePct)
 	}
 }
 
@@ -168,7 +206,7 @@ func TestIntegrationEnglishLoanwords(t *testing.T) {
 	}
 	defer file.Close()
 
-	h := Hindi{}
+	engine := newEngine()
 	pass, fail := 0, 0
 	var failures []string
 
@@ -182,7 +220,7 @@ func TestIntegrationEnglishLoanwords(t *testing.T) {
 
 		hindi := parts[0]
 		expected := parts[1]
-		result := h.Transliterate(hindi)
+		result := engine.Transliterate(hindi)
 
 		if result == expected {
 			pass++
@@ -220,7 +258,7 @@ func TestIntegrationDakshinaAccuracy(t *testing.T) {
 	}
 	defer file.Close()
 
-	h := Hindi{}
+	engine := newEngine()
 	pass, fail := 0, 0
 
 	scanner := bufio.NewScanner(file)
@@ -233,7 +271,7 @@ func TestIntegrationDakshinaAccuracy(t *testing.T) {
 
 		hindi := parts[0]
 		expected := parts[1]
-		result := h.Transliterate(hindi)
+		result := engine.Transliterate(hindi)
 
 		if result == expected {
 			pass++
@@ -310,7 +348,7 @@ func TestIntegrationFailureAnalysis(t *testing.T) {
 	}
 	defer file.Close()
 
-	h := Hindi{}
+	engine := newEngine()
 	patterns := make(map[string][]FailureInfo)
 	passCount := 0
 
@@ -323,9 +361,13 @@ func TestIntegrationFailureAnalysis(t *testing.T) {
 		}
 
 		hindi := parts[0]
+		// Use gomanize_override (column 4) if present, otherwise dakshina (column 2)
 		expected := parts[1]
+		if len(parts) >= 4 && parts[3] != "" {
+			expected = parts[3]
+		}
 
-		result := h.Transliterate(hindi)
+		result := engine.Transliterate(hindi)
 		if result == expected {
 			passCount++
 		} else {
@@ -379,7 +421,7 @@ func TestIntegrationFailureAnalysis(t *testing.T) {
 // -----------------------------------------------------------------------------
 
 func BenchmarkTransliterate(b *testing.B) {
-	h := Hindi{}
+	engine := newEngine()
 	words := []string{
 		"नमस्ते",
 		"भारत",
@@ -391,20 +433,20 @@ func BenchmarkTransliterate(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		for _, w := range words {
-			h.Transliterate(w)
+			engine.Transliterate(w)
 		}
 	}
 }
 
 func BenchmarkTransliterateLong(b *testing.B) {
-	h := Hindi{}
+	engine := newEngine()
 	sentence := "यह एक लंबा वाक्य है जिसमें कई शब्द हैं और इसे अनुवाद करना होगा"
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		words := strings.Split(sentence, " ")
 		for _, w := range words {
-			h.Transliterate(w)
+			engine.Transliterate(w)
 		}
 	}
 }

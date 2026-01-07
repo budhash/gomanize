@@ -1,4 +1,4 @@
-package lang
+package legacy_lang
 
 import (
 	"fmt"

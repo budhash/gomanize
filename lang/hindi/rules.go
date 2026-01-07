@@ -12,7 +12,7 @@ func RuleCatalog() core.RuleCatalog {
 		Schwa:     schwaRules(),
 		Consonant: consonantRules(),
 		Vowel:     vowelRules(),
-		Render:    nil, // No render rules for Hindi yet
+		Render:    renderRules(),
 	}
 }
 
@@ -273,7 +273,8 @@ func vowelRules() []core.Rule {
 		},
 
 		// long-aa-closed-final (Language:50)
-		// ा→aa when followed by consonant at word end: काम→kaam, इंसान→insaan
+		// ा→aa when in closed syllable at word end: काम→kaam, इंसान→insaan
+		// Also handles ा+modifier patterns: दांत→daant, पांच→paanch, मां→maa
 		{
 			Name:     "long-aa-closed-final",
 			Phase:    core.PhaseVowel,
@@ -288,13 +289,30 @@ func vowelRules() []core.Rule {
 				if len(u.Runes) != 1 || u.Runes[0] != 'ा' {
 					return false
 				}
-				// Must be followed by consonant at word end
+				// Check what follows the vowel
 				next := u.Next
-				if next == nil || !brahmic.IsConsonantOrConjunct(next) {
+				if next == nil {
 					return false
 				}
-				// That consonant must be at word end
-				return next.IsWordFinal()
+				// Pattern 1: ा + consonant at word end (काम→kaam)
+				if brahmic.IsConsonantOrConjunct(next) && next.IsWordFinal() {
+					return true
+				}
+				// Pattern 2: ा + modifier (दांत→daant, मां→maa)
+				// The modifier may be followed by consonant or be word-final
+				// In either case, ा should be 'aa' (the anusvara-final-silent rule handles the 'n')
+				if next.Type == core.UnitModifier {
+					// Word-final modifier: मां→maa (anusvara-final-silent removes the 'n')
+					if next.IsWordFinal() {
+						return true
+					}
+					// Modifier + consonant at word end: दांत→daant
+					afterModifier := next.Next
+					if afterModifier != nil && brahmic.IsConsonantOrConjunct(afterModifier) && afterModifier.IsWordFinal() {
+						return true
+					}
+				}
+				return false
 			},
 			Action: func(u *core.Unit, w *core.Word) {
 				u.BaseRom = "aa"
@@ -360,4 +378,123 @@ func isWordInitialConjunct(u *core.Unit, w *core.Word) bool {
 	}
 
 	return false
+}
+
+// renderRules returns all render phase rules.
+func renderRules() []core.Rule {
+	return []core.Rule{
+		// anusvara-final-silent (Language:50)
+		// Word-final anusvara after ा-matra in short words is nasalization only, not 'n': मां→maa
+		// This applies to monosyllabic words like मां where the ं is just nasalization
+		// Longer words like कलाकृतियां keep the 'n': kalakritiyaan
+		// Note: anusvara BEFORE consonant still renders as 'n': दांत→daant
+		// Note: anusvara after other vowels (में→men) keeps the 'n'
+		{
+			Name:     "anusvara-final-silent",
+			Phase:    core.PhaseRender,
+			Scope:    core.ScopeLanguage,
+			Priority: 50,
+			Mode:     core.ModeAlways,
+			Condition: func(u *core.Unit, w *core.Word) bool {
+				// Check if this is word-final anusvara
+				if u.Type != core.UnitModifier || !u.IsWordFinal() {
+					return false
+				}
+				// Check if it's anusvara (ं) specifically
+				if len(u.Runes) != 1 || u.Runes[0] != 'ं' {
+					return false
+				}
+				// Check if preceded by ा-matra (aa vowel) specifically
+				// This rule only applies to मां pattern, not में pattern
+				if u.Prev == nil || u.Prev.Type != core.UnitVowel {
+					return false
+				}
+				// Must be ा-matra specifically
+				if len(u.Prev.Runes) != 1 || u.Prev.Runes[0] != 'ा' {
+					return false
+				}
+				// Only suppress 'n' in short words (monosyllabic like मां)
+				// Count consonants in the word - if more than 1, keep the 'n'
+				consonantCount := 0
+				for _, unit := range w.Units {
+					if unit.Type == core.UnitConsonant {
+						consonantCount++
+					}
+				}
+				return consonantCount <= 1
+			},
+			Action: func(u *core.Unit, w *core.Word) {
+				// Suppress the 'n' - nasalization doesn't add a consonant
+				u.BaseRom = ""
+			},
+		},
+
+		// chandrabindu-final-silent (Language:45)
+		// Word-final chandrabindu after ा-matra is nasalization only: माँ→maa
+		// Chandrabindu (ँ) is always pure nasalization, never adds a consonant sound
+		{
+			Name:     "chandrabindu-final-silent",
+			Phase:    core.PhaseRender,
+			Scope:    core.ScopeLanguage,
+			Priority: 45,
+			Mode:     core.ModeAlways,
+			Condition: func(u *core.Unit, w *core.Word) bool {
+				// Check if this is chandrabindu (ँ)
+				if u.Type != core.UnitModifier {
+					return false
+				}
+				if len(u.Runes) != 1 || u.Runes[0] != 'ँ' {
+					return false
+				}
+				// Check if preceded by ा-matra
+				if u.Prev == nil || u.Prev.Type != core.UnitVowel {
+					return false
+				}
+				if len(u.Prev.Runes) != 1 || u.Prev.Runes[0] != 'ा' {
+					return false
+				}
+				return true
+			},
+			Action: func(u *core.Unit, w *core.Word) {
+				// Suppress the 'n' - chandrabindu is nasalization only
+				u.BaseRom = ""
+			},
+		},
+
+		// anusvara-after-e-matra-final (Language:40)
+		// Word-final anusvara after े-matra becomes 'in' not 'en': में→mein
+		// Only applies at word end; medial cases like केंद्र stay as kendra
+		{
+			Name:     "anusvara-after-e-matra-final",
+			Phase:    core.PhaseRender,
+			Scope:    core.ScopeLanguage,
+			Priority: 40,
+			Mode:     core.ModeAlways,
+			Condition: func(u *core.Unit, w *core.Word) bool {
+				// Must be word-final
+				if !u.IsWordFinal() {
+					return false
+				}
+				// Check if this is anusvara (ं)
+				if u.Type != core.UnitModifier {
+					return false
+				}
+				if len(u.Runes) != 1 || u.Runes[0] != 'ं' {
+					return false
+				}
+				// Check if preceded by े-matra (e vowel)
+				if u.Prev == nil || u.Prev.Type != core.UnitVowel {
+					return false
+				}
+				if len(u.Prev.Runes) != 1 || u.Prev.Runes[0] != 'े' {
+					return false
+				}
+				return true
+			},
+			Action: func(u *core.Unit, w *core.Word) {
+				// Change 'n' to 'in' for में→mein pattern
+				u.BaseRom = "in"
+			},
+		},
+	}
 }
