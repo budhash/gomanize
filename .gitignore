@@ -24,10 +24,6 @@ Thumbs.db
 # Temp files
 .temp/
 
-# Benchmark - generated files (can be regenerated from datasets/)
-benchmark/data/dakshina_hi.csv
-benchmark/data/aksharantar_hi.csv
-
 # Benchmark - legacy/temp files
 benchmark/tmp
 benchmark/ushuaia
