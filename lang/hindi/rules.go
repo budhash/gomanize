@@ -249,6 +249,38 @@ func consonantRules() []core.Rule {
 // vowelRules returns all vowel modification rules.
 func vowelRules() []core.Rule {
 	return []core.Rule{
+		// i-matra-e-glide (Language:70)
+		// िए pattern becomes 'iye' not 'ie': किए→kiye, लिए→liye
+		// The ए after ि-matra takes a y-glide for natural pronunciation
+		{
+			Name:     "i-matra-e-glide",
+			Phase:    core.PhaseVowel,
+			Scope:    core.ScopeLanguage,
+			Priority: 70,
+			Mode:     core.ModeAlways,
+			Condition: func(u *core.Unit, w *core.Word) bool {
+				// Check if this is ए (independent e vowel)
+				if u.Type != core.UnitVowel {
+					return false
+				}
+				if len(u.Runes) != 1 || u.Runes[0] != 'ए' {
+					return false
+				}
+				// Check if preceded by ि-matra
+				if u.Prev == nil || u.Prev.Type != core.UnitVowel {
+					return false
+				}
+				if len(u.Prev.Runes) != 1 || u.Prev.Runes[0] != 'ि' {
+					return false
+				}
+				return true
+			},
+			Action: func(u *core.Unit, w *core.Word) {
+				// Add y-glide: ए becomes 'ye'
+				u.BaseRom = "ye"
+			},
+		},
+
 		// long-aa-all (Scheme:60)
 		// ा→aa for all positions when LongVowels option is enabled: गाना→gaana, बनाना→banaana
 		{
@@ -275,6 +307,7 @@ func vowelRules() []core.Rule {
 		// long-aa-closed-final (Language:50)
 		// ा→aa when in closed syllable at word end: काम→kaam, इंसान→insaan
 		// Also handles ा+modifier patterns: दांत→daant, पांच→paanch, मां→maa
+		// Exception: NOT applied for ांव pattern (गांव→gaon, handled by aanv-to-aon rule)
 		{
 			Name:     "long-aa-closed-final",
 			Phase:    core.PhaseVowel,
@@ -302,6 +335,17 @@ func vowelRules() []core.Rule {
 				// The modifier may be followed by consonant or be word-final
 				// In either case, ा should be 'aa' (the anusvara-final-silent rule handles the 'n')
 				if next.Type == core.UnitModifier {
+					// Exception: ांव pattern (गांव→gaon) - don't apply aa rule here
+					// This is handled by the aanv-to-aon render rule
+					if len(next.Runes) == 1 && next.Runes[0] == 'ं' {
+						afterModifier := next.Next
+						if afterModifier != nil && brahmic.IsConsonantOrConjunct(afterModifier) {
+							if afterModifier.BaseRom == "v" {
+								return false // Don't apply - let aanv-to-aon handle it
+							}
+						}
+					}
+
 					// Word-final modifier: मां→maa (anusvara-final-silent removes the 'n')
 					if next.IsWordFinal() {
 						return true
@@ -494,6 +538,82 @@ func renderRules() []core.Rule {
 			Action: func(u *core.Unit, w *core.Word) {
 				// Change 'n' to 'in' for में→mein pattern
 				u.BaseRom = "in"
+			},
+		},
+
+		// anusvara-before-labial (Language:35)
+		// Anusvara before labial consonants (प, ब, भ, म) becomes 'm': संभव→sambhav
+		// This is standard Hindi phonology - nasal assimilates to following consonant
+		{
+			Name:     "anusvara-before-labial",
+			Phase:    core.PhaseRender,
+			Scope:    core.ScopeLanguage,
+			Priority: 35,
+			Mode:     core.ModeAlways,
+			Condition: func(u *core.Unit, w *core.Word) bool {
+				// Check if this is anusvara (ं)
+				if u.Type != core.UnitModifier {
+					return false
+				}
+				if len(u.Runes) != 1 || u.Runes[0] != 'ं' {
+					return false
+				}
+				// Check if followed by a labial consonant (प, ब, भ, म)
+				next := u.Next
+				if next == nil || !brahmic.IsConsonantOrConjunct(next) {
+					return false
+				}
+				// Check if the consonant is a labial
+				baseRom := next.BaseRom
+				return baseRom == "p" || baseRom == "b" || baseRom == "bh" || baseRom == "m" || baseRom == "ph"
+			},
+			Action: func(u *core.Unit, w *core.Word) {
+				u.BaseRom = "m"
+			},
+		},
+
+		// aanv-to-aon (Language:30)
+		// ांव pattern becomes 'aon' not 'aanv': गांव→gaon
+		// This is a common Hindi spelling convention where the व is semi-silent
+		// and the nasalization creates the 'n' sound
+		{
+			Name:     "aanv-to-aon",
+			Phase:    core.PhaseRender,
+			Scope:    core.ScopeLanguage,
+			Priority: 30,
+			Mode:     core.ModeAlways,
+			Condition: func(u *core.Unit, w *core.Word) bool {
+				// Check if this is anusvara (ं)
+				if u.Type != core.UnitModifier {
+					return false
+				}
+				if len(u.Runes) != 1 || u.Runes[0] != 'ं' {
+					return false
+				}
+				// Check if preceded by ा-matra
+				if u.Prev == nil || u.Prev.Type != core.UnitVowel {
+					return false
+				}
+				if len(u.Prev.Runes) != 1 || u.Prev.Runes[0] != 'ा' {
+					return false
+				}
+				// Check if followed by व at word end
+				next := u.Next
+				if next == nil || !brahmic.IsConsonantOrConjunct(next) {
+					return false
+				}
+				return next.BaseRom == "v" && next.IsWordFinal()
+			},
+			Action: func(u *core.Unit, w *core.Word) {
+				// ांव at word end becomes 'aon':
+				// - ा stays as 'a' (blocked from becoming 'aa' by long-aa-closed-final exception)
+				// - ं becomes 'on' (nasal diphthong)
+				// - व becomes silent (we'll suppress it by setting BaseRom to "")
+				u.BaseRom = "on"
+				// Suppress the following व
+				if u.Next != nil {
+					u.Next.BaseRom = ""
+				}
 			},
 		},
 	}

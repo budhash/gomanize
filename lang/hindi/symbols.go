@@ -104,8 +104,8 @@ var Symbols = core.SymbolMap{
 	"ख़": {Category: core.CatConsonant, BaseRom: "kh"}, // U+0959
 	"ग़": {Category: core.CatConsonant, BaseRom: "gh"}, // U+095A
 	"ज़": {Category: core.CatConsonant, BaseRom: "z"},  // U+095B
-	"ड़": {Category: core.CatConsonant, BaseRom: "r"},  // U+095C
-	"ढ़": {Category: core.CatConsonant, BaseRom: "rh"}, // U+095D
+	"ड़": {Category: core.CatConsonant, BaseRom: "d"},  // U+095C (flapped d, not r)
+	"ढ़": {Category: core.CatConsonant, BaseRom: "dh"}, // U+095D (flapped dh, not rh)
 	"फ़": {Category: core.CatConsonant, BaseRom: "f"},  // U+095E
 	"य़": {Category: core.CatConsonant, BaseRom: "yh"}, // U+095F
 

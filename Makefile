@@ -93,30 +93,30 @@ test-cover: ## Run tests with coverage report
 
 test-unit: ## Run unit tests only (fast, targeted)
 	@echo "Running unit tests..."
-	@$(GOTEST) ./internal/lang/... -v -run "^TestUnit"
+	@$(GOTEST) ./internal/legacy_lang/... -v -run "^TestUnit"
 	@echo "✓ Unit tests complete"
 
 test-integration: ## Run integration tests (full datasets)
 	@echo "Running integration tests..."
-	@$(GOTEST) ./internal/lang/... -v -run "^TestIntegration"
+	@$(GOTEST) ./internal/legacy_lang/... -v -run "^TestIntegration"
 	@echo "✓ Integration tests complete"
 
 test-dakshina: ## Run Dakshina accuracy test
 	@echo "Running Dakshina accuracy test..."
-	@$(GOTEST) ./internal/lang/... -v -run "TestIntegrationDakshinaAccuracy"
+	@$(GOTEST) ./internal/legacy_lang/... -v -run "TestIntegrationDakshinaAccuracy"
 	@echo "✓ Dakshina test complete"
 
 test-analysis: ## Run failure analysis (shows breakdown of issues)
 	@echo "Running failure pattern analysis..."
-	@$(GOTEST) ./internal/lang/... -v -run "TestIntegrationFailureAnalysis"
+	@$(GOTEST) ./internal/legacy_lang/... -v -run "TestIntegrationFailureAnalysis"
 
 test-original: ## Run original test suite (hindi-common.txt)
 	@echo "Running original test suite..."
-	@$(GOTEST) ./internal/lang/... -v -run "TestIntegrationOriginalTestSuite"
+	@$(GOTEST) ./internal/legacy_lang/... -v -run "TestIntegrationOriginalTestSuite"
 
 bench: ## Run benchmarks
 	@echo "Running benchmarks..."
-	@$(GOTEST) ./internal/lang/... -bench=. -benchmem
+	@$(GOTEST) ./internal/legacy_lang/... -bench=. -benchmem
 	@echo "✓ Benchmarks complete"
 
 # ============================================================================
@@ -238,6 +238,6 @@ status: ## Show current test status summary
 	@$(GOTEST) ./... -count=1 2>&1 | tail -5
 	@echo ""
 	@echo "Dakshina accuracy:"
-	@$(GOTEST) ./internal/lang/... -v -run "TestAnalyzeAllFailures" 2>&1 | grep -E "(Passed|Failed|Total):" | head -3
+	@$(GOTEST) ./internal/legacy_lang/... -v -run "TestAnalyzeAllFailures" 2>&1 | grep -E "(Passed|Failed|Total):" | head -3
 
 .DEFAULT_GOAL := help
