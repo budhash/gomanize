@@ -53,6 +53,7 @@ repos:
       - id: check-json
       - id: check-added-large-files
         args: [--maxkb=500]
+        exclude: ^benchmark/data/(dakshina|aksharantar)_hi\.csv$
       - id: check-case-conflict
       - id: check-merge-conflict
       - id: detect-private-key
