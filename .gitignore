@@ -1,7 +1,14 @@
 
-# Downloaded datasets (large files)
-datasets/
-*.tar
+# Downloaded datasets (large files, but keep scripts and docs)
+datasets/**/*.tar
+datasets/**/*.zip
+datasets/**/*.csv
+datasets/**/*.json
+datasets/**/*.pdf
+datasets/**/dakshina_dataset_v1.0/
+!datasets/README.md
+!datasets/*/README.md
+!datasets/*/generate_dataset.sh
 
 # Build artifacts
 gomanize
