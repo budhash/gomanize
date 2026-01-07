@@ -98,6 +98,7 @@ func schwaRules() []core.Rule {
 		// Delete medial schwa in C+C+V pattern: जनता→janta, कमला→kamla, अपना→apna
 		// Also applies for C+C+Modifier (anusvara/chandrabindu): झारखंड→jharkhand
 		// Does NOT apply to word-initial conjuncts: प्रकाश→prakaash (not "prkaash")
+		// Does NOT apply after halant (conjuncts): पार्वती→parvati (not "parvti")
 		{
 			Name:     "schwa-delete-ccv",
 			Phase:    core.PhaseSchwa,
@@ -112,9 +113,9 @@ func schwaRules() []core.Rule {
 				if u.IsWordInitial() {
 					return false
 				}
-				// Do not delete schwa for word-initial conjuncts
-				// Word-initial conjuncts should keep their schwa (प्रकाश→prakaash)
-				if brahmic.IsAfterHalant(u) && isWordInitialConjunct(u, w) {
+				// Do not delete schwa after halant (part of conjunct)
+				// पार्वती→parvati (not "parvti"), नर्मदा→narmada (not "narmda")
+				if brahmic.IsAfterHalant(u) {
 					return false
 				}
 				// Must be in a run
