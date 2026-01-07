@@ -1,7 +1,11 @@
-package lang
+package legacy_lang
 
 import (
 	"testing"
+
+	"github.com/budhash/gomanize/core"
+	newHindi "github.com/budhash/gomanize/lang/hindi"
+	"github.com/budhash/gomanize/scheme/colloquial"
 )
 
 // =============================================================================
@@ -10,12 +14,17 @@ import (
 // Run with: go test -run "^TestUnit" or make test-unit
 // =============================================================================
 
+// newTestEngine returns the new Hindi engine for testing.
+func newTestEngine() *core.Engine {
+	return core.NewEngine(newHindi.Hindi{}, colloquial.Colloquial{})
+}
+
 // -----------------------------------------------------------------------------
 // Basic Character Mapping
 // -----------------------------------------------------------------------------
 
 func TestUnitVowels(t *testing.T) {
-	h := Hindi{}
+	engine := newTestEngine()
 
 	tests := []struct {
 		name     string
@@ -47,7 +56,7 @@ func TestUnitVowels(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			result := h.Transliterate(tc.input)
+			result := engine.Transliterate(tc.input)
 			if result != tc.expected {
 				t.Errorf("%s: got %q, want %q", tc.input, result, tc.expected)
 			}
@@ -56,7 +65,7 @@ func TestUnitVowels(t *testing.T) {
 }
 
 func TestUnitConsonants(t *testing.T) {
-	h := Hindi{}
+	engine := newTestEngine()
 
 	tests := []struct {
 		name     string
@@ -104,7 +113,7 @@ func TestUnitConsonants(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			result := h.Transliterate(tc.input)
+			result := engine.Transliterate(tc.input)
 			if result != tc.expected {
 				t.Errorf("%s: got %q, want %q", tc.input, result, tc.expected)
 			}
@@ -113,7 +122,7 @@ func TestUnitConsonants(t *testing.T) {
 }
 
 func TestUnitNumbers(t *testing.T) {
-	h := Hindi{}
+	engine := newTestEngine()
 
 	tests := []struct {
 		input    string
@@ -133,7 +142,7 @@ func TestUnitNumbers(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.input, func(t *testing.T) {
-			result := h.Transliterate(tc.input)
+			result := engine.Transliterate(tc.input)
 			if result != tc.expected {
 				t.Errorf("%s: got %q, want %q", tc.input, result, tc.expected)
 			}
@@ -142,7 +151,7 @@ func TestUnitNumbers(t *testing.T) {
 }
 
 func TestUnitNuqta(t *testing.T) {
-	h := Hindi{}
+	engine := newTestEngine()
 
 	// Nuqta consonants (for Persian/English loanwords)
 	tests := []struct {
@@ -159,7 +168,7 @@ func TestUnitNuqta(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			result := h.Transliterate(tc.input)
+			result := engine.Transliterate(tc.input)
 			if result != tc.expected {
 				t.Errorf("%s: got %q, want %q", tc.input, result, tc.expected)
 			}
@@ -168,7 +177,7 @@ func TestUnitNuqta(t *testing.T) {
 }
 
 func TestUnitConjuncts(t *testing.T) {
-	h := Hindi{}
+	engine := newTestEngine()
 
 	tests := []struct {
 		name     string
@@ -183,7 +192,7 @@ func TestUnitConjuncts(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			result := h.Transliterate(tc.input)
+			result := engine.Transliterate(tc.input)
 			if result != tc.expected {
 				t.Errorf("%s: got %q, want %q", tc.input, result, tc.expected)
 			}
@@ -196,7 +205,7 @@ func TestUnitConjuncts(t *testing.T) {
 // -----------------------------------------------------------------------------
 
 func TestUnitSchwaBasic(t *testing.T) {
-	h := Hindi{}
+	engine := newTestEngine()
 
 	tests := []struct {
 		name     string
@@ -214,7 +223,7 @@ func TestUnitSchwaBasic(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			result := h.Transliterate(tc.input)
+			result := engine.Transliterate(tc.input)
 			if result != tc.expected {
 				t.Errorf("%s (%s): got %q, want %q", tc.input, tc.note, result, tc.expected)
 			}
@@ -224,7 +233,7 @@ func TestUnitSchwaBasic(t *testing.T) {
 
 // These tests document KNOWN BUGS that need to be fixed
 func TestUnitSchwaKnownBugs(t *testing.T) {
-	h := Hindi{}
+	engine := newTestEngine()
 
 	// These currently FAIL - documenting expected behavior after fix
 	knownBugs := []struct {
@@ -241,7 +250,7 @@ func TestUnitSchwaKnownBugs(t *testing.T) {
 
 	for _, tc := range knownBugs {
 		t.Run(tc.name, func(t *testing.T) {
-			result := h.Transliterate(tc.input)
+			result := engine.Transliterate(tc.input)
 			if result == tc.expected {
 				t.Logf("BUG FIXED! %s now correctly produces %q", tc.input, tc.expected)
 			} else if result == tc.current {
@@ -258,7 +267,7 @@ func TestUnitSchwaKnownBugs(t *testing.T) {
 // -----------------------------------------------------------------------------
 
 func TestUnitVaWa(t *testing.T) {
-	h := Hindi{}
+	engine := newTestEngine()
 
 	tests := []struct {
 		name     string
@@ -275,7 +284,7 @@ func TestUnitVaWa(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			result := h.Transliterate(tc.input)
+			result := engine.Transliterate(tc.input)
 			if result != tc.expected {
 				t.Errorf("%s (%s): got %q, want %q", tc.input, tc.note, result, tc.expected)
 			}
@@ -288,7 +297,7 @@ func TestUnitVaWa(t *testing.T) {
 // -----------------------------------------------------------------------------
 
 func TestUnitLongVowelsOption(t *testing.T) {
-	h := Hindi{}
+	engine := newTestEngine()
 
 	tests := []struct {
 		name         string
@@ -306,14 +315,14 @@ func TestUnitLongVowelsOption(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name+"_default", func(t *testing.T) {
-			result := h.TransliterateWithOptions(tc.input, DefaultOptions())
+			result := engine.TransliterateWithOptions(tc.input, core.DefaultOptions())
 			if result != tc.defaultOut {
 				t.Errorf("%s (default): got %q, want %q", tc.input, result, tc.defaultOut)
 			}
 		})
 		t.Run(tc.name+"_longvowels", func(t *testing.T) {
-			opts := Options{LongVowels: true}
-			result := h.TransliterateWithOptions(tc.input, opts)
+			opts := core.Options{LongVowels: true}
+			result := engine.TransliterateWithOptions(tc.input, opts)
 			if result != tc.longVowelOut {
 				t.Errorf("%s (LongVowels): got %q, want %q", tc.input, result, tc.longVowelOut)
 			}
@@ -326,7 +335,7 @@ func TestUnitLongVowelsOption(t *testing.T) {
 // -----------------------------------------------------------------------------
 
 func TestUnitCommonWords(t *testing.T) {
-	h := Hindi{}
+	engine := newTestEngine()
 
 	tests := []struct {
 		input    string
@@ -337,7 +346,7 @@ func TestUnitCommonWords(t *testing.T) {
 		{"हिंदी", "hindi"},
 		{"और", "aur"},
 		{"है", "hai"},
-		{"में", "men"},
+		{"में", "mein"},
 		{"को", "ko"},
 		{"से", "se"},
 		{"पर", "par"},
@@ -346,7 +355,7 @@ func TestUnitCommonWords(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.input, func(t *testing.T) {
-			result := h.Transliterate(tc.input)
+			result := engine.Transliterate(tc.input)
 			if result != tc.expected {
 				t.Errorf("%s: got %q, want %q", tc.input, result, tc.expected)
 			}
@@ -359,7 +368,7 @@ func TestUnitCommonWords(t *testing.T) {
 // -----------------------------------------------------------------------------
 
 func TestUnitAnusvara(t *testing.T) {
-	h := Hindi{}
+	engine := newTestEngine()
 
 	tests := []struct {
 		name     string
@@ -368,12 +377,12 @@ func TestUnitAnusvara(t *testing.T) {
 	}{
 		{"anusvara_n", "हिंदी", "hindi"},
 		{"anusvara_n_2", "संगीत", "sangit"},
-		{"chandrabindu", "माँ", "man"}, // Note: May need adjustment
+		{"chandrabindu", "माँ", "maa"}, // Chandrabindu is pure nasalization, no 'n'
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			result := h.Transliterate(tc.input)
+			result := engine.Transliterate(tc.input)
 			if result != tc.expected {
 				t.Errorf("%s: got %q, want %q", tc.input, result, tc.expected)
 			}
@@ -386,7 +395,7 @@ func TestUnitAnusvara(t *testing.T) {
 // -----------------------------------------------------------------------------
 
 func TestUnitEdgeCases(t *testing.T) {
-	h := Hindi{}
+	engine := newTestEngine()
 
 	tests := []struct {
 		name     string
@@ -402,7 +411,7 @@ func TestUnitEdgeCases(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			result := h.Transliterate(tc.input)
+			result := engine.Transliterate(tc.input)
 			if result != tc.expected {
 				t.Errorf("%s: got %q, want %q", tc.input, result, tc.expected)
 			}
