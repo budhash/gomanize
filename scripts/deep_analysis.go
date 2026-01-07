@@ -176,7 +176,7 @@ func main() {
 	catExamples := make(map[string][]Failure)
 	for _, f := range failures {
 		catCounts[f.Category]++
-		if len(catExamples[f.Category]) < 10 {
+		if len(catExamples[f.Category]) < 50 {
 			catExamples[f.Category] = append(catExamples[f.Category], f)
 		}
 	}

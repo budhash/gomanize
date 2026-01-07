@@ -39,6 +39,35 @@ func schwaRules() []core.Rule {
 			},
 		},
 
+		// schwa-keep-gya-final (Language:65)
+		// Keep final schwa for ज्ञ conjunct: यज्ञ→yagya
+		// ज्ञ is a special Sanskrit conjunct that retains schwa
+		// Only applies when there's content before (not for isolated ज्ञ→gy)
+		{
+			Name:     "schwa-keep-gya-final",
+			Phase:    core.PhaseSchwa,
+			Scope:    core.ScopeLanguage,
+			Priority: 65,
+			Mode:     core.ModeExclusive,
+			Condition: func(u *core.Unit, w *core.Word) bool {
+				if !brahmic.IsConsonantOrConjunct(u) || brahmic.GetSchwa(u) != brahmic.SchwaPending {
+					return false
+				}
+				// Check if this is ज्ञ conjunct at word end
+				if !u.IsWordFinal() || u.BaseRom != "gy" {
+					return false
+				}
+				// Only apply if there's content before (not for isolated ज्ञ→gy)
+				if u.IsWordInitial() {
+					return false
+				}
+				return true
+			},
+			Action: func(u *core.Unit, w *core.Word) {
+				brahmic.SetSchwa(u, brahmic.SchwaKeep)
+			},
+		},
+
 		// schwa-keep-iya-suffix (Language:60)
 		// Keep schwa for ीय adjective endings: केंद्रीय→kendriya
 		{
@@ -220,13 +249,13 @@ func schwaRules() []core.Rule {
 // consonantRules returns all consonant modification rules.
 func consonantRules() []core.Rule {
 	return []core.Rule{
-		// va-to-wa-conjunct (Language:50)
-		// व→w after स, श, द, ख: स्वागत→swagat, ऐश्वर्या→aishwarya
+		// va-to-wa-conjunct (Language:55)
+		// व→w in conjuncts after स, श, द, ख: स्वागत→swagat, ऐश्वर्या→aishwarya
 		{
 			Name:     "va-to-wa-conjunct",
 			Phase:    core.PhaseConsonant,
 			Scope:    core.ScopeLanguage,
-			Priority: 50,
+			Priority: 55,
 			Mode:     core.ModeAlways,
 			Condition: func(u *core.Unit, w *core.Word) bool {
 				if u.BaseRom != "v" || !brahmic.IsAfterHalant(u) {
@@ -236,8 +265,89 @@ func consonantRules() []core.Rule {
 					return false
 				}
 				prev := u.Prev.BaseRom
-				// Use 'w' only after स, श, द, ख (common semivowel conjuncts)
+				// Use 'w' after स, श, द, ख (common semivowel conjuncts)
 				return prev == "s" || prev == "sh" || prev == "d" || prev == "kh"
+			},
+			Action: func(u *core.Unit, w *core.Word) {
+				u.BaseRom = "w"
+			},
+		},
+
+		// va-to-wa-wala-suffix (Language:52)
+		// Word-initial वाल pattern → 'w': वाली→wali, वाले→wale, वालो→walo, वालों→walon
+		// This is the Hindi suffix meaning "one who has/does X"
+		{
+			Name:     "va-to-wa-wala-suffix",
+			Phase:    core.PhaseConsonant,
+			Scope:    core.ScopeLanguage,
+			Priority: 52,
+			Mode:     core.ModeAlways,
+			Condition: func(u *core.Unit, w *core.Word) bool {
+				if u.BaseRom != "v" || !u.IsWordInitial() {
+					return false
+				}
+				// Must be followed by ा matra
+				next := u.Next
+				if next == nil || next.Type != core.UnitVowel {
+					return false
+				}
+				if len(next.Runes) != 1 || next.Runes[0] != 'ा' {
+					return false
+				}
+				// Must be followed by ल (वाल pattern)
+				afterVowel := next.Next
+				if afterVowel == nil || !brahmic.IsConsonantOrConjunct(afterVowel) {
+					return false
+				}
+				return afterVowel.BaseRom == "l"
+			},
+			Action: func(u *core.Unit, w *core.Word) {
+				u.BaseRom = "w"
+			},
+		},
+
+		// va-to-wa-with-vowel (Language:50)
+		// व + vowel matra (except इ-type) → 'w': दिवाली→diwali, भगवान→bhagwaan, हवा→hawa
+		// व + consonant → 'v': अवस्था→avastha, परिवर्तन→parivartan, दिवस→divas
+		// व + इ-type matra (ि, ी, े, ै) → 'v': कवि→kavi, गोविंद→govind
+		// इ-type matra + व → 'v': विवाद→vivaad, विवाह→vivaah (वि+वा pattern)
+		{
+			Name:     "va-to-wa-with-vowel",
+			Phase:    core.PhaseConsonant,
+			Scope:    core.ScopeLanguage,
+			Priority: 50,
+			Mode:     core.ModeAlways,
+			Condition: func(u *core.Unit, w *core.Word) bool {
+				if u.BaseRom != "v" {
+					return false
+				}
+				// Not word-initial
+				if u.IsWordInitial() {
+					return false
+				}
+				// Must be followed by a vowel matra
+				next := u.Next
+				if next == nil || next.Type != core.UnitVowel {
+					return false
+				}
+				// Check the vowel type after व
+				if len(next.Runes) != 1 {
+					return false
+				}
+				r := next.Runes[0]
+				// इ-type matras after व: ि (i), ी (ii), े (e), ै (ai) → keep as 'v'
+				if r == 'ि' || r == 'ी' || r == 'े' || r == 'ै' {
+					return false
+				}
+				// व+व pattern (विवाद, विवाह): व followed by व → keep as 'v'
+				// Check if the previous consonant (before the vowel) is also व
+				if u.Prev != nil && u.Prev.Type == core.UnitVowel {
+					if u.Prev.Prev != nil && u.Prev.Prev.BaseRom == "v" {
+						return false
+					}
+				}
+				// Other vowel matras (ा, ु, ू, ो, ौ) → 'w'
+				return true
 			},
 			Action: func(u *core.Unit, w *core.Word) {
 				u.BaseRom = "w"
