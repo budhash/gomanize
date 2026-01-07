@@ -6,6 +6,8 @@
 // - Matras (dependent vowel signs)
 package brahmic
 
+import "github.com/budhash/gomanize/core"
+
 // SchwaState tracks schwa deletion decisions for consonants.
 type SchwaState int
 
@@ -31,10 +33,10 @@ func (s SchwaState) String() string {
 // ConsonantRun represents consecutive consonants between vowels.
 // Used for coordinating schwa deletion decisions.
 type ConsonantRun struct {
-	Units     []*Unit // Consonants in this run
-	PrevVowel *Unit   // Vowel before the run (nil if word-initial)
-	NextVowel *Unit   // Vowel after the run (nil if word-final)
-	DeletedAt int     // Index where schwa was deleted (-1 if none)
+	Units     []*core.Unit // Consonants in this run
+	PrevVowel *core.Unit   // Vowel before the run (nil if word-initial)
+	NextVowel *core.Unit   // Vowel after the run (nil if word-final)
+	DeletedAt int          // Index where schwa was deleted (-1 if none)
 }
 
 // NewConsonantRun creates a new run with DeletedAt initialized to -1.
@@ -49,142 +51,132 @@ func (r *ConsonantRun) HasDeletion() bool {
 	return r.DeletedAt >= 0
 }
 
-// Unit represents a single phonetic unit in a parsed Brahmic script word.
-// Extends the base engine.Unit concept with Brahmic-specific fields.
-type Unit struct {
-	// Source tracking
-	Runes []rune // Original characters (1-3 for conjuncts)
-	Start int    // Rune index start
-	End   int    // Rune index end
+// BrahmicData holds Brahmic-specific data for a core.Unit.
+// Stored in Unit.ScriptData.
+type BrahmicData struct {
+	// AfterHalant indicates this unit followed a halant (part of conjunct)
+	AfterHalant bool
 
-	// Classification
-	Type    UnitType
-	BaseRom string // Base romanization (modifiable by rules)
-
-	// Brahmic-specific context
-	AfterHalant bool // Was preceded by halant (part of conjunct)
-
-	// Schwa state (for consonants/conjuncts)
+	// Schwa state for consonants/conjuncts
 	Schwa SchwaState
-
-	// Bidirectional links
-	Prev *Unit
-	Next *Unit
 
 	// Run membership (nil for vowels)
 	Run      *ConsonantRun
 	RunIndex int // Position within the run
+
+	// WordData holds word-level data (only on first unit)
+	WordData *WordBrahmicData
 }
 
-// IsWordFinal returns true if this is the last unit in the word.
-func (u *Unit) IsWordFinal() bool {
-	return u.Next == nil
-}
-
-// IsWordInitial returns true if this is the first unit in the word.
-func (u *Unit) IsWordInitial() bool {
-	return u.Prev == nil
-}
-
-// String returns the original characters as a string.
-func (u *Unit) String() string {
-	return string(u.Runes)
-}
-
-// IsInConjunct returns true if this unit is part of a multi-consonant sequence.
-func (u *Unit) IsInConjunct() bool {
-	return u.AfterHalant
-}
-
-// IsRunInitial returns true if this is the first consonant in its run.
-func (u *Unit) IsRunInitial() bool {
-	return u.Run != nil && u.RunIndex == 0
-}
-
-// IsRunFinal returns true if this is the last consonant in its run.
-func (u *Unit) IsRunFinal() bool {
-	return u.Run != nil && u.RunIndex == len(u.Run.Units)-1
-}
-
-// PrevInRun returns the previous consonant in the same run, or nil.
-func (u *Unit) PrevInRun() *Unit {
-	if u.Run == nil || u.RunIndex == 0 {
+// GetBrahmicData extracts BrahmicData from a core.Unit.
+// Returns nil if ScriptData is not BrahmicData.
+func GetBrahmicData(u *core.Unit) *BrahmicData {
+	if u == nil || u.ScriptData == nil {
 		return nil
 	}
-	return u.Run.Units[u.RunIndex-1]
+	if bd, ok := u.ScriptData.(*BrahmicData); ok {
+		return bd
+	}
+	return nil
 }
 
-// NextInRun returns the next consonant in the same run, or nil.
-func (u *Unit) NextInRun() *Unit {
-	if u.Run == nil || u.RunIndex >= len(u.Run.Units)-1 {
+// SetBrahmicData sets BrahmicData on a core.Unit.
+func SetBrahmicData(u *core.Unit, bd *BrahmicData) {
+	u.ScriptData = bd
+}
+
+// NewBrahmicData creates BrahmicData with default values.
+func NewBrahmicData() *BrahmicData {
+	return &BrahmicData{
+		Schwa: SchwaPending,
+	}
+}
+
+// Config holds Brahmic script configuration.
+type Config struct {
+	Halant    string   // Halant/virama character (e.g., "्" for Devanagari)
+	Nukta     string   // Nukta character (e.g., "़" for Devanagari)
+	MultiChar []string // Multi-character sequences to match first (e.g., "ज्ञ")
+}
+
+// Helper functions for working with BrahmicData through core.Unit
+
+// IsAfterHalant returns true if the unit followed a halant.
+func IsAfterHalant(u *core.Unit) bool {
+	bd := GetBrahmicData(u)
+	return bd != nil && bd.AfterHalant
+}
+
+// GetSchwa returns the schwa state for a unit.
+func GetSchwa(u *core.Unit) SchwaState {
+	bd := GetBrahmicData(u)
+	if bd == nil {
+		return SchwaPending
+	}
+	return bd.Schwa
+}
+
+// SetSchwa sets the schwa state for a unit.
+func SetSchwa(u *core.Unit, state SchwaState) {
+	bd := GetBrahmicData(u)
+	if bd != nil {
+		bd.Schwa = state
+	}
+}
+
+// GetRun returns the consonant run for a unit.
+func GetRun(u *core.Unit) *ConsonantRun {
+	bd := GetBrahmicData(u)
+	if bd == nil {
 		return nil
 	}
-	return u.Run.Units[u.RunIndex+1]
+	return bd.Run
 }
 
-// UnitType classifies parsed phonetic units in Brahmic scripts.
-type UnitType int
-
-const (
-	UnitVowel     UnitType = iota // Vowels and matras that replace inherent schwa
-	UnitModifier                  // Modifiers that follow (anusvara, visarga, chandrabindu)
-	UnitConsonant                 // Single consonant
-	UnitConjunct                  // Multi-character conjunct (e.g., Devanagari ज्ञ)
-	UnitNumber                    // Script numerals
-	UnitSymbol                    // Other symbols (punctuation, etc.)
-)
-
-func (t UnitType) String() string {
-	switch t {
-	case UnitVowel:
-		return "Vowel"
-	case UnitModifier:
-		return "Modifier"
-	case UnitConsonant:
-		return "Consonant"
-	case UnitConjunct:
-		return "Conjunct"
-	case UnitNumber:
-		return "Number"
-	case UnitSymbol:
-		return "Symbol"
-	default:
-		return "Unknown"
+// GetRunIndex returns the run index for a unit.
+func GetRunIndex(u *core.Unit) int {
+	bd := GetBrahmicData(u)
+	if bd == nil {
+		return -1
 	}
+	return bd.RunIndex
 }
 
-// Word is the complete parsed representation of a Brahmic script input word.
-type Word struct {
-	Units    []*Unit         // All parsed units in order
-	Runs     []*ConsonantRun // Consonant runs for schwa coordination
-	Original string          // Original input string
-	Options  Options         // Transliteration options
+// IsConsonantOrConjunct returns true if the unit is a consonant or conjunct.
+func IsConsonantOrConjunct(u *core.Unit) bool {
+	return u.Type == core.UnitConsonant || u.Type == core.UnitConjunct
 }
 
-// NewWord creates a new empty Word.
-func NewWord(original string) *Word {
-	return &Word{
-		Original: original,
+// WordBrahmicData holds Brahmic-specific data for a core.Word.
+// Stored in the first unit's BrahmicData.WordData field.
+type WordBrahmicData struct {
+	Runs []*ConsonantRun
+}
+
+// GetWordBrahmicData retrieves word-level Brahmic data.
+// We store this in the word's first unit's ScriptData as a map.
+func GetWordBrahmicData(w *core.Word) *WordBrahmicData {
+	if len(w.Units) == 0 {
+		return nil
 	}
-}
-
-// AddUnit appends a unit and maintains bidirectional links.
-func (w *Word) AddUnit(u *Unit) {
-	if len(w.Units) > 0 {
-		prev := w.Units[len(w.Units)-1]
-		prev.Next = u
-		u.Prev = prev
+	// Check if first unit has a map with word data
+	bd := GetBrahmicData(w.Units[0])
+	if bd == nil {
+		return nil
 	}
-	w.Units = append(w.Units, u)
+	// Word data is stored in the first unit's BrahmicData.WordData
+	return bd.WordData
 }
 
-// Options configures transliteration behavior.
-type Options struct {
-	// LongVowels outputs "aa" for all aa-matra positions.
-	LongVowels bool
-}
-
-// DefaultOptions returns the default transliteration options.
-func DefaultOptions() Options {
-	return Options{LongVowels: false}
+// SetWordBrahmicData sets word-level Brahmic data.
+func SetWordBrahmicData(w *core.Word, wd *WordBrahmicData) {
+	if len(w.Units) == 0 {
+		return
+	}
+	bd := GetBrahmicData(w.Units[0])
+	if bd == nil {
+		bd = NewBrahmicData()
+		SetBrahmicData(w.Units[0], bd)
+	}
+	bd.WordData = wd
 }

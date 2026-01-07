@@ -1,27 +1,35 @@
 package brahmic
 
+import "github.com/budhash/gomanize/core"
+
 // IdentifyRuns groups consecutive consonants/conjuncts between vowels into ConsonantRuns.
 // This enables coordinated schwa deletion decisions within each run.
-func IdentifyRuns(word *Word) {
+func IdentifyRuns(word *core.Word) {
 	var currentRun *ConsonantRun
-	var prevVowel *Unit
+	var prevVowel *core.Unit
+	var runs []*ConsonantRun
 
 	for _, unit := range word.Units {
 		switch unit.Type {
-		case UnitConsonant, UnitConjunct:
+		case core.UnitConsonant, core.UnitConjunct:
 			// Start new run if not in one
 			if currentRun == nil {
 				currentRun = NewConsonantRun()
 				currentRun.PrevVowel = prevVowel
-				word.Runs = append(word.Runs, currentRun)
+				runs = append(runs, currentRun)
 			}
 
 			// Add consonant to run
-			unit.Run = currentRun
-			unit.RunIndex = len(currentRun.Units)
+			bd := GetBrahmicData(unit)
+			if bd == nil {
+				bd = NewBrahmicData()
+				SetBrahmicData(unit, bd)
+			}
+			bd.Run = currentRun
+			bd.RunIndex = len(currentRun.Units)
 			currentRun.Units = append(currentRun.Units, unit)
 
-		case UnitVowel, UnitModifier:
+		case core.UnitVowel, core.UnitModifier:
 			// Vowels and modifiers (anusvara, visarga, chandrabindu) close runs
 			// Close current run if open
 			if currentRun != nil {
@@ -39,6 +47,11 @@ func IdentifyRuns(word *Word) {
 		}
 	}
 	// Note: word-final runs have NextVowel = nil (handled correctly)
+
+	// Store runs in word-level data
+	if len(runs) > 0 {
+		SetWordBrahmicData(word, &WordBrahmicData{Runs: runs})
+	}
 }
 
 // RunStats returns statistics about consonant runs in the word.
@@ -51,12 +64,17 @@ type RunStats struct {
 }
 
 // GetRunStats calculates statistics about consonant runs.
-func GetRunStats(word *Word) RunStats {
-	stats := RunStats{
-		TotalRuns: len(word.Runs),
+func GetRunStats(word *core.Word) RunStats {
+	wd := GetWordBrahmicData(word)
+	if wd == nil {
+		return RunStats{}
 	}
 
-	for _, run := range word.Runs {
+	stats := RunStats{
+		TotalRuns: len(wd.Runs),
+	}
+
+	for _, run := range wd.Runs {
 		if run.PrevVowel == nil {
 			stats.WordInitialRuns++
 		}

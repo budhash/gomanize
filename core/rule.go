@@ -1,4 +1,4 @@
-package engine
+package core
 
 import (
 	"fmt"
@@ -36,7 +36,7 @@ type RuleScope int
 
 const (
 	ScopeUniversal RuleScope = iota // Base 0: applies to all languages
-	ScopeScript                     // Base 100: script-specific (Devanagari)
+	ScopeScript                     // Base 100: script-specific (Brahmic)
 	ScopeLanguage                   // Base 200: language-specific (Hindi)
 	ScopeScheme                     // Base 300: scheme-specific (IAST)
 )
@@ -99,18 +99,51 @@ func (r *Rule) EffectivePriority() int {
 type RuleEngine struct {
 	allRules []Rule
 	active   map[RulePhase][]Rule // Filtered and sorted per phase
+
+	// Debug support
+	traces       []RuleTrace
+	debugEnabled bool
+	debugMeta    func(*Unit) string // Script-specific metadata extractor
 }
 
-// NewRuleEngine creates a new empty rule engine.
-func NewRuleEngine() *RuleEngine {
-	return &RuleEngine{
-		active: make(map[RulePhase][]Rule),
+// NewRuleEngine creates a new rule engine with the given rules.
+// Panics if any rule has nil Condition or Action functions.
+func NewRuleEngine(rules []Rule) *RuleEngine {
+	// Validate all rules have required functions
+	for i, r := range rules {
+		if r.Condition == nil {
+			panic(fmt.Sprintf("core.NewRuleEngine: rule %d (%q) has nil Condition", i, r.Name))
+		}
+		if r.Action == nil {
+			panic(fmt.Sprintf("core.NewRuleEngine: rule %d (%q) has nil Action", i, r.Name))
+		}
+		if r.Priority < 0 || r.Priority > 99 {
+			panic(fmt.Sprintf("core.NewRuleEngine: rule %d (%q) has invalid Priority %d (must be 0-99)", i, r.Name, r.Priority))
+		}
 	}
+
+	e := &RuleEngine{
+		allRules: append([]Rule{}, rules...),
+		active:   make(map[RulePhase][]Rule),
+	}
+	e.rebuildActive()
+	return e
 }
 
 // AddRule adds a rule to the engine.
-// Returns error if there's a priority conflict.
+// Returns error if there's a priority conflict or invalid rule.
 func (e *RuleEngine) AddRule(r Rule) error {
+	// Validate rule
+	if r.Condition == nil {
+		return fmt.Errorf("rule %q has nil Condition", r.Name)
+	}
+	if r.Action == nil {
+		return fmt.Errorf("rule %q has nil Action", r.Name)
+	}
+	if r.Priority < 0 || r.Priority > 99 {
+		return fmt.Errorf("rule %q has invalid Priority %d (must be 0-99)", r.Name, r.Priority)
+	}
+
 	// Check for priority conflicts within same phase
 	for _, existing := range e.allRules {
 		if existing.Phase == r.Phase &&
@@ -121,16 +154,6 @@ func (e *RuleEngine) AddRule(r Rule) error {
 	}
 	e.allRules = append(e.allRules, r)
 	e.rebuildActive()
-	return nil
-}
-
-// AddRules adds multiple rules to the engine.
-func (e *RuleEngine) AddRules(rules []Rule) error {
-	for _, r := range rules {
-		if err := e.AddRule(r); err != nil {
-			return err
-		}
-	}
 	return nil
 }
 
@@ -168,45 +191,93 @@ func (e *RuleEngine) applyPhase(phase RulePhase, word *Word) {
 	acted := make(map[*Unit]bool)
 
 	// First pass: Exclusive and Always rules (highest priority first)
-	for _, rule := range rules {
+	for i := range rules {
+		rule := &rules[i]
 		if rule.Mode == ModeFallback {
 			continue
 		}
-		for _, unit := range word.Units {
+		for idx, unit := range word.Units {
 			// Skip if already acted on and this is Exclusive mode
 			if rule.Mode == ModeExclusive && acted[unit] {
 				continue
 			}
 			if rule.Condition(unit, word) {
+				before := unit.BaseRom
 				rule.Action(unit, word)
 				acted[unit] = true
+				e.traceRule(phase, rule, unit, idx, before)
 			}
 		}
 	}
 
 	// Second pass: Fallback rules (only for units not acted on)
-	for _, rule := range rules {
+	for i := range rules {
+		rule := &rules[i]
 		if rule.Mode != ModeFallback {
 			continue
 		}
-		for _, unit := range word.Units {
+		for idx, unit := range word.Units {
 			if acted[unit] {
 				continue
 			}
 			if rule.Condition(unit, word) {
+				before := unit.BaseRom
 				rule.Action(unit, word)
 				acted[unit] = true
+				e.traceRule(phase, rule, unit, idx, before)
 			}
 		}
 	}
 }
 
-// Rules returns all registered rules.
+// Rules returns a copy of all registered rules.
 func (e *RuleEngine) Rules() []Rule {
-	return e.allRules
+	return append([]Rule{}, e.allRules...)
 }
 
-// RulesForPhase returns rules for a specific phase, sorted by priority.
+// RulesForPhase returns a copy of rules for a specific phase, sorted by priority.
 func (e *RuleEngine) RulesForPhase(phase RulePhase) []Rule {
-	return e.active[phase]
+	return append([]Rule{}, e.active[phase]...)
+}
+
+// SetDebugMetaExtractor sets a function to extract script-specific metadata.
+func (e *RuleEngine) SetDebugMetaExtractor(fn func(*Unit) string) {
+	e.debugMeta = fn
+}
+
+// EnableDebug enables debug trace collection.
+func (e *RuleEngine) EnableDebug(enabled bool) {
+	e.debugEnabled = enabled
+	if enabled {
+		e.traces = nil // Reset traces
+	}
+}
+
+// Traces returns collected debug traces (call after Apply).
+func (e *RuleEngine) Traces() []RuleTrace {
+	return e.traces
+}
+
+// traceRule records a rule application if debugging is enabled.
+func (e *RuleEngine) traceRule(phase RulePhase, rule *Rule, unit *Unit, unitIdx int, before string) {
+	if !e.debugEnabled {
+		return
+	}
+	meta := ""
+	if e.debugMeta != nil {
+		meta = e.debugMeta(unit)
+	}
+	trace := RuleTrace{
+		Phase:    phase.String(),
+		Rule:     rule.Name,
+		Unit:     string(unit.Runes),
+		UnitIdx:  unitIdx,
+		Before:   before,
+		After:    unit.BaseRom,
+		Metadata: meta,
+	}
+	// Only record if something changed or it's a schwa rule
+	if before != unit.BaseRom || phase == PhaseSchwa {
+		e.traces = append(e.traces, trace)
+	}
 }

@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/budhash/gomanize/engine"
-	"github.com/budhash/gomanize/lang/hindi"
+	"github.com/budhash/gomanize/core"
+	hindiLang "github.com/budhash/gomanize/lang/hindi"
+	"github.com/budhash/gomanize/scheme/colloquial"
 )
 
 // CompareResult holds the output of comparing old and new engines.
@@ -18,15 +19,15 @@ type CompareResult struct {
 
 // Comparer runs both old and new engines for comparison.
 type Comparer struct {
-	oldEngine Hindi          // existing implementation
-	newEngine *engine.Engine // new engine
+	oldEngine Hindi        // existing implementation (internal/lang)
+	newEngine *core.Engine // new core engine
 }
 
 // NewComparer creates a new Comparer instance.
 func NewComparer() *Comparer {
 	return &Comparer{
 		oldEngine: Hindi{},
-		newEngine: engine.New(hindi.Hindi{}),
+		newEngine: core.NewEngine(hindiLang.Hindi{}, colloquial.Colloquial{}),
 	}
 }
 
@@ -45,9 +46,55 @@ func (c *Comparer) Compare(input string) CompareResult {
 
 // CompareWithDebug returns comparison with debug info from new engine.
 func (c *Comparer) CompareWithDebug(input string) (CompareResult, string) {
-	result := c.Compare(input)
-	debug := c.newEngine.TransliterateDebug(input)
-	return result, debug
+	oldOutput := c.oldEngine.Transliterate(input)
+	newOutput, debugInfo := c.newEngine.TransliterateDebug(input, core.DefaultOptions())
+
+	result := CompareResult{
+		Input:     input,
+		OldOutput: oldOutput,
+		NewOutput: newOutput,
+		Match:     oldOutput == newOutput,
+	}
+
+	// Format debug info
+	debugStr := formatDebugInfo(debugInfo)
+	return result, debugStr
+}
+
+// formatDebugInfo converts DebugInfo to a readable string.
+func formatDebugInfo(info *core.DebugInfo) string {
+	if info == nil {
+		return ""
+	}
+
+	var sb strings.Builder
+	sb.WriteString("Parsed Units:\n")
+	for _, u := range info.Units {
+		meta := ""
+		if u.Metadata != "" {
+			meta = fmt.Sprintf(" [%s]", u.Metadata)
+		}
+		sb.WriteString(fmt.Sprintf("  [%d] %s → %s (%s @ rune %d)%s\n",
+			u.Index, u.Chars, u.BaseRom, u.Type, u.RunePos, meta))
+	}
+
+	if len(info.Traces) > 0 {
+		sb.WriteString("\nRule Applications:\n")
+		for _, t := range info.Traces {
+			change := ""
+			if t.Before != t.After {
+				change = fmt.Sprintf(" %s→%s", t.Before, t.After)
+			}
+			meta := ""
+			if t.Metadata != "" {
+				meta = fmt.Sprintf(" [%s]", t.Metadata)
+			}
+			sb.WriteString(fmt.Sprintf("  %s: %s on %s (idx %d)%s%s\n",
+				t.Phase, t.Rule, t.Unit, t.UnitIdx, change, meta))
+		}
+	}
+
+	return sb.String()
 }
 
 // FormatResult formats a CompareResult for display.

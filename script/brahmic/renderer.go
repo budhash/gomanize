@@ -3,9 +3,12 @@ package brahmic
 import (
 	"strconv"
 	"strings"
+
+	"github.com/budhash/gomanize/core"
 )
 
 // Renderer converts a parsed Word into romanized output.
+// Implements core.Renderer interface.
 type Renderer struct{}
 
 // NewRenderer creates a new renderer.
@@ -15,23 +18,24 @@ func NewRenderer() *Renderer {
 
 // Render converts a Word to its romanized string representation.
 // Uses SchwaState decisions from the rule engine to determine schwa output.
-func (r *Renderer) Render(word *Word) string {
+// Implements core.Renderer interface.
+func (r *Renderer) Render(word *core.Word) string {
 	var sb strings.Builder
 
 	for _, unit := range word.Units {
 		sb.WriteString(unit.BaseRom)
 
 		// Schwa handling for consonants/conjuncts
-		if unit.Type == UnitConsonant || unit.Type == UnitConjunct {
+		if unit.Type == core.UnitConsonant || unit.Type == core.UnitConjunct {
 			// Skip schwa if followed by vowel/matra (vowel provides the sound)
 			// Note: UnitModifier (anusvara, visarga, chandrabindu) does NOT suppress schwa
-			if unit.Next != nil && unit.Next.Type == UnitVowel {
+			if unit.Next != nil && unit.Next.Type == core.UnitVowel {
 				continue
 			}
 
 			// Skip schwa if next unit is part of a conjunct (came after halant)
 			// This means current consonant + halant + next consonant form a cluster
-			if unit.Next != nil && unit.Next.AfterHalant {
+			if unit.Next != nil && IsAfterHalant(unit.Next) {
 				continue
 			}
 
@@ -39,7 +43,7 @@ func (r *Renderer) Render(word *Word) string {
 			// - SchwaKeep: add "a"
 			// - SchwaDelete: no schwa
 			// - SchwaPending: treat as Keep (rules didn't run or fallback applies)
-			if unit.Schwa != SchwaDelete {
+			if GetSchwa(unit) != SchwaDelete {
 				sb.WriteString("a")
 			}
 		}
@@ -49,7 +53,7 @@ func (r *Renderer) Render(word *Word) string {
 }
 
 // RenderDebug returns a detailed debug representation of the word.
-func (r *Renderer) RenderDebug(word *Word) string {
+func (r *Renderer) RenderDebug(word *core.Word) string {
 	var sb strings.Builder
 
 	sb.WriteString("Word: ")
@@ -68,24 +72,25 @@ func (r *Renderer) RenderDebug(word *Word) string {
 		sb.WriteString(unit.Type.String())
 		sb.WriteString(")")
 
-		if unit.AfterHalant {
+		if IsAfterHalant(unit) {
 			sb.WriteString(" [after-halant]")
 		}
-		if unit.Run != nil {
+		if GetRun(unit) != nil {
 			sb.WriteString(" [run:")
-			sb.WriteString(strconv.Itoa(unit.RunIndex))
+			sb.WriteString(strconv.Itoa(GetRunIndex(unit)))
 			sb.WriteString("]")
 		}
-		if unit.Type == UnitConsonant || unit.Type == UnitConjunct {
+		if unit.Type == core.UnitConsonant || unit.Type == core.UnitConjunct {
 			sb.WriteString(" schwa=")
-			sb.WriteString(unit.Schwa.String())
+			sb.WriteString(GetSchwa(unit).String())
 		}
 		sb.WriteString("\n")
 	}
 
-	if len(word.Runs) > 0 {
+	bd := GetWordBrahmicData(word)
+	if bd != nil && len(bd.Runs) > 0 {
 		sb.WriteString("Runs:\n")
-		for i, run := range word.Runs {
+		for i, run := range bd.Runs {
 			sb.WriteString("  Run ")
 			sb.WriteString(strconv.Itoa(i))
 			sb.WriteString(": ")
