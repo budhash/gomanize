@@ -395,11 +395,12 @@ func vowelRules() []core.Rule {
 		// vowel.long-aa.all (Scheme:60)
 		// ा→aa for all positions when LongVowels option is enabled: गाना→gaana, बनाना→banaana
 		{
-			Name:     "vowel.long-aa.all",
-			Phase:    core.PhaseVowel,
-			Scope:    core.ScopeScheme,
-			Priority: 60,
-			Mode:     core.ModeAlways,
+			Name:        "vowel.long-aa.all",
+			Phase:       core.PhaseVowel,
+			Scope:       core.ScopeScheme,
+			Priority:    60,
+			Mode:        core.ModeAlways,
+			Conditional: "LongVowels",
 			Condition: func(u *core.Unit, w *core.Word) bool {
 				if !w.Options.LongVowels {
 					return false

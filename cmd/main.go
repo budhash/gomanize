@@ -134,8 +134,23 @@ func printRules(rules []gomanize.RuleStatus) {
 		if !r.Enabled {
 			status = "disabled"
 		}
+		if r.Conditional != "" {
+			status = fmt.Sprintf("needs --%s", toFlagName(r.Conditional))
+		}
 		fmt.Printf("  %-40s [%s] %s:%d\n", r.Name, status, r.Phase, r.Priority)
 	}
+}
+
+// toFlagName converts a Go field name to a CLI flag name (e.g., "LongVowels" -> "long-vowels")
+func toFlagName(fieldName string) string {
+	var result []rune
+	for i, r := range fieldName {
+		if i > 0 && r >= 'A' && r <= 'Z' {
+			result = append(result, '-')
+		}
+		result = append(result, r)
+	}
+	return strings.ToLower(string(result))
 }
 
 func printDebugInfo(input, result string, info *gomanize.DebugInfo) {
