@@ -618,8 +618,9 @@ func renderRules() []core.Rule {
 		},
 
 		// render.anusvara.e-matra-final (Language:40)
-		// Word-final anusvara after े-matra becomes 'in' not 'en': में→mein
+		// Word-final anusvara after े-matra becomes 'in' not 'en': में→mein, करें→karein
 		// Only applies at word end; medial cases like केंद्र stay as kendra
+		// Skipped when SimpleNasals is enabled (that mode has its own rule)
 		{
 			Name:     "render.anusvara.e-matra-final",
 			Phase:    core.PhaseRender,
@@ -627,6 +628,10 @@ func renderRules() []core.Rule {
 			Priority: 40,
 			Mode:     core.ModeAlways,
 			Condition: func(u *core.Unit, w *core.Word) bool {
+				// Skip when SimpleNasals is enabled - that has its own handling
+				if w.Options.SimpleNasals {
+					return false
+				}
 				// Must be word-final
 				if !u.IsWordFinal() {
 					return false
@@ -649,6 +654,57 @@ func renderRules() []core.Rule {
 			},
 			Action: func(u *core.Unit, w *core.Word) {
 				// Change 'n' to 'in' for में→mein pattern
+				u.BaseRom = "in"
+			},
+		},
+
+		// render.anusvara.e-matra-final.simple (Scheme:41)
+		// When SimpleNasals is enabled, only apply 'ein' to monosyllabic words (में→mein)
+		// Multi-syllable words use plain 'en': करें→karen, चलें→chalen
+		{
+			Name:        "render.anusvara.e-matra-final.simple",
+			Phase:       core.PhaseRender,
+			Scope:       core.ScopeScheme,
+			Priority:    41,
+			Mode:        core.ModeAlways,
+			Conditional: "SimpleNasals",
+			Condition: func(u *core.Unit, w *core.Word) bool {
+				// Only applies when SimpleNasals option is enabled
+				if !w.Options.SimpleNasals {
+					return false
+				}
+				// Must be word-final
+				if !u.IsWordFinal() {
+					return false
+				}
+				// Check if this is anusvara (ं)
+				if u.Type != core.UnitModifier {
+					return false
+				}
+				if len(u.Runes) != 1 || u.Runes[0] != 'ं' {
+					return false
+				}
+				// Check if preceded by े-matra (e vowel)
+				if u.Prev == nil || u.Prev.Type != core.UnitVowel {
+					return false
+				}
+				if len(u.Prev.Runes) != 1 || u.Prev.Runes[0] != 'े' {
+					return false
+				}
+				// Count consonants before this pattern
+				// में = म + ें (1 consonant) → mein
+				// करें = क + र + ें (2 consonants) → karen
+				consonantCount := 0
+				for curr := u.Prev.Prev; curr != nil; curr = curr.Prev {
+					if curr.Type == core.UnitConsonant || curr.Type == core.UnitConjunct {
+						consonantCount++
+					}
+				}
+				// Only apply 'ein' if single consonant before ें (monosyllabic)
+				return consonantCount == 1
+			},
+			Action: func(u *core.Unit, w *core.Word) {
+				// Change 'n' to 'in' for में→mein pattern (monosyllabic only)
 				u.BaseRom = "in"
 			},
 		},

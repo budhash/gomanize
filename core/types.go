@@ -102,13 +102,15 @@ func (w *Word) AddUnit(u *Unit) {
 type Options struct {
 	// LongVowels outputs "aa" for all ā (aa-matra) positions.
 	LongVowels bool
+	// SimpleNasals uses simplified nasal endings (करें→karen instead of karein).
+	SimpleNasals bool
 	// Debug enables debug output showing rule applications.
 	Debug bool
 }
 
 // DefaultOptions returns the default transliteration options.
 func DefaultOptions() Options {
-	return Options{LongVowels: false, Debug: false}
+	return Options{LongVowels: false, SimpleNasals: false, Debug: false}
 }
 
 // RuleTrace records a single rule application for debugging.

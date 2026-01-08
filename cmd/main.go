@@ -42,6 +42,8 @@ func main() {
 			os.Exit(0)
 		case arg == "--long-vowels":
 			opts.LongVowels = true
+		case arg == "--simple-nasals":
+			opts.SimpleNasals = true
 		case arg == "--debug":
 			debug = true
 		case arg == "--list-rules":
@@ -242,6 +244,7 @@ func printUsage() {
 	fmt.Fprintln(os.Stderr, "")
 	fmt.Fprintln(os.Stderr, "Options:")
 	fmt.Fprintln(os.Stderr, "  --long-vowels            Use 'aa' for all ा positions (e.g., गाना→gaana)")
+	fmt.Fprintln(os.Stderr, "  --simple-nasals          Simplified nasal endings (करें→karen instead of karein)")
 	fmt.Fprintln(os.Stderr, "  --debug                  Show debug info (parsed units, rule applications)")
 	fmt.Fprintln(os.Stderr, "  --input=FILE             Read input lines from file (one per line)")
 	fmt.Fprintln(os.Stderr, "  --test=FILE              Test against expected values (TSV format)")
