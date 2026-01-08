@@ -20,40 +20,75 @@ func main() {
 	args := os.Args[1:]
 	opts := gomanize.NewOptions()
 	var textArgs []string
+	var disableRules []string
+	var enableRules []string
+	var listRulesPattern string
 	debug := false
+	listRules := false
 
 	// Parse flags and collect text arguments
-	for _, arg := range args {
-		switch arg {
-		case "-v", "--version", "version":
+	for i := 0; i < len(args); i++ {
+		arg := args[i]
+		switch {
+		case arg == "-v" || arg == "--version" || arg == "version":
 			fmt.Printf("gomanize %s (commit: %s, built: %s)\n", version, commit, date)
 			os.Exit(0)
-		case "-h", "--help", "help":
+		case arg == "-h" || arg == "--help" || arg == "help":
 			printUsage()
 			os.Exit(0)
-		case "--long-vowels":
+		case arg == "--long-vowels":
 			opts.LongVowels = true
-		case "--debug":
+		case arg == "--debug":
 			debug = true
-		default:
-			if strings.HasPrefix(arg, "-") {
-				fmt.Fprintf(os.Stderr, "Unknown flag: %s\n", arg)
-				printUsage()
-				os.Exit(1)
+		case arg == "--list-rules":
+			listRules = true
+			// Check if next arg is a pattern (not starting with -)
+			if i+1 < len(args) && !strings.HasPrefix(args[i+1], "-") {
+				listRulesPattern = args[i+1]
+				i++
 			}
+		case strings.HasPrefix(arg, "--disable-rule="):
+			disableRules = append(disableRules, strings.TrimPrefix(arg, "--disable-rule="))
+		case strings.HasPrefix(arg, "--enable-rule="):
+			enableRules = append(enableRules, strings.TrimPrefix(arg, "--enable-rule="))
+		case strings.HasPrefix(arg, "-"):
+			fmt.Fprintf(os.Stderr, "Unknown flag: %s\n", arg)
+			printUsage()
+			os.Exit(1)
+		default:
 			textArgs = append(textArgs, arg)
 		}
+	}
+
+	// Create engine with rule overrides
+	var engineOpts []gomanize.EngineOption
+	if len(disableRules) > 0 {
+		engineOpts = append(engineOpts, gomanize.WithDisabledRules(disableRules...))
+	}
+	if len(enableRules) > 0 {
+		engineOpts = append(engineOpts, gomanize.WithEnabledRules(enableRules...))
+	}
+
+	g, err := gomanize.NewWithOptions("hindi", opts, engineOpts...)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+		os.Exit(1)
+	}
+
+	// Handle --list-rules
+	if listRules {
+		rules := g.ListRules(listRulesPattern)
+		if rules == nil {
+			fmt.Fprintln(os.Stderr, "Rule listing not supported for this language")
+			os.Exit(1)
+		}
+		printRules(rules)
+		os.Exit(0)
 	}
 
 	input := getInput(textArgs)
 	if input == "" {
 		printUsage()
-		os.Exit(1)
-	}
-
-	g, err := gomanize.NewWithOptions("hindi", opts)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error:", err)
 		os.Exit(1)
 	}
 
@@ -78,10 +113,29 @@ func printUsage() {
 	fmt.Fprintln(os.Stderr, "       echo <text> | gomanize [options]")
 	fmt.Fprintln(os.Stderr, "")
 	fmt.Fprintln(os.Stderr, "Options:")
-	fmt.Fprintln(os.Stderr, "  --long-vowels  Use 'aa' for all ा positions (e.g., गाना→gaana)")
-	fmt.Fprintln(os.Stderr, "  --debug        Show debug info (parsed units, rule applications)")
-	fmt.Fprintln(os.Stderr, "  --version      Show version information")
-	fmt.Fprintln(os.Stderr, "  --help         Show this help message")
+	fmt.Fprintln(os.Stderr, "  --long-vowels            Use 'aa' for all ा positions (e.g., गाना→gaana)")
+	fmt.Fprintln(os.Stderr, "  --debug                  Show debug info (parsed units, rule applications)")
+	fmt.Fprintln(os.Stderr, "  --list-rules [PATTERN]   List all rules (optionally filtered by pattern)")
+	fmt.Fprintln(os.Stderr, "  --disable-rule=PATTERN   Disable rules matching pattern (e.g., schwa.*)")
+	fmt.Fprintln(os.Stderr, "  --enable-rule=PATTERN    Enable rules matching pattern")
+	fmt.Fprintln(os.Stderr, "  --version                Show version information")
+	fmt.Fprintln(os.Stderr, "  --help                   Show this help message")
+	fmt.Fprintln(os.Stderr, "")
+	fmt.Fprintln(os.Stderr, "Rule Patterns:")
+	fmt.Fprintln(os.Stderr, "  Exact match: schwa.delete.ccv")
+	fmt.Fprintln(os.Stderr, "  Glob:        schwa.* (all schwa rules)")
+	fmt.Fprintln(os.Stderr, "  Glob:        schwa.delete.* (all schwa deletion rules)")
+}
+
+func printRules(rules []gomanize.RuleStatus) {
+	fmt.Println("Rules:")
+	for _, r := range rules {
+		status := "enabled"
+		if !r.Enabled {
+			status = "disabled"
+		}
+		fmt.Printf("  %-40s [%s] %s:%d\n", r.Name, status, r.Phase, r.Priority)
+	}
 }
 
 func printDebugInfo(input, result string, info *gomanize.DebugInfo) {

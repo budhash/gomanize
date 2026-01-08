@@ -14,6 +14,20 @@ import (
 // Use NewOptions() to get defaults, then modify as needed.
 type Options = core.Options
 
+// EngineOption configures engine creation.
+type EngineOption = core.EngineOption
+
+// WithDisabledRules returns an option that disables rules matching the given patterns.
+// Patterns can be exact names or glob patterns (e.g., "schwa.*", "vowel.long-aa.*").
+var WithDisabledRules = core.WithDisabledRules
+
+// WithEnabledRules returns an option that enables rules matching the given patterns.
+// Useful for enabling rules that are disabled by default.
+var WithEnabledRules = core.WithEnabledRules
+
+// RuleStatus represents a rule and its current enabled/disabled state.
+type RuleStatus = core.RuleStatus
+
 // NewOptions returns Options with default values.
 func NewOptions() Options {
 	return core.DefaultOptions()
@@ -30,6 +44,18 @@ type Romanizer interface {
 	Info()
 }
 
+// ExtendedRomanizer extends Romanizer with rule management capabilities.
+type ExtendedRomanizer interface {
+	Romanizer
+	// ListRules returns all rules with their enabled/disabled status.
+	// If pattern is empty, returns all rules.
+	ListRules(pattern string) []RuleStatus
+	// DisableRule disables rules matching the given pattern.
+	DisableRule(pattern string) int
+	// EnableRule enables rules matching the given pattern.
+	EnableRule(pattern string) int
+}
+
 type Gomanize struct {
 	romanizer Romanizer
 	options   Options
@@ -41,15 +67,22 @@ func New(language string) (*Gomanize, error) {
 }
 
 // NewWithOptions creates a Gomanize instance with custom options.
-func NewWithOptions(language string, opts Options) (*Gomanize, error) {
-	converters := loadRomanizers()
+func NewWithOptions(language string, opts Options, engineOpts ...EngineOption) (*Gomanize, error) {
 	l := strings.ToLower(language)
-	g, found := converters[l]
-	if found {
-		return &Gomanize{romanizer: g, options: opts}, nil
-	} else {
+
+	// Create engine with options
+	var romanizer Romanizer
+	switch l {
+	case "hindi":
+		engine := core.NewEngine(hindiLang.Hindi{}, colloquial.Colloquial{}, engineOpts...)
+		romanizer = &coreEngineAdapter{name: "hindi", engine: engine}
+	case "hindi-legacy":
+		romanizer = &legacyAdapter{legacy: &legacyLang.Hindi{}}
+	default:
 		return nil, fmt.Errorf("language not supported : %s", l)
 	}
+
+	return &Gomanize{romanizer: romanizer, options: opts}, nil
 }
 
 // SetOptions updates the options for this instance.
@@ -83,6 +116,34 @@ func (g Gomanize) TranslitDebug(word string) (string, *DebugInfo) {
 	return g.romanizer.TransliterateDebug(word, g.options)
 }
 
+// ListRules returns all rules with their enabled/disabled status.
+// If pattern is empty, returns all rules. Supports glob patterns (e.g., "schwa.*").
+// Returns nil if the romanizer doesn't support rule listing.
+func (g *Gomanize) ListRules(pattern string) []RuleStatus {
+	if ext, ok := g.romanizer.(ExtendedRomanizer); ok {
+		return ext.ListRules(pattern)
+	}
+	return nil
+}
+
+// DisableRule disables rules matching the given pattern.
+// Returns the number of rules disabled, or 0 if not supported.
+func (g *Gomanize) DisableRule(pattern string) int {
+	if ext, ok := g.romanizer.(ExtendedRomanizer); ok {
+		return ext.DisableRule(pattern)
+	}
+	return 0
+}
+
+// EnableRule enables rules matching the given pattern.
+// Returns the number of rules enabled, or 0 if not supported.
+func (g *Gomanize) EnableRule(pattern string) int {
+	if ext, ok := g.romanizer.(ExtendedRomanizer); ok {
+		return ext.EnableRule(pattern)
+	}
+	return 0
+}
+
 // coreEngineAdapter adapts a core.Engine to the Romanizer interface.
 type coreEngineAdapter struct {
 	name   string
@@ -111,6 +172,18 @@ func (a *coreEngineAdapter) Info() {
 	fmt.Printf("Scheme: %s\n", a.engine.Scheme().Name())
 }
 
+func (a *coreEngineAdapter) ListRules(pattern string) []RuleStatus {
+	return a.engine.RuleEngine().ListRules(pattern)
+}
+
+func (a *coreEngineAdapter) DisableRule(pattern string) int {
+	return a.engine.RuleEngine().DisableRule(pattern)
+}
+
+func (a *coreEngineAdapter) EnableRule(pattern string) int {
+	return a.engine.RuleEngine().EnableRule(pattern)
+}
+
 // legacyAdapter adapts the legacy engine to the Romanizer interface.
 type legacyAdapter struct {
 	legacy *legacyLang.Hindi
@@ -137,20 +210,4 @@ func (a *legacyAdapter) TransliterateDebug(word string, opts Options) (string, *
 
 func (a *legacyAdapter) Info() {
 	a.legacy.Info()
-}
-
-func loadRomanizers() map[string]Romanizer {
-	romanizers := make(map[string]Romanizer)
-
-	// New architecture: Hindi with colloquial scheme
-	hindiEngine := core.NewEngine(hindiLang.Hindi{}, colloquial.Colloquial{})
-	romanizers["hindi"] = &coreEngineAdapter{
-		name:   "hindi",
-		engine: hindiEngine,
-	}
-
-	// Legacy implementation (for comparison/reference)
-	romanizers["hindi-legacy"] = &legacyAdapter{legacy: &legacyLang.Hindi{}}
-
-	return romanizers
 }
