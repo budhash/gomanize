@@ -86,18 +86,20 @@ type Rule struct {
 	Scope           RuleScope
 	Priority        int // 0-99 within scope
 	Mode            RuleMode
-	DisabledDefault bool // If true, rule is disabled by default (must be explicitly enabled)
+	DisabledDefault bool   // If true, rule is disabled by default (must be explicitly enabled)
+	Conditional     string // If non-empty, rule depends on this runtime option (e.g., "LongVowels")
 	Condition       func(*Unit, *Word) bool
 	Action          func(*Unit, *Word)
 }
 
 // RuleStatus represents a rule and its current enabled/disabled state.
 type RuleStatus struct {
-	Name     string
-	Phase    RulePhase
-	Scope    RuleScope
-	Priority int
-	Enabled  bool
+	Name        string
+	Phase       RulePhase
+	Scope       RuleScope
+	Priority    int
+	Enabled     bool
+	Conditional string // If non-empty, rule depends on this runtime option
 }
 
 // EffectivePriority calculates the overall priority across scopes.
@@ -316,11 +318,12 @@ func (e *RuleEngine) ListRules(pattern string) []RuleStatus {
 			continue
 		}
 		result = append(result, RuleStatus{
-			Name:     r.Name,
-			Phase:    r.Phase,
-			Scope:    r.Scope,
-			Priority: r.Priority,
-			Enabled:  !e.disabled[r.Name],
+			Name:        r.Name,
+			Phase:       r.Phase,
+			Scope:       r.Scope,
+			Priority:    r.Priority,
+			Enabled:     !e.disabled[r.Name],
+			Conditional: r.Conditional,
 		})
 	}
 	return result
