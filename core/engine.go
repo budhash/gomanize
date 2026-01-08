@@ -11,12 +11,44 @@ type Engine struct {
 	renderer   Renderer
 }
 
+// engineConfig holds configuration for engine creation.
+type engineConfig struct {
+	disableRules []string
+	enableRules  []string
+}
+
+// EngineOption configures engine creation.
+type EngineOption func(*engineConfig)
+
+// WithDisabledRules disables rules matching the given patterns at engine creation.
+// Patterns can be exact names or glob patterns (e.g., "schwa.*", "vowel.long-aa.*").
+func WithDisabledRules(patterns ...string) EngineOption {
+	return func(cfg *engineConfig) {
+		cfg.disableRules = append(cfg.disableRules, patterns...)
+	}
+}
+
+// WithEnabledRules enables rules matching the given patterns at engine creation.
+// Useful for enabling rules that are disabled by default.
+// Patterns can be exact names or glob patterns (e.g., "vowel.long-aa.all").
+func WithEnabledRules(patterns ...string) EngineOption {
+	return func(cfg *engineConfig) {
+		cfg.enableRules = append(cfg.enableRules, patterns...)
+	}
+}
+
 // NewEngine creates an engine for a language + scheme combination.
 // Panics if the language returns a nil Script.
-func NewEngine(lang Language, scheme Scheme) *Engine {
+func NewEngine(lang Language, scheme Scheme, opts ...EngineOption) *Engine {
 	script := lang.Script()
 	if script == nil {
 		panic("core.NewEngine: lang.Script() returned nil")
+	}
+
+	// Apply options
+	cfg := &engineConfig{}
+	for _, opt := range opts {
+		opt(cfg)
 	}
 
 	// Get language's complete rule catalog
@@ -25,13 +57,24 @@ func NewEngine(lang Language, scheme Scheme) *Engine {
 	// Scheme selects which rules to use
 	selectedRules := scheme.SelectRules(catalog)
 
+	// Create rule engine
+	ruleEngine := NewRuleEngine(selectedRules)
+
+	// Apply rule overrides from options
+	for _, pattern := range cfg.disableRules {
+		ruleEngine.DisableRule(pattern)
+	}
+	for _, pattern := range cfg.enableRules {
+		ruleEngine.EnableRule(pattern)
+	}
+
 	return &Engine{
 		lang:       lang,
 		scheme:     scheme,
 		script:     script,
 		symbols:    lang.Symbols(),
 		config:     lang.ScriptConfig(),
-		ruleEngine: NewRuleEngine(selectedRules),
+		ruleEngine: ruleEngine,
 		renderer:   script.NewRenderer(),
 	}
 }
@@ -123,4 +166,10 @@ func (e *Engine) Language() Language {
 // Scheme returns the engine's scheme.
 func (e *Engine) Scheme() Scheme {
 	return e.scheme
+}
+
+// RuleEngine returns the engine's rule engine for direct manipulation.
+// Use this to enable/disable rules after engine creation.
+func (e *Engine) RuleEngine() *RuleEngine {
+	return e.ruleEngine
 }

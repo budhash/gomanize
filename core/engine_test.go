@@ -282,3 +282,251 @@ func TestEngineWithSchemeSelectedRules(t *testing.T) {
 		t.Errorf("Transliterate() = %q, want %q", result, "aab")
 	}
 }
+
+// =============================================================================
+// EngineOption Tests
+// =============================================================================
+
+func TestEngineWithDisabledRules(t *testing.T) {
+	script := &mockScript{
+		name:     "test",
+		parser:   &mockParser{},
+		renderer: &mockRenderer{},
+	}
+
+	var rule1Ran, rule2Ran bool
+
+	rules := []Rule{
+		{
+			Name:      "schwa.delete.ccv",
+			Phase:     PhaseSchwa,
+			Scope:     ScopeLanguage,
+			Priority:  50,
+			Mode:      ModeAlways,
+			Condition: func(u *Unit, w *Word) bool { return true },
+			Action:    func(u *Unit, w *Word) { rule1Ran = true },
+		},
+		{
+			Name:      "schwa.delete.word-final",
+			Phase:     PhaseSchwa,
+			Scope:     ScopeLanguage,
+			Priority:  40,
+			Mode:      ModeAlways,
+			Condition: func(u *Unit, w *Word) bool { return true },
+			Action:    func(u *Unit, w *Word) { rule2Ran = true },
+		},
+	}
+
+	lang := &mockLanguage{
+		name:    "test",
+		script:  script,
+		symbols: make(SymbolMap),
+	}
+	scheme := &mockScheme{name: "test", rules: rules}
+
+	// Create engine with one rule disabled
+	engine := NewEngine(lang, scheme, WithDisabledRules("schwa.delete.ccv"))
+
+	// Verify the rule is disabled
+	if !engine.RuleEngine().IsDisabled("schwa.delete.ccv") {
+		t.Error("schwa.delete.ccv should be disabled")
+	}
+	if engine.RuleEngine().IsDisabled("schwa.delete.word-final") {
+		t.Error("schwa.delete.word-final should NOT be disabled")
+	}
+
+	// Run transliteration to verify rule doesn't execute
+	engine.Transliterate("a")
+
+	if rule1Ran {
+		t.Error("Disabled rule schwa.delete.ccv should not have run")
+	}
+	if !rule2Ran {
+		t.Error("Enabled rule schwa.delete.word-final should have run")
+	}
+}
+
+func TestEngineWithDisabledRulesGlob(t *testing.T) {
+	script := &mockScript{
+		name:     "test",
+		parser:   &mockParser{},
+		renderer: &mockRenderer{},
+	}
+
+	rules := []Rule{
+		{
+			Name:      "schwa.delete.ccv",
+			Phase:     PhaseSchwa,
+			Priority:  50,
+			Condition: func(*Unit, *Word) bool { return true },
+			Action:    func(*Unit, *Word) {},
+		},
+		{
+			Name:      "schwa.delete.word-final",
+			Phase:     PhaseSchwa,
+			Priority:  40,
+			Condition: func(*Unit, *Word) bool { return true },
+			Action:    func(*Unit, *Word) {},
+		},
+		{
+			Name:      "consonant.va-to-wa.conjunct",
+			Phase:     PhaseConsonant,
+			Priority:  50,
+			Condition: func(*Unit, *Word) bool { return true },
+			Action:    func(*Unit, *Word) {},
+		},
+	}
+
+	lang := &mockLanguage{
+		name:    "test",
+		script:  script,
+		symbols: make(SymbolMap),
+	}
+	scheme := &mockScheme{name: "test", rules: rules}
+
+	// Create engine with all schwa.delete.* rules disabled
+	engine := NewEngine(lang, scheme, WithDisabledRules("schwa.delete.*"))
+
+	// Both schwa.delete rules should be disabled
+	if !engine.RuleEngine().IsDisabled("schwa.delete.ccv") {
+		t.Error("schwa.delete.ccv should be disabled")
+	}
+	if !engine.RuleEngine().IsDisabled("schwa.delete.word-final") {
+		t.Error("schwa.delete.word-final should be disabled")
+	}
+	// Consonant rule should not be disabled
+	if engine.RuleEngine().IsDisabled("consonant.va-to-wa.conjunct") {
+		t.Error("consonant.va-to-wa.conjunct should NOT be disabled")
+	}
+}
+
+func TestEngineWithEnabledRules(t *testing.T) {
+	script := &mockScript{
+		name:     "test",
+		parser:   &mockParser{},
+		renderer: &mockRenderer{},
+	}
+
+	var ruleRan bool
+
+	rules := []Rule{
+		{
+			Name:            "vowel.long-aa.all",
+			Phase:           PhaseVowel,
+			Scope:           ScopeLanguage,
+			Priority:        50,
+			Mode:            ModeAlways,
+			DisabledDefault: true, // Disabled by default
+			Condition:       func(u *Unit, w *Word) bool { return true },
+			Action:          func(u *Unit, w *Word) { ruleRan = true },
+		},
+	}
+
+	lang := &mockLanguage{
+		name:    "test",
+		script:  script,
+		symbols: make(SymbolMap),
+	}
+	scheme := &mockScheme{name: "test", rules: rules}
+
+	// Create engine with the rule enabled
+	engine := NewEngine(lang, scheme, WithEnabledRules("vowel.long-aa.all"))
+
+	// Verify the rule is enabled
+	if engine.RuleEngine().IsDisabled("vowel.long-aa.all") {
+		t.Error("vowel.long-aa.all should be enabled after WithEnabledRules")
+	}
+
+	// Run transliteration to verify rule executes
+	engine.Transliterate("a")
+
+	if !ruleRan {
+		t.Error("Enabled rule vowel.long-aa.all should have run")
+	}
+}
+
+func TestEngineWithMultipleOptions(t *testing.T) {
+	script := &mockScript{
+		name:     "test",
+		parser:   &mockParser{},
+		renderer: &mockRenderer{},
+	}
+
+	rules := []Rule{
+		{
+			Name:      "schwa.delete.ccv",
+			Phase:     PhaseSchwa,
+			Priority:  50,
+			Condition: func(*Unit, *Word) bool { return true },
+			Action:    func(*Unit, *Word) {},
+		},
+		{
+			Name:            "vowel.long-aa.all",
+			Phase:           PhaseVowel,
+			Priority:        50,
+			DisabledDefault: true,
+			Condition:       func(*Unit, *Word) bool { return true },
+			Action:          func(*Unit, *Word) {},
+		},
+	}
+
+	lang := &mockLanguage{
+		name:    "test",
+		script:  script,
+		symbols: make(SymbolMap),
+	}
+	scheme := &mockScheme{name: "test", rules: rules}
+
+	// Create engine with both options
+	engine := NewEngine(lang, scheme,
+		WithDisabledRules("schwa.delete.ccv"),
+		WithEnabledRules("vowel.long-aa.all"),
+	)
+
+	// Verify both options took effect
+	if !engine.RuleEngine().IsDisabled("schwa.delete.ccv") {
+		t.Error("schwa.delete.ccv should be disabled")
+	}
+	if engine.RuleEngine().IsDisabled("vowel.long-aa.all") {
+		t.Error("vowel.long-aa.all should be enabled")
+	}
+}
+
+func TestEngineRuleEngine(t *testing.T) {
+	script := &mockScript{
+		name:     "test",
+		parser:   &mockParser{},
+		renderer: &mockRenderer{},
+	}
+
+	rules := []Rule{
+		{
+			Name:      "test-rule",
+			Phase:     PhaseSchwa,
+			Priority:  50,
+			Condition: func(*Unit, *Word) bool { return true },
+			Action:    func(*Unit, *Word) {},
+		},
+	}
+
+	lang := &mockLanguage{
+		name:    "test",
+		script:  script,
+		symbols: make(SymbolMap),
+	}
+	scheme := &mockScheme{name: "test", rules: rules}
+
+	engine := NewEngine(lang, scheme)
+
+	// RuleEngine() should return the internal rule engine
+	re := engine.RuleEngine()
+	if re == nil {
+		t.Fatal("RuleEngine() returned nil")
+	}
+
+	// Should be able to manipulate rules through it
+	re.DisableRule("test-rule")
+	if !re.IsDisabled("test-rule") {
+		t.Error("test-rule should be disabled after calling DisableRule on RuleEngine()")
+	}
+}

@@ -19,10 +19,10 @@ func RuleCatalog() core.RuleCatalog {
 // schwaRules returns all schwa-related rules.
 func schwaRules() []core.Rule {
 	return []core.Rule{
-		// schwa-keep-sonorous-final (Script:70)
+		// schwa.keep.sonorous-final (Script:70)
 		// Keep final schwa after halant for र, य, व: मंत्र→mantra
 		{
-			Name:     "schwa-keep-sonorous-final",
+			Name:     "schwa.keep.sonorous-final",
 			Phase:    core.PhaseSchwa,
 			Scope:    core.ScopeScript,
 			Priority: 70,
@@ -39,12 +39,12 @@ func schwaRules() []core.Rule {
 			},
 		},
 
-		// schwa-keep-gya-final (Language:65)
+		// schwa.keep.gya-final (Language:65)
 		// Keep final schwa for ज्ञ conjunct: यज्ञ→yagya
 		// ज्ञ is a special Sanskrit conjunct that retains schwa
 		// Only applies when there's content before (not for isolated ज्ञ→gy)
 		{
-			Name:     "schwa-keep-gya-final",
+			Name:     "schwa.keep.gya-final",
 			Phase:    core.PhaseSchwa,
 			Scope:    core.ScopeLanguage,
 			Priority: 65,
@@ -68,10 +68,10 @@ func schwaRules() []core.Rule {
 			},
 		},
 
-		// schwa-keep-iya-suffix (Language:60)
+		// schwa.keep.iya-suffix (Language:60)
 		// Keep schwa for ीय adjective endings: केंद्रीय→kendriya
 		{
-			Name:     "schwa-keep-iya-suffix",
+			Name:     "schwa.keep.iya-suffix",
 			Phase:    core.PhaseSchwa,
 			Scope:    core.ScopeLanguage,
 			Priority: 60,
@@ -94,13 +94,13 @@ func schwaRules() []core.Rule {
 			},
 		},
 
-		// schwa-delete-ccv (Script:50)
+		// schwa.delete.ccv (Script:50)
 		// Delete medial schwa in C+C+V pattern: जनता→janta, कमला→kamla, अपना→apna
 		// Also applies for C+C+Modifier (anusvara/chandrabindu): झारखंड→jharkhand
 		// Does NOT apply to word-initial conjuncts: प्रकाश→prakaash (not "prkaash")
 		// Does NOT apply after halant (conjuncts): पार्वती→parvati (not "parvti")
 		{
-			Name:     "schwa-delete-ccv",
+			Name:     "schwa.delete.ccv",
 			Phase:    core.PhaseSchwa,
 			Scope:    core.ScopeScript,
 			Priority: 50,
@@ -151,7 +151,7 @@ func schwaRules() []core.Rule {
 			},
 		},
 
-		// schwa-delete-cccc-final (Script:45)
+		// schwa.delete.cccc-final (Script:45)
 		// Delete schwa in C+C+C+C+END pattern (4+ consonant words ending in consonants)
 		// Examples: मकसद→maksad, झटपट→jhatpat
 		// Only applies at RUNE index 1 (second character in original string)
@@ -159,7 +159,7 @@ func schwaRules() []core.Rule {
 		// This does NOT apply to 3-consonant words like कमल→kamal, गरम→garam
 		// Does NOT apply to word-initial conjuncts: प्रथम→pratham (not "prtham")
 		{
-			Name:     "schwa-delete-cccc-final",
+			Name:     "schwa.delete.cccc-final",
 			Phase:    core.PhaseSchwa,
 			Scope:    core.ScopeScript,
 			Priority: 45,
@@ -210,11 +210,11 @@ func schwaRules() []core.Rule {
 			},
 		},
 
-		// schwa-delete-word-final (Universal:10)
+		// schwa.delete.word-final (Universal:10)
 		// Delete schwa at word end (unless protected by higher rules)
-		// Note: schwa-keep-sonorous-final (Script:70) runs first to protect र, य, व
+		// Note: schwa.keep.sonorous-final (Script:70) runs first to protect र, य, व
 		{
-			Name:     "schwa-delete-word-final",
+			Name:     "schwa.delete.word-final",
 			Phase:    core.PhaseSchwa,
 			Scope:    core.ScopeUniversal,
 			Priority: 10,
@@ -229,10 +229,10 @@ func schwaRules() []core.Rule {
 			},
 		},
 
-		// schwa-keep-default (Universal:0, Fallback)
+		// schwa.keep.default (Universal:0, Fallback)
 		// Default: keep schwa if no other rule decided
 		{
-			Name:     "schwa-keep-default",
+			Name:     "schwa.keep.default",
 			Phase:    core.PhaseSchwa,
 			Scope:    core.ScopeUniversal,
 			Priority: 0,
@@ -250,10 +250,10 @@ func schwaRules() []core.Rule {
 // consonantRules returns all consonant modification rules.
 func consonantRules() []core.Rule {
 	return []core.Rule{
-		// va-to-wa-conjunct (Language:55)
+		// consonant.va-to-wa.conjunct (Language:55)
 		// व→w in conjuncts after स, श, द, ख: स्वागत→swagat, ऐश्वर्या→aishwarya
 		{
-			Name:     "va-to-wa-conjunct",
+			Name:     "consonant.va-to-wa.conjunct",
 			Phase:    core.PhaseConsonant,
 			Scope:    core.ScopeLanguage,
 			Priority: 55,
@@ -274,11 +274,11 @@ func consonantRules() []core.Rule {
 			},
 		},
 
-		// va-to-wa-wala-suffix (Language:52)
+		// consonant.va-to-wa.wala-suffix (Language:52)
 		// Word-initial वाल pattern → 'w': वाली→wali, वाले→wale, वालो→walo, वालों→walon
 		// This is the Hindi suffix meaning "one who has/does X"
 		{
-			Name:     "va-to-wa-wala-suffix",
+			Name:     "consonant.va-to-wa.wala-suffix",
 			Phase:    core.PhaseConsonant,
 			Scope:    core.ScopeLanguage,
 			Priority: 52,
@@ -307,13 +307,13 @@ func consonantRules() []core.Rule {
 			},
 		},
 
-		// va-to-wa-with-vowel (Language:50)
+		// consonant.va-to-wa.with-vowel (Language:50)
 		// व + vowel matra (except इ-type) → 'w': दिवाली→diwali, भगवान→bhagwaan, हवा→hawa
 		// व + consonant → 'v': अवस्था→avastha, परिवर्तन→parivartan, दिवस→divas
 		// व + इ-type matra (ि, ी, े, ै) → 'v': कवि→kavi, गोविंद→govind
 		// इ-type matra + व → 'v': विवाद→vivaad, विवाह→vivaah (वि+वा pattern)
 		{
-			Name:     "va-to-wa-with-vowel",
+			Name:     "consonant.va-to-wa.with-vowel",
 			Phase:    core.PhaseConsonant,
 			Scope:    core.ScopeLanguage,
 			Priority: 50,
@@ -360,11 +360,11 @@ func consonantRules() []core.Rule {
 // vowelRules returns all vowel modification rules.
 func vowelRules() []core.Rule {
 	return []core.Rule{
-		// i-matra-e-glide (Language:70)
+		// vowel.i-matra.e-glide (Language:70)
 		// िए pattern becomes 'iye' not 'ie': किए→kiye, लिए→liye
 		// The ए after ि-matra takes a y-glide for natural pronunciation
 		{
-			Name:     "i-matra-e-glide",
+			Name:     "vowel.i-matra.e-glide",
 			Phase:    core.PhaseVowel,
 			Scope:    core.ScopeLanguage,
 			Priority: 70,
@@ -392,10 +392,10 @@ func vowelRules() []core.Rule {
 			},
 		},
 
-		// long-aa-all (Scheme:60)
+		// vowel.long-aa.all (Scheme:60)
 		// ा→aa for all positions when LongVowels option is enabled: गाना→gaana, बनाना→banaana
 		{
-			Name:     "long-aa-all",
+			Name:     "vowel.long-aa.all",
 			Phase:    core.PhaseVowel,
 			Scope:    core.ScopeScheme,
 			Priority: 60,
@@ -415,12 +415,12 @@ func vowelRules() []core.Rule {
 			},
 		},
 
-		// long-aa-closed-final (Language:50)
+		// vowel.long-aa.closed-final (Language:50)
 		// ा→aa when in closed syllable at word end: काम→kaam, इंसान→insaan
 		// Also handles ा+modifier patterns: दांत→daant, पांच→paanch, मां→maa
-		// Exception: NOT applied for ांव pattern (गांव→gaon, handled by aanv-to-aon rule)
+		// Exception: NOT applied for ांव pattern (गांव→gaon, handled by render.pattern.aanv-to-aon rule)
 		{
-			Name:     "long-aa-closed-final",
+			Name:     "vowel.long-aa.closed-final",
 			Phase:    core.PhaseVowel,
 			Scope:    core.ScopeLanguage,
 			Priority: 50,
@@ -538,14 +538,14 @@ func isWordInitialConjunct(u *core.Unit, w *core.Word) bool {
 // renderRules returns all render phase rules.
 func renderRules() []core.Rule {
 	return []core.Rule{
-		// anusvara-final-silent (Language:50)
+		// render.anusvara.final-silent (Language:50)
 		// Word-final anusvara after ा-matra in short words is nasalization only, not 'n': मां→maa
 		// This applies to monosyllabic words like मां where the ं is just nasalization
 		// Longer words like कलाकृतियां keep the 'n': kalakritiyaan
 		// Note: anusvara BEFORE consonant still renders as 'n': दांत→daant
 		// Note: anusvara after other vowels (में→men) keeps the 'n'
 		{
-			Name:     "anusvara-final-silent",
+			Name:     "render.anusvara.final-silent",
 			Phase:    core.PhaseRender,
 			Scope:    core.ScopeLanguage,
 			Priority: 50,
@@ -584,11 +584,11 @@ func renderRules() []core.Rule {
 			},
 		},
 
-		// chandrabindu-final-silent (Language:45)
+		// render.chandrabindu.final-silent (Language:45)
 		// Word-final chandrabindu after ा-matra is nasalization only: माँ→maa
 		// Chandrabindu (ँ) is always pure nasalization, never adds a consonant sound
 		{
-			Name:     "chandrabindu-final-silent",
+			Name:     "render.chandrabindu.final-silent",
 			Phase:    core.PhaseRender,
 			Scope:    core.ScopeLanguage,
 			Priority: 45,
@@ -616,11 +616,11 @@ func renderRules() []core.Rule {
 			},
 		},
 
-		// anusvara-after-e-matra-final (Language:40)
+		// render.anusvara.e-matra-final (Language:40)
 		// Word-final anusvara after े-matra becomes 'in' not 'en': में→mein
 		// Only applies at word end; medial cases like केंद्र stay as kendra
 		{
-			Name:     "anusvara-after-e-matra-final",
+			Name:     "render.anusvara.e-matra-final",
 			Phase:    core.PhaseRender,
 			Scope:    core.ScopeLanguage,
 			Priority: 40,
@@ -652,11 +652,11 @@ func renderRules() []core.Rule {
 			},
 		},
 
-		// anusvara-before-labial (Language:35)
+		// render.anusvara.before-labial (Language:35)
 		// Anusvara before labial consonants (प, ब, भ, म) becomes 'm': संभव→sambhav
 		// This is standard Hindi phonology - nasal assimilates to following consonant
 		{
-			Name:     "anusvara-before-labial",
+			Name:     "render.anusvara.before-labial",
 			Phase:    core.PhaseRender,
 			Scope:    core.ScopeLanguage,
 			Priority: 35,
@@ -683,12 +683,12 @@ func renderRules() []core.Rule {
 			},
 		},
 
-		// aanv-to-aon (Language:30)
+		// render.pattern.aanv-to-aon (Language:30)
 		// ांव pattern becomes 'aon' not 'aanv': गांव→gaon
 		// This is a common Hindi spelling convention where the व is semi-silent
 		// and the nasalization creates the 'n' sound
 		{
-			Name:     "aanv-to-aon",
+			Name:     "render.pattern.aanv-to-aon",
 			Phase:    core.PhaseRender,
 			Scope:    core.ScopeLanguage,
 			Priority: 30,

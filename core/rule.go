@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 	"sort"
+	"strings"
 )
 
 // RulePhase determines when a rule executes in the pipeline.
@@ -80,13 +81,23 @@ func (m RuleMode) String() string {
 
 // Rule represents a single transliteration rule.
 type Rule struct {
-	Name      string
-	Phase     RulePhase
-	Scope     RuleScope
-	Priority  int // 0-99 within scope
-	Mode      RuleMode
-	Condition func(*Unit, *Word) bool
-	Action    func(*Unit, *Word)
+	Name            string
+	Phase           RulePhase
+	Scope           RuleScope
+	Priority        int // 0-99 within scope
+	Mode            RuleMode
+	DisabledDefault bool // If true, rule is disabled by default (must be explicitly enabled)
+	Condition       func(*Unit, *Word) bool
+	Action          func(*Unit, *Word)
+}
+
+// RuleStatus represents a rule and its current enabled/disabled state.
+type RuleStatus struct {
+	Name     string
+	Phase    RulePhase
+	Scope    RuleScope
+	Priority int
+	Enabled  bool
 }
 
 // EffectivePriority calculates the overall priority across scopes.
@@ -99,6 +110,7 @@ func (r *Rule) EffectivePriority() int {
 type RuleEngine struct {
 	allRules []Rule
 	active   map[RulePhase][]Rule // Filtered and sorted per phase
+	disabled map[string]bool      // Disabled rule names
 
 	// Debug support
 	traces       []RuleTrace
@@ -125,7 +137,17 @@ func NewRuleEngine(rules []Rule) *RuleEngine {
 	e := &RuleEngine{
 		allRules: append([]Rule{}, rules...),
 		active:   make(map[RulePhase][]Rule),
+		disabled: make(map[string]bool),
 	}
+
+	// Apply default enabled/disabled states
+	// Rules with DisabledDefault=true are disabled by default
+	for _, r := range e.allRules {
+		if r.DisabledDefault {
+			e.disabled[r.Name] = true
+		}
+	}
+
 	e.rebuildActive()
 	return e
 }
@@ -157,10 +179,14 @@ func (e *RuleEngine) AddRule(r Rule) error {
 	return nil
 }
 
-// rebuildActive sorts rules by priority for each phase.
+// rebuildActive sorts rules by priority for each phase, excluding disabled rules.
 func (e *RuleEngine) rebuildActive() {
 	e.active = make(map[RulePhase][]Rule)
 	for _, r := range e.allRules {
+		// Skip disabled rules
+		if e.disabled[r.Name] {
+			continue
+		}
 		e.active[r.Phase] = append(e.active[r.Phase], r)
 	}
 	// Sort each phase by effective priority (highest first)
@@ -238,6 +264,83 @@ func (e *RuleEngine) Rules() []Rule {
 // RulesForPhase returns a copy of rules for a specific phase, sorted by priority.
 func (e *RuleEngine) RulesForPhase(phase RulePhase) []Rule {
 	return append([]Rule{}, e.active[phase]...)
+}
+
+// DisableRule disables rules matching the given pattern.
+// Pattern can be an exact name or a glob pattern using '*' as wildcard.
+// Examples: "schwa.delete.ccv", "schwa.*", "schwa.delete.*"
+// Returns the count of rules matched and disabled.
+func (e *RuleEngine) DisableRule(pattern string) int {
+	count := 0
+	for _, r := range e.allRules {
+		if matchPattern(r.Name, pattern) && !e.disabled[r.Name] {
+			e.disabled[r.Name] = true
+			count++
+		}
+	}
+	if count > 0 {
+		e.rebuildActive()
+	}
+	return count
+}
+
+// EnableRule enables rules matching the given pattern.
+// Pattern can be an exact name or a glob pattern using '*' as wildcard.
+// Examples: "vowel.long-aa.all", "vowel.*", "vowel.long-aa.*"
+// Returns the count of rules matched and enabled.
+func (e *RuleEngine) EnableRule(pattern string) int {
+	count := 0
+	for _, r := range e.allRules {
+		if matchPattern(r.Name, pattern) && e.disabled[r.Name] {
+			delete(e.disabled, r.Name)
+			count++
+		}
+	}
+	if count > 0 {
+		e.rebuildActive()
+	}
+	return count
+}
+
+// IsDisabled returns true if the rule with the given name is currently disabled.
+func (e *RuleEngine) IsDisabled(name string) bool {
+	return e.disabled[name]
+}
+
+// ListRules returns all rules with their enabled/disabled status.
+// If pattern is non-empty, only rules matching the pattern are returned.
+func (e *RuleEngine) ListRules(pattern string) []RuleStatus {
+	var result []RuleStatus
+	for _, r := range e.allRules {
+		if pattern != "" && !matchPattern(r.Name, pattern) {
+			continue
+		}
+		result = append(result, RuleStatus{
+			Name:     r.Name,
+			Phase:    r.Phase,
+			Scope:    r.Scope,
+			Priority: r.Priority,
+			Enabled:  !e.disabled[r.Name],
+		})
+	}
+	return result
+}
+
+// matchPattern checks if name matches the given pattern.
+// Pattern supports '*' as a wildcard that matches any suffix.
+// Examples:
+//   - "schwa.delete.ccv" matches "schwa.delete.ccv" (exact)
+//   - "schwa.*" matches "schwa.delete.ccv", "schwa.keep.default"
+//   - "schwa.delete.*" matches "schwa.delete.ccv", "schwa.delete.word-final"
+func matchPattern(name, pattern string) bool {
+	if pattern == "*" {
+		return true
+	}
+	if strings.HasSuffix(pattern, "*") {
+		prefix := strings.TrimSuffix(pattern, "*")
+		return strings.HasPrefix(name, prefix)
+	}
+	return name == pattern
 }
 
 // SetDebugMetaExtractor sets a function to extract script-specific metadata.
