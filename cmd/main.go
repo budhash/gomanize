@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"os"
@@ -23,8 +24,11 @@ func main() {
 	var disableRules []string
 	var enableRules []string
 	var listRulesPattern string
+	var inputFile string
+	var testFile string
 	debug := false
 	listRules := false
+	diffMode := false
 
 	// Parse flags and collect text arguments
 	for i := 0; i < len(args); i++ {
@@ -51,6 +55,12 @@ func main() {
 			disableRules = append(disableRules, strings.TrimPrefix(arg, "--disable-rule="))
 		case strings.HasPrefix(arg, "--enable-rule="):
 			enableRules = append(enableRules, strings.TrimPrefix(arg, "--enable-rule="))
+		case strings.HasPrefix(arg, "--input="):
+			inputFile = strings.TrimPrefix(arg, "--input=")
+		case strings.HasPrefix(arg, "--test="):
+			testFile = strings.TrimPrefix(arg, "--test=")
+		case arg == "--diff":
+			diffMode = true
 		case strings.HasPrefix(arg, "-"):
 			fmt.Fprintf(os.Stderr, "Unknown flag: %s\n", arg)
 			printUsage()
@@ -86,6 +96,18 @@ func main() {
 		os.Exit(0)
 	}
 
+	// Handle --test=FILE
+	if testFile != "" {
+		runTestMode(g, testFile, diffMode)
+		return
+	}
+
+	// Handle --input=FILE
+	if inputFile != "" {
+		runInputMode(g, inputFile)
+		return
+	}
+
 	input := getInput(textArgs)
 	if input == "" {
 		printUsage()
@@ -108,18 +130,133 @@ func main() {
 	}
 }
 
+// runInputMode reads lines from a file and outputs transliterations.
+func runInputMode(g *gomanize.Gomanize, filename string) {
+	file, err := os.Open(filename)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error opening file: %v\n", err)
+		os.Exit(1)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue // Skip empty lines and comments
+		}
+		output := g.Translit(line)
+		fmt.Println(output)
+	}
+
+	if err := scanner.Err(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error reading file: %v\n", err)
+		os.Exit(1)
+	}
+}
+
+// runTestMode reads test cases from a file and validates transliterations.
+// File format: input<TAB>expected (one pair per line)
+// Lines starting with # are comments, empty lines are skipped.
+func runTestMode(g *gomanize.Gomanize, filename string, diffOnly bool) {
+	file, err := os.Open(filename)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error opening file: %v\n", err)
+		os.Exit(1)
+	}
+	defer file.Close()
+
+	var passed, failed int
+	var failures []testFailure
+
+	scanner := bufio.NewScanner(file)
+	lineNum := 0
+	for scanner.Scan() {
+		lineNum++
+		line := strings.TrimSpace(scanner.Text())
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue // Skip empty lines and comments
+		}
+
+		parts := strings.SplitN(line, "\t", 2)
+		if len(parts) != 2 {
+			fmt.Fprintf(os.Stderr, "Line %d: invalid format (expected: input<TAB>expected)\n", lineNum)
+			os.Exit(1)
+		}
+
+		input := parts[0]
+		expected := parts[1]
+		actual := g.Translit(input)
+
+		if actual == expected {
+			passed++
+		} else {
+			failed++
+			failures = append(failures, testFailure{
+				input:    input,
+				expected: expected,
+				actual:   actual,
+			})
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error reading file: %v\n", err)
+		os.Exit(1)
+	}
+
+	total := passed + failed
+
+	if diffOnly {
+		// --diff mode: only show failures
+		for _, f := range failures {
+			fmt.Printf("%s\t%s\t%s\n", f.input, f.expected, f.actual)
+		}
+	} else {
+		// Normal test output: summary + failures
+		fmt.Printf("Passed: %d / %d (%.1f%%)\n", passed, total, float64(passed)*100/float64(total))
+		if failed > 0 {
+			fmt.Println("\nFailures:")
+			for _, f := range failures {
+				fmt.Printf("  %s → %s (expected: %s)\n", f.input, f.actual, f.expected)
+			}
+		}
+	}
+
+	if failed > 0 {
+		os.Exit(1)
+	}
+}
+
+type testFailure struct {
+	input    string
+	expected string
+	actual   string
+}
+
 func printUsage() {
 	fmt.Fprintln(os.Stderr, "Usage: gomanize [options] <text>")
 	fmt.Fprintln(os.Stderr, "       echo <text> | gomanize [options]")
+	fmt.Fprintln(os.Stderr, "       gomanize --input=FILE [options]")
+	fmt.Fprintln(os.Stderr, "       gomanize --test=FILE [options]")
 	fmt.Fprintln(os.Stderr, "")
 	fmt.Fprintln(os.Stderr, "Options:")
 	fmt.Fprintln(os.Stderr, "  --long-vowels            Use 'aa' for all ा positions (e.g., गाना→gaana)")
 	fmt.Fprintln(os.Stderr, "  --debug                  Show debug info (parsed units, rule applications)")
+	fmt.Fprintln(os.Stderr, "  --input=FILE             Read input lines from file (one per line)")
+	fmt.Fprintln(os.Stderr, "  --test=FILE              Test against expected values (TSV format)")
+	fmt.Fprintln(os.Stderr, "  --diff                   With --test: output failures as TSV (for scripting)")
 	fmt.Fprintln(os.Stderr, "  --list-rules [PATTERN]   List all rules (optionally filtered by pattern)")
 	fmt.Fprintln(os.Stderr, "  --disable-rule=PATTERN   Disable rules matching pattern (e.g., schwa.*)")
 	fmt.Fprintln(os.Stderr, "  --enable-rule=PATTERN    Enable rules matching pattern")
 	fmt.Fprintln(os.Stderr, "  --version                Show version information")
 	fmt.Fprintln(os.Stderr, "  --help                   Show this help message")
+	fmt.Fprintln(os.Stderr, "")
+	fmt.Fprintln(os.Stderr, "File Formats:")
+	fmt.Fprintln(os.Stderr, "  --input: One word/phrase per line (# comments, empty lines skipped)")
+	fmt.Fprintln(os.Stderr, "  --test:  TSV with input<TAB>expected per line")
+	fmt.Fprintln(os.Stderr, "           Example: कमल	kamal")
+	fmt.Fprintln(os.Stderr, "           Lines starting with # are comments")
 	fmt.Fprintln(os.Stderr, "")
 	fmt.Fprintln(os.Stderr, "Rule Patterns:")
 	fmt.Fprintln(os.Stderr, "  Exact match: schwa.delete.ccv")
