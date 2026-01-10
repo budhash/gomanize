@@ -210,6 +210,73 @@ func schwaRules() []core.Rule {
 			},
 		},
 
+		// schwa.delete.before-cc (Script:42)
+		// Delete schwa when consonant is followed by 2 separate consonants ending at word-final
+		// Examples: देशभर→deshbhar, अमृतसर→amritsar, मेहनत→mehnat
+		// Pattern: C(schwa) + C + C(word-final) where the consonants are NOT a conjunct
+		// Does NOT apply when following consonants form a conjunct (र्भ, न्य, etc.)
+		// This handles compound words where schwa at morpheme boundary should delete
+		{
+			Name:     "schwa.delete.before-cc",
+			Phase:    core.PhaseSchwa,
+			Scope:    core.ScopeScript,
+			Priority: 42,
+			Mode:     core.ModeExclusive,
+			Condition: func(u *core.Unit, w *core.Word) bool {
+				if !brahmic.IsConsonantOrConjunct(u) || brahmic.GetSchwa(u) != brahmic.SchwaPending {
+					return false
+				}
+				// Must not be word-initial
+				if u.IsWordInitial() {
+					return false
+				}
+				// Must be preceded by a vowel (we're at morpheme boundary after V-C pattern)
+				// This prevents deleting in pure consonant clusters
+				if u.Prev == nil || u.Prev.Type != core.UnitVowel {
+					return false
+				}
+				// Don't delete after ा (aa-matra) - these are often Sanskrit words
+				// where schwa should be retained (पर्यावरण→paryavaran not paryavran)
+				// Only delete after short vowels (े, ि, ृ, etc.)
+				if len(u.Prev.Runes) == 1 && u.Prev.Runes[0] == 'ा' {
+					return false
+				}
+				// Only one deletion per run
+				run := brahmic.GetRun(u)
+				if run != nil && run.HasDeletion() {
+					return false
+				}
+				// Must have TWO following consonants
+				next := u.Next
+				if next == nil || !brahmic.IsConsonantOrConjunct(next) {
+					return false
+				}
+				afterNext := next.Next
+				if afterNext == nil || !brahmic.IsConsonantOrConjunct(afterNext) {
+					return false
+				}
+				// The second consonant must NOT be after-halant (not part of conjunct)
+				// विदर्भ has द + र्भ where र्भ is a conjunct - don't delete here
+				// देशभर has श + भ + र where they are separate consonants - delete here
+				if brahmic.IsAfterHalant(afterNext) {
+					return false
+				}
+				// The second consonant must be word-final (no vowel after)
+				// This ensures we're at: C + C + C(final)
+				if !afterNext.IsWordFinal() {
+					return false
+				}
+				return true
+			},
+			Action: func(u *core.Unit, w *core.Word) {
+				brahmic.SetSchwa(u, brahmic.SchwaDelete)
+				run := brahmic.GetRun(u)
+				if run != nil {
+					run.DeletedAt = brahmic.GetRunIndex(u)
+				}
+			},
+		},
+
 		// schwa.delete.word-final (Universal:10)
 		// Delete schwa at word end (unless protected by higher rules)
 		// Note: schwa.keep.sonorous-final (Script:70) runs first to protect र, य, व
