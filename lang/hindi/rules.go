@@ -99,13 +99,19 @@ func schwaRules() []core.Rule {
 		// Also applies for C+C+Modifier (anusvara/chandrabindu): झारखंड→jharkhand
 		// Does NOT apply to word-initial conjuncts: प्रकाश→prakaash (not "prkaash")
 		// Does NOT apply after halant (conjuncts): पार्वती→parvati (not "parvti")
+		// Disabled when KeepMedialSchwa option is enabled
 		{
-			Name:     "schwa.delete.ccv",
-			Phase:    core.PhaseSchwa,
-			Scope:    core.ScopeScript,
-			Priority: 50,
-			Mode:     core.ModeExclusive,
+			Name:        "schwa.delete.ccv",
+			Phase:       core.PhaseSchwa,
+			Scope:       core.ScopeScript,
+			Priority:    50,
+			Mode:        core.ModeExclusive,
+			Conditional: "!KeepMedialSchwa",
 			Condition: func(u *core.Unit, w *core.Word) bool {
+				// Skip when KeepMedialSchwa is enabled
+				if w.Options.KeepMedialSchwa {
+					return false
+				}
 				if !brahmic.IsConsonantOrConjunct(u) || brahmic.GetSchwa(u) != brahmic.SchwaPending {
 					return false
 				}
@@ -158,13 +164,19 @@ func schwaRules() []core.Rule {
 		// and requires at least 2 more consonants after
 		// This does NOT apply to 3-consonant words like कमल→kamal, गरम→garam
 		// Does NOT apply to word-initial conjuncts: प्रथम→pratham (not "prtham")
+		// Disabled when KeepMedialSchwa option is enabled
 		{
-			Name:     "schwa.delete.cccc-final",
-			Phase:    core.PhaseSchwa,
-			Scope:    core.ScopeScript,
-			Priority: 45,
-			Mode:     core.ModeExclusive,
+			Name:        "schwa.delete.cccc-final",
+			Phase:       core.PhaseSchwa,
+			Scope:       core.ScopeScript,
+			Priority:    45,
+			Mode:        core.ModeExclusive,
+			Conditional: "!KeepMedialSchwa",
 			Condition: func(u *core.Unit, w *core.Word) bool {
+				// Skip when KeepMedialSchwa is enabled
+				if w.Options.KeepMedialSchwa {
+					return false
+				}
 				if !brahmic.IsConsonantOrConjunct(u) || brahmic.GetSchwa(u) != brahmic.SchwaPending {
 					return false
 				}
@@ -216,13 +228,19 @@ func schwaRules() []core.Rule {
 		// Pattern: C(schwa) + C + C(word-final) where the consonants are NOT a conjunct
 		// Does NOT apply when following consonants form a conjunct (र्भ, न्य, etc.)
 		// This handles compound words where schwa at morpheme boundary should delete
+		// Disabled when KeepMedialSchwa option is enabled
 		{
-			Name:     "schwa.delete.before-cc",
-			Phase:    core.PhaseSchwa,
-			Scope:    core.ScopeScript,
-			Priority: 42,
-			Mode:     core.ModeExclusive,
+			Name:        "schwa.delete.before-cc",
+			Phase:       core.PhaseSchwa,
+			Scope:       core.ScopeScript,
+			Priority:    42,
+			Mode:        core.ModeExclusive,
+			Conditional: "!KeepMedialSchwa",
 			Condition: func(u *core.Unit, w *core.Word) bool {
+				// Skip when KeepMedialSchwa is enabled
+				if w.Options.KeepMedialSchwa {
+					return false
+				}
 				if !brahmic.IsConsonantOrConjunct(u) || brahmic.GetSchwa(u) != brahmic.SchwaPending {
 					return false
 				}

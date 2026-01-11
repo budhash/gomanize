@@ -37,6 +37,11 @@ make build
 echo "हिंदी गाना" | ./gomanize
 # Output: hindi gana
 
+# Options
+./gomanize --long-vowels "गाना"        # gaana (aa for all ā positions)
+./gomanize --simple-nasals "करें"       # karen (simplified nasal endings)
+./gomanize --keep-medial-schwa "जनता"  # janata (retain medial schwa)
+
 # Version
 ./gomanize --version
 ```
@@ -200,11 +205,11 @@ Some of our romanization choices prioritize phonetic accuracy over matching the 
 
 | Dataset | Accuracy |
 |---------|----------|
-| Original (hindi-common.txt) | 59.2% |
-| Dakshina (native Hindi) | **82.5%** |
+| Dakshina (pure) | **85.5%** |
+| Dakshina (with overrides) | **87.5%** |
 | Target | 80%+ ✓ |
 
-See [Claude.md](Claude.md) for detailed failure analysis and development notes.
+See [CLAUDE.md](CLAUDE.md) for detailed failure analysis and development notes.
 
 ## References
 
