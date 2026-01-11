@@ -26,6 +26,11 @@ make build
 echo "हिंदी गाना" | ./gomanize
 # Output: hindi gana
 
+# Options
+./gomanize --long-vowels "गाना"     # gaana (aa for all ā)
+./gomanize --simple-nasals "करें"   # karen (simplified nasals)
+./gomanize --keep-medial-schwa "जनता" # janata (dataset-compatible)
+
 # Run CI (format, lint, build, test)
 make ci
 
@@ -71,33 +76,32 @@ make bench          # Run benchmarks
 gomanize/
 ├── gomanize.go                    # Public API (Romanizer interface)
 ├── cmd/main.go                    # CLI entry point
-├── internal/lang/
-│   ├── hindi.go                   # Hindi transliterator (main implementation)
-│   ├── hindi-orig.go              # Legacy implementation
-│   ├── unit_test.go               # Unit tests (fast, targeted)
-│   └── integration_test.go        # Integration tests (full datasets)
-├── testbed/
-│   ├── hindi-common.txt           # Original test data (1,036 pairs)
-│   ├── dakshina/                  # Google Dakshina dataset
-│   │   ├── native_hindi.tsv       # Native Hindi words (1,335 entries)
-│   │   └── english_loanwords.tsv  # English loanwords (588 entries)
-│   └── ISSUES.md                  # Documented failure patterns
+├── core/                          # Universal transliteration engine
+│   ├── engine.go                  # Rule-based engine
+│   ├── types.go                   # Core types (Unit, Word, Options)
+│   └── rule.go                    # Rule definitions and phases
+├── lang/hindi/                    # Hindi language implementation
+│   ├── hindi.go                   # Hindi language definition
+│   └── rules.go                   # Hindi-specific rules (schwa, consonant, vowel, render)
+├── scheme/colloquial/             # Colloquial romanization scheme
+│   └── colloquial.go              # Scheme definition
+├── script/brahmic/                # Brahmic script support
+│   └── brahmic.go                 # Devanagari parsing and utilities
+├── benchmark/                     # Accuracy benchmarks
+│   ├── benchmark_test.go          # Benchmark tests
+│   └── data/                      # Test datasets
+│       ├── curated_hi.csv         # Curated Hindi test data (1,335 entries)
+│       ├── override_hi.csv        # Manual overrides
+│       └── ignore_hi.csv          # Words to skip
+├── internal/legacy_lang/          # Legacy implementation (for comparison)
 ├── scripts/
 │   └── ushuaia                    # Compare with ushuaia.pl Hunterian
-├── datasets/                      # Downloaded datasets (gitignored)
-│   └── dakshina_dataset_v1.0/     # Full Dakshina dataset
 ├── .claude/                       # Claude Code configuration
-│   ├── settings.json              # Plugins and hooks
-│   ├── settings.local.json        # Local permissions
-│   └── hooks/                     # Session and safety hooks
 ├── .github/workflows/
 │   ├── ci.yml                     # CI pipeline
 │   └── release.yml                # GoReleaser on tags
-├── .golangci.yml                  # Linter configuration (v2)
-├── .goreleaser.yml                # Release builds configuration
-├── .pre-commit-config.yaml        # Pre-commit hooks
 ├── Makefile                       # Development workflow
-└── Claude.md                      # This file
+└── CLAUDE.md                      # This file
 ```
 
 ## Current Status
@@ -106,19 +110,17 @@ gomanize/
 
 | Dataset | Passed | Total | Accuracy |
 |---------|--------|-------|----------|
-| Original (hindi-common.txt) | 613 | 1,036 | 59.2% |
-| Dakshina (native Hindi) | 1,102 | 1,335 | **82.5%** |
+| Dakshina (pure) | 1,141 | 1,335 | **85.5%** |
+| Dakshina (with overrides) | 1,168 | 1,335 | **87.5%** |
 | Target | - | - | **80%+** ✓ |
 
 ### Remaining Failure Patterns
 
 | Issue | Count | % of Failures | Notes |
 |-------|-------|---------------|-------|
-| OTHER | 116 | 49.8% | Compound issues |
-| MISSING_SCHWA | 66 | 28.3% | Medial schwa variations |
-| EXTRA_SCHWA | 30 | 12.9% | Over-retention |
-| V_VS_W | 15 | 6.4% | व mapping edge cases |
-| MISSING_FINAL_A | 6 | 2.6% | Sanskrit endings |
+| OTHER | 80 | 47.9% | Compound issues |
+| MISSING_SCHWA | 58 | 34.7% | Medial schwa variations (phonetically correct) |
+| EXTRA_SCHWA | 29 | 17.4% | Over-retention |
 
 ### Deliberate Divergences
 
@@ -126,17 +128,12 @@ Some romanization choices prioritize phonetic accuracy over matching Dakshina or
 
 | Pattern | Dakshina/Hunterian | Gomanize | Rationale |
 |---------|-------------------|----------|-----------|
+| जनता | janata | janta | Phonetic: schwa deleted in CCV |
+| कहते | kahate | kahte | Same: medial schwa deletion |
 | गाना | gaana | gana | Current rule: ा→aa only in ा+C+END |
-| बनाना | banaana | banana | Same as above |
 | मंत्र | mantr | mantra | Final 'a' for readability |
-| चंद्र | chandr | chandra | Final 'a' for readability |
 
-### To Investigate
-
-| Pattern | Example | Current | Expected | Notes |
-|---------|---------|---------|----------|-------|
-| Broader ा→aa | गाना | gana | gaana | Would affect ~45% of words |
-| Medial schwa | समझना | samajhna | samjhana | Complex rules needed |
+Use `--keep-medial-schwa` flag to get dataset-compatible output (janata, kahate, etc.)
 
 ## Transliteration Standards
 
@@ -221,11 +218,12 @@ Available language codes (for reference):
 
 | File | Purpose |
 |------|---------|
-| `gomanize.go` | Public API: `New()`, `Translit()` |
-| `internal/lang/hindi.go` | Main transliteration logic, symbol maps |
-| `internal/lang/unit_test.go` | Unit tests for specific rules |
-| `internal/lang/integration_test.go` | Full dataset tests |
-| `testbed/ISSUES.md` | Detailed failure analysis |
+| `gomanize.go` | Public API: `New()`, `Translit()`, `NewWithOptions()` |
+| `core/engine.go` | Rule-based transliteration engine |
+| `core/types.go` | Options struct (LongVowels, SimpleNasals, KeepMedialSchwa) |
+| `lang/hindi/rules.go` | Hindi-specific rules (schwa, consonant, vowel, render) |
+| `script/brahmic/brahmic.go` | Devanagari parsing and schwa state management |
+| `benchmark/benchmark_test.go` | Accuracy benchmarks against Dakshina dataset |
 | `Makefile` | Development commands |
 
 ## API Usage
@@ -301,12 +299,17 @@ CLI supports version flag:
 - [x] व → w for conjuncts only (स्व, श्व, द्व, ख्व)
 - [x] Target: 80%+ accuracy ✓ (82.5%)
 
-### Phase 2: Refinements (Current)
-- [ ] Investigate broader ा→aa rule (गाना→gaana pattern)
-- [ ] Fine-tune medial schwa deletion rules
-- [ ] Multiple transliteration schemes (IAST option)
+### Phase 2: Refinements ✓ (Complete)
+- [x] Add `--long-vowels` flag for broader ा→aa (गाना→gaana)
+- [x] Add `--simple-nasals` flag for simplified nasal endings (करें→karen)
+- [x] Add `--keep-medial-schwa` flag for dataset-compatible output (जनता→janata)
+- [x] Add compound word schwa deletion rule (देशभर→deshbhar)
+- [x] Add CLI batch testing (`--test=FILE`, `--diff`)
+- [x] Add rule inspection (`--list-rules`, `--disable-rule`)
+- [x] Target: 85%+ accuracy ✓ (85.5% pure, 87.5% with overrides)
 
 ### Phase 3: Enhancements
+- [ ] Multiple transliteration schemes (IAST option)
 - [ ] Bidirectional (Roman → Devanagari)
 - [ ] Additional languages (Marathi, Nepali)
 
