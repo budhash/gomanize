@@ -44,6 +44,8 @@ func main() {
 			opts.LongVowels = true
 		case arg == "--simple-nasals":
 			opts.SimpleNasals = true
+		case arg == "--keep-medial-schwa":
+			opts.KeepMedialSchwa = true
 		case arg == "--debug":
 			debug = true
 		case arg == "--list-rules":
@@ -245,6 +247,7 @@ func printUsage() {
 	fmt.Fprintln(os.Stderr, "Options:")
 	fmt.Fprintln(os.Stderr, "  --long-vowels            Use 'aa' for all ा positions (e.g., गाना→gaana)")
 	fmt.Fprintln(os.Stderr, "  --simple-nasals          Simplified nasal endings (करें→karen instead of karein)")
+	fmt.Fprintln(os.Stderr, "  --keep-medial-schwa      Retain schwa in more positions (जनता→janata not janta)")
 	fmt.Fprintln(os.Stderr, "  --debug                  Show debug info (parsed units, rule applications)")
 	fmt.Fprintln(os.Stderr, "  --input=FILE             Read input lines from file (one per line)")
 	fmt.Fprintln(os.Stderr, "  --test=FILE              Test against expected values (TSV format)")
@@ -275,14 +278,37 @@ func printRules(rules []gomanize.RuleStatus) {
 			status = "disabled"
 		}
 		if r.Conditional != "" {
-			status = fmt.Sprintf("needs --%s", toFlagName(r.Conditional))
+			status = formatConditional(r.Conditional)
 		}
 		fmt.Printf("  %-40s [%s] %s:%d\n", r.Name, status, r.Phase, r.Priority)
 	}
 }
 
+// formatConditional formats a rule conditional for display
+// Examples:
+//
+//	"LongVowels" -> "needs --long-vowels"
+//	"!KeepMedialSchwa" -> "disabled by --keep-medial-schwa"
+func formatConditional(cond string) string {
+	if strings.HasPrefix(cond, "!") {
+		// Negated conditional: rule is enabled by default, disabled when flag is set
+		fieldName := strings.TrimPrefix(cond, "!")
+		return fmt.Sprintf("disabled by --%s", toFlagName(fieldName))
+	}
+	// Positive conditional: rule is disabled by default, enabled when flag is set
+	return fmt.Sprintf("needs --%s", toFlagName(cond))
+}
+
 // toFlagName converts a Go field name to a CLI flag name (e.g., "LongVowels" -> "long-vowels")
+// Handles negation prefix: "!KeepMedialSchwa" -> "no --keep-medial-schwa"
 func toFlagName(fieldName string) string {
+	// Handle negation prefix
+	negated := false
+	if strings.HasPrefix(fieldName, "!") {
+		negated = true
+		fieldName = strings.TrimPrefix(fieldName, "!")
+	}
+
 	var result []rune
 	for i, r := range fieldName {
 		if i > 0 && r >= 'A' && r <= 'Z' {
@@ -290,7 +316,12 @@ func toFlagName(fieldName string) string {
 		}
 		result = append(result, r)
 	}
-	return strings.ToLower(string(result))
+	flagName := strings.ToLower(string(result))
+
+	if negated {
+		return "no " + flagName
+	}
+	return flagName
 }
 
 func printDebugInfo(input, result string, info *gomanize.DebugInfo) {

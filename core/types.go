@@ -104,6 +104,9 @@ type Options struct {
 	LongVowels bool
 	// SimpleNasals uses simplified nasal endings (करें→karen instead of karein).
 	SimpleNasals bool
+	// KeepMedialSchwa disables CCV schwa deletion, retaining schwa in more positions.
+	// This produces output closer to some datasets (जनता→janata instead of janta).
+	KeepMedialSchwa bool
 	// Debug enables debug output showing rule applications.
 	Debug bool
 }
