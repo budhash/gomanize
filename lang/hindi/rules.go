@@ -335,6 +335,36 @@ func schwaRules() []core.Rule {
 // consonantRules returns all consonant modification rules.
 func consonantRules() []core.Rule {
 	return []core.Rule{
+		// consonant.pha-to-ph.before-uu (Language:58)
+		// फ→ph when followed by ू matra: फूल→phool (not "fool")
+		// This preserves the aspirated sound in native words like फूल (flower)
+		// while allowing फ→f for loanwords like फिल्म→film
+		{
+			Name:     "consonant.pha-to-ph.before-uu",
+			Phase:    core.PhaseConsonant,
+			Scope:    core.ScopeLanguage,
+			Priority: 58,
+			Mode:     core.ModeAlways,
+			Condition: func(u *core.Unit, w *core.Word) bool {
+				if u.BaseRom != "f" {
+					return false
+				}
+				// Check if original character is फ (not फ़ which is genuinely 'f')
+				if len(u.Runes) != 1 || u.Runes[0] != 'फ' {
+					return false
+				}
+				// Check if followed by ू matra
+				next := u.Next
+				if next == nil || next.Type != core.UnitVowel {
+					return false
+				}
+				return len(next.Runes) == 1 && next.Runes[0] == 'ू'
+			},
+			Action: func(u *core.Unit, w *core.Word) {
+				u.BaseRom = "ph"
+			},
+		},
+
 		// consonant.va-to-wa.conjunct (Language:55)
 		// व→w in conjuncts after स, श, द, ख: स्वागत→swagat, ऐश्वर्या→aishwarya
 		{

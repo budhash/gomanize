@@ -56,7 +56,7 @@ var Symbols = core.SymbolMap{
 	"न": {Category: core.CatConsonant, BaseRom: "n"},   // U+0928
 	"ऩ": {Category: core.CatConsonant, BaseRom: "nh"},  // U+0929 (nuqta)
 	"प": {Category: core.CatConsonant, BaseRom: "p"},   // U+092A
-	"फ": {Category: core.CatConsonant, BaseRom: "ph"},  // U+092B
+	"फ": {Category: core.CatConsonant, BaseRom: "f"},   // U+092B (colloquial: f, see ph rule for फू)
 	"ब": {Category: core.CatConsonant, BaseRom: "b"},   // U+092C
 	"भ": {Category: core.CatConsonant, BaseRom: "bh"},  // U+092D
 	"म": {Category: core.CatConsonant, BaseRom: "m"},   // U+092E

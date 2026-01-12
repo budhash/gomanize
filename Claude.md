@@ -110,17 +110,17 @@ gomanize/
 
 | Dataset | Passed | Total | Accuracy |
 |---------|--------|-------|----------|
-| Dakshina (pure) | 1,141 | 1,335 | **85.5%** |
-| Dakshina (with overrides) | 1,168 | 1,335 | **87.5%** |
-| Target | - | - | **80%+** ✓ |
+| Dakshina (pure) | 1,150 | 1,335 | **86.1%** |
+| Dakshina (with overrides) | 1,203 | 1,335 | **90.1%** ✓ |
+| Target | - | - | **90%+** ✓ |
 
 ### Remaining Failure Patterns
 
 | Issue | Count | % of Failures | Notes |
 |-------|-------|---------------|-------|
-| OTHER | 80 | 47.9% | Compound issues |
-| MISSING_SCHWA | 58 | 34.7% | Medial schwa variations (phonetically correct) |
-| EXTRA_SCHWA | 29 | 17.4% | Over-retention |
+| OTHER | 70 | 44.3% | Long vowel variations (ee/oo) |
+| MISSING_SCHWA | 58 | 36.7% | Medial schwa variations (phonetically correct) |
+| EXTRA_SCHWA | 15 | 11.4% | Schwa preservation in compounds |
 
 ### Deliberate Divergences
 
@@ -306,7 +306,8 @@ CLI supports version flag:
 - [x] Add compound word schwa deletion rule (देशभर→deshbhar)
 - [x] Add CLI batch testing (`--test=FILE`, `--diff`)
 - [x] Add rule inspection (`--list-rules`, `--disable-rule`)
-- [x] Target: 85%+ accuracy ✓ (85.5% pure, 87.5% with overrides)
+- [x] Add फ→f surgical rule with फू→ph exception (film vs phool)
+- [x] Target: 90%+ accuracy ✓ (86.1% pure, 90.1% with overrides)
 
 ### Phase 3: Enhancements
 - [ ] Multiple transliteration schemes (IAST option)

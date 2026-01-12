@@ -95,7 +95,7 @@ func TestUnitConsonants(t *testing.T) {
 		{"न", "न", "n"},
 		// Labials
 		{"प", "प", "p"},
-		{"फ", "फ", "ph"},
+		{"फ", "फ", "f"}, // colloquial f, ph only with ू (फूल→phool)
 		{"ब", "ब", "b"},
 		{"भ", "भ", "bh"},
 		{"म", "म", "m"},
