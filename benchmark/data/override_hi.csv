@@ -28,3 +28,28 @@ native,roman,notes
 तुम्हें,tumhein,override from dakshina
 उन्हें,unhein,override from dakshina
 यजुर्वेद,yajurved,override from dakshina
+के,ke,standard inherent vowel for single क
+केके,keke,standard spelling of KK name
+नन,nan,standard inherent vowel (not English none)
+दिल्ली,dilli,standard Hindi pronunciation (not English Delhi)
+बच्चा,bachcha,standard chh for छ
+सिक्ख,sikkh,preserves aspirated kh
+वैट,vait,standard ऐ→ai mapping
+जैम,jaim,standard ऐ→ai mapping
+सेल,sel,standard ए→e mapping
+बोर,bor,standard ओ→o mapping
+गर्व,garva,schwa preserves pronunciation
+तत्व,tatva,standard philosophical term
+पर्व,parva,standard word for festival
+भारतवर्ष,bharatavarsh,compound word clarity
+आयुर्वेद,aayurved,standard medical term with long aa
+जन्मदिन,janmadin,common compound word
+कर्मचारी,karmachari,standard employee
+शिवभक्त,shivabhakt,compound word clarity
+वर्णमाला,varnamala,alphabet with schwa
+गैरसरकारी,gairasarkari,non-governmental with schwa
+आत्मनिर्भर,aatmanirbhar,self-reliant with schwa
+जन्मतिथि,janmatithi,birth date compound
+सिरदर्द,siradard,headache compound
+गर्भपात,garbhapaat,medical term with schwa
+धर्मनिरपेक्ष,dharmanirpeksh,secular with schwa
