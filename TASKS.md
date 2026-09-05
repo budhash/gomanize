@@ -50,13 +50,11 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [ ] (T-0007) [P1] [deferred] Integrate Aksharantar Hindi test set (AK-Freq/Uni/NE slices)
   - [x] (T-0008) [P1] [done] Tighten CI gate to track PURE accuracy; report pure as headline @done=2026-09-04
   - [x] (T-0009) [P2] [done] Reconcile/prune override_hi.csv (fix कर्मकांड self-contradiction) @done=2026-09-04
-- [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly)
+- [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @branch=feature/h2-rule-ceiling
 
-  - [ ] (T-0010) [P1] [todo] Medial ee/oo rule (ी→ee, ू→oo medial; i/u word-final) @deps=T-0005
-  - [ ] (T-0011) [P2] [todo] Narrow contextual ा→aa extension (never blanket) @deps=T-0005
   - [ ] (T-0012) [P2] [todo] Refactor: match rules on SOURCE chars, not BaseRom output strings
   - [ ] (T-0013) [P2] [todo] Extract universal/script-scoped rules out of lang/hindi
-  - [ ] (T-0014) [P1] [todo] Add unit tests for lang/hindi, script/brahmic, cmd (currently 0)
+  - [x] (T-0014) [P1] [done] Add unit tests for lang/hindi, script/brahmic, cmd (currently 0) @done=2026-09-04
 - [ ] (F-0004) [P2] [todo] H3: Break the ceiling with a learned component
   - [ ] (T-0015) [P2] [todo] Distill Arora et al. schwa classifier → dependency-free Go decision trees @deps=T-0007
   - [ ] (T-0016) [P2] [todo] Lexicon layer: attestation-weighted top-~50k, rules as OOV fallback @deps=T-0007
@@ -64,6 +62,9 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [ ] (T-0018) [P3] [todo] Candidate generation + tiny char n-gram re-ranker
 ## Skipped
 
+- [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow
+  - [ ] (T-0010) [P1] [skipped] Medial ee/oo rule (ी→ee, ू→oo medial; i/u word-final) @deps=T-0005
+  - [ ] (T-0011) [P2] [skipped] Narrow contextual ा→aa extension (never blanket) @deps=T-0005
 ---
 
 # Notes
