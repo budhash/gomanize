@@ -7,10 +7,15 @@ A Go library and CLI tool for transliterating Devanagari script (Hindi) to Latin
 ## Features
 
 - Romanize Hindi text from Devanagari script into readable Latin characters
-- CLI tool for quick transliteration
+- CLI tool for quick transliteration (whitespace- and punctuation-aware, works on full lyrics)
 - Library API for integration into Go projects
 - Based on the Hunterian transliteration system (India's national standard)
 - Optimized for colloquial/phonetic Hindi (no diacritics)
+- Optional embedded learned components — zero runtime dependencies:
+  - `--schwa-model`: decision-tree schwa classifier (90.7% held-out per-schwa accuracy)
+  - `--lexicon`: 8,367 human-attested spellings for common words & loanwords (अंकल → uncle)
+  - `--rerank`: character-LM picks the best candidate — improves every benchmark
+- Validated against five independent benchmark suites (see Current Status)
 
 ## Installation
 
@@ -31,16 +36,21 @@ make build
 ```bash
 # Direct argument
 ./gomanize "नमस्ते भारत"
-# Output: namste bharat
+# Output: namaste bharat
 
 # Pipe input
 echo "हिंदी गाना" | ./gomanize
 # Output: hindi gana
 
 # Options
-./gomanize --long-vowels "गाना"        # gaana (aa for all ā positions)
+./gomanize --long-vowels "गाना"        # gaanaa (aa for all ā positions)
 ./gomanize --simple-nasals "करें"       # karen (simplified nasal endings)
 ./gomanize --keep-medial-schwa "जनता"  # janata (retain medial schwa)
+./gomanize --schwa-model "जनता"        # janta (learned schwa classifier)
+./gomanize --lexicon "अंकल"            # uncle (attested spellings for known words)
+./gomanize --rerank "जनता"             # janta (best of rules/model candidates via char LM)
+./gomanize --list-rules                # inspect the rule catalog
+./gomanize --debug "नमस्ते"            # trace rule applications
 
 # Version
 ./gomanize --version
@@ -63,7 +73,7 @@ func main() {
     }
 
     output := g.Translit("नमस्ते दुनिया")
-    fmt.Println(output)  // "namste duniya"
+    fmt.Println(output)  // "namaste duniya"
 }
 ```
 
@@ -138,23 +148,27 @@ Gomanize is based on the **Hunterian transliteration system**, the national roma
 |------------|----------|---------|
 | क्ष | ksh | क्षमा → kshama |
 | त्र | tr | त्रिशूल → trishul |
-| ज्ञ | gy | ज्ञान → gyan |
-| श्र | sr | श्री → sri |
+| ज्ञ | gy | ज्ञान → gyaan |
+| श्र | shr | श्री → shri |
 
 ### Schwa Deletion Rules
 
 Hindi exhibits **schwa deletion** where the inherent 'a' vowel is not pronounced in certain positions. Gomanize implements these rules:
 
-1. **Word-final deletion**: Final schwa is typically deleted
-   - करम → karam ✗ → karm ✓
+1. **Word-final deletion**: Final schwa is deleted
+   - भारत → bharat (not bharata)
 
-2. **Medial deletion**: Schwa deleted between consonant clusters followed by vowel
-   - समझना → samajhana ✗ → samajhna ✓
+2. **Medial deletion**: Schwa deleted in C+C+V patterns
+   - समझना → samajhna (not samajhana); जनता → janta; करना → karna
 
 3. **Preserved positions**:
-   - First syllable conjuncts: प्रकाश → prakash (not prkash)
-   - Before anusvara: करना → karna
+   - Word-initial conjuncts: प्रकाश → prakaash (not prkaash)
+   - Short words where deletion would break the syllable: करम → karam, कमल → kamal
    - Sanskrit word endings with र, य, व: मंत्र → mantra, कार्य → karya
+
+An optional learned classifier (`--schwa-model`, a decision tree distilled from
+force-aligned Dakshina data) can take over these decisions: 90.7% per-schwa
+accuracy on held-out words.
 
 ### Long Vowel "aa" Rule
 
@@ -203,13 +217,22 @@ Some of our romanization choices prioritize phonetic accuracy over matching the 
 
 ## Current Status
 
-| Dataset | Accuracy |
-|---------|----------|
-| Dakshina (pure) | **85.5%** |
-| Dakshina (with overrides) | **87.5%** |
-| Target | 80%+ ✓ |
+Romanization is many-to-one (जनता = *janata* / *janta* / *janataa* are all
+human-attested), so accuracy is scored against **all attested variants**:
 
-See [CLAUDE.md](CLAUDE.md) for detailed failure analysis and development notes.
+| Benchmark | Result |
+|-----------|--------|
+| Curated Dakshina, match-any + `--rerank` | **94.7%** |
+| Curated Dakshina, match-any (default rules) | 92.8% (minCER 0.0116) |
+| COMI-LINGUA naturally-typed Hindi, token-weighted (+`--lexicon`) | 85.7% |
+| Held-out Dakshina test (2,500 unseen words, `--rerank`) | 70.4% |
+| **Song lyrics gold set, line CER** | **0.047 — at the human consistency floor (≈0.054)** |
+
+On the flagship use case — romanizing lyrics — gomanize's character-level error
+is comparable to how much human romanizers disagree with themselves.
+
+See [CLAUDE.md](CLAUDE.md) for full status and `docs/reviews/` for dated
+decision records of every result (including negative ones).
 
 ## References
 
@@ -231,6 +254,10 @@ See [CLAUDE.md](CLAUDE.md) for detailed failure analysis and development notes.
 ### Test Data
 
 - [Google Dakshina Dataset](https://github.com/google-research-datasets/dakshina) - Human-attested romanization pairs (CC BY-SA 4.0)
+- [Aksharantar](https://huggingface.co/datasets/ai4bharat/Aksharantar) (AI4Bharat) - Human-annotated Hindi test set, 10,112 pairs (CC-BY 4.0)
+- [COMI-LINGUA](https://huggingface.co/datasets/LingoIITGN/COMI-LINGUA) - Naturally-typed parallel Devanagari/Roman Hindi (CC-BY 4.0)
+- [Shabd](https://osf.io/xfbhd/) - Hindi word-frequency database (CC0), used for frequency weighting and lexicon ranking
+- Public-domain lyrics gold seed (Kabir, Meera, Tagore, et al.) - in-repo, line-level evaluation
 
 ## Development
 
@@ -255,7 +282,7 @@ make help
 
 ## License
 
-MIT License - Copyright (c) 2023-2025 Budhaditya
+MIT License - Copyright (c) 2023-2026 Budhaditya
 
 ## Author
 
