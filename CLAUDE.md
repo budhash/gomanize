@@ -122,6 +122,10 @@ gomanize/
 
 ## Current Status
 
+**Shipped:** v1.0.0 (tagged) and the browser (WASM) demo — live at
+<https://budhash.com/gomanize> (F-0006: `make wasm`, auto-deployed by
+`pages.yml`). Remaining F-0006 work is T-0030 (consent-based correction capture).
+
 Full results: [`docs/RESEARCH.md`](docs/RESEARCH.md) §4. The CI regression gate
 is strict top-1 pure ≥85% on curated Dakshina (`make test-dakshina`); overrides
 are an exception list, never headline numbers. Remaining failures are lexical,
