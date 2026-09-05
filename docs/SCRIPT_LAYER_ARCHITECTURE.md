@@ -1,3 +1,8 @@
+> **HISTORICAL DOCUMENT (design doc for the script layer, superseded by SPEC.md and the shipped code).** Statistics and plans below reflect the
+> project as of 2025 and are NOT current. For today's status see `CLAUDE.md`;
+> for the live backlog see `/TASKS.md` (via `./tools/tasks tree`); for every
+> subsequent result and decision see `docs/reviews/`.
+
 # Script Layer Architecture
 
 ## Overview

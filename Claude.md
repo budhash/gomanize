@@ -92,9 +92,11 @@ hand. Full process: [`docs/PROCESS.md`](docs/PROCESS.md).
 
 Schema: `- [ ] (ID) [PRIO] [STATUS] Title @tags...` — features `F-####`, tasks
 `T-####`, priorities `P0..P3`, status `[todo] [doing] [done] [deferred] [skipped]`.
-The current roadmap is seeded as F-0001…F-0004 (H0 tooling → H1 measurement →
-H2 rules → H3 learned component); reasoning in
-[`docs/reviews/2026-09-04-state-of-project-and-path-to-next-level.md`](docs/reviews/2026-09-04-state-of-project-and-path-to-next-level.md).
+Features F-0001…F-0005 (tooling → measurement → rules → learned components →
+real-world validation) are all **done** as of 2026-09-05; the founding review is
+[`docs/reviews/2026-09-04-state-of-project-and-path-to-next-level.md`](docs/reviews/2026-09-04-state-of-project-and-path-to-next-level.md)
+and each subsequent result (including negatives) has a dated decision record in
+`docs/reviews/`.
 
 **Rules:** feature branches only (never commit to `main`); `make ci` before every
 PR; report **pure** (no-override) accuracy as the headline; a shortcut is either
@@ -104,33 +106,46 @@ fixed in the same PR or tracked via `./tools/tasks new` with rationale.
 
 ```
 gomanize/
-├── gomanize.go                    # Public API (Romanizer interface)
-├── cmd/main.go                    # CLI entry point
-├── core/                          # Universal transliteration engine
-│   ├── engine.go                  # Rule-based engine
+├── gomanize.go                    # Public API (New, Translit — whitespace/punct-aware)
+├── cmd/main.go                    # CLI entry point (all flags incl. --schwa-model/--lexicon/--rerank)
+├── core/                          # Universal transliteration engine (no script knowledge)
+│   ├── engine.go                  # Pipeline + LexiconProvider/Reranker optional interfaces
 │   ├── types.go                   # Core types (Unit, Word, Options)
-│   └── rule.go                    # Rule definitions and phases
+│   └── rule.go                    # Rule definitions, phases, scopes, modes
 ├── lang/hindi/                    # Hindi language implementation
-│   ├── hindi.go                   # Hindi language definition
-│   └── rules.go                   # Hindi-specific rules (schwa, consonant, vowel, render)
+│   ├── symbols.go / rules.go      # Symbol map + Hindi-specific rules
+│   ├── schwa_model.go + schwa_tree.json    # Learned schwa classifier (embedded, 34KB)
+│   ├── lexicon.go + lexicon.tsv            # 8.4k-word attested lexicon (embedded, 260KB)
+│   └── reranker.go + roman_ngrams.tsv      # Char 4-gram re-ranker (embedded, 224KB)
 ├── scheme/colloquial/             # Colloquial romanization scheme
-│   └── colloquial.go              # Scheme definition
-├── script/brahmic/                # Brahmic script support
-│   └── brahmic.go                 # Devanagari parsing and utilities
-├── benchmark/                     # Accuracy benchmarks
-│   ├── benchmark_test.go          # Benchmark tests
-│   └── data/                      # Test datasets
-│       ├── curated_hi.csv         # Curated Hindi test data (1,335 entries)
-│       ├── override_hi.csv        # Manual overrides
-│       └── ignore_hi.csv          # Words to skip
+├── script/brahmic/                # Brahmic script support (shared by future languages)
+│   ├── brahmic.go / parser.go / renderer.go / runs.go
+│   └── schwa_rules.go             # Shared Brahmic schwa rules (brahmic.SchwaRules())
+├── benchmark/                     # Accuracy benchmarks (5 evaluation suites)
+│   ├── benchmark_test.go          # All benchmark tests
+│   ├── metrics_test.go            # CER / minCER / match-any / reference loaders
+│   └── data/
+│       ├── curated_hi.csv         # Curated Dakshina subset (1,335 entries)
+│       ├── dakshina_hi.csv        # Full Dakshina lexicon w/ splits + attestations
+│       ├── aksharantar_test_hi.csv# Aksharantar human test set (10,112 pairs, CC-BY)
+│       ├── comilingua_hi.csv      # COMI-LINGUA colloquial word pairs (CC-BY)
+│       ├── freq_hi.csv            # Shabd top-15k frequency list (CC0)
+│       ├── lyrics_gold_hi.csv     # Public-domain lyrics gold seed (43 lines)
+│       └── override_hi.csv / ignore_hi.csv / aksharantar_hi.csv
+├── tools/                         # Dev tooling (vendored task tracker + data pipelines)
+│   ├── tasks, tasks.py            # Task tracker CLI over TASKS.md
+│   ├── schwa/                     # Schwa classifier training (align/features/train)
+│   ├── build_lexicon.py / build_freq.py / build_aksharantar_test.py
+│   ├── build_comilingua.py / train_ngram.py / mine_overrides.py
 ├── internal/legacy_lang/          # Legacy implementation (for comparison)
-├── scripts/
-│   └── ushuaia                    # Compare with ushuaia.pl Hunterian
-├── .claude/                       # Claude Code configuration
-├── .github/workflows/
-│   ├── ci.yml                     # CI pipeline
-│   └── release.yml                # GoReleaser on tags
+├── scripts/ushuaia                # Compare with ushuaia.pl Hunterian
+├── docs/
+│   ├── PROCESS.md                 # Development process (tasks, PRs, accuracy discipline)
+│   └── reviews/                   # Decision records (dated; every result incl. negatives)
+├── .claude/                       # Claude Code configuration + hooks
+├── .github/workflows/             # ci.yml + release.yml (GoReleaser on tags)
 ├── Makefile                       # Development workflow
+├── TASKS.md                       # Live task tracker (edit ONLY via ./tools/tasks)
 └── CLAUDE.md                      # This file
 ```
 
@@ -142,23 +157,37 @@ Romanization is many-to-one (जनता = janata / janta / janataa are all val
 **match-any-attested-variant** is the honest headline; strict single-reference
 under-counts correctness. See `make test-dakshina` and the multi-reference test.
 
-| Metric | Passed | Total | Accuracy |
-|--------|--------|-------|----------|
-| **Match-any attested variant** (no overrides) | 1,239 | 1,335 | **92.8%** ✓ |
-| Strict top-1, pure (single ref) | 1,150 | 1,335 | 86.1% |
-| Strict top-1, with overrides | 1,202 | 1,335 | 90.1% |
-| Mean minCER (over variants) | - | - | **0.0116** (human floor ≈ 0.054) |
+**Curated Dakshina (1,335 words, 2026-09-05):**
 
-Pure single-ref accuracy is the CI gate (floor 85%); overrides are an exception
-lexicon, not engine skill, and are reported only as a secondary line.
+| Metric | Accuracy |
+|--------|----------|
+| **Match-any + `--rerank`** | **94.7%** |
+| Match-any attested variant (default rules, no overrides) | 92.8% |
+| Strict top-1, pure (single ref) — the CI gate, floor 85% | 86.1% |
+| Mean minCER (over variants) | **0.0116** (human floor ≈ 0.054) |
 
-### Remaining Failure Patterns
+**Real-world benchmarks (all independent of the curated set):**
 
-| Issue | Count | % of Failures | Notes |
-|-------|-------|---------------|-------|
-| OTHER | 70 | 44.3% | Long vowel variations (ee/oo) |
-| MISSING_SCHWA | 58 | 36.7% | Medial schwa variations (phonetically correct) |
-| EXTRA_SCHWA | 15 | 11.4% | Schwa preservation in compounds |
+| Benchmark | Default rules | Best config |
+|-----------|--------------|-------------|
+| Held-out Dakshina test (2,500 unseen words) | 69.0% | 70.4% (`--rerank`) |
+| COMI-LINGUA naturally-typed Hindi (token-weighted) | 78.9% | 85.7% (`--lexicon`) |
+| Frequency-weighted (Shabd top-15k ∩ gold) | 82.8% | 97.4% (`--lexicon`) |
+| Lyrics gold seed (line CER, lower=better) | 0.0492 | 0.0465 (`--rerank`) |
+| Aksharantar test (per-slice; NE slices) | 15–69% | lexicon +3.5 to +7.9 pts |
+
+Overrides (`override_hi.csv`) are an exception list, not engine skill — reported
+only as a secondary line and excluded from headline numbers.
+
+### Where the remaining errors live
+
+The rule ceiling is **reached and proven** (see `docs/reviews/`): remaining
+failures are lexical, not rule-governed — vowel-length spelling conventions
+(ee/oo vs i/u is a ~50/50 attested split), medial-schwa variance between
+annotators, and loanwords/named entities. The path past them is data (lexicon
+growth with human review), not more rules. Both candidate vowel rules were
+implemented, measured net-negative, and rejected on evidence
+(`docs/reviews/2026-09-04-h2-vowel-length-experiments.md`).
 
 ### Deliberate Divergences
 
@@ -166,12 +195,14 @@ Some romanization choices prioritize phonetic accuracy over matching Dakshina or
 
 | Pattern | Dakshina/Hunterian | Gomanize | Rationale |
 |---------|-------------------|----------|-----------|
-| जनता | janata | janta | Phonetic: schwa deleted in CCV |
+| जनता | janata | janta | Phonetic: schwa deleted in CCV (janta IS also attested) |
 | कहते | kahate | kahte | Same: medial schwa deletion |
-| गाना | gaana | gana | Current rule: ा→aa only in ा+C+END |
+| गाना | gaana | gana | ा→aa only in closed final syllable; broader rule measured net-negative |
 | मंत्र | mantr | mantra | Final 'a' for readability |
 
-Use `--keep-medial-schwa` flag to get dataset-compatible output (janata, kahate, etc.)
+Flags: `--keep-medial-schwa` (janata-style), `--schwa-model` (learned classifier),
+`--lexicon` (attested spellings for 8.4k known words), `--rerank` (char-LM picks
+best of rules/schwa-model candidates — improves every benchmark).
 
 ## Transliteration Standards
 
@@ -194,28 +225,41 @@ This project follows **colloquial/phonetic Hindi romanization** (not scholarly I
 
 ## Test Data
 
-### Dakshina Dataset
-Human-attested romanizations from Google Research:
-- 53K Hindi word pairs total
-- Using 1,923 high-confidence pairs (4+ attestations)
-- CC BY-SA 4.0 license
+Five evaluation suites, all committed (licenses documented per file / in
+`docs/reviews/`):
+
+| Dataset | Size | License | Role |
+|---------|------|---------|------|
+| Dakshina (Google, frozen/archived 2026) | 53K rows, splits + attestation counts | CC BY-SA 4.0 | Curated benchmark + held-out test + training data for learned components |
+| Aksharantar test (AI4Bharat, human-annotated 2022) | 10,112 pairs, 4 slices | CC-BY 4.0 | Independent human benchmark; named-entity slices |
+| COMI-LINGUA word pairs (extracted from MT split) | 9,606 words / 152K tokens | CC-BY 4.0 | Naturally-typed colloquial Hindi (closest proxy to lyrics) |
+| Shabd frequency list (top-15k Devanagari) | 15,000 words | CC0 | Frequency weighting + lexicon ranking |
+| Lyrics gold seed (Kabir/Meera/Tagore etc.) | 43 PD lines, maintainer-attested | Public domain | Line-level flagship-use-case eval (CER floor 0.15 gate) |
+
+**Contamination discipline:** learned components (schwa tree, lexicon, n-gram LM)
+train on the Dakshina TRAIN split only; dev/test natives are disjoint and never
+enter the lexicon. COMI-LINGUA is a benchmark, never a training/mining source.
 
 ```bash
-# Download and setup test data
+# Bulk raw datasets (optional, for regeneration)
 make download-datasets
 make setup-testdata
+# Data pipelines: tools/build_*.py, tools/train_ngram.py, tools/schwa/train.py
 ```
 
 ### Test Commands
 
 ```bash
 make test              # Run all tests
-make test-unit         # Unit tests only (fast)
+make test-unit         # Unit tests only (fast; all packages except benchmark)
 make test-cover        # Tests with coverage
-make test-dakshina     # Dakshina accuracy test
+make test-dakshina     # Curated Dakshina accuracy (pure + overrides + CER)
+make test-integration  # Full Dakshina + Aksharantar bulk runs
 make test-analysis     # Failure breakdown
-make test-original     # Original hindi-common.txt
-make bench             # Benchmarks
+make bench             # Performance benchmarks
+# Individual suites: go test ./benchmark/... -run TestBenchmark<Name> -v
+#   MultiReference | SchwaModelHeldout | LexiconCoverage | FrequencyWeighted |
+#   AksharantarTestSet | ComiLingua | LyricsGold
 ```
 
 ### Ushuaia Comparison Tool
@@ -256,12 +300,19 @@ Available language codes (for reference):
 
 | File | Purpose |
 |------|---------|
-| `gomanize.go` | Public API: `New()`, `Translit()`, `NewWithOptions()` |
-| `core/engine.go` | Rule-based transliteration engine |
-| `core/types.go` | Options struct (LongVowels, SimpleNasals, KeepMedialSchwa) |
-| `lang/hindi/rules.go` | Hindi-specific rules (schwa, consonant, vowel, render) |
+| `gomanize.go` | Public API: `New()`, `Translit()` (whitespace/punct-aware), `NewWithOptions()` |
+| `core/engine.go` | Pipeline + `LexiconProvider`/`Reranker` optional interfaces |
+| `core/types.go` | Options (LongVowels, SimpleNasals, KeepMedialSchwa, SchwaModel, Lexicon, Rerank) |
+| `lang/hindi/rules.go` | Hindi-specific rules; composes `brahmic.SchwaRules()` |
+| `lang/hindi/schwa_model.go` | Learned schwa classifier (embedded decision tree, 90.7% held-out per-schwa) |
+| `lang/hindi/lexicon.go` | 8,367-word attested lexicon (Dakshina-train only), rules as OOV fallback |
+| `lang/hindi/reranker.go` | Char 4-gram LM re-ranker over {rules, schwa-model} candidates |
+| `script/brahmic/schwa_rules.go` | Shared Brahmic schwa rules (reused by future languages) |
 | `script/brahmic/brahmic.go` | Devanagari parsing and schwa state management |
-| `benchmark/benchmark_test.go` | Accuracy benchmarks against Dakshina dataset |
+| `benchmark/benchmark_test.go` | All 5 evaluation suites |
+| `benchmark/metrics_test.go` | CER / minCER / match-any metric helpers |
+| `tools/tasks` | Task tracker CLI (the ONLY way to edit TASKS.md) |
+| `docs/reviews/` | Dated decision records — every result, including negatives |
 | `Makefile` | Development commands |
 
 ## API Usage
@@ -329,30 +380,33 @@ CLI supports version flag:
 
 ## Roadmap
 
-### Phase 1: Core Accuracy ✓ (Complete)
-- [x] Fix first syllable schwa deletion
-- [x] Fix word-final schwa for Sanskrit words (र, य, व endings)
-- [x] Add missing number ९ → 9
-- [x] Add long vowel "aa" rule for ा+C+END
-- [x] व → w for conjuncts only (स्व, श्व, द्व, ख्व)
-- [x] Target: 80%+ accuracy ✓ (82.5%)
+**Live backlog lives in `TASKS.md`** (view via `./tools/tasks tree`). History and
+reasoning live in `docs/reviews/`. Status as of 2026-09-05:
 
-### Phase 2: Refinements ✓ (Complete)
-- [x] Add `--long-vowels` flag for broader ा→aa (गाना→gaana)
-- [x] Add `--simple-nasals` flag for simplified nasal endings (करें→karen)
-- [x] Add `--keep-medial-schwa` flag for dataset-compatible output (जनता→janata)
-- [x] Add compound word schwa deletion rule (देशभर→deshbhar)
-- [x] Add CLI batch testing (`--test=FILE`, `--diff`)
-- [x] Add rule inspection (`--list-rules`, `--disable-rule`)
-- [x] Add फ→f surgical rule with फू→ph exception (film vs phool)
-- [x] Target: 90%+ accuracy ✓ (86.1% pure, 90.1% with overrides)
+### Completed (2025 — Phases 1–2: rule engine + accuracy)
+Core rule engine, schwa deletion, CLI flags (`--long-vowels`, `--simple-nasals`,
+`--keep-medial-schwa`), rule inspection, batch testing. Reached the rule-based
+ceiling (86.1% pure).
 
-### Phase 3: Enhancements
-- [ ] Multiple transliteration schemes (IAST option)
-- [ ] Bidirectional (Roman → Devanagari)
-- [ ] Additional languages (Marathi, Nepali)
+### Completed (2026-09 — measurement, learned components, real-world validation)
+- **Honest evaluation**: multi-reference match-any + CER/minCER; CI gates pure ≥85%
+- **Rule ceiling proven**: candidate vowel rules measured net-negative, rejected
+- **Learned components** (all embedded, zero runtime deps, opt-in):
+  `--schwa-model` (decision tree, 90.7% held-out per-schwa), `--lexicon`
+  (8,367 attested words, 71% token coverage), `--rerank` (char-LM candidate
+  arbitration — improves every benchmark; curated match-any 94.7%)
+- **Five benchmark suites** incl. naturally-typed Hindi (COMI-LINGUA) and a
+  public-domain lyrics gold seed (line CER at the human consistency floor)
+- **Architecture hardened**: source-char rule matching; shared Brahmic schwa
+  rules extracted for multi-language reuse; whitespace/punctuation segmentation
+- **Process**: task tracker, PR template, decision records, honest CI gates
 
-### Phase 4: Distribution
-- [ ] Web API
-- [ ] WASM build for browser
-- [ ] npm package via wasm
+### Open (candidate future work — not currently scheduled)
+- Additional languages (Marathi, Nepali) — `brahmic.SchwaRules()` makes this
+  tractable; needs per-language symbol maps + language rules
+- Multiple schemes (IAST) — needs per-scheme symbol maps (interface change)
+- Lexicon growth past the 78.2% train-gold ceiling — needs human review of mined
+  candidates (`tools/mine_overrides.py`; unreviewed precision is only ~43%)
+- Expanded lyrics gold set (more PD verse; LyricsTranslate curation)
+- Bidirectional (Roman → Devanagari) — effectively a separate engine
+- Distribution: Web API, WASM build, npm package
