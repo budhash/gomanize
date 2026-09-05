@@ -231,6 +231,8 @@
     .io { grid-template-columns: 1fr; }
     #input, .output { min-height: 200px; }
     .opt-group { flex-direction: column; gap: 8px; }
+    /* reset the desktop fixed-basis: in a column it would become a tall label */
+    .opt-group > .label { flex: none; padding-top: 0; }
     .opts { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 480px) {
