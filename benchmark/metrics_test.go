@@ -93,6 +93,29 @@ func matchesAny(got string, refs []string) bool {
 	return false
 }
 
+// loadFrequencies loads benchmark/data/freq_hi.csv (native,freq) into a map.
+func loadFrequencies(path string) (map[string]int64, error) {
+	entries, err := loadCSV(path)
+	if err != nil {
+		return nil, err
+	}
+	freq := make(map[string]int64)
+	for _, e := range entries {
+		var n int64
+		for _, c := range e.Roman { // the "freq" column lands in Roman
+			if c < '0' || c > '9' {
+				n = -1
+				break
+			}
+			n = n*10 + int64(c-'0')
+		}
+		if n > 0 {
+			freq[e.Native] = n
+		}
+	}
+	return freq, nil
+}
+
 // loadReferenceSets builds native -> deduped list of attested Roman spellings
 // from a lexicon CSV that may contain multiple rows per native word (Dakshina).
 // Order is preserved by first appearance so results are deterministic.
