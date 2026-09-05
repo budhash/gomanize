@@ -106,6 +106,36 @@
     color: var(--paper-dim); font-weight: 340; font-size: 15px;
   }
 
+  header { position: relative; padding-right: 104px; }
+  .top-links { position: absolute; top: 2px; right: 0; display: inline-flex; align-items: center; gap: 16px; }
+  .about-btn {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--paper-dim); background: none; border: 0; padding: 0; cursor: pointer; transition: color .14s;
+  }
+  .about-btn:hover { color: var(--accent); }
+  .gh-link { display: inline-flex; color: var(--paper-dim); transition: color .14s, transform .14s; }
+  .gh-link:hover { color: var(--accent); transform: translateY(-1px); }
+  .gh-link svg { display: block; }
+
+  /* About dialog */
+  .about {
+    max-width: 560px; width: calc(100% - 40px);
+    background: var(--surface); color: var(--paper);
+    border: 1px solid var(--rule-hi); border-radius: 14px; box-shadow: var(--elev); padding: 0;
+  }
+  .about::backdrop { background: rgba(4, 5, 8, 0.72); }
+  .about-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--rule); }
+  .about-head h2 { margin: 0; font-family: var(--display); font-weight: 500; font-size: 22px; }
+  .about-head h2 .dev { color: var(--accent); font-size: 18px; }
+  .about-close { font: inherit; font-size: 18px; line-height: 1; color: var(--paper-dim); background: none; border: 0; cursor: pointer; padding: 4px; }
+  .about-close:hover { color: var(--accent); }
+  .about-body { padding: 18px 22px 22px; }
+  .about-body h3 { margin: 18px 0 6px; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--paper-dimmer); }
+  .about-body h3:first-child { margin-top: 0; }
+  .about-body p { margin: 0 0 4px; color: var(--paper-dim); font-size: 14px; line-height: 1.6; }
+  .about-body strong { color: var(--paper); font-weight: 600; }
+  .about-links { margin-top: 16px !important; }
+
   .label {
     font-family: var(--mono);
     font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
@@ -243,6 +273,12 @@
 <body>
 <main class="app">
   <header>
+    <div class="top-links">
+      <button type="button" class="about-btn" id="aboutOpen">About</button>
+      <a class="gh-link" href="https://github.com/budhash/gomanize" target="_blank" rel="noopener" aria-label="View gomanize source on GitHub" title="View source on GitHub">
+      <svg viewBox="0 0 16 16" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path></svg>
+      </a>
+    </div>
     <div class="eyebrow">Devanagari → Latin · runs in your browser</div>
     <h1>gomanize <span class="dev">रोमनीकरण</span></h1>
     <p class="subtitle">Transliterate Hindi (Devanagari) into readable, diacritic-free Latin script. Everything runs client-side on WebAssembly — nothing is ever sent to a server.</p>
@@ -300,6 +336,32 @@
     Runs on WebAssembly compiled from the
     <a href="https://github.com/budhash/gomanize" rel="noopener">gomanize</a> Go library · MIT licensed.
   </footer>
+
+  <dialog id="about" class="about">
+    <div class="about-head">
+      <h2>About gomanize <span class="dev">रोमनीकरण</span></h2>
+      <button type="button" class="about-close" id="aboutClose" aria-label="Close">✕</button>
+    </div>
+    <div class="about-body">
+      <p><strong>gomanize</strong> transliterates Devanagari (Hindi) into readable, diacritic-free Latin script — built for song lyrics and other colloquial text, where conventional academic transliteration reads unnaturally.</p>
+
+      <h3>How it works</h3>
+      <p>A rule-based engine makes the core decisions — schwa deletion, and consonant, vowel, and rendering rules. Three optional learned components, toggleable above, trade a little more computation for accuracy: a decision-tree <strong>schwa model</strong>, an ~8,000-word attested <strong>lexicon</strong>, and a character n-gram <strong>re-ranker</strong>.</p>
+
+      <h3>Accuracy</h3>
+      <p>On the curated Dakshina benchmark: <strong>86.1%</strong> exact (pure) and <strong>92.8%</strong> match-any-attested-variant, rising to <strong>94.7%</strong> with the re-ranker. On a gold lyrics set the character error rate is ≈ 0.047 — close to the ~0.054 human floor.</p>
+
+      <h3>Privacy</h3>
+      <p>Everything runs client-side in your browser via WebAssembly. No text is ever sent to a server.</p>
+
+      <p class="about-links">
+        <a href="https://github.com/budhash/gomanize" rel="noopener">Source</a> ·
+        <a href="https://github.com/budhash/gomanize/blob/main/docs/RESEARCH.md" rel="noopener">Research</a> ·
+        <a href="https://github.com/budhash/gomanize/blob/main/docs/DESIGN.md" rel="noopener">Design</a> ·
+        MIT licensed
+      </p>
+    </div>
+  </dialog>
 </main>
 
 <script src="wasm_exec.js"></script>
@@ -309,6 +371,12 @@
   const status = document.getElementById("status");
   const checkboxes = Array.from(document.querySelectorAll("input[data-flag]"));
   let ready = false;
+
+  // About dialog
+  const about = document.getElementById("about");
+  document.getElementById("aboutOpen").addEventListener("click", () => about.showModal());
+  document.getElementById("aboutClose").addEventListener("click", () => about.close());
+  about.addEventListener("click", (e) => { if (e.target === about) about.close(); });
 
   function currentOptions() {
     const o = {};
