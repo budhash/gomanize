@@ -10,6 +10,10 @@ optional embedded learned components; no runtime dependencies.
 नमस्ते भारत  →  namaste bharat
 ```
 
+**Try it in your browser → [budhash.com/gomanize](https://budhash.com/gomanize)** —
+the full engine, compiled to WebAssembly, runs entirely client-side (no server;
+no text leaves your machine).
+
 Romanization has no single correct answer — जनता is validly *janata*, *janta*,
 or *janataa* — so this project measures itself against all human-attested
 variants. On its primary use case, romanizing verse, its character error rate
@@ -92,7 +96,8 @@ Known limitations:
 |----------|----------|
 | [docs/RESEARCH.md](docs/RESEARCH.md) | The problem, literature, datasets and licenses, evaluation methodology, all results including negatives |
 | [docs/DESIGN.md](docs/DESIGN.md) | Engine architecture, rule system, character mappings, learned components, future directions |
-| [docs/ROADMAP.md](docs/ROADMAP.md) | Post-1.0 directions (WASM demo, convention schemes, more languages) with tradeoffs |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | Post-1.0 directions (convention schemes, more languages) with tradeoffs |
+| [web/README.md](web/README.md) | The browser demo ([budhash.com/gomanize](https://budhash.com/gomanize)): `make wasm` / `make wasm-serve` and the Pages deploy |
 | [CLAUDE.md](CLAUDE.md) | Development workflow, commands, repository conventions |
 | [docs/PROCESS.md](docs/PROCESS.md) | Task tracking, PR discipline, accuracy reporting rules |
 | [docs/reviews/](docs/reviews/) | Dated decision records for every result, including failures |
