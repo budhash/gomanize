@@ -222,9 +222,124 @@ func TestBenchmarkCuratedHindi(t *testing.T) {
 		}
 	}
 
-	// Target: 82% accuracy with overrides
-	if overridePct < 82 {
-		t.Errorf("Accuracy %.1f%% is below 82%% threshold", overridePct)
+	// Mean CER against the single curated reference (credits near-misses).
+	var cerSum float64
+	var cerN int
+	for _, entry := range entries {
+		if entry.Ignored {
+			continue
+		}
+		cerSum += cer(engine.Transliterate(entry.Native), entry.Roman)
+		cerN++
+	}
+	if cerN > 0 {
+		t.Logf("Mean CER (single-ref):  %.4f", cerSum/float64(cerN))
+	}
+
+	// Gate on PURE accuracy — overrides are an exception lexicon, not engine skill,
+	// so the honest headline number is what must not regress. See docs/PROCESS.md.
+	const pureThreshold = 85.0
+	if purePct < pureThreshold {
+		t.Errorf("Pure accuracy %.1f%% is below %.1f%% threshold", purePct, pureThreshold)
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Multi-reference evaluation (benchmark/data/curated_hi.csv scored against the
+// full set of attested Dakshina romanizations, not a single gold string).
+// -----------------------------------------------------------------------------
+
+// TestBenchmarkMultiReference scores the curated set against ALL attested human
+// romanizations per word (from dakshina_hi.csv), reflecting that romanization is
+// many-to-one. Reports strict top-1 (single ref), match-any-attested-variant,
+// and mean minCER. This is the honest measure of correctness; the gap between
+// strict and any-hit is the benchmark artifact, not engine error.
+func TestBenchmarkMultiReference(t *testing.T) {
+	curatedPath := getTestDataPath("curated_hi.csv")
+	refPath := getTestDataPath("dakshina_hi.csv")
+	ignorePath := getTestDataPath("ignore_hi.csv")
+
+	entries, err := loadCSV(curatedPath)
+	if err != nil {
+		t.Skipf("Curated Hindi test file not found: %v", err)
+		return
+	}
+	refs, err := loadReferenceSets(refPath)
+	if err != nil {
+		t.Skipf("Dakshina reference file not found: %v", err)
+		return
+	}
+	ignores, err := loadIgnores(ignorePath)
+	if err != nil {
+		t.Fatalf("loading ignores: %v", err)
+	}
+
+	engine := newEngine()
+	strictPass, anyPass, total := 0, 0, 0
+	withRefs, multiRef := 0, 0
+	var minCERSum float64
+	var recovered []string // matched a variant but not the single curated gold
+
+	for _, entry := range entries {
+		if ignores[entry.Native] {
+			continue
+		}
+		total++
+
+		// Reference set: the curated gold plus every attested Dakshina variant.
+		refSet := []string{entry.Roman}
+		seen := map[string]bool{entry.Roman: true}
+		for _, r := range refs[entry.Native] {
+			if !seen[r] {
+				seen[r] = true
+				refSet = append(refSet, r)
+			}
+		}
+		if len(refs[entry.Native]) > 0 {
+			withRefs++
+		}
+		if len(refSet) > 1 {
+			multiRef++
+		}
+
+		result := engine.Transliterate(entry.Native)
+		strict := result == entry.Roman
+		if strict {
+			strictPass++
+		}
+		if matchesAny(result, refSet) {
+			anyPass++
+			if !strict && len(recovered) < 10 {
+				recovered = append(recovered, entry.Native+" → "+result+" (curated gold: "+entry.Roman+")")
+			}
+		}
+		minCERSum += minCER(result, refSet)
+	}
+
+	if total == 0 {
+		t.Skip("no entries to evaluate")
+	}
+	strictPct := float64(strictPass) * 100 / float64(total)
+	anyPct := float64(anyPass) * 100 / float64(total)
+
+	t.Logf("=== Multi-reference Results (curated set) ===")
+	t.Logf("Words evaluated:            %d (%d have Dakshina refs, %d have >1 valid spelling)", total, withRefs, multiRef)
+	t.Logf("Strict top-1 (single ref):  %d / %d (%.1f%%)", strictPass, total, strictPct)
+	t.Logf("Match-any attested variant: %d / %d (%.1f%%)", anyPass, total, anyPct)
+	t.Logf("Mean minCER (over variants):%.4f", minCERSum/float64(total))
+	t.Logf("Benchmark-artifact gap:     +%.1f pts recovered by multi-reference", anyPct-strictPct)
+
+	if len(recovered) > 0 {
+		t.Logf("")
+		t.Logf("Sample words scored wrong by single-ref but matching a valid variant:")
+		for _, r := range recovered {
+			t.Logf("  %s", r)
+		}
+	}
+
+	// Sanity: multi-reference can only help, never hurt.
+	if anyPass < strictPass {
+		t.Errorf("match-any (%d) < strict (%d): impossible, reference set bug", anyPass, strictPass)
 	}
 }
 

@@ -43,13 +43,13 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0004) [P2] [done] Pre-commit parity: no-commit-to-branch + large-file/whitespace guards @done=2026-09-04
 ## Backlog
 
-- [ ] (F-0002) [P1] [todo] H1: Fix the measurement (honest, multi-reference eval)
+- [ ] (F-0002) [P1] [todo] H1: Fix the measurement (honest, multi-reference eval) @branch=feature/h1-honest-measurement
 
-  - [ ] (T-0005) [P1] [todo] Multi-reference eval: match-any-attested-variant (minCER) in benchmark
-  - [ ] (T-0006) [P1] [todo] Add CER metric alongside top-1 accuracy
-  - [ ] (T-0007) [P1] [todo] Integrate Aksharantar Hindi test set (AK-Freq/Uni/NE slices)
-  - [ ] (T-0008) [P1] [todo] Tighten CI gate to track PURE accuracy; report pure as headline
-  - [ ] (T-0009) [P2] [todo] Reconcile/prune override_hi.csv (fix कर्मकांड self-contradiction)
+  - [x] (T-0005) [P1] [done] Multi-reference eval: match-any-attested-variant (minCER) in benchmark @done=2026-09-04
+  - [x] (T-0006) [P1] [done] Add CER metric alongside top-1 accuracy @done=2026-09-04
+  - [ ] (T-0007) [P1] [deferred] Integrate Aksharantar Hindi test set (AK-Freq/Uni/NE slices)
+  - [x] (T-0008) [P1] [done] Tighten CI gate to track PURE accuracy; report pure as headline @done=2026-09-04
+  - [x] (T-0009) [P2] [done] Reconcile/prune override_hi.csv (fix कर्मकांड self-contradiction) @done=2026-09-04
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly)
 
   - [ ] (T-0010) [P1] [todo] Medial ee/oo rule (ी→ee, ू→oo medial; i/u word-final) @deps=T-0005
