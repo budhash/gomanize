@@ -74,8 +74,8 @@ func formatDebugInfo(info *core.DebugInfo) string {
 		if u.Metadata != "" {
 			meta = fmt.Sprintf(" [%s]", u.Metadata)
 		}
-		sb.WriteString(fmt.Sprintf("  [%d] %s → %s (%s @ rune %d)%s\n",
-			u.Index, u.Chars, u.BaseRom, u.Type, u.RunePos, meta))
+		fmt.Fprintf(&sb, "  [%d] %s → %s (%s @ rune %d)%s\n",
+			u.Index, u.Chars, u.BaseRom, u.Type, u.RunePos, meta)
 	}
 
 	if len(info.Traces) > 0 {
@@ -89,8 +89,8 @@ func formatDebugInfo(info *core.DebugInfo) string {
 			if t.Metadata != "" {
 				meta = fmt.Sprintf(" [%s]", t.Metadata)
 			}
-			sb.WriteString(fmt.Sprintf("  %s: %s on %s (idx %d)%s%s\n",
-				t.Phase, t.Rule, t.Unit, t.UnitIdx, change, meta))
+			fmt.Fprintf(&sb, "  %s: %s on %s (idx %d)%s%s\n",
+				t.Phase, t.Rule, t.Unit, t.UnitIdx, change, meta)
 		}
 	}
 
@@ -100,9 +100,9 @@ func formatDebugInfo(info *core.DebugInfo) string {
 // FormatResult formats a CompareResult for display.
 func FormatResult(r CompareResult) string {
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("Input:  %s\n", r.Input))
-	sb.WriteString(fmt.Sprintf("Old:    %s\n", r.OldOutput))
-	sb.WriteString(fmt.Sprintf("New:    %s\n", r.NewOutput))
+	fmt.Fprintf(&sb, "Input:  %s\n", r.Input)
+	fmt.Fprintf(&sb, "Old:    %s\n", r.OldOutput)
+	fmt.Fprintf(&sb, "New:    %s\n", r.NewOutput)
 	if r.Match {
 		sb.WriteString("Status: ✓ Match\n")
 	} else {
@@ -149,17 +149,17 @@ func FormatBatchStats(stats BatchStats) string {
 		matchPct = float64(stats.Matches) / float64(stats.Total) * 100
 	}
 
-	sb.WriteString(fmt.Sprintf("Total: %d, Matches: %d (%.1f%%), Mismatches: %d\n",
+	fmt.Fprintf(&sb, "Total: %d, Matches: %d (%.1f%%), Mismatches: %d\n",
 		stats.Total,
 		stats.Matches,
 		matchPct,
-		stats.Mismatches))
+		stats.Mismatches)
 
 	if stats.Mismatches > 0 {
 		sb.WriteString("\nMismatches:\n")
 		for _, r := range stats.Results {
 			if !r.Match {
-				sb.WriteString(fmt.Sprintf("  %s: old=%q new=%q\n", r.Input, r.OldOutput, r.NewOutput))
+				fmt.Fprintf(&sb, "  %s: old=%q new=%q\n", r.Input, r.OldOutput, r.NewOutput)
 			}
 		}
 	}

@@ -1,60 +1,74 @@
-# Gomanize Tasks
+# TASKS.md
 
-## Current Status
+Single source of truth for features + tasks in this repo.
 
-**Accuracy: 82.5%** (Target: 80%+ ✓)
+Use `./tools/tasks.py help` for CLI commands.
 
-## Phase 2: Refinements (Current)
+---
 
-### To Investigate
+# Meta
 
-- [ ] **Broader ा→aa rule**: गाना→gaana pattern
-  - Currently: ा→aa only in ा+C+END (काम→kaam)
-  - Proposed: ा→aa in more positions (गाना→gaana, बनाना→banaana)
-  - Impact: Would affect ~45% of words - needs careful analysis
+## Info
 
-- [ ] **Medial schwa fine-tuning**
-  - Current failures: समझना→samajhna (expected: samjhana)
-  - Complex rules needed for consonant clusters
+This file is managed by `./tools/tasks.py` CLI tool.
 
-- [ ] **Multiple transliteration schemes**
-  - Add IAST option for scholarly use
-  - Reference: docs/reference/Hindi-Marathi-Nepali-Transliteration.pdf
+- Run `./tools/tasks.py help` for full documentation
+- Manual edits may break parsing - use CLI commands instead
+- Task IDs (F-####, T-####) are auto-generated and must be unique
+- Checkbox state must match status: `[x]` for done, `[ ]` otherwise
 
-### Remaining Failure Patterns
+## Schema
 
-| Issue | Count | % of Failures | Notes |
-|-------|-------|---------------|-------|
-| OTHER | 116 | 49.8% | Compound issues |
-| MISSING_SCHWA | 66 | 28.3% | Medial schwa variations |
-| EXTRA_SCHWA | 30 | 12.9% | Over-retention |
-| V_VS_W | 15 | 6.4% | Edge cases (e.g., गुवाहाटी) |
-| MISSING_FINAL_A | 6 | 2.6% | Sanskrit endings |
+Format: `- [ ] (ID) [PRIO] [STATUS] Title @tags...`
 
-## Completed (Phase 1)
-
-- [x] Fix first syllable schwa deletion (प्रकाश→prakash)
-- [x] Fix word-final schwa for Sanskrit words (मंत्र→mantra)
-- [x] Add missing number ९ → 9
-- [x] Add long vowel "aa" rule for ा+C+END (काम→kaam)
-- [x] व→w for conjuncts only (स्व→sw, श्व→shw, द्व→dw, ख्व→khw)
-- [x] Ushuaia comparison tool (scripts/ushuaia)
-- [x] Reference documentation (docs/reference/)
-
-## Backlog (Phase 3+)
-
-- [ ] Bidirectional transliteration (Roman → Devanagari)
-- [ ] Additional languages (Marathi, Nepali)
-- [ ] Web API
-- [ ] WASM build for browser
-- [ ] npm package via wasm
-
-## Commands
-
-```bash
-make test-unit      # Fast unit tests
-make test-dakshina  # Accuracy test
-make test-analysis  # Failure breakdown
-make ci             # Full CI pipeline
-./scripts/ushuaia "word" --compare  # Compare with Hunterian
+Example:
 ```
+- [ ] (F-0001) [P0] [todo] Feature title @issue=42 @tags=security,mvp
+  - [ ] (T-0001) [P0] [todo] Subtask @deps=T-0002 @effort=4h
+  - [x] (T-0002) [P0] [done] Another subtask @done=2025-01-01
+```
+
+Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=` `@done=`
+
+---
+
+# Tasks
+
+## Now
+
+- [x] (F-0001) [P0] [done] H0: Absorb skein tooling & process @branch=feature/review-and-tooling-absorption @done=2026-09-04
+  - [x] (T-0001) [P0] [done] Vendor tasks.py + ./tools/tasks wrapper @done=2026-09-04
+  - [x] (T-0002) [P0] [done] Fix dead make targets (test-dakshina/test-unit run legacy only) @done=2026-09-04
+  - [x] (T-0003) [P1] [done] Add docs/PROCESS.md + PR template + task-aware CLAUDE.md section @done=2026-09-04
+  - [x] (T-0004) [P2] [done] Pre-commit parity: no-commit-to-branch + large-file/whitespace guards @done=2026-09-04
+## Backlog
+
+- [ ] (F-0002) [P1] [todo] H1: Fix the measurement (honest, multi-reference eval)
+
+  - [ ] (T-0005) [P1] [todo] Multi-reference eval: match-any-attested-variant (minCER) in benchmark
+  - [ ] (T-0006) [P1] [todo] Add CER metric alongside top-1 accuracy
+  - [ ] (T-0007) [P1] [todo] Integrate Aksharantar Hindi test set (AK-Freq/Uni/NE slices)
+  - [ ] (T-0008) [P1] [todo] Tighten CI gate to track PURE accuracy; report pure as headline
+  - [ ] (T-0009) [P2] [todo] Reconcile/prune override_hi.csv (fix कर्मकांड self-contradiction)
+- [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly)
+
+  - [ ] (T-0010) [P1] [todo] Medial ee/oo rule (ी→ee, ू→oo medial; i/u word-final) @deps=T-0005
+  - [ ] (T-0011) [P2] [todo] Narrow contextual ा→aa extension (never blanket) @deps=T-0005
+  - [ ] (T-0012) [P2] [todo] Refactor: match rules on SOURCE chars, not BaseRom output strings
+  - [ ] (T-0013) [P2] [todo] Extract universal/script-scoped rules out of lang/hindi
+  - [ ] (T-0014) [P1] [todo] Add unit tests for lang/hindi, script/brahmic, cmd (currently 0)
+- [ ] (F-0004) [P2] [todo] H3: Break the ceiling with a learned component
+  - [ ] (T-0015) [P2] [todo] Distill Arora et al. schwa classifier → dependency-free Go decision trees @deps=T-0007
+  - [ ] (T-0016) [P2] [todo] Lexicon layer: attestation-weighted top-~50k, rules as OOV fallback @deps=T-0007
+  - [ ] (T-0017) [P3] [todo] Offline model-mining tool for override candidates (IndicXlit/LLM)
+  - [ ] (T-0018) [P3] [todo] Candidate generation + tiny char n-gram re-ranker
+## Skipped
+
+---
+
+# Notes
+
+Use `## <ID>` headers (e.g., `## F-0001`) for structured notes per task.
+Use `./tools/tasks.py show <id> --full` to display notes with task details.
+
+- 2026-09-04: Initialized TASKS.md

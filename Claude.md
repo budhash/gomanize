@@ -68,7 +68,34 @@ make lint-fix       # Run linter with auto-fix
 make demo           # Demo with sample words
 make status         # Quick status check
 make bench          # Run benchmarks
+make tasks ARGS=".." # Task tracker passthrough (see below)
 ```
+
+## Task Tracking & Process
+
+`TASKS.md` is the single source of truth for features and tasks, managed by a
+vendored zero-dependency CLI (`tools/tasks.py`, canonical:
+<https://github.com/budhash/tasks>). **Edit it only through the CLI** — never by
+hand. Full process: [`docs/PROCESS.md`](docs/PROCESS.md).
+
+```bash
+./tools/tasks tree            # Everything, grouped by feature
+./tools/tasks next            # Next actionable task (respects deps)
+./tools/tasks show F-2 --full # Feature + design notes
+./tools/tasks start T-10      # → doing (single WIP)
+./tools/tasks done  T-10      # → done (auto-stamps @done)
+./tools/tasks validate        # Sanity-check (run in CI)
+```
+
+Schema: `- [ ] (ID) [PRIO] [STATUS] Title @tags...` — features `F-####`, tasks
+`T-####`, priorities `P0..P3`, status `[todo] [doing] [done] [deferred] [skipped]`.
+The current roadmap is seeded as F-0001…F-0004 (H0 tooling → H1 measurement →
+H2 rules → H3 learned component); reasoning in
+[`docs/reviews/2026-09-04-state-of-project-and-path-to-next-level.md`](docs/reviews/2026-09-04-state-of-project-and-path-to-next-level.md).
+
+**Rules:** feature branches only (never commit to `main`); `make ci` before every
+PR; report **pure** (no-override) accuracy as the headline; a shortcut is either
+fixed in the same PR or tracked via `./tools/tasks new` with rationale.
 
 ## Architecture
 

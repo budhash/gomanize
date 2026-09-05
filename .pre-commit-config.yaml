@@ -43,6 +43,15 @@ repos:
         pass_filenames: false
         always_run: true
 
+      # Keep TASKS.md parseable — it is only ever edited via ./tools/tasks
+      - id: tasks-validate
+        name: Validate TASKS.md
+        entry: ./tools/tasks
+        args: [validate]
+        language: system
+        files: ^TASKS\.md$
+        pass_filenames: false
+
   # Built-in hooks for common issues
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
@@ -66,6 +75,7 @@ exclude: |
       \.git/|
       datasets/|
       testbed/dakshina/.*\.tsv|
+      tools/tasks\.py|
       vendor/
   )$
 

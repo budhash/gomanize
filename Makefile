@@ -1,7 +1,7 @@
 # Gomanize - Hindi Transliteration Library
 # Development workflow Makefile
 
-.PHONY: help init hooks hooks-update build version test test-quick test-verbose test-cover test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets
+.PHONY: help init hooks hooks-update build version test test-quick test-verbose test-cover test-unit test-integration test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets tasks
 
 # Go parameters
 GOCMD := go
@@ -91,28 +91,24 @@ test-cover: ## Run tests with coverage report
 	@$(GOTEST) -v -race -coverprofile=coverage.out ./...
 	@echo "✓ Coverage report: coverage.out"
 
-test-unit: ## Run unit tests only (fast, targeted)
+test-unit: ## Run unit tests only (fast, all packages except benchmark)
 	@echo "Running unit tests..."
-	@$(GOTEST) ./internal/legacy_lang/... -v -run "^TestUnit"
+	@$(GOTEST) $(shell $(GOCMD) list ./... | grep -v /benchmark) -count=1
 	@echo "✓ Unit tests complete"
 
-test-integration: ## Run integration tests (full datasets)
+test-integration: ## Run integration tests (full Dakshina + Aksharantar datasets)
 	@echo "Running integration tests..."
-	@$(GOTEST) ./internal/legacy_lang/... -v -run "^TestIntegration"
+	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkDakshinaHindi|TestBenchmarkAksharantarHindi"
 	@echo "✓ Integration tests complete"
 
-test-dakshina: ## Run Dakshina accuracy test
+test-dakshina: ## Run Dakshina accuracy test (curated high-confidence subset)
 	@echo "Running Dakshina accuracy test..."
-	@$(GOTEST) ./internal/legacy_lang/... -v -run "TestIntegrationDakshinaAccuracy"
+	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkCuratedHindi"
 	@echo "✓ Dakshina test complete"
 
 test-analysis: ## Run failure analysis (shows breakdown of issues)
 	@echo "Running failure pattern analysis..."
 	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkFailureAnalysis"
-
-test-original: ## Run original test suite (hindi-common.txt)
-	@echo "Running original test suite..."
-	@$(GOTEST) ./internal/legacy_lang/... -v -run "TestIntegrationOriginalTestSuite"
 
 bench: ## Run performance benchmarks
 	@echo "Running performance benchmarks..."
@@ -229,6 +225,9 @@ tidy: ## Tidy go modules
 	@$(GOMOD) tidy
 	@echo "✓ Tidy complete"
 
+tasks: ## Show the task tracker (usage: make tasks ARGS="next" — see ./tools/tasks help)
+	@./tools/tasks $(ARGS)
+
 # ============================================================================
 # Status / Info
 # ============================================================================
@@ -242,7 +241,7 @@ status: ## Show current test status summary
 	@echo "Tests:"
 	@$(GOTEST) ./... -count=1 2>&1 | tail -5
 	@echo ""
-	@echo "Dakshina accuracy:"
-	@$(GOTEST) ./internal/legacy_lang/... -v -run "TestAnalyzeAllFailures" 2>&1 | grep -E "(Passed|Failed|Total):" | head -3
+	@echo "Dakshina accuracy (curated):"
+	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkCuratedHindi" 2>&1 | grep -E "Pure|With overrides" | head -3
 
 .DEFAULT_GOAL := help
