@@ -137,11 +137,11 @@ gomanize/
 │   ├── schwa/                     # Schwa classifier training (align/features/train)
 │   ├── build_lexicon.py / build_freq.py / build_aksharantar_test.py
 │   ├── build_comilingua.py / train_ngram.py / mine_overrides.py
-├── internal/legacy_lang/          # Legacy implementation (for comparison)
-├── scripts/ushuaia                # Compare with ushuaia.pl Hunterian
+├── tools/ushuaia                  # Compare with ushuaia.pl Hunterian (also under tools/)
 ├── docs/
 │   ├── PROCESS.md                 # Development process (tasks, PRs, accuracy discipline)
-│   └── reviews/                   # Decision records (dated; every result incl. negatives)
+│   ├── reviews/                   # Decision records (dated; every result incl. negatives)
+│   └── archive/                   # Historical docs (2025-era, bannered)
 ├── .claude/                       # Claude Code configuration + hooks
 ├── .github/workflows/             # ci.yml + release.yml (GoReleaser on tags)
 ├── Makefile                       # Development workflow
@@ -268,25 +268,25 @@ Compare gomanize output against [ushuaia.pl](https://www.ushuaia.pl/transliterat
 
 ```bash
 # Compare single word
-./scripts/ushuaia "नमस्ते" --compare
+./tools/ushuaia "नमस्ते" --compare
 # Input:     नमस्ते
 # Hunterian: namste
 # Gomanize:  namaste
 # Status:    ✗ Different
 
 # Show all schemes (Hunterian, ISO-15919, Polish)
-./scripts/ushuaia "ऐश्वर्या" --all
+./tools/ushuaia "ऐश्वर्या" --all
 # Input:     ऐश्वर्या
 # Hunterian: aishwrya
 # ISO-15919: aiśvaryā
 # Polish:    ajśwrja
 
 # Get Hunterian only
-./scripts/ushuaia "काम"
+./tools/ushuaia "काम"
 # kām
 
 # Get ISO-15919 only
-./scripts/ushuaia "काम" --iso
+./tools/ushuaia "काम" --iso
 # kāma
 ```
 

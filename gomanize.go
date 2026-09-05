@@ -6,7 +6,6 @@ import (
 	"unicode"
 
 	"github.com/budhash/gomanize/core"
-	legacyLang "github.com/budhash/gomanize/internal/legacy_lang"
 	hindiLang "github.com/budhash/gomanize/lang/hindi"
 	"github.com/budhash/gomanize/scheme/colloquial"
 )
@@ -77,8 +76,6 @@ func NewWithOptions(language string, opts Options, engineOpts ...EngineOption) (
 	case "hindi":
 		engine := core.NewEngine(hindiLang.Hindi{}, colloquial.Colloquial{}, engineOpts...)
 		romanizer = &coreEngineAdapter{name: "hindi", engine: engine}
-	case "hindi-legacy":
-		romanizer = &legacyAdapter{legacy: &legacyLang.Hindi{}}
 	default:
 		return nil, fmt.Errorf("language not supported : %s", l)
 	}
@@ -198,32 +195,4 @@ func (a *coreEngineAdapter) DisableRule(pattern string) int {
 
 func (a *coreEngineAdapter) EnableRule(pattern string) int {
 	return a.engine.RuleEngine().EnableRule(pattern)
-}
-
-// legacyAdapter adapts the legacy engine to the Romanizer interface.
-type legacyAdapter struct {
-	legacy *legacyLang.Hindi
-}
-
-func (a *legacyAdapter) Name() string {
-	return "hindi-legacy"
-}
-
-func (a *legacyAdapter) Transliterate(word string) string {
-	return a.legacy.Transliterate(word)
-}
-
-func (a *legacyAdapter) TransliterateWithOptions(word string, opts Options) string {
-	legacyOpts := legacyLang.Options{LongVowels: opts.LongVowels}
-	return a.legacy.TransliterateWithOptions(word, legacyOpts)
-}
-
-func (a *legacyAdapter) TransliterateDebug(word string, opts Options) (string, *DebugInfo) {
-	// Legacy adapter doesn't support debug, return nil debug info
-	result := a.TransliterateWithOptions(word, opts)
-	return result, nil
-}
-
-func (a *legacyAdapter) Info() {
-	a.legacy.Info()
 }
