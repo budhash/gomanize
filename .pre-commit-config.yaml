@@ -72,11 +72,11 @@ repos:
 # Exclude patterns
 exclude: |
   (?x)^(
-      \.git/|
-      datasets/|
+      \.git/.*|
+      datasets/.*|
       testbed/dakshina/.*\.tsv|
       tools/tasks\.py|
-      vendor/
+      vendor/.*
   )$
 
 # Minimum pre-commit version

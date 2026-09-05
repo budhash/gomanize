@@ -67,7 +67,7 @@ accuracy-reporting rules: [`docs/PROCESS.md`](docs/PROCESS.md).
 ```
 gomanize/
 ├── gomanize.go                    # Public API (New, Translit — whitespace/punct-aware)
-├── cmd/main.go                    # CLI entry point (all flags)
+├── cmd/gomanize/main.go           # CLI entry point (all flags)
 ├── core/                          # Engine mechanics (no script knowledge)
 │   ├── engine.go                  # Pipeline + LexiconProvider/Reranker interfaces
 │   ├── types.go                   # Unit, Word, Options

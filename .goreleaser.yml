@@ -10,7 +10,7 @@ before:
 
 builds:
   - id: gomanize
-    main: ./cmd
+    main: ./cmd/gomanize
     binary: gomanize
     env:
       - CGO_ENABLED=0
@@ -23,7 +23,7 @@ builds:
       - arm64
     ldflags:
       - -s -w
-      - -X main.version={{.Version}}
+      - -X main.version={{.Tag}}
       - -X main.commit={{.ShortCommit}}
       - -X main.date={{.Date}}
 

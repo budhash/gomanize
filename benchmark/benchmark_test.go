@@ -160,9 +160,11 @@ func TestBenchmarkCuratedHindi(t *testing.T) {
 	ignorePath := getTestDataPath("ignore_hi.csv")
 
 	entries, err := loadTestData(dataPath, overridePath, ignorePath)
-	if err != nil {
+	if os.IsNotExist(err) {
 		t.Skipf("Curated Hindi test file not found: %v", err)
 		return
+	} else if err != nil {
+		t.Fatalf("loading curated data: %v", err)
 	}
 
 	engine := newEngine()
@@ -208,6 +210,9 @@ func TestBenchmarkCuratedHindi(t *testing.T) {
 	}
 
 	pureTotal := purePass + pureFail
+	if pureTotal == 0 {
+		t.Fatal("no curated entries evaluated — dataset empty or fully ignored")
+	}
 	purePct := float64(purePass) * 100 / float64(pureTotal)
 
 	overrideTotal := overridePass + overrideFail
@@ -264,14 +269,18 @@ func TestBenchmarkMultiReference(t *testing.T) {
 	ignorePath := getTestDataPath("ignore_hi.csv")
 
 	entries, err := loadCSV(curatedPath)
-	if err != nil {
+	if os.IsNotExist(err) {
 		t.Skipf("Curated Hindi test file not found: %v", err)
 		return
+	} else if err != nil {
+		t.Fatalf("loading curated data: %v", err)
 	}
 	refs, err := loadReferenceSets(refPath)
-	if err != nil {
+	if os.IsNotExist(err) {
 		t.Skipf("Dakshina reference file not found: %v", err)
 		return
+	} else if err != nil {
+		t.Fatalf("loading data: %v", err)
 	}
 	ignores, err := loadIgnores(ignorePath)
 	if err != nil {
@@ -359,9 +368,11 @@ func TestBenchmarkDakshinaHindi(t *testing.T) {
 	ignorePath := getTestDataPath("ignore_hi.csv")
 
 	entries, err := loadTestData(dataPath, overridePath, ignorePath)
-	if err != nil {
+	if os.IsNotExist(err) {
 		t.Skipf("Dakshina Hindi test file not found: %v (run datasets/dakshina/generate_dataset.sh hi)", err)
 		return
+	} else if err != nil {
+		t.Fatalf("loading data: %v", err)
 	}
 
 	engine := newEngine()
@@ -417,9 +428,11 @@ func TestBenchmarkAksharantarHindi(t *testing.T) {
 	ignorePath := getTestDataPath("ignore_hi.csv")
 
 	entries, err := loadTestData(dataPath, overridePath, ignorePath)
-	if err != nil {
+	if os.IsNotExist(err) {
 		t.Skipf("Aksharantar Hindi test file not found: %v (run datasets/aksharantar/generate_dataset.sh hi)", err)
 		return
+	} else if err != nil {
+		t.Fatalf("loading data: %v", err)
 	}
 
 	engine := newEngine()
@@ -498,9 +511,11 @@ func referenceSetsForSplit(path, split string) (map[string][]string, error) {
 // generalization test (unlike the curated set, which is all training data).
 func TestBenchmarkSchwaModelHeldout(t *testing.T) {
 	refs, err := referenceSetsForSplit(getTestDataPath("dakshina_hi.csv"), "test")
-	if err != nil {
+	if os.IsNotExist(err) {
 		t.Skipf("Dakshina file not found: %v", err)
 		return
+	} else if err != nil {
+		t.Fatalf("loading data: %v", err)
 	}
 	if len(refs) == 0 {
 		t.Skip("no test-split rows")
@@ -569,9 +584,11 @@ func TestBenchmarkSchwaModelHeldout(t *testing.T) {
 // test asserts that truth rather than a misleading accuracy jump.
 func TestBenchmarkLexiconCoverage(t *testing.T) {
 	testRefs, err := referenceSetsForSplit(getTestDataPath("dakshina_hi.csv"), "test")
-	if err != nil {
+	if os.IsNotExist(err) {
 		t.Skipf("Dakshina file not found: %v", err)
 		return
+	} else if err != nil {
+		t.Fatalf("loading data: %v", err)
 	}
 	engine := newEngine()
 
@@ -619,9 +636,11 @@ func TestBenchmarkLexiconCoverage(t *testing.T) {
 // remains the measure of engine skill.
 func TestBenchmarkAksharantarTestSet(t *testing.T) {
 	entries, err := loadCSV(getTestDataPath("aksharantar_test_hi.csv"))
-	if err != nil {
+	if os.IsNotExist(err) {
 		t.Skipf("Aksharantar test set not found: %v (run tools/build_aksharantar_test.py)", err)
 		return
+	} else if err != nil {
+		t.Fatalf("loading data: %v", err)
 	}
 
 	// Group attested variants per (slice, native).
@@ -699,9 +718,11 @@ func TestBenchmarkAksharantarTestSet(t *testing.T) {
 // segmentation, not just per-word transliteration.
 func TestBenchmarkLyricsGold(t *testing.T) {
 	entries, err := loadCSV(getTestDataPath("lyrics_gold_hi.csv"))
-	if err != nil {
+	if os.IsNotExist(err) {
 		t.Skipf("lyrics gold not found: %v", err)
 		return
+	} else if err != nil {
+		t.Fatalf("loading data: %v", err)
 	}
 
 	g, err := gomanize.New("hindi")
@@ -750,6 +771,9 @@ func TestBenchmarkLyricsGold(t *testing.T) {
 		}
 	}
 
+	if lines == 0 {
+		t.Fatal("no lyrics gold lines evaluated — dataset empty")
+	}
 	t.Logf("=== Lyrics gold seed (%d public-domain lines, single maintainer-attested ref) ===", lines)
 	t.Logf("Line CER (primary):    rules %.4f | +lexicon %.4f", rulesCER/float64(lines), lexCER/float64(lines))
 	t.Logf("Word accuracy:         rules %5.1f%% | +lexicon %5.1f%%",
@@ -777,9 +801,11 @@ func TestBenchmarkLyricsGold(t *testing.T) {
 // use case until a lyrics gold set exists (T-0021).
 func TestBenchmarkComiLingua(t *testing.T) {
 	entries, err := loadCSV(getTestDataPath("comilingua_hi.csv"))
-	if err != nil {
+	if os.IsNotExist(err) {
 		t.Skipf("COMI-LINGUA file not found: %v (run tools/build_comilingua.py)", err)
 		return
+	} else if err != nil {
+		t.Fatalf("loading data: %v", err)
 	}
 
 	type variant struct {
@@ -849,14 +875,18 @@ func TestBenchmarkComiLingua(t *testing.T) {
 // TOKEN coverage of the frequency distribution (its true production value).
 func TestBenchmarkFrequencyWeighted(t *testing.T) {
 	freq, err := loadFrequencies(getTestDataPath("freq_hi.csv"))
-	if err != nil {
+	if os.IsNotExist(err) {
 		t.Skipf("freq_hi.csv not found: %v (run tools/build_freq.py)", err)
 		return
+	} else if err != nil {
+		t.Fatalf("loading data: %v", err)
 	}
 	refs, err := loadReferenceSets(getTestDataPath("dakshina_hi.csv"))
-	if err != nil {
+	if os.IsNotExist(err) {
 		t.Skipf("Dakshina file not found: %v", err)
 		return
+	} else if err != nil {
+		t.Fatalf("loading data: %v", err)
 	}
 	engine := newEngine()
 
@@ -969,9 +999,11 @@ func TestBenchmarkFailureAnalysis(t *testing.T) {
 	ignorePath := getTestDataPath("ignore_hi.csv")
 
 	entries, err := loadTestData(dataPath, overridePath, ignorePath)
-	if err != nil {
+	if os.IsNotExist(err) {
 		t.Skipf("Curated Hindi test file not found: %v", err)
 		return
+	} else if err != nil {
+		t.Fatalf("loading curated data: %v", err)
 	}
 
 	engine := newEngine()
