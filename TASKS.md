@@ -67,7 +67,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [ ] (T-0017) [P3] [todo] Offline model-mining tool for override candidates (IndicXlit/LLM)
   - [ ] (T-0018) [P3] [todo] Candidate generation + tiny char n-gram re-ranker
 
-- [ ] (T-0023) [P2] [todo] Fix CLI whitespace handling: split words on all whitespace, not just spaces
+- [x] (T-0023) [P2] [done] Fix CLI whitespace handling: split words on all whitespace, not just spaces @done=2026-09-05
 ## Skipped
 
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow
