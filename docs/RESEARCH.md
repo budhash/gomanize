@@ -72,7 +72,7 @@ then small learned components for the lexical gap.
 
 | Dataset | Size (as used) | License | Role |
 |---|---|---|---|
-| [Dakshina](https://github.com/google-research-datasets/dakshina) (Google, 2020; repo archived 2026) | 53K rows; 25K/2.5K/2.5K disjoint splits with attestation counts | CC BY-SA 4.0 | Curated benchmark (1,335 high-attestation words), multi-reference variant sets, held-out test, and the sole training source for all learned components |
+| [Dakshina](https://github.com/google-research-datasets/dakshina) (Google, 2020; repo archived 2026) | 53K rows; 25K/2.5K/2.5K disjoint splits with attestation counts | CC BY-SA 4.0 | Curated benchmark (1,330 high-attestation words), multi-reference variant sets, held-out test, and the sole training source for all learned components |
 | [Aksharantar test set](https://huggingface.co/datasets/ai4bharat/Aksharantar) (AI4Bharat, 2022) | 10,112 human-annotated pairs; slices AK-Freq / AK-NEF / AK-NEI / Dakshina | CC-BY 4.0 | Independent human benchmark (Karya native-speaker annotators); exposes named-entity weakness and cross-dataset convention shift |
 | [COMI-LINGUA](https://huggingface.co/datasets/LingoIITGN/COMI-LINGUA) MT split (IIT-GN, EMNLP Findings 2025) | 9,606 word types / 152K token occurrences extracted from expert-annotated parallel Devanagari↔Roman sentences | CC-BY 4.0 | *Naturally-typed* colloquial Hindi — the closest proxy to song lyrics; token-weighted scoring |
 | [Shabd](https://osf.io/xfbhd/) (psycholinguistic DB, 1.4B-token corpus) | Top-15K Devanagari words by frequency | CC0 | Frequency weighting; lexicon ranking; token-coverage estimation |
@@ -90,7 +90,7 @@ for human romanizations, kept out-of-repo for copyright reasons.
 
 ## 4. Results
 
-### Headline (curated Dakshina, 1,335 words)
+### Headline (curated Dakshina, 1,330 words)
 
 | Metric | Score |
 |---|---|

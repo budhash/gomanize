@@ -1,9 +1,10 @@
-// Package brahmic provides types and logic for Brahmic script family transliteration.
+// Types and state for Brahmic script family transliteration.
 // Brahmic scripts (Devanagari, Bengali, Tamil, etc.) share common features:
 // - Inherent vowel (schwa) in consonants
 // - Halant/virama to suppress inherent vowel
 // - Consonant clusters via halant
 // - Matras (dependent vowel signs)
+
 package brahmic
 
 import "github.com/budhash/gomanize/core"

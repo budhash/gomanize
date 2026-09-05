@@ -56,7 +56,7 @@ hooks-update: ## Update pre-commit hook versions
 
 build: ## Build the gomanize binary
 	@echo "Building $(BINARY) $(VERSION)..."
-	@$(GOBUILD) $(LDFLAGS) -o $(BINARY) ./cmd/main.go
+	@$(GOBUILD) $(LDFLAGS) -o $(BINARY) ./cmd/gomanize
 	@echo "✓ Build complete: ./$(BINARY)"
 
 version: ## Show version info

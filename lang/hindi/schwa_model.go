@@ -128,25 +128,26 @@ func markLeaves(n *treeNode) {
 }
 
 // schwaFeatures computes the feature map for the inherent-schwa consonant whose
-// consonant character begins at rune index i in runes. Mirrors features.py.
+// consonant character begins at rune index i in runes. Mirrors features.py
+// EXACTLY: cons absorbs a following nukta, but next/next2 are the raw runes at
+// i+1/i+2 (for a nukta consonant, next IS the nukta) — training computed them
+// that way, so inference must too.
 func schwaFeatures(runes []rune, i int, isFirst, isLast bool) map[string]string {
 	cons := string(runes[i])
-	next := i + 1
-	if next < len(runes) && runes[next] == nuktaRune {
-		cons += string(runes[next])
-		next++
+	if i+1 < len(runes) && runes[i+1] == nuktaRune {
+		cons += string(runes[i+1])
 	}
 	prev := "^"
 	if i > 0 {
 		prev = string(runes[i-1])
 	}
 	nx := "$"
-	if next < len(runes) {
-		nx = string(runes[next])
+	if i+1 < len(runes) {
+		nx = string(runes[i+1])
 	}
 	nx2 := "$"
-	if next+1 < len(runes) {
-		nx2 = string(runes[next+1])
+	if i+2 < len(runes) {
+		nx2 = string(runes[i+2])
 	}
 	first, last := "0", "0"
 	if isFirst {

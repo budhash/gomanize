@@ -224,7 +224,11 @@ func runTestMode(g *gomanize.Gomanize, filename string, diffOnly bool) {
 		}
 	} else {
 		// Normal test output: summary + failures
-		fmt.Printf("Passed: %d / %d (%.1f%%)\n", passed, total, float64(passed)*100/float64(total))
+		if total == 0 {
+			fmt.Println("Passed: 0 / 0 (no valid test lines)")
+		} else {
+			fmt.Printf("Passed: %d / %d (%.1f%%)\n", passed, total, float64(passed)*100/float64(total))
+		}
 		if failed > 0 {
 			fmt.Println("\nFailures:")
 			for _, f := range failures {

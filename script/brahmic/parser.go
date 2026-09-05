@@ -1,6 +1,8 @@
 package brahmic
 
 import (
+	"unicode"
+
 	"fmt"
 
 	"github.com/budhash/gomanize/core"
@@ -46,7 +48,18 @@ func (p *Parser) Parse(input string, symbols core.SymbolMap) *core.Word {
 	afterHalant := false
 
 	for pos < len(runes) {
-		// Try multi-char sequences first (longest match)
+		// Skip format characters (ZWNJ/ZWJ etc., Unicode category Cf). They
+		// control conjunct rendering but carry no phonetic content; emitting
+		// them as units corrupts output and steals word-final position from
+		// the preceding consonant. afterHalant is preserved across them
+		// (क्‍ष is still a conjunct).
+		if unicode.Is(unicode.Cf, runes[pos]) {
+			pos++
+			runeIdx++
+			continue
+		}
+
+		// Try multi-char sequences first (first match in MultiChar order)
 		matched := false
 		for _, mc := range p.multiChar {
 			mcRunes := []rune(mc)

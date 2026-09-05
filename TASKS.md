@@ -70,6 +70,12 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
 - [x] (T-0023) [P2] [done] Fix CLI whitespace handling: split words on all whitespace, not just spaces @done=2026-09-05
 
 - [ ] (T-0024) [P3] [todo] Finish source-rune conversion: remaining BaseRom checks (gya/iya rules, conjunct neighbor tests)
+
+- [ ] (T-0025) [P3] [todo] NFC-normalize engine input or dataset keys (7-373 non-NFC rows across datasets)
+
+- [ ] (T-0026) [P3] [todo] Call-scoped debug traces: make TransliterateDebug/rule-toggling race-free
+
+- [ ] (T-0027) [P3] [todo] Add unit tests for cmd/gomanize and scheme/colloquial (currently none)
 ## Skipped
 
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow

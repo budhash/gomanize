@@ -157,6 +157,32 @@ func (h Hindi) Name() string {
 	return "hindi"
 }
 
+// init registers Unicode-form aliases for nukta consonants so both encodings
+// resolve. The map literal stores क़…य़ decomposed (base + U+093C) and ऩ/ऱ/ऴ
+// precomposed; real-world text arrives in either form (NFC keeps क़…य़
+// decomposed by composition exclusion, but raw keyboard/legacy text uses the
+// precomposed U+0958–U+095F code points).
+func init() {
+	// Precomposed U+0958–U+095F -> same info as the decomposed key.
+	for pre, base := range map[rune]rune{
+		0x0958: 0x0915, 0x0959: 0x0916, 0x095A: 0x0917, 0x095B: 0x091C,
+		0x095C: 0x0921, 0x095D: 0x0922, 0x095E: 0x092B, 0x095F: 0x092F,
+	} {
+		decomposed := string(base) + "़"
+		if info, ok := Symbols[decomposed]; ok {
+			Symbols[string(pre)] = info
+		}
+	}
+	// Decomposed base+nukta -> same info as the precomposed ऩ/ऱ/ऴ keys.
+	for pre, base := range map[rune]rune{
+		0x0929: 0x0928, 0x0931: 0x0930, 0x0934: 0x0933,
+	} {
+		if info, ok := Symbols[string(pre)]; ok {
+			Symbols[string(base)+"़"] = info
+		}
+	}
+}
+
 // Script returns the script used by this language.
 func (h Hindi) Script() core.Script {
 	return brahmicScript

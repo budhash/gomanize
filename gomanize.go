@@ -1,3 +1,19 @@
+// Package gomanize transliterates Devanagari (Hindi) text into readable Latin
+// script, using a rule-based engine with optional embedded learned components
+// (a schwa classifier, an attested-spelling lexicon, and a character-LM
+// re-ranker). It targets colloquial, diacritic-free romanization of the kind
+// used for song lyrics.
+//
+// Basic use:
+//
+//	g, err := gomanize.New("hindi")
+//	out := g.Translit("नमस्ते दुनिया") // "namaste duniya"
+//
+// A Gomanize instance is safe for concurrent Translit calls. TranslitDebug and
+// runtime rule toggling (DisableRule/EnableRule) mutate engine state and must
+// not run concurrently with other calls on the same instance. TranslitDebug
+// returns nil debug info when the Lexicon or Rerank options short-circuit the
+// rule pipeline.
 package gomanize
 
 import (
