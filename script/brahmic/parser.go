@@ -39,8 +39,21 @@ func (p *Parser) SetMultiChar(mc []string) {
 // Parse converts input text into a Word with linked Units.
 // Implements core.Parser interface.
 func (p *Parser) Parse(input string, symbols core.SymbolMap) *core.Word {
-	word := core.NewWord(input)
-	runes := []rune(input)
+	// Strip format characters (ZWNJ/ZWJ etc., Unicode category Cf) BEFORE
+	// parsing. They control conjunct rendering but carry no phonetic content;
+	// emitting them as units corrupts output, and merely skipping them during
+	// the walk leaves Unit.Start.Rune pointing at raw-input positions, which
+	// breaks rune-indexed schwa rules and the schwa model's feature window.
+	// Stripping first also lets multi-char sequences match across them
+	// (ज्&#8205;ञ still parses as the ज्ञ conjunct). Word.Original is the
+	// stripped form so unit indices always align with it.
+	runes := make([]rune, 0, len(input))
+	for _, r := range input {
+		if !unicode.Is(unicode.Cf, r) {
+			runes = append(runes, r)
+		}
+	}
+	word := core.NewWord(string(runes))
 	pos := 0
 	runeIdx := 0
 
@@ -48,17 +61,6 @@ func (p *Parser) Parse(input string, symbols core.SymbolMap) *core.Word {
 	afterHalant := false
 
 	for pos < len(runes) {
-		// Skip format characters (ZWNJ/ZWJ etc., Unicode category Cf). They
-		// control conjunct rendering but carry no phonetic content; emitting
-		// them as units corrupts output and steals word-final position from
-		// the preceding consonant. afterHalant is preserved across them
-		// (क्‍ष is still a conjunct).
-		if unicode.Is(unicode.Cf, runes[pos]) {
-			pos++
-			runeIdx++
-			continue
-		}
-
 		// Try multi-char sequences first (first match in MultiChar order)
 		matched := false
 		for _, mc := range p.multiChar {

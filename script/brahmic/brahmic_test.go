@@ -140,3 +140,30 @@ func TestSchwaRulesShared(t *testing.T) {
 		t.Errorf("missing shared rule %q", name)
 	}
 }
+
+func TestFormatCharsStrippedBeforeParsing(t *testing.T) {
+	// Cf characters (ZWNJ/ZWJ) must be stripped BEFORE parsing so that
+	// (a) no unit carries them, (b) Start.Rune indexes the stripped Original
+	// (rune-indexed schwa rules and the schwa model depend on this), and
+	// (c) multi-char conjuncts match across them (ज्&#8205;ञ -> ज्ञ).
+	w := parse(t, "‌मकसद") // leading ZWNJ
+	if w.Original != "मकसद" {
+		t.Errorf("Original = %q, want stripped मकसद", w.Original)
+	}
+	if len(w.Units) == 0 || w.Units[0].Start.Rune != 0 {
+		t.Fatalf("first unit Start.Rune = %v, want 0", w.Units[0].Start.Rune)
+	}
+
+	// ZWJ inside the ज्ञ sequence must not defeat the conjunct match.
+	w2 := parse(t, "ज्‍ञ")
+	if len(w2.Units) != 1 || w2.Units[0].BaseRom != "gy" {
+		t.Errorf("ज्+ZWJ+ञ parsed as %d units (first BaseRom %q), want single gy conjunct",
+			len(w2.Units), w2.Units[0].BaseRom)
+	}
+
+	// A word of only format characters parses to zero units without panicking.
+	w3 := parse(t, "‌‍")
+	if len(w3.Units) != 0 {
+		t.Errorf("Cf-only input produced %d units, want 0", len(w3.Units))
+	}
+}

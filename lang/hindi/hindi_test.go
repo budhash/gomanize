@@ -128,3 +128,29 @@ func TestHindiDefaultVsKeepMedialSchwa(t *testing.T) {
 		t.Errorf("KeepMedialSchwa had no effect on जनता: both %q", def)
 	}
 }
+
+// TestFormatCharInvariance: output must be identical with and without ZWNJ/ZWJ,
+// on every engine configuration (these appear routinely in real Devanagari).
+func TestFormatCharInvariance(t *testing.T) {
+	e := engine()
+	pairs := [][2]string{
+		{"‌मकसद", "मकसद"},
+		{"कमल‌", "कमल"},
+		{"ज्‍ञान", "ज्ञान"},
+		{"मुख्‍यमंत्री", "मुख्यमंत्री"},
+	}
+	configs := map[string]core.Options{
+		"default":     {},
+		"schwa-model": {SchwaModel: true},
+		"rerank":      {Rerank: true},
+	}
+	for name, opts := range configs {
+		for _, p := range pairs {
+			got := e.TransliterateWithOptions(p[0], opts)
+			want := e.TransliterateWithOptions(p[1], opts)
+			if got != want {
+				t.Errorf("[%s] %q -> %q but clean form -> %q", name, p[0], got, want)
+			}
+		}
+	}
+}
