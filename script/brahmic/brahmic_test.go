@@ -116,3 +116,27 @@ func TestParseLinksPrevNext(t *testing.T) {
 		t.Errorf("linked chain length %d != Units length %d", n, len(w.Units))
 	}
 }
+
+func TestSchwaRulesShared(t *testing.T) {
+	rules := brahmic.SchwaRules()
+	if len(rules) != 6 {
+		t.Fatalf("SchwaRules() returned %d rules, want 6", len(rules))
+	}
+	want := map[string]bool{
+		"schwa.keep.sonorous-final": true,
+		"schwa.delete.ccv":          true,
+		"schwa.delete.cccc-final":   true,
+		"schwa.delete.before-cc":    true,
+		"schwa.delete.word-final":   true,
+		"schwa.keep.default":        true,
+	}
+	for _, r := range rules {
+		if !want[r.Name] {
+			t.Errorf("unexpected shared rule %q", r.Name)
+		}
+		delete(want, r.Name)
+	}
+	for name := range want {
+		t.Errorf("missing shared rule %q", name)
+	}
+}
