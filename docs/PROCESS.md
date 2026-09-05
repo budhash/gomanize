@@ -42,8 +42,9 @@ Features are `F-####` (parents), tasks are `T-####` (children). Priorities
 `P0..P3`. Status `[todo] [doing] [done] [deferred] [skipped]`. Durable design
 context for a feature goes in the `# Notes` block, not in chat.
 
-The current roadmap (H0 tooling → H1 measurement → H2 rules → H3 learned
-component) is seeded as features F-0001…F-0004. See
+The founding roadmap (F-0001…F-0005: tooling → measurement → rules → learned
+components → real-world validation) is complete as of 2026-09-05; new work gets
+new features via `./tools/tasks new`. See
 [`docs/reviews/2026-09-04-state-of-project-and-path-to-next-level.md`](reviews/2026-09-04-state-of-project-and-path-to-next-level.md)
 for the reasoning behind it.
 

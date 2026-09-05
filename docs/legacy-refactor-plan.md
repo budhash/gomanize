@@ -1,3 +1,8 @@
+> **HISTORICAL DOCUMENT (the completed 2025 core-refactor task plan; all phases shipped. The live tracker is /TASKS.md).** Statistics and plans below reflect the
+> project as of 2025 and are NOT current. For today's status see `CLAUDE.md`;
+> for the live backlog see `/TASKS.md` (via `./tools/tasks tree`); for every
+> subsequent result and decision see `docs/reviews/`.
+
 # Architecture Refactoring Tasks
 
 This document contains detailed tasks for refactoring gomanize to the new layered architecture.

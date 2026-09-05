@@ -40,10 +40,15 @@ cat << 'EOF'
 
    make ci
 
-5. CURRENT STATUS
-   Native Hindi accuracy: 82.5% (Target: 80%+ ✓)
-   Phase 2: Investigating broader ा→aa rule (गाना→gaana)
-   See Claude.md for roadmap and divergences.
+5. TASK TRACKING
+   ./tools/tasks tree    # backlog (never hand-edit TASKS.md)
+   ./tools/tasks next    # next actionable task
+
+6. CURRENT STATUS (2026-09-05, roadmap complete)
+   Curated Dakshina: 86.1% pure / 92.8% match-any / 94.7% with --rerank
+   Held-out Dakshina test: 70.4% (rerank) | Lyrics gold CER: 0.047 (human floor ~0.054)
+   Opt-in learned components: --schwa-model, --lexicon (8.4k words), --rerank
+   See Claude.md for status and docs/reviews/ for all decision records.
 
 ==========================================
 
