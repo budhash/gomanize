@@ -92,6 +92,7 @@ Known limitations:
 |----------|----------|
 | [docs/RESEARCH.md](docs/RESEARCH.md) | The problem, literature, datasets and licenses, evaluation methodology, all results including negatives |
 | [docs/DESIGN.md](docs/DESIGN.md) | Engine architecture, rule system, character mappings, learned components, future directions |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | Post-1.0 directions (WASM demo, convention schemes, more languages) with tradeoffs |
 | [CLAUDE.md](CLAUDE.md) | Development workflow, commands, repository conventions |
 | [docs/PROCESS.md](docs/PROCESS.md) | Task tracking, PR discipline, accuracy reporting rules |
 | [docs/reviews/](docs/reviews/) | Dated decision records for every result, including failures |
