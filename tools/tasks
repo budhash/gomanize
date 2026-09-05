@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Thin wrapper for the vendored task CLI. Canonical: https://github.com/budhash/tasks
+# Edit TASKS.md ONLY through this CLI (see docs/PROCESS.md).
+set -euo pipefail
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PY="$(command -v python3 || command -v python)"
+exec "$PY" "$DIR/tools/tasks.py" "$@"
