@@ -68,6 +68,8 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0018) [P3] [done] Candidate generation + tiny char n-gram re-ranker @done=2026-09-05
 
 - [x] (T-0023) [P2] [done] Fix CLI whitespace handling: split words on all whitespace, not just spaces @done=2026-09-05
+
+- [ ] (T-0024) [P3] [todo] Finish source-rune conversion: remaining BaseRom checks (gya/iya rules, conjunct neighbor tests)
 ## Skipped
 
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow
