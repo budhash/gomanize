@@ -14,6 +14,10 @@ datasets/**/dakshina_dataset_v1.0/
 gomanize
 *.exe
 
+# WASM demo build outputs (rebuilt by `make wasm` and the Pages deploy)
+web/gomanize.wasm
+web/wasm_exec.js
+
 # IDE
 .idea/
 *.iml
