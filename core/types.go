@@ -111,6 +111,10 @@ type Options struct {
 	// decisions instead of the hand-written heuristic schwa rules. See
 	// lang/hindi/schwa_model.go and docs/reviews for the held-out evaluation.
 	SchwaModel bool
+	// Lexicon consults the language's high-confidence romanization lexicon first;
+	// known words return the attested human spelling, unknown words fall through
+	// to the rule engine. Requires the Language to implement LexiconProvider.
+	Lexicon bool
 	// Debug enables debug output showing rule applications.
 	Debug bool
 }

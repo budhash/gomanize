@@ -30,6 +30,8 @@ echo "हिंदी गाना" | ./gomanize
 ./gomanize --long-vowels "गाना"     # gaana (aa for all ā)
 ./gomanize --simple-nasals "करें"   # karen (simplified nasals)
 ./gomanize --keep-medial-schwa "जनता" # janata (dataset-compatible)
+./gomanize --schwa-model "जनता"     # learned schwa classifier (see docs/reviews H3)
+./gomanize --lexicon "अंकल"          # uncle (known words → attested spelling, rules for OOV)
 
 # Run CI (format, lint, build, test)
 make ci

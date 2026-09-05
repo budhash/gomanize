@@ -545,6 +545,49 @@ func TestBenchmarkSchwaModelHeldout(t *testing.T) {
 	}
 }
 
+// TestBenchmarkLexiconCoverage reports the lexicon's coverage HONESTLY. Because
+// Dakshina's train/test native words are disjoint, a train-built lexicon covers
+// ~0% of the held-out test split — so it cannot (and must not) inflate the
+// held-out accuracy number. Its real value is production token coverage of common
+// vocabulary, which a type-disjoint benchmark structurally cannot credit. This
+// test asserts that truth rather than a misleading accuracy jump.
+func TestBenchmarkLexiconCoverage(t *testing.T) {
+	testRefs, err := referenceSetsForSplit(getTestDataPath("dakshina_hi.csv"), "test")
+	if err != nil {
+		t.Skipf("Dakshina file not found: %v", err)
+		return
+	}
+	engine := newEngine()
+
+	covered, total := 0, 0
+	rulesAny, lexAny := 0, 0
+	for native, variants := range testRefs {
+		total++
+		if _, ok := (hindi.Hindi{}).LexiconLookup(native); ok {
+			covered++
+		}
+		if matchesAny(engine.Transliterate(native), variants) {
+			rulesAny++
+		}
+		if matchesAny(engine.TransliterateWithOptions(native, core.Options{Lexicon: true}), variants) {
+			lexAny++
+		}
+	}
+
+	t.Logf("=== Lexicon coverage — Dakshina TEST split (held-out) ===")
+	t.Logf("Lexicon size: %d entries (built from TRAIN)", hindi.LexiconSize())
+	t.Logf("Test words covered by lexicon: %d / %d (%.1f%%) — near-zero is EXPECTED (disjoint splits)",
+		covered, total, float64(covered)*100/float64(total))
+	t.Logf("Match-any: rules %.1f%%  |  rules+lexicon %.1f%%", float64(rulesAny)*100/float64(total), float64(lexAny)*100/float64(total))
+	t.Logf("Takeaway: the lexicon does not change held-out TYPE accuracy (by construction);")
+	t.Logf("its value is production TOKEN coverage of common words, not measurable here.")
+
+	// The lexicon must never hurt: rules+lexicon >= rules on any set.
+	if lexAny < rulesAny {
+		t.Errorf("lexicon regressed held-out match-any: rules=%d lexicon=%d", rulesAny, lexAny)
+	}
+}
+
 // -----------------------------------------------------------------------------
 // Failure Pattern Analysis
 // -----------------------------------------------------------------------------

@@ -96,8 +96,24 @@ func (e *Engine) TransliterateDebug(input string, opts Options) (string, *DebugI
 	return e.transliterateInternal(input, opts)
 }
 
+// LexiconProvider is an optional interface a Language may implement to supply a
+// word-level romanization lexicon. When Options.Lexicon is set, the engine
+// consults it before the rule pipeline; a hit short-circuits transliteration.
+type LexiconProvider interface {
+	LexiconLookup(word string) (string, bool)
+}
+
 // transliterateInternal is the core transliteration logic.
 func (e *Engine) transliterateInternal(input string, opts Options) (string, *DebugInfo) {
+	// 0. Lexicon lookup (optional): known words get their attested spelling.
+	if opts.Lexicon {
+		if lp, ok := e.lang.(LexiconProvider); ok {
+			if roman, found := lp.LexiconLookup(input); found {
+				return roman, nil
+			}
+		}
+	}
+
 	// 1. Parse (Script handles script-specific parsing)
 	parser := e.script.NewParser(e.config)
 	word := parser.Parse(input, e.symbols)
