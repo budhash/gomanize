@@ -23,12 +23,6 @@ import re
 import sys
 from collections import defaultdict
 
-SRC = sys.argv[1]
-OUT = 'benchmark/data/comilingua_hi.csv'
-DEVA = re.compile(r'^[ऀ-ॿ]+$')
-LATIN = re.compile(r'^[a-z]+$')
-STRIP = '।.,!?;:"\'()[]{}“”‘’-–—…'
-
 # Positional alignment pairs some Devanagari words with English TRANSLATIONS
 # (annotators code-switch: अंक → "points"). Filter those with an engine-neutral
 # consonant-skeleton check: the word's consonants (standard chart) must appear
@@ -71,40 +65,53 @@ def is_transliteration(native, roman):
                 break
     return hits / len(skel) >= 0.7
 
-pairs = defaultdict(lambda: defaultdict(int))
-cols = [('Annotator_1_DH_translation', 'Annotator_1_RH_translation'),
-        ('Annotator_2_DH_translation', 'annotator2_RH_translation'),
-        ('Annotator_3_DH_translation', 'annotator3_RH_translation')]
 
-csv.field_size_limit(10 ** 7)
-sentences = 0
-with open(SRC, encoding='utf-8') as f:
-    r = csv.DictReader(f)
-    for row in r:
-        for dh_col, rh_col in cols:
-            dh, rh = (row.get(dh_col) or '').strip(), (row.get(rh_col) or '').strip()
-            if not dh or not rh:
-                continue
-            dt, rt = dh.split(), rh.split()
-            if len(dt) != len(rt):
-                continue
-            sentences += 1
-            for d, ro in zip(dt, rt):
-                d, ro = d.strip(STRIP), ro.strip(STRIP).lower()
-                if DEVA.match(d) and LATIN.match(ro) and is_transliteration(d, ro):
-                    pairs[d][ro] += 1
 
-rows = []
-for native, spellings in pairs.items():
-    for roman, n in spellings.items():
-        if n >= 2 or len(roman) >= 3:
-            rows.append((native, roman, n))
-rows.sort(key=lambda x: (x[0], -x[2]))
+def main():
+    SRC = sys.argv[1]
+    OUT = 'benchmark/data/comilingua_hi.csv'
+    DEVA = re.compile(r'^[ऀ-ॿ]+$')
+    LATIN = re.compile(r'^[a-z]+$')
+    STRIP = '।.,!?;:"\'()[]{}“”‘’-–—…'
 
-with open(OUT, 'w', encoding='utf-8') as f:
-    f.write("native,roman,notes\n")
-    for native, roman, n in rows:
-        f.write(f"{native},{roman},count={n}\n")
-uniq = len({r[0] for r in rows})
-print(f"aligned sentence pairs: {sentences}")
-print(f"wrote {OUT}: {len(rows)} rows, {uniq} unique natives")
+    pairs = defaultdict(lambda: defaultdict(int))
+    cols = [('Annotator_1_DH_translation', 'Annotator_1_RH_translation'),
+            ('Annotator_2_DH_translation', 'annotator2_RH_translation'),
+            ('Annotator_3_DH_translation', 'annotator3_RH_translation')]
+
+    csv.field_size_limit(10 ** 7)
+    sentences = 0
+    with open(SRC, encoding='utf-8') as f:
+        r = csv.DictReader(f)
+        for row in r:
+            for dh_col, rh_col in cols:
+                dh, rh = (row.get(dh_col) or '').strip(), (row.get(rh_col) or '').strip()
+                if not dh or not rh:
+                    continue
+                dt, rt = dh.split(), rh.split()
+                if len(dt) != len(rt):
+                    continue
+                sentences += 1
+                for d, ro in zip(dt, rt):
+                    d, ro = d.strip(STRIP), ro.strip(STRIP).lower()
+                    if DEVA.match(d) and LATIN.match(ro) and is_transliteration(d, ro):
+                        pairs[d][ro] += 1
+
+    rows = []
+    for native, spellings in pairs.items():
+        for roman, n in spellings.items():
+            if n >= 2 or len(roman) >= 3:
+                rows.append((native, roman, n))
+    rows.sort(key=lambda x: (x[0], -x[2]))
+
+    with open(OUT, 'w', encoding='utf-8') as f:
+        f.write("native,roman,notes\n")
+        for native, roman, n in rows:
+            f.write(f"{native},{roman},count={n}\n")
+    uniq = len({r[0] for r in rows})
+    print(f"aligned sentence pairs: {sentences}")
+    print(f"wrote {OUT}: {len(rows)} rows, {uniq} unique natives")
+
+
+if __name__ == '__main__':
+    main()

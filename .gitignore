@@ -38,3 +38,4 @@ benchmark/ushuaia
 # Python
 __pycache__/
 *.pyc
+mined_candidates_hi.csv

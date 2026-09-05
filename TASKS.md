@@ -61,11 +61,11 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0012) [P2] [done] Refactor: match rules on SOURCE chars, not BaseRom output strings @done=2026-09-04
   - [x] (T-0013) [P2] [done] Extract universal/script-scoped rules out of lang/hindi @done=2026-09-04
   - [x] (T-0014) [P1] [done] Add unit tests for lang/hindi, script/brahmic, cmd (currently 0) @done=2026-09-04
-- [ ] (F-0004) [P2] [todo] H3: Break the ceiling with a learned component @branch=feature/h3-schwa-classifier
+- [x] (F-0004) [P2] [done] H3: Break the ceiling with a learned component @branch=feature/h3-schwa-classifier @done=2026-09-05
   - [x] (T-0015) [P2] [done] Distill Arora et al. schwa classifier → dependency-free Go decision trees @deps=T-0007 @done=2026-09-04
   - [x] (T-0016) [P2] [done] Lexicon layer: attestation-weighted top-~50k, rules as OOV fallback @deps=T-0007 @done=2026-09-04
-  - [ ] (T-0017) [P3] [todo] Offline model-mining tool for override candidates (IndicXlit/LLM)
-  - [ ] (T-0018) [P3] [todo] Candidate generation + tiny char n-gram re-ranker
+  - [x] (T-0017) [P3] [done] Offline model-mining tool for override candidates (IndicXlit/LLM) @done=2026-09-05
+  - [x] (T-0018) [P3] [done] Candidate generation + tiny char n-gram re-ranker @done=2026-09-05
 
 - [x] (T-0023) [P2] [done] Fix CLI whitespace handling: split words on all whitespace, not just spaces @done=2026-09-05
 ## Skipped

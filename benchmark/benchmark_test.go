@@ -507,14 +507,15 @@ func TestBenchmarkSchwaModelHeldout(t *testing.T) {
 	}
 
 	engine := newEngine()
-	rulesAny, modelAny, total := 0, 0, 0
-	var rulesCER, modelCER float64
+	rulesAny, modelAny, rerankAny, total := 0, 0, 0, 0
+	var rulesCER, modelCER, rerankCER float64
 	var wins, losses []string
 
 	for native, variants := range refs {
 		total++
 		rulesOut := engine.Transliterate(native)
 		modelOut := engine.TransliterateWithOptions(native, core.Options{SchwaModel: true})
+		rerankOut := engine.TransliterateWithOptions(native, core.Options{Rerank: true})
 
 		rHit := matchesAny(rulesOut, variants)
 		mHit := matchesAny(modelOut, variants)
@@ -524,8 +525,12 @@ func TestBenchmarkSchwaModelHeldout(t *testing.T) {
 		if mHit {
 			modelAny++
 		}
+		if matchesAny(rerankOut, variants) {
+			rerankAny++
+		}
 		rulesCER += minCER(rulesOut, variants)
 		modelCER += minCER(modelOut, variants)
+		rerankCER += minCER(rerankOut, variants)
 
 		if mHit && !rHit && len(wins) < 10 {
 			wins = append(wins, native+": rules="+rulesOut+" model="+modelOut+" ✓")
@@ -537,15 +542,22 @@ func TestBenchmarkSchwaModelHeldout(t *testing.T) {
 
 	rp := float64(rulesAny) * 100 / float64(total)
 	mp := float64(modelAny) * 100 / float64(total)
+	kp := float64(rerankAny) * 100 / float64(total)
 	t.Logf("=== Schwa model vs rules — Dakshina TEST split (held-out, %d words) ===", total)
-	t.Logf("Match-any:  rules %.1f%%  |  model %.1f%%  (delta %+.1f pts)", rp, mp, mp-rp)
-	t.Logf("Mean minCER: rules %.4f  |  model %.4f", rulesCER/float64(total), modelCER/float64(total))
+	t.Logf("Match-any:  rules %.1f%%  |  model %.1f%%  |  rerank %.1f%%", rp, mp, kp)
+	t.Logf("Mean minCER: rules %.4f  |  model %.4f  |  rerank %.4f",
+		rulesCER/float64(total), modelCER/float64(total), rerankCER/float64(total))
 	t.Logf("Model fixes %d words rules got wrong; regresses %d words rules got right", len(wins), len(losses))
-	for _, w := range wins {
-		t.Logf("  + %s", w)
+
+	// The reranker arbitrates rules-vs-model disagreements with a char LM and
+	// must not fall below the better of its two candidate sources (observed:
+	// rerank 70.4% > model 69.5% > rules 69.0%). Guard with a small tolerance.
+	better := rp
+	if mp > better {
+		better = mp
 	}
-	for _, l := range losses {
-		t.Logf("  - %s", l)
+	if kp < better-0.5 {
+		t.Errorf("rerank %.1f%% fell below best single system %.1f%%", kp, better)
 	}
 }
 
