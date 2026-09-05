@@ -41,6 +41,12 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0002) [P0] [done] Fix dead make targets (test-dakshina/test-unit run legacy only) @done=2026-09-04
   - [x] (T-0003) [P1] [done] Add docs/PROCESS.md + PR template + task-aware CLAUDE.md section @done=2026-09-04
   - [x] (T-0004) [P2] [done] Pre-commit parity: no-commit-to-branch + large-file/whitespace guards @done=2026-09-04
+
+- [ ] (F-0005) [P2] [todo] Real-world evaluation (frequency-weighted + lyrics) @branch=feature/c-real-world-eval
+  - [x] (T-0019) [P2] [done] Frequency-weighted eval on Shabd (CC0) + lexicon token coverage @done=2026-09-04
+  - [ ] (T-0020) [P2] [todo] Frequency-rank/expand lexicon toward 5-10k high-conf entries
+  - [ ] (T-0021) [P3] [todo] Build curated ~500-line lyrics gold set (Giitaayan+LyricsTranslate, fetch-script)
+  - [ ] (T-0022) [P3] [todo] Add COMI-LINGUA (CC-BY) redistributable sentence benchmark
 ## Backlog
 
 - [ ] (F-0002) [P1] [todo] H1: Fix the measurement (honest, multi-reference eval) @branch=feature/h1-honest-measurement

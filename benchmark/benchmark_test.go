@@ -589,6 +589,81 @@ func TestBenchmarkLexiconCoverage(t *testing.T) {
 }
 
 // -----------------------------------------------------------------------------
+// Frequency-weighted real-world evaluation (Track C).
+// -----------------------------------------------------------------------------
+
+// TestBenchmarkFrequencyWeighted answers the real-world question the disjoint
+// Dakshina splits cannot: "how good is gomanize on the words people actually
+// use?" Words are weighted by corpus frequency (Shabd, CC0), so common words
+// count more than rare ones. It scores match-any against attested Dakshina
+// spellings on the frequency∩gold intersection, and reports the lexicon's
+// TOKEN coverage of the frequency distribution (its true production value).
+func TestBenchmarkFrequencyWeighted(t *testing.T) {
+	freq, err := loadFrequencies(getTestDataPath("freq_hi.csv"))
+	if err != nil {
+		t.Skipf("freq_hi.csv not found: %v (run tools/build_freq.py)", err)
+		return
+	}
+	refs, err := loadReferenceSets(getTestDataPath("dakshina_hi.csv"))
+	if err != nil {
+		t.Skipf("Dakshina file not found: %v", err)
+		return
+	}
+	engine := newEngine()
+
+	// (1) Lexicon token coverage over the whole frequency distribution.
+	var totalTokens, lexTokens int64
+	for w, f := range freq {
+		totalTokens += f
+		if _, ok := (hindi.Hindi{}).LexiconLookup(w); ok {
+			lexTokens += f
+		}
+	}
+
+	// (2) Frequency-weighted accuracy on words that have attested gold.
+	var wTotal, wRulesHit, wLexHit int64
+	scored := 0
+	for w, f := range freq {
+		variants, ok := refs[w]
+		if !ok {
+			continue // no gold to score against
+		}
+		scored++
+		wTotal += f
+		if matchesAny(engine.Transliterate(w), variants) {
+			wRulesHit += f
+		}
+		if matchesAny(engine.TransliterateWithOptions(w, core.Options{Lexicon: true}), variants) {
+			wLexHit += f
+		}
+	}
+
+	t.Logf("=== Frequency-weighted real-world evaluation (Shabd top-%d) ===", len(freq))
+	t.Logf("Lexicon token coverage: %.1f%% of running-text tokens (%d/%d words in lexicon by frequency mass)",
+		float64(lexTokens)*100/float64(totalTokens), countInLexicon(freq), len(freq))
+	if wTotal > 0 {
+		t.Logf("Frequency-weighted match-any on %d gold-covered words:", scored)
+		t.Logf("  rules:          %.1f%%", float64(wRulesHit)*100/float64(wTotal))
+		t.Logf("  rules+lexicon:  %.1f%%", float64(wLexHit)*100/float64(wTotal))
+		t.Logf("(Type-level accuracy under-weights common words; this weights by real usage.)")
+	}
+
+	if wLexHit < wRulesHit {
+		t.Errorf("lexicon regressed frequency-weighted accuracy: rules=%d lexicon=%d", wRulesHit, wLexHit)
+	}
+}
+
+func countInLexicon(freq map[string]int64) int {
+	n := 0
+	for w := range freq {
+		if _, ok := (hindi.Hindi{}).LexiconLookup(w); ok {
+			n++
+		}
+	}
+	return n
+}
+
+// -----------------------------------------------------------------------------
 // Failure Pattern Analysis
 // -----------------------------------------------------------------------------
 
