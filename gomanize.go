@@ -101,9 +101,11 @@ func (g Gomanize) Test() {
 }
 
 // Translit transliterates text using the configured options. Words are
-// segmented on ALL whitespace (spaces, tabs, newlines) and the original
-// whitespace is preserved verbatim, so multi-line input romanizes line by line
-// instead of leaking separators into words (which broke word-final rules).
+// segmented on ALL whitespace (spaces, tabs, newlines) AND punctuation — both
+// preserved verbatim — so multi-line input romanizes line by line and attached
+// punctuation (danda: "जीत।") no longer defeats word-final rules. Devanagari
+// combining marks (matras, halant, nukta) are marks, not punctuation, so words
+// are never split internally.
 func (g Gomanize) Translit(sentence string) string {
 	var sb strings.Builder
 	start := -1
@@ -114,7 +116,7 @@ func (g Gomanize) Translit(sentence string) string {
 		}
 	}
 	for i, r := range sentence {
-		if unicode.IsSpace(r) {
+		if unicode.IsSpace(r) || unicode.IsPunct(r) {
 			flush(i)
 			sb.WriteRune(r)
 		} else if start < 0 {
