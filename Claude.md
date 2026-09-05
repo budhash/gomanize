@@ -135,11 +135,19 @@ gomanize/
 
 ### Test Results
 
-| Dataset | Passed | Total | Accuracy |
-|---------|--------|-------|----------|
-| Dakshina (pure) | 1,150 | 1,335 | **86.1%** |
-| Dakshina (with overrides) | 1,203 | 1,335 | **90.1%** ✓ |
-| Target | - | - | **90%+** ✓ |
+Romanization is many-to-one (जनता = janata / janta / janataa are all valid), so
+**match-any-attested-variant** is the honest headline; strict single-reference
+under-counts correctness. See `make test-dakshina` and the multi-reference test.
+
+| Metric | Passed | Total | Accuracy |
+|--------|--------|-------|----------|
+| **Match-any attested variant** (no overrides) | 1,239 | 1,335 | **92.8%** ✓ |
+| Strict top-1, pure (single ref) | 1,150 | 1,335 | 86.1% |
+| Strict top-1, with overrides | 1,202 | 1,335 | 90.1% |
+| Mean minCER (over variants) | - | - | **0.0116** (human floor ≈ 0.054) |
+
+Pure single-ref accuracy is the CI gate (floor 85%); overrides are an exception
+lexicon, not engine skill, and are reported only as a secondary line.
 
 ### Remaining Failure Patterns
 
