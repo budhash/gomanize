@@ -2,6 +2,7 @@ package benchmark
 
 import (
 	"encoding/csv"
+	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -667,6 +668,78 @@ func TestBenchmarkAksharantarTestSet(t *testing.T) {
 		if s.lexHit < s.rulesHit {
 			t.Errorf("slice %s: lexicon regressed match-any (rules=%d, lexicon=%d)", name, s.rulesHit, s.lexHit)
 		}
+	}
+}
+
+// -----------------------------------------------------------------------------
+// COMI-LINGUA colloquial benchmark (benchmark/data/comilingua_hi.csv)
+// -----------------------------------------------------------------------------
+
+// TestBenchmarkComiLingua scores against word pairs extracted from COMI-LINGUA's
+// human-annotated MT split (CC-BY 4.0) — parallel Devanagari/Romanized-Hindi
+// sentences showing how people ACTUALLY type Hindi in Latin script. Variants
+// carry occurrence counts, so scoring is naturally token-weighted toward the
+// colloquial register. This is the project's closest proxy to the song-lyrics
+// use case until a lyrics gold set exists (T-0021).
+func TestBenchmarkComiLingua(t *testing.T) {
+	entries, err := loadCSV(getTestDataPath("comilingua_hi.csv"))
+	if err != nil {
+		t.Skipf("COMI-LINGUA file not found: %v (run tools/build_comilingua.py)", err)
+		return
+	}
+
+	type variant struct {
+		roman string
+		count int64
+	}
+	byNative := make(map[string][]variant)
+	for _, e := range entries {
+		var n int64
+		if _, err := fmt.Sscanf(e.Notes, "count=%d", &n); err != nil || n <= 0 {
+			n = 1
+		}
+		byNative[e.Native] = append(byNative[e.Native], variant{e.Roman, n})
+	}
+
+	engine := newEngine()
+	var types, rulesTypeHit, lexTypeHit int
+	var tokens, rulesTokHit, lexTokHit int64
+	var rulesCER, lexCER float64
+
+	for native, vars := range byNative {
+		refs := make([]string, len(vars))
+		var weight int64
+		for i, v := range vars {
+			refs[i] = v.roman
+			weight += v.count
+		}
+		types++
+		tokens += weight
+
+		rulesOut := engine.Transliterate(native)
+		lexOut := engine.TransliterateWithOptions(native, core.Options{Lexicon: true})
+		if matchesAny(rulesOut, refs) {
+			rulesTypeHit++
+			rulesTokHit += weight
+		}
+		if matchesAny(lexOut, refs) {
+			lexTypeHit++
+			lexTokHit += weight
+		}
+		rulesCER += minCER(rulesOut, refs)
+		lexCER += minCER(lexOut, refs)
+	}
+
+	t.Logf("=== COMI-LINGUA colloquial benchmark (%d word types, %d token occurrences) ===", types, tokens)
+	t.Logf("Type-level match-any:  rules %5.1f%% | +lexicon %5.1f%%",
+		float64(rulesTypeHit)*100/float64(types), float64(lexTypeHit)*100/float64(types))
+	t.Logf("Token-weighted:        rules %5.1f%% | +lexicon %5.1f%%",
+		float64(rulesTokHit)*100/float64(tokens), float64(lexTokHit)*100/float64(tokens))
+	t.Logf("Mean minCER:           rules %.4f | +lexicon %.4f",
+		rulesCER/float64(types), lexCER/float64(types))
+
+	if lexTokHit < rulesTokHit {
+		t.Errorf("lexicon regressed token-weighted match-any: rules=%d lexicon=%d", rulesTokHit, lexTokHit)
 	}
 }
 

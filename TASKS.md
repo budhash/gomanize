@@ -46,7 +46,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0019) [P2] [done] Frequency-weighted eval on Shabd (CC0) + lexicon token coverage @done=2026-09-04
   - [x] (T-0020) [P2] [done] Frequency-rank/expand lexicon toward 5-10k high-conf entries @done=2026-09-05
   - [ ] (T-0021) [P3] [todo] Build curated ~500-line lyrics gold set (Giitaayan+LyricsTranslate, fetch-script)
-  - [ ] (T-0022) [P3] [todo] Add COMI-LINGUA (CC-BY) redistributable sentence benchmark
+  - [x] (T-0022) [P3] [done] Add COMI-LINGUA (CC-BY) redistributable sentence benchmark @done=2026-09-05
 ## Backlog
 
 - [ ] (F-0002) [P1] [todo] H1: Fix the measurement (honest, multi-reference eval) @branch=feature/h1-honest-measurement
