@@ -589,6 +589,88 @@ func TestBenchmarkLexiconCoverage(t *testing.T) {
 }
 
 // -----------------------------------------------------------------------------
+// Aksharantar human-annotated test set (benchmark/data/aksharantar_test_hi.csv)
+// -----------------------------------------------------------------------------
+
+// TestBenchmarkAksharantarTestSet scores the Aksharantar Hindi TEST set —
+// 10,112 human-annotated pairs (native-speaker annotators via Karya, 2022,
+// CC-BY 4.0) — per slice: AK-Freq (frequent words, closest to the song-lyrics
+// register), AK-NEF/AK-NEI (foreign/Indian named entities, the known weak spot),
+// and a re-included Dakshina test slice. Match-any over the attested variants.
+//
+// The gold here was annotated independently of Dakshina train, so scoring
+// rules+lexicon is legitimate even where the lexicon knows a word; rules-only
+// remains the measure of engine skill.
+func TestBenchmarkAksharantarTestSet(t *testing.T) {
+	entries, err := loadCSV(getTestDataPath("aksharantar_test_hi.csv"))
+	if err != nil {
+		t.Skipf("Aksharantar test set not found: %v (run tools/build_aksharantar_test.py)", err)
+		return
+	}
+
+	// Group attested variants per (slice, native).
+	type key struct{ slice, native string }
+	variants := make(map[key][]string)
+	for _, e := range entries {
+		slice := strings.TrimPrefix(e.Notes, "source=")
+		k := key{slice, e.Native}
+		variants[k] = append(variants[k], e.Roman)
+	}
+
+	engine := newEngine()
+	type stat struct {
+		total, rulesHit, lexHit int
+		rulesCER, lexCER        float64
+		inLexicon               int
+	}
+	stats := make(map[string]*stat)
+	for k, refs := range variants {
+		s := stats[k.slice]
+		if s == nil {
+			s = &stat{}
+			stats[k.slice] = s
+		}
+		s.total++
+		rulesOut := engine.Transliterate(k.native)
+		lexOut := engine.TransliterateWithOptions(k.native, core.Options{Lexicon: true})
+		if matchesAny(rulesOut, refs) {
+			s.rulesHit++
+		}
+		if matchesAny(lexOut, refs) {
+			s.lexHit++
+		}
+		s.rulesCER += minCER(rulesOut, refs)
+		s.lexCER += minCER(lexOut, refs)
+		if _, ok := (hindi.Hindi{}).LexiconLookup(k.native); ok {
+			s.inLexicon++
+		}
+	}
+
+	slices := make([]string, 0, len(stats))
+	for s := range stats {
+		slices = append(slices, s)
+	}
+	sort.Strings(slices)
+
+	t.Logf("=== Aksharantar Hindi test set (human-annotated, match-any) ===")
+	for _, name := range slices {
+		s := stats[name]
+		t.Logf("%-9s %4d words: rules %5.1f%% (minCER %.3f) | +lexicon %5.1f%% (minCER %.3f) | %d in lexicon",
+			name, s.total,
+			float64(s.rulesHit)*100/float64(s.total), s.rulesCER/float64(s.total),
+			float64(s.lexHit)*100/float64(s.total), s.lexCER/float64(s.total),
+			s.inLexicon)
+	}
+
+	// Lexicon must never hurt on any slice.
+	for name, s := range stats {
+		if s.lexHit < s.rulesHit {
+			t.Errorf("slice %s: lexicon regressed match-any (rules=%d, lexicon=%d)", name, s.rulesHit, s.lexHit)
+		}
+	}
+}
+
+// -----------------------------------------------------------------------------
 // Frequency-weighted real-world evaluation (Track C).
 // -----------------------------------------------------------------------------
 
