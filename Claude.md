@@ -32,6 +32,7 @@ echo "हिंदी गाना" | ./gomanize
 ./gomanize --keep-medial-schwa "जनता" # janata (dataset-compatible)
 ./gomanize --schwa-model "जनता"     # learned schwa classifier (see docs/reviews H3)
 ./gomanize --lexicon "अंकल"          # uncle (known words → attested spelling, rules for OOV)
+./gomanize --rerank "जनता"          # best of rules/schwa-model candidates via char LM
 
 # Run CI (format, lint, build, test)
 make ci

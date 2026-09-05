@@ -115,6 +115,10 @@ type Options struct {
 	// known words return the attested human spelling, unknown words fall through
 	// to the rule engine. Requires the Language to implement LexiconProvider.
 	Lexicon bool
+	// Rerank generates candidate romanizations under several rule configurations
+	// and picks the one a character language model finds most natural. Requires
+	// the Language to implement Reranker. A lexicon hit (with Lexicon) wins first.
+	Rerank bool
 	// Debug enables debug output showing rule applications.
 	Debug bool
 }

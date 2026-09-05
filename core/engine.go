@@ -103,6 +103,13 @@ type LexiconProvider interface {
 	LexiconLookup(word string) (string, bool)
 }
 
+// Reranker is an optional interface a Language may implement to choose the most
+// natural romanization among candidates produced under different rule
+// configurations. Used when Options.Rerank is set.
+type Reranker interface {
+	RerankRomans(candidates []string) string
+}
+
 // transliterateInternal is the core transliteration logic.
 func (e *Engine) transliterateInternal(input string, opts Options) (string, *DebugInfo) {
 	// 0. Lexicon lookup (optional): known words get their attested spelling.
@@ -111,6 +118,31 @@ func (e *Engine) transliterateInternal(input string, opts Options) (string, *Deb
 			if roman, found := lp.LexiconLookup(input); found {
 				return roman, nil
 			}
+		}
+	}
+
+	// 0b. Candidate re-ranking (optional): run the pipeline under several rule
+	// configurations and let the language's character LM pick. The default
+	// output is candidate 0, so the LM must strictly beat it to override.
+	if opts.Rerank {
+		if rr, ok := e.lang.(Reranker); ok {
+			base := opts
+			base.Rerank = false
+			variants := []Options{base}
+			alt := base
+			alt.SchwaModel = true
+			variants = append(variants, alt)
+
+			seen := make(map[string]bool)
+			var cands []string
+			for _, v := range variants {
+				out, _ := e.transliterateInternal(input, v)
+				if !seen[out] {
+					seen[out] = true
+					cands = append(cands, out)
+				}
+			}
+			return rr.RerankRomans(cands), nil
 		}
 	}
 
