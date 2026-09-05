@@ -151,5 +151,5 @@ changelog; verify with `./gomanize --version`.
 ## Roadmap
 
 Live backlog: `TASKS.md` via `./tools/tasks tree`. History and reasoning:
-`docs/reviews/`. Candidate future work and its design implications:
-[`docs/DESIGN.md`](docs/DESIGN.md) §6.
+`docs/reviews/`. Post-1.0 directions with tradeoffs: [`docs/ROADMAP.md`](docs/ROADMAP.md)
+(seeded as features F-0006–F-0008); design constraints in [`docs/DESIGN.md`](docs/DESIGN.md) §6.

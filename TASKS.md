@@ -76,6 +76,21 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
 - [ ] (T-0026) [P3] [todo] Call-scoped debug traces: make TransliterateDebug/rule-toggling race-free
 
 - [x] (T-0027) [P3] [done] Add unit tests for cmd/gomanize and scheme/colloquial (currently none) @done=2026-09-05
+
+- [ ] (F-0006) [P2] [todo] WASM build + web demo (data flywheel)
+
+  - [ ] (T-0028) [P2] [todo] Add GOOS=js GOARCH=wasm build target; verify go:embed assets load
+  - [ ] (T-0029) [P2] [todo] Static web page: paste Devanagari, romanize, toggle flags, inline-edit output
+  - [ ] (T-0030) [P3] [todo] Consent-based user-correction capture as review-gated lexicon candidates
+- [ ] (F-0007) [P2] [todo] Aksharantar-convention scheme (selectable vowel-doubling)
+
+  - [ ] (T-0031) [P2] [todo] Per-scheme symbol maps (interface change; unblocks IAST + convention schemes)
+  - [ ] (T-0032) [P2] [todo] aksharantar scheme: vowel-doubling conventions; measure on AK test set
+- [ ] (F-0008) [P3] [todo] Additional Brahmic languages (Marathi/Nepali)
+  - [ ] (T-0033) [P3] [todo] Parameterize renderer inherent vowel (hardcoded 'a'); audit Devanagari rule literals
+  - [ ] (T-0034) [P3] [todo] Implement lang/marathi (symbol map + config + rules composing brahmic.SchwaRules)
+
+- [ ] (T-0035) [P3] [todo] Grow lyrics gold set toward ~500 lines (PD in-repo; copyrighted via fetch script)
 ## Skipped
 
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow
