@@ -42,14 +42,14 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0003) [P1] [done] Add docs/PROCESS.md + PR template + task-aware CLAUDE.md section @done=2026-09-04
   - [x] (T-0004) [P2] [done] Pre-commit parity: no-commit-to-branch + large-file/whitespace guards @done=2026-09-04
 
-- [ ] (F-0005) [P2] [todo] Real-world evaluation (frequency-weighted + lyrics) @branch=feature/c-real-world-eval
+- [x] (F-0005) [P2] [done] Real-world evaluation (frequency-weighted + lyrics) @branch=feature/c-real-world-eval @done=2026-09-05
   - [x] (T-0019) [P2] [done] Frequency-weighted eval on Shabd (CC0) + lexicon token coverage @done=2026-09-04
   - [x] (T-0020) [P2] [done] Frequency-rank/expand lexicon toward 5-10k high-conf entries @done=2026-09-05
-  - [ ] (T-0021) [P3] [todo] Build curated ~500-line lyrics gold set (Giitaayan+LyricsTranslate, fetch-script)
+  - [x] (T-0021) [P3] [done] Build curated ~500-line lyrics gold set (Giitaayan+LyricsTranslate, fetch-script) @done=2026-09-05
   - [x] (T-0022) [P3] [done] Add COMI-LINGUA (CC-BY) redistributable sentence benchmark @done=2026-09-05
 ## Backlog
 
-- [ ] (F-0002) [P1] [todo] H1: Fix the measurement (honest, multi-reference eval) @branch=feature/h1-honest-measurement
+- [x] (F-0002) [P1] [done] H1: Fix the measurement (honest, multi-reference eval) @branch=feature/h1-honest-measurement @done=2026-09-05
 
   - [x] (T-0005) [P1] [done] Multi-reference eval: match-any-attested-variant (minCER) in benchmark @done=2026-09-04
   - [x] (T-0006) [P1] [done] Add CER metric alongside top-1 accuracy @done=2026-09-04

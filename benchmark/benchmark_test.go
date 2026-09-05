@@ -4,11 +4,14 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+
 	"path/filepath"
 	"runtime"
 	"sort"
 	"strings"
 	"testing"
+
+	gomanize "github.com/budhash/gomanize"
 
 	"github.com/budhash/gomanize/core"
 	"github.com/budhash/gomanize/lang/hindi"
@@ -668,6 +671,85 @@ func TestBenchmarkAksharantarTestSet(t *testing.T) {
 		if s.lexHit < s.rulesHit {
 			t.Errorf("slice %s: lexicon regressed match-any (rules=%d, lexicon=%d)", name, s.rulesHit, s.lexHit)
 		}
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Lyrics gold seed (benchmark/data/lyrics_gold_hi.csv) — the flagship use case.
+// -----------------------------------------------------------------------------
+
+// TestBenchmarkLyricsGold evaluates LINE-LEVEL romanization on a small
+// public-domain lyrics/verse gold set (Kabir, Rahim, Meera, Vande Mataram,
+// Sarfaroshi, Raghupati, Jana Gana Mana — all PD under Indian copyright,
+// life+60). Romanizations are maintainer-attested single references, so CER is
+// the primary metric (exact-line match is a strict secondary). Uses the public
+// sentence API (gomanize.Translit) — this exercises the whitespace/punctuation
+// segmentation, not just per-word transliteration.
+func TestBenchmarkLyricsGold(t *testing.T) {
+	entries, err := loadCSV(getTestDataPath("lyrics_gold_hi.csv"))
+	if err != nil {
+		t.Skipf("lyrics gold not found: %v", err)
+		return
+	}
+
+	g, err := gomanize.New("hindi")
+	if err != nil {
+		t.Fatalf("gomanize.New: %v", err)
+	}
+	gl, err := gomanize.NewWithOptions("hindi", core.Options{Lexicon: true})
+	if err != nil {
+		t.Fatalf("gomanize.NewWithOptions: %v", err)
+	}
+
+	var lines, rulesExact, lexExact int
+	var wordsTotal, rulesWordHit, lexWordHit int
+	var rulesCER, lexCER float64
+	var worst []string
+
+	for _, e := range entries {
+		lines++
+		rulesOut := strings.ToLower(g.Translit(e.Native))
+		lexOut := strings.ToLower(gl.Translit(e.Native))
+		want := strings.ToLower(e.Roman)
+
+		rc, lc := cer(rulesOut, want), cer(lexOut, want)
+		rulesCER += rc
+		lexCER += lc
+		if rulesOut == want {
+			rulesExact++
+		}
+		if lexOut == want {
+			lexExact++
+		}
+
+		wr, ww := strings.Fields(rulesOut), strings.Fields(want)
+		wl := strings.Fields(lexOut)
+		for i, w := range ww {
+			wordsTotal++
+			if i < len(wr) && wr[i] == w {
+				rulesWordHit++
+			}
+			if i < len(wl) && wl[i] == w {
+				lexWordHit++
+			}
+		}
+		if rc > 0.12 && len(worst) < 5 {
+			worst = append(worst, e.Native+" → "+rulesOut+" (want "+want+")")
+		}
+	}
+
+	t.Logf("=== Lyrics gold seed (%d public-domain lines, single maintainer-attested ref) ===", lines)
+	t.Logf("Line CER (primary):    rules %.4f | +lexicon %.4f", rulesCER/float64(lines), lexCER/float64(lines))
+	t.Logf("Word accuracy:         rules %5.1f%% | +lexicon %5.1f%%",
+		float64(rulesWordHit)*100/float64(wordsTotal), float64(lexWordHit)*100/float64(wordsTotal))
+	t.Logf("Exact lines (strict):  rules %d/%d | +lexicon %d/%d", rulesExact, lines, lexExact, lines)
+	for _, w := range worst {
+		t.Logf("  worst: %s", w)
+	}
+
+	// Regression floor: mean line CER must stay under 0.15 against this seed.
+	if meanCER := rulesCER / float64(lines); meanCER > 0.15 {
+		t.Errorf("lyrics mean CER %.4f exceeds 0.15 floor", meanCER)
 	}
 }
 
