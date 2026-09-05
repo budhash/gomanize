@@ -3,6 +3,7 @@ package gomanize
 import (
 	"fmt"
 	"strings"
+	"unicode"
 
 	"github.com/budhash/gomanize/core"
 	legacyLang "github.com/budhash/gomanize/internal/legacy_lang"
@@ -99,16 +100,29 @@ func (g Gomanize) Test() {
 	g.romanizer.Info()
 }
 
-// Translit transliterates a sentence using the configured options.
+// Translit transliterates text using the configured options. Words are
+// segmented on ALL whitespace (spaces, tabs, newlines) and the original
+// whitespace is preserved verbatim, so multi-line input romanizes line by line
+// instead of leaking separators into words (which broke word-final rules).
 func (g Gomanize) Translit(sentence string) string {
-	words := strings.Split(sentence, " ")
-	var result []string
-	var converter = g.romanizer
-	for _, word := range words {
-		translated := converter.TransliterateWithOptions(word, g.options)
-		result = append(result, translated)
+	var sb strings.Builder
+	start := -1
+	flush := func(end int) {
+		if start >= 0 {
+			sb.WriteString(g.romanizer.TransliterateWithOptions(sentence[start:end], g.options))
+			start = -1
+		}
 	}
-	return strings.Join(result, " ")
+	for i, r := range sentence {
+		if unicode.IsSpace(r) {
+			flush(i)
+			sb.WriteRune(r)
+		} else if start < 0 {
+			start = i
+		}
+	}
+	flush(len(sentence))
+	return sb.String()
 }
 
 // TranslitDebug transliterates a word and returns debug information.
