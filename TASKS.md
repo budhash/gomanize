@@ -53,7 +53,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
 
   - [x] (T-0005) [P1] [done] Multi-reference eval: match-any-attested-variant (minCER) in benchmark @done=2026-09-04
   - [x] (T-0006) [P1] [done] Add CER metric alongside top-1 accuracy @done=2026-09-04
-  - [ ] (T-0007) [P1] [deferred] Integrate Aksharantar Hindi test set (AK-Freq/Uni/NE slices)
+  - [x] (T-0007) [P1] [done] Integrate Aksharantar Hindi test set (AK-Freq/Uni/NE slices) @done=2026-09-05
   - [x] (T-0008) [P1] [done] Tighten CI gate to track PURE accuracy; report pure as headline @done=2026-09-04
   - [x] (T-0009) [P2] [done] Reconcile/prune override_hi.csv (fix कर्मकांड self-contradiction) @done=2026-09-04
 - [x] (F-0003) [P1] [done] H2: Push the rule ceiling (~86%→~90% pure, honestly) @done=2026-09-04 @branch=feature/a-rule-hardening
@@ -66,6 +66,8 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0016) [P2] [done] Lexicon layer: attestation-weighted top-~50k, rules as OOV fallback @deps=T-0007 @done=2026-09-04
   - [ ] (T-0017) [P3] [todo] Offline model-mining tool for override candidates (IndicXlit/LLM)
   - [ ] (T-0018) [P3] [todo] Candidate generation + tiny char n-gram re-ranker
+
+- [ ] (T-0023) [P2] [todo] Fix CLI whitespace handling: split words on all whitespace, not just spaces
 ## Skipped
 
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow
