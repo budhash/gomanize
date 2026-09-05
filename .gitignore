@@ -34,3 +34,7 @@ Thumbs.db
 # Benchmark - legacy/temp files
 benchmark/tmp
 benchmark/ushuaia
+
+# Python
+__pycache__/
+*.pyc

@@ -46,6 +46,8 @@ func main() {
 			opts.SimpleNasals = true
 		case arg == "--keep-medial-schwa":
 			opts.KeepMedialSchwa = true
+		case arg == "--schwa-model":
+			opts.SchwaModel = true
 		case arg == "--debug":
 			debug = true
 		case arg == "--list-rules":
@@ -248,6 +250,7 @@ func printUsage() {
 	fmt.Fprintln(os.Stderr, "  --long-vowels            Use 'aa' for all ा positions (e.g., गाना→gaana)")
 	fmt.Fprintln(os.Stderr, "  --simple-nasals          Simplified nasal endings (करें→karen instead of karein)")
 	fmt.Fprintln(os.Stderr, "  --keep-medial-schwa      Retain schwa in more positions (जनता→janata not janta)")
+	fmt.Fprintln(os.Stderr, "  --schwa-model            Use the learned schwa classifier instead of heuristic rules")
 	fmt.Fprintln(os.Stderr, "  --debug                  Show debug info (parsed units, rule applications)")
 	fmt.Fprintln(os.Stderr, "  --input=FILE             Read input lines from file (one per line)")
 	fmt.Fprintln(os.Stderr, "  --test=FILE              Test against expected values (TSV format)")
