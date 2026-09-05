@@ -460,6 +460,92 @@ func TestBenchmarkAksharantarHindi(t *testing.T) {
 }
 
 // -----------------------------------------------------------------------------
+// Held-out schwa-model evaluation (Dakshina test split, disjoint from train).
+// -----------------------------------------------------------------------------
+
+// referenceSetsForSplit builds native -> attested variants for rows whose notes
+// contain the given "split=<name>" marker.
+func referenceSetsForSplit(path, split string) (map[string][]string, error) {
+	entries, err := loadCSV(path)
+	if err != nil {
+		return nil, err
+	}
+	refs := make(map[string][]string)
+	seen := make(map[string]map[string]bool)
+	marker := "split=" + split
+	for _, e := range entries {
+		if e.Roman == "" || !strings.Contains(e.Notes, marker) {
+			continue
+		}
+		if seen[e.Native] == nil {
+			seen[e.Native] = make(map[string]bool)
+		}
+		if !seen[e.Native][e.Roman] {
+			seen[e.Native][e.Roman] = true
+			refs[e.Native] = append(refs[e.Native], e.Roman)
+		}
+	}
+	return refs, nil
+}
+
+// TestBenchmarkSchwaModelHeldout compares the heuristic schwa rules against the
+// learned schwa model on the Dakshina TEST split — whose native words are
+// disjoint from the TRAIN split the model was trained on. This is a genuine
+// generalization test (unlike the curated set, which is all training data).
+func TestBenchmarkSchwaModelHeldout(t *testing.T) {
+	refs, err := referenceSetsForSplit(getTestDataPath("dakshina_hi.csv"), "test")
+	if err != nil {
+		t.Skipf("Dakshina file not found: %v", err)
+		return
+	}
+	if len(refs) == 0 {
+		t.Skip("no test-split rows")
+	}
+
+	engine := newEngine()
+	rulesAny, modelAny, total := 0, 0, 0
+	var rulesCER, modelCER float64
+	var wins, losses []string
+
+	for native, variants := range refs {
+		total++
+		rulesOut := engine.Transliterate(native)
+		modelOut := engine.TransliterateWithOptions(native, core.Options{SchwaModel: true})
+
+		rHit := matchesAny(rulesOut, variants)
+		mHit := matchesAny(modelOut, variants)
+		if rHit {
+			rulesAny++
+		}
+		if mHit {
+			modelAny++
+		}
+		rulesCER += minCER(rulesOut, variants)
+		modelCER += minCER(modelOut, variants)
+
+		if mHit && !rHit && len(wins) < 10 {
+			wins = append(wins, native+": rules="+rulesOut+" model="+modelOut+" ✓")
+		}
+		if rHit && !mHit && len(losses) < 10 {
+			losses = append(losses, native+": rules="+rulesOut+" ✓ model="+modelOut)
+		}
+	}
+
+	rp := float64(rulesAny) * 100 / float64(total)
+	mp := float64(modelAny) * 100 / float64(total)
+	t.Logf("=== Schwa model vs rules — Dakshina TEST split (held-out, %d words) ===", total)
+	t.Logf("Match-any:  rules %.1f%%  |  model %.1f%%  (delta %+.1f pts)", rp, mp, mp-rp)
+	t.Logf("Mean minCER: rules %.4f  |  model %.4f", rulesCER/float64(total), modelCER/float64(total))
+	t.Logf("Model fixes %d words rules got wrong; regresses %d words rules got right", len(wins), len(losses))
+	for _, w := range wins {
+		t.Logf("  + %s", w)
+	}
+	for _, l := range losses {
+		t.Logf("  - %s", l)
+	}
+}
+
+// -----------------------------------------------------------------------------
 // Failure Pattern Analysis
 // -----------------------------------------------------------------------------
 

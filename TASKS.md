@@ -55,8 +55,8 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [ ] (T-0012) [P2] [todo] Refactor: match rules on SOURCE chars, not BaseRom output strings
   - [ ] (T-0013) [P2] [todo] Extract universal/script-scoped rules out of lang/hindi
   - [x] (T-0014) [P1] [done] Add unit tests for lang/hindi, script/brahmic, cmd (currently 0) @done=2026-09-04
-- [ ] (F-0004) [P2] [todo] H3: Break the ceiling with a learned component
-  - [ ] (T-0015) [P2] [todo] Distill Arora et al. schwa classifier → dependency-free Go decision trees @deps=T-0007
+- [ ] (F-0004) [P2] [todo] H3: Break the ceiling with a learned component @branch=feature/h3-schwa-classifier
+  - [x] (T-0015) [P2] [done] Distill Arora et al. schwa classifier → dependency-free Go decision trees @deps=T-0007 @done=2026-09-04
   - [ ] (T-0016) [P2] [todo] Lexicon layer: attestation-weighted top-~50k, rules as OOV fallback @deps=T-0007
   - [ ] (T-0017) [P3] [todo] Offline model-mining tool for override candidates (IndicXlit/LLM)
   - [ ] (T-0018) [P3] [todo] Candidate generation + tiny char n-gram re-ranker

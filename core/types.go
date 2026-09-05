@@ -107,6 +107,10 @@ type Options struct {
 	// KeepMedialSchwa disables CCV schwa deletion, retaining schwa in more positions.
 	// This produces output closer to some datasets (जनता→janata instead of janta).
 	KeepMedialSchwa bool
+	// SchwaModel uses the learned decision-tree schwa classifier for inherent-schwa
+	// decisions instead of the hand-written heuristic schwa rules. See
+	// lang/hindi/schwa_model.go and docs/reviews for the held-out evaluation.
+	SchwaModel bool
 	// Debug enables debug output showing rule applications.
 	Debug bool
 }

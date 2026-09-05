@@ -98,6 +98,27 @@ func TestHindiOptions(t *testing.T) {
 	}
 }
 
+// TestSchwaModel exercises the learned schwa classifier (opt-in). It must load
+// the embedded tree without panicking and produce correct output on words whose
+// schwa handling is unambiguous.
+func TestSchwaModel(t *testing.T) {
+	e := engine()
+	cases := map[string]string{
+		"जनता":   "janta",  // medial schwa deleted
+		"कमल":    "kamal",  // 3-consonant word retains
+		"गरम":    "garam",  // retains
+		"समझ":    "samajh", // retains medial
+		"भारत":   "bharat",
+		"नमस्ते": "namaste",
+	}
+	for in, want := range cases {
+		got := e.TransliterateWithOptions(in, core.Options{SchwaModel: true})
+		if got != want {
+			t.Errorf("SchwaModel Transliterate(%q) = %q, want %q", in, got, want)
+		}
+	}
+}
+
 // TestHindiDefaultVsKeepMedialSchwa guards the flag actually changes behavior.
 func TestHindiDefaultVsKeepMedialSchwa(t *testing.T) {
 	e := engine()

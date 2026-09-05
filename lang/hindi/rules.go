@@ -19,6 +19,41 @@ func RuleCatalog() core.RuleCatalog {
 // schwaRules returns all schwa-related rules.
 func schwaRules() []core.Rule {
 	return []core.Rule{
+		// schwa.model.predict (Language:90) — learned decision-tree classifier.
+		// When the SchwaModel option is set, this takes over ALL inherent-schwa
+		// decisions (delete/keep) from the heuristic rules below. Being Exclusive
+		// and highest-priority, it marks acted units so the heuristics don't fire.
+		// See lang/hindi/schwa_model.go and docs/reviews/2026-09-04-h3-schwa-classifier.md.
+		{
+			Name:        "schwa.model.predict",
+			Phase:       core.PhaseSchwa,
+			Scope:       core.ScopeLanguage,
+			Priority:    90,
+			Mode:        core.ModeExclusive,
+			Conditional: "SchwaModel",
+			Condition: func(u *core.Unit, w *core.Word) bool {
+				if !w.Options.SchwaModel {
+					return false
+				}
+				if !brahmic.IsConsonantOrConjunct(u) || brahmic.GetSchwa(u) != brahmic.SchwaPending {
+					return false
+				}
+				_, applies := schwaModelDecision(w, u)
+				return applies
+			},
+			Action: func(u *core.Unit, w *core.Word) {
+				del, _ := schwaModelDecision(w, u)
+				if del {
+					brahmic.SetSchwa(u, brahmic.SchwaDelete)
+					if run := brahmic.GetRun(u); run != nil {
+						run.DeletedAt = brahmic.GetRunIndex(u)
+					}
+				} else {
+					brahmic.SetSchwa(u, brahmic.SchwaKeep)
+				}
+			},
+		},
+
 		// schwa.keep.sonorous-final (Script:70)
 		// Keep final schwa after halant for र, य, व: मंत्र→mantra
 		{
