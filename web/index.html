@@ -3,8 +3,31 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>gomanize — Devanagari romanizer</title>
-<meta name="description" content="Transliterate Hindi (Devanagari) into readable Latin script, entirely in your browser. No server, no data leaves your machine.">
+<title>gomanize — Hindi romanization &amp; transliteration (Devanagari → Latin)</title>
+<meta name="description" content="Free, in-browser tool to romanize and transliterate Hindi (Devanagari) into readable, diacritic-free Latin script — tuned for song lyrics. Runs fully client-side on WebAssembly; nothing is sent to a server.">
+<meta name="keywords" content="Hindi transliteration, Hindi romanization, romanize Hindi, transliterate Hindi, Devanagari to Roman, Devanagari to English, Devanagari to Latin, Hindi to English transliteration, Hindi lyrics romanization, schwa deletion, Hinglish">
+<link rel="canonical" href="https://budhash.com/gomanize/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://budhash.com/gomanize/">
+<meta property="og:title" content="gomanize — Hindi romanization (Devanagari → Latin)">
+<meta property="og:description" content="Romanize / transliterate Hindi (Devanagari) into readable Latin script, tuned for song lyrics. Runs in your browser.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="gomanize — Hindi romanization (Devanagari → Latin)">
+<meta name="twitter:description" content="Romanize / transliterate Hindi (Devanagari) into readable Latin script, in your browser.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "gomanize",
+  "url": "https://budhash.com/gomanize/",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any (web browser)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Romanize and transliterate Hindi (Devanagari) into readable, diacritic-free Latin script, tuned for song lyrics. Runs client-side on WebAssembly.",
+  "inLanguage": ["hi", "en"],
+  "author": { "@type": "Person", "name": "budhash", "url": "https://github.com/budhash" }
+}
+</script>
 <style>
   /* ── design tokens (absorbed from the report-theme system) ─────────────── */
   :root {
@@ -282,7 +305,7 @@
     </div>
     <div class="eyebrow">Devanagari → Latin · runs in your browser</div>
     <h1>gomanize <span class="dev">रोमनीकरण</span></h1>
-    <p class="subtitle">Transliterate Hindi (Devanagari) into readable, diacritic-free Latin script. Everything runs client-side on WebAssembly — nothing is ever sent to a server.</p>
+    <p class="subtitle">Romanize Hindi (Devanagari) into readable, diacritic-free Latin script — tuned for song lyrics. Everything runs client-side on WebAssembly; nothing is ever sent to a server.</p>
   </header>
 
   <section class="io">
@@ -344,7 +367,7 @@
       <button type="button" class="about-close" id="aboutClose" aria-label="Close">✕</button>
     </div>
     <div class="about-body">
-      <p><strong>gomanize</strong> transliterates Devanagari (Hindi) into readable, diacritic-free Latin script — built for song lyrics and other colloquial text, where conventional academic transliteration reads unnaturally.</p>
+      <p><strong>gomanize</strong> romanizes Devanagari (Hindi) into readable, diacritic-free Latin script — built for song lyrics and other colloquial text. It follows how words are pronounced (romanization / phonetic transliteration), rather than the strict, reversible transliteration of schemes like IAST or ISO&nbsp;15919.</p>
 
       <h3>How it works</h3>
       <p>A rule-based engine makes the core decisions — schwa deletion, and consonant, vowel, and rendering rules. Three optional learned components, toggleable above, trade a little more computation for accuracy: a decision-tree <strong>schwa model</strong>, an ~8,000-word attested <strong>lexicon</strong>, and a character n-gram <strong>re-ranker</strong>.</p>
