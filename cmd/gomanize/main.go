@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"strings"
+	"unicode"
 
 	gomanize "github.com/budhash/gomanize"
 )
@@ -95,6 +96,13 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Warn on rule patterns that matched nothing (typo protection).
+	for _, p := range append(append([]string{}, disableRules...), enableRules...) {
+		if len(g.ListRules(p)) == 0 {
+			fmt.Fprintf(os.Stderr, "Warning: rule pattern %q matches no rules\n", p)
+		}
+	}
+
 	// Handle --list-rules
 	if listRules {
 		rules := g.ListRules(listRulesPattern)
@@ -125,8 +133,13 @@ func main() {
 	}
 
 	if debug {
-		// Debug mode: process each word individually and show debug info
-		words := strings.Split(input, " ")
+		// Debug mode: process each word individually and show debug info.
+		// Segment exactly as Translit does (whitespace AND punctuation are
+		// boundaries) so debug output matches real output — feeding "जीत।"
+		// whole would keep a schwa the real pipeline deletes.
+		words := strings.FieldsFunc(input, func(r rune) bool {
+			return unicode.IsSpace(r) || unicode.IsPunct(r)
+		})
 		for i, word := range words {
 			if i > 0 {
 				fmt.Println()

@@ -88,7 +88,8 @@ test-verbose: ## Run tests with verbose output and coverage
 
 test-cover: ## Run tests with coverage report
 	@echo "Running tests with coverage..."
-	@$(GOTEST) -v -race -coverprofile=coverage.out ./...
+	@$(GOTEST) -race -coverpkg=./... -coverprofile=coverage.out ./...
+	@$(GOCMD) tool cover -func=coverage.out | tail -1
 	@echo "✓ Coverage report: coverage.out"
 
 test-unit: ## Run unit tests only (fast, all packages except benchmark)

@@ -75,7 +75,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
 
 - [ ] (T-0026) [P3] [todo] Call-scoped debug traces: make TransliterateDebug/rule-toggling race-free
 
-- [ ] (T-0027) [P3] [todo] Add unit tests for cmd/gomanize and scheme/colloquial (currently none)
+- [x] (T-0027) [P3] [done] Add unit tests for cmd/gomanize and scheme/colloquial (currently none) @done=2026-09-05
 ## Skipped
 
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow
