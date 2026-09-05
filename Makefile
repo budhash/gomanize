@@ -1,7 +1,7 @@
 # Gomanize - Hindi Transliteration Library
 # Development workflow Makefile
 
-.PHONY: help init hooks hooks-update build version test test-quick test-verbose test-cover test-unit test-integration test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets tasks
+.PHONY: help init hooks hooks-update build version wasm wasm-serve test test-quick test-verbose test-cover test-unit test-integration test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets tasks
 
 # Go parameters
 GOCMD := go
@@ -63,6 +63,19 @@ version: ## Show version info
 	@echo "Version: $(VERSION)"
 	@echo "Build time: $(BUILD_TIME)"
 	@echo "Git commit: $(GIT_COMMIT)"
+
+WASM_DIR := web
+
+wasm: ## Build the WebAssembly demo into web/ (gomanize.wasm + wasm_exec.js)
+	@echo "Building WebAssembly demo..."
+	@GOOS=js GOARCH=wasm $(GOBUILD) -o $(WASM_DIR)/gomanize.wasm ./cmd/gomanize-wasm
+	@cp "$$($(GOCMD) env GOROOT)/lib/wasm/wasm_exec.js" $(WASM_DIR)/wasm_exec.js 2>/dev/null \
+		|| cp "$$($(GOCMD) env GOROOT)/misc/wasm/wasm_exec.js" $(WASM_DIR)/wasm_exec.js
+	@echo "✓ WASM demo built. Serve locally with: make wasm-serve"
+
+wasm-serve: wasm ## Build and serve the WASM demo at http://localhost:8080
+	@echo "Serving $(WASM_DIR)/ at http://localhost:8080 (Ctrl-C to stop)..."
+	@cd $(WASM_DIR) && python3 -m http.server 8080
 
 install: build ## Install gomanize to GOPATH/bin
 	@echo "Installing $(BINARY)..."

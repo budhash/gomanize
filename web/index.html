@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>gomanize — Devanagari romanizer</title>
+<meta name="description" content="Transliterate Hindi (Devanagari) into readable Latin script, entirely in your browser. No server, no data leaves your machine.">
+<style>
+  :root {
+    --bg: #fafaf9;
+    --panel: #ffffff;
+    --border: #e4e2dd;
+    --text: #1c1b19;
+    --muted: #6b675f;
+    --accent: #b4531f;
+    --accent-soft: #fbeee6;
+    --focus: #d9773f;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #171614;
+      --panel: #201f1c;
+      --border: #35332e;
+      --text: #ece9e3;
+      --muted: #9a958b;
+      --accent: #e0895a;
+      --accent-soft: #2c221b;
+      --focus: #e0895a;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { color-scheme: light dark; }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  header { margin-bottom: 1.75rem; }
+  h1 {
+    font-size: 2rem; margin: 0 0 .25rem;
+    letter-spacing: -0.02em;
+  }
+  h1 .dev { font-weight: 400; color: var(--accent); }
+  .tagline { color: var(--muted); margin: 0; font-size: 1rem; }
+  .io { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 640px) { .io { grid-template-columns: 1fr; } }
+  .field label {
+    display: block; font-size: .8rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .05em;
+    color: var(--muted); margin-bottom: .4rem;
+  }
+  textarea, .output {
+    width: 100%; min-height: 160px; padding: .85rem 1rem;
+    border: 1px solid var(--border); border-radius: 10px;
+    background: var(--panel); color: var(--text);
+    font-size: 1.15rem; font-family: var(--sans); resize: vertical;
+  }
+  textarea:focus { outline: 2px solid var(--focus); outline-offset: 1px; border-color: var(--focus); }
+  .output {
+    white-space: pre-wrap; word-break: break-word; overflow-y: auto;
+    font-family: var(--mono); font-size: 1.05rem;
+  }
+  .output:empty::before { content: "…"; color: var(--muted); }
+  .toolbar { display: flex; gap: .6rem; align-items: center; margin: .6rem 0 1.5rem; flex-wrap: wrap; }
+  button {
+    font: inherit; cursor: pointer; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--panel); color: var(--text);
+    padding: .45rem .9rem;
+  }
+  button:hover { border-color: var(--focus); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button:disabled { opacity: .5; cursor: default; }
+  .status { font-size: .85rem; color: var(--muted); margin-left: auto; }
+  .status.ready { color: var(--accent); }
+  fieldset {
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: .9rem 1.1rem 1.1rem; margin: 0 0 1rem;
+    background: var(--panel);
+  }
+  legend { font-size: .8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 0 .4rem; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .5rem 1.25rem; }
+  .opt { display: flex; gap: .55rem; align-items: flex-start; cursor: pointer; }
+  .opt input { margin-top: .3rem; accent-color: var(--accent); flex: none; }
+  .opt .name { font-weight: 500; }
+  .opt .hint { display: block; font-size: .82rem; color: var(--muted); }
+  footer { margin-top: 2.5rem; font-size: .85rem; color: var(--muted); }
+  footer a { color: var(--accent); }
+  code { font-family: var(--mono); background: var(--accent-soft); padding: .1em .35em; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>gomanize <span class="dev">रोमनीकरण</span></h1>
+    <p class="tagline">Transliterate Hindi (Devanagari) into readable Latin script — entirely in your browser. Nothing is sent to a server.</p>
+  </header>
+
+  <div class="io">
+    <div class="field">
+      <label for="input">Devanagari input</label>
+      <textarea id="input" spellcheck="false" autocomplete="off" placeholder="नमस्ते दुनिया"></textarea>
+    </div>
+    <div class="field">
+      <label for="output">Romanized output</label>
+      <div id="output" class="output" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button type="button" id="sample">Try a sample</button>
+    <button type="button" id="clear">Clear</button>
+    <span id="status" class="status">Loading engine…</span>
+  </div>
+
+  <fieldset>
+    <legend>Rule tweaks</legend>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" data-flag="longVowels">
+        <span><span class="name">Long vowels</span><span class="hint">Write <code>aa</code> for every ā (गाना → gaanaa)</span></span></label>
+      <label class="opt"><input type="checkbox" data-flag="simpleNasals">
+        <span><span class="name">Simple nasals</span><span class="hint">करें → karen instead of karein</span></span></label>
+      <label class="opt"><input type="checkbox" data-flag="keepMedialSchwa">
+        <span><span class="name">Keep medial schwa</span><span class="hint">Disable CCV deletion (जनता → janata)</span></span></label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Learned components (opt-in)</legend>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" data-flag="schwaModel">
+        <span><span class="name">Schwa model</span><span class="hint">Decision-tree classifier for schwa deletion</span></span></label>
+      <label class="opt"><input type="checkbox" data-flag="lexicon">
+        <span><span class="name">Lexicon</span><span class="hint">Prefer attested spellings for known words</span></span></label>
+      <label class="opt"><input type="checkbox" data-flag="rerank">
+        <span><span class="name">Re-ranker</span><span class="hint">Pick the most natural candidate (char n-gram LM)</span></span></label>
+    </div>
+  </fieldset>
+
+  <footer>
+    Runs on WebAssembly compiled from the
+    <a href="https://github.com/budhash/gomanize" rel="noopener">gomanize</a> Go library. MIT licensed.
+  </footer>
+</div>
+
+<script src="wasm_exec.js"></script>
+<script>
+  const input = document.getElementById("input");
+  const output = document.getElementById("output");
+  const status = document.getElementById("status");
+  const checkboxes = Array.from(document.querySelectorAll("input[data-flag]"));
+  let ready = false;
+
+  function currentOptions() {
+    const o = {};
+    for (const cb of checkboxes) o[cb.dataset.flag] = cb.checked;
+    return o;
+  }
+
+  function render() {
+    if (!ready) return;
+    const text = input.value;
+    output.textContent = text ? window.gomanizeTranslit(text, currentOptions()) : "";
+  }
+
+  input.addEventListener("input", render);
+  for (const cb of checkboxes) cb.addEventListener("change", render);
+
+  document.getElementById("sample").addEventListener("click", () => {
+    input.value = "मेरे सपनों की रानी कब आएगी तू\nआई ऋतु मस्तानी कब आएगी तू";
+    render();
+    input.focus();
+  });
+  document.getElementById("clear").addEventListener("click", () => {
+    input.value = "";
+    render();
+    input.focus();
+  });
+
+  async function loadWasm() {
+    const go = new Go();
+    try {
+      let result;
+      if (WebAssembly.instantiateStreaming) {
+        try {
+          result = await WebAssembly.instantiateStreaming(fetch("gomanize.wasm"), go.importObject);
+        } catch (streamErr) {
+          // Some hosts serve .wasm without application/wasm; fall back.
+          const bytes = await (await fetch("gomanize.wasm")).arrayBuffer();
+          result = await WebAssembly.instantiate(bytes, go.importObject);
+        }
+      } else {
+        const bytes = await (await fetch("gomanize.wasm")).arrayBuffer();
+        result = await WebAssembly.instantiate(bytes, go.importObject);
+      }
+      go.run(result.instance);
+      ready = true;
+      status.textContent = "Ready — runs offline";
+      status.classList.add("ready");
+      render();
+    } catch (err) {
+      status.textContent = "Failed to load engine";
+      console.error(err);
+    }
+  }
+
+  loadWasm();
+</script>
+</body>
+</html>

@@ -42,6 +42,8 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0003) [P1] [done] Add docs/PROCESS.md + PR template + task-aware CLAUDE.md section @done=2026-09-04
   - [x] (T-0004) [P2] [done] Pre-commit parity: no-commit-to-branch + large-file/whitespace guards @done=2026-09-04
 
+- [ ] (F-0006) [P2] [todo] WASM build + web demo (data flywheel) @shadow
+  - [x] (T-0028) [P2] [done] Add GOOS=js GOARCH=wasm build target; verify go:embed assets load @done=2026-09-05
 - [x] (F-0005) [P2] [done] Real-world evaluation (frequency-weighted + lyrics) @branch=feature/c-real-world-eval @done=2026-09-05
   - [x] (T-0019) [P2] [done] Frequency-weighted eval on Shabd (CC0) + lexicon token coverage @done=2026-09-04
   - [x] (T-0020) [P2] [done] Frequency-rank/expand lexicon toward 5-10k high-conf entries @done=2026-09-05
@@ -79,7 +81,6 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
 
 - [ ] (F-0006) [P2] [todo] WASM build + web demo (data flywheel)
 
-  - [ ] (T-0028) [P2] [todo] Add GOOS=js GOARCH=wasm build target; verify go:embed assets load
   - [ ] (T-0029) [P2] [todo] Static web page: paste Devanagari, romanize, toggle flags, inline-edit output
   - [ ] (T-0030) [P3] [todo] Consent-based user-correction capture as review-gated lexicon candidates
 - [ ] (F-0007) [P2] [todo] Aksharantar-convention scheme (selectable vowel-doubling)
