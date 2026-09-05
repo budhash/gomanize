@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/budhash/gomanize/actions/workflows/ci.yml/badge.svg)](https://github.com/budhash/gomanize/actions/workflows/ci.yml)
 
-A Go library and CLI for transliterating Devanagari (Hindi) into readable Latin
+A Go library and CLI that romanizes Devanagari (Hindi) into readable Latin
 script, built for song lyrics and other colloquial text. Rule-based engine with
 optional embedded learned components; no runtime dependencies.
 
@@ -13,6 +13,11 @@ optional embedded learned components; no runtime dependencies.
 **Try it in your browser → [budhash.com/gomanize](https://budhash.com/gomanize)** —
 the full engine, compiled to WebAssembly, runs entirely client-side (no server;
 no text leaves your machine).
+
+It does *romanization* — spelling Hindi the way it sounds (नमस्ते → *namaste*) —
+rather than the strict, reversible *transliteration* of schemes like IAST or
+ISO 15919. ("Transliteration" is the common colloquial term for the same task,
+and the API keeps the `Translit` name.)
 
 Romanization has no single correct answer — जनता is validly *janata*, *janta*,
 or *janataa* — so this project measures itself against all human-attested

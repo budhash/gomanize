@@ -1,7 +1,9 @@
 # Gomanize
 
-A Go library and CLI for transliterating Devanagari (Hindi) into Latin script,
-built for song lyrics and other colloquial text. MIT licensed (2023-2026);
+A Go library and CLI that romanizes Devanagari (Hindi) into Latin script, built
+for song lyrics and other colloquial text (pronunciation-based romanization, not
+strict reversible transliteration; the public API keeps the `Translit` name, and
+"transliteration" is the common colloquial term). MIT licensed (2023-2026);
 Go 1.21+.
 
 This file covers development workflow and repository conventions. For users:
@@ -19,8 +21,12 @@ echo "हिंदी गाना" | ./gomanize   # hindi gana
 # Flags (--lexicon, --rerank, --schwa-model, ...): see README.md
 
 make ci                        # Full pipeline before any PR
+make wasm-serve                # Build + serve the browser (WASM) demo locally
 make help                      # All commands
 ```
+
+Live demo: <https://budhash.com/gomanize> — the engine compiled to WebAssembly,
+auto-deployed from `web/` by `.github/workflows/pages.yml` on push to `main`.
 
 ## Development Workflow
 
@@ -52,6 +58,10 @@ make fmt / fmt-check / lint / lint-fix
 make demo           # Demo with sample words
 make bench          # Performance benchmarks
 make tasks ARGS=".." # Task tracker passthrough
+
+# Web / WASM demo
+make wasm           # Build web/gomanize.wasm + copy wasm_exec.js
+make wasm-serve     # Build + serve the demo at http://localhost:8080
 ```
 
 ## Task Tracking & Process
@@ -68,6 +78,7 @@ accuracy-reporting rules: [`docs/PROCESS.md`](docs/PROCESS.md).
 gomanize/
 ├── gomanize.go                    # Public API (New, Translit — whitespace/punct-aware)
 ├── cmd/gomanize/main.go           # CLI entry point (all flags)
+├── cmd/gomanize-wasm/main.go      # WebAssembly entry point (syscall/js bridge, js&&wasm)
 ├── core/                          # Engine mechanics (no script knowledge)
 │   ├── engine.go                  # Pipeline + LexiconProvider/Reranker interfaces
 │   ├── types.go                   # Unit, Word, Options
@@ -78,6 +89,8 @@ gomanize/
 │   ├── lexicon.go + lexicon.tsv            # 8,367-word attested lexicon (embedded, ~204 KB)
 │   └── reranker.go + roman_ngrams.tsv      # Char 4-gram re-ranker (embedded, 224 KB)
 ├── scheme/colloquial/             # Colloquial romanization scheme
+├── webdemo/                       # Host-testable JS-flag → Options mapping (WASM demo)
+├── web/                           # Browser demo: index.html → budhash.com/gomanize
 ├── script/brahmic/                # Brahmic script support (shared by future languages)
 │   ├── brahmic.go / parser.go / renderer.go / runs.go
 │   └── schwa_rules.go             # Shared Brahmic schwa rules (brahmic.SchwaRules())
@@ -100,7 +113,7 @@ gomanize/
 │   ├── archive/                   # Historical docs (2025-era, bannered)
 │   └── reference/                 # External reference material
 ├── .claude/                       # Claude Code configuration + hooks
-├── .github/workflows/             # ci.yml + release.yml (GoReleaser on tags)
+├── .github/workflows/             # ci.yml + release.yml (GoReleaser) + pages.yml (WASM demo → Pages)
 ├── Makefile / TASKS.md / README.md / CLAUDE.md
 ```
 
