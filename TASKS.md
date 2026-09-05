@@ -44,7 +44,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
 
 - [ ] (F-0005) [P2] [todo] Real-world evaluation (frequency-weighted + lyrics) @branch=feature/c-real-world-eval
   - [x] (T-0019) [P2] [done] Frequency-weighted eval on Shabd (CC0) + lexicon token coverage @done=2026-09-04
-  - [ ] (T-0020) [P2] [todo] Frequency-rank/expand lexicon toward 5-10k high-conf entries
+  - [x] (T-0020) [P2] [done] Frequency-rank/expand lexicon toward 5-10k high-conf entries @done=2026-09-05
   - [ ] (T-0021) [P3] [todo] Build curated ~500-line lyrics gold set (Giitaayan+LyricsTranslate, fetch-script)
   - [ ] (T-0022) [P3] [todo] Add COMI-LINGUA (CC-BY) redistributable sentence benchmark
 ## Backlog

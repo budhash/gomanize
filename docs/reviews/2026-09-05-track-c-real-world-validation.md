@@ -72,3 +72,24 @@ words; frequency-ranking the source pool is the natural next step (not done here
   value quantified. Follow-ups (tracked): frequency-rank/expand the lexicon toward
   5–10k entries; build the curated lyrics gold set; add COMI-LINGUA as a
   redistributable sentence benchmark.
+
+## Update (T-0020, 2026-09-05): frequency-ranked lexicon expansion
+
+Expanded the lexicon using the frequency ranking, still sourcing **only the
+Dakshina train split** (dev/test stay out — contamination guard still reports
+0/2,500 held-out words covered). Policy: keep the attestations-≥4 core
+regardless of frequency; add top-15k-frequency words whose best train spelling
+has ≥2 attestations and is a strict winner (ties skipped as ambiguous).
+
+| Metric | Before (1,896 entries) | After (8,367 entries) |
+|---|---|---|
+| Token coverage | 29.4% | **71.1%** |
+| Freq-weighted match-any (rules+lexicon) | 88.7% | **97.4%** |
+| Embedded size | ~46 KB | ~260 KB |
+
+Honest caveat on 97.4%: a lexicon hit emits an attested variant, so it matches
+the reference set by construction — that is the *point* of a lexicon (emit the
+human spelling for known words), but the number to watch is the pair
+(coverage, rules-tail accuracy), not 97.4% alone. Max achievable coverage from
+train gold within the top-15k is 78.2%; the remaining gap to ~90%+ needs gold
+for frequent words outside Dakshina train (Aksharantar/Xlit-Crowd — future work).
