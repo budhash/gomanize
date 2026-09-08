@@ -42,6 +42,8 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0003) [P1] [done] Add docs/PROCESS.md + PR template + task-aware CLAUDE.md section @done=2026-09-04
   - [x] (T-0004) [P2] [done] Pre-commit parity: no-commit-to-branch + large-file/whitespace guards @done=2026-09-04
 
+- [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow
+  - [x] (T-0036) [P2] [done] Package the WASM engine as @budhash/gomanize with loader, types, make target, and Node smoke test @done=2026-09-08
 - [ ] (F-0006) [P2] [todo] WASM build + web demo (data flywheel) @shadow
   - [x] (T-0028) [P2] [done] Add GOOS=js GOARCH=wasm build target; verify go:embed assets load @done=2026-09-05
   - [x] (T-0029) [P2] [done] Static web page: paste Devanagari, romanize, toggle flags, inline-edit output @done=2026-09-05
@@ -92,6 +94,9 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [ ] (T-0034) [P3] [todo] Implement lang/marathi (symbol map + config + rules composing brahmic.SchwaRules)
 
 - [ ] (T-0035) [P3] [todo] Grow lyrics gold set toward ~500 lines (PD in-repo; copyrighted via fetch script)
+
+- [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper)
+  - [x] (T-0037) [P3] [done] CI: gated npm publish workflow on version tag (needs NPM_TOKEN) @done=2026-09-08
 ## Skipped
 
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow

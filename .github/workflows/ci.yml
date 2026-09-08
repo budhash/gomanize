@@ -39,6 +39,14 @@ jobs:
       - name: Run CI (format, lint, build, test)
         run: make ci
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build + smoke-test npm package
+        run: make npm-test
+
       - name: Upload coverage
         if: ${{ env.CODECOV_TOKEN != '' }}
         uses: codecov/codecov-action@v4

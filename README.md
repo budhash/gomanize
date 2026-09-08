@@ -37,6 +37,17 @@ cd gomanize
 make build
 ```
 
+For JavaScript/TypeScript, the engine is published to npm as
+[`@budhash/gomanize`](https://www.npmjs.com/package/@budhash/gomanize) — the same
+engine compiled to WebAssembly (not a reimplementation), so output is identical:
+
+```js
+import { load } from "@budhash/gomanize";
+const g = await load();
+g.translit("नमस्ते दुनिया");            // "namaste duniya"
+g.translit("गाना", { longVowels: true }); // "gaanaa"
+```
+
 ## Usage
 
 ### CLI

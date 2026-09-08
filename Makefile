@@ -1,7 +1,7 @@
 # Gomanize - Hindi Transliteration Library
 # Development workflow Makefile
 
-.PHONY: help init hooks hooks-update build version wasm wasm-serve test test-quick test-verbose test-cover test-unit test-integration test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets tasks
+.PHONY: help init hooks hooks-update build version wasm wasm-serve npm npm-test test test-quick test-verbose test-cover test-unit test-integration test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets tasks
 
 # Go parameters
 GOCMD := go
@@ -76,6 +76,19 @@ wasm: ## Build the WebAssembly demo into web/ (gomanize.wasm + wasm_exec.js)
 wasm-serve: wasm ## Build and serve the WASM demo at http://localhost:8080
 	@echo "Serving $(WASM_DIR)/ at http://localhost:8080 (Ctrl-C to stop)..."
 	@cd $(WASM_DIR) && python3 -m http.server 8080
+
+NPM_DIR := npm
+
+npm: wasm ## Assemble the @budhash/gomanize npm package (copies wasm + wasm_exec.js into npm/dist)
+	@echo "Assembling npm package..."
+	@mkdir -p $(NPM_DIR)/dist
+	@cp $(WASM_DIR)/gomanize.wasm $(NPM_DIR)/dist/gomanize.wasm
+	@cp $(WASM_DIR)/wasm_exec.js $(NPM_DIR)/dist/wasm_exec.js
+	@echo "✓ npm package ready in $(NPM_DIR)/"
+
+npm-test: npm ## Build + smoke-test the npm package under Node
+	@echo "Smoke-testing npm package..."
+	@node $(NPM_DIR)/smoke.test.mjs
 
 install: build ## Install gomanize to GOPATH/bin
 	@echo "Installing $(BINARY)..."
