@@ -211,8 +211,8 @@
   }
   .output:empty::before { content: "…"; color: var(--paper-dimmer); }
 
-  /* ── toolbar ────────────────────────────────────────────────────────────── */
-  .toolbar { display: flex; align-items: center; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+  /* ── per-column action toolbars ─────────────────────────────────────────── */
+  .col-actions { display: flex; align-items: center; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
   button {
     font: inherit; font-size: 13px; cursor: pointer;
     color: var(--paper);
@@ -324,6 +324,12 @@
         <span class="label" style="letter-spacing:.08em;">paste or type</span>
       </div>
       <textarea id="input" class="panel" spellcheck="false" autocomplete="off" placeholder="नमस्ते दुनिया"></textarea>
+      <div class="col-actions">
+        <button type="button" id="sample">sample</button>
+        <button type="button" id="loadFile">load</button>
+        <button type="button" id="clear">clear</button>
+        <input id="fileInput" type="file" hidden>
+      </div>
     </div>
     <div class="io-col">
       <div class="io-head">
@@ -331,14 +337,12 @@
         <span id="status" class="status">loading engine</span>
       </div>
       <div id="output" class="output panel" aria-live="polite"></div>
+      <div class="col-actions">
+        <button type="button" id="copy">copy</button>
+        <button type="button" id="download">download</button>
+      </div>
     </div>
   </section>
-
-  <div class="toolbar">
-    <button type="button" id="sample">Try a sample</button>
-    <button type="button" id="clear">Clear</button>
-    <button type="button" id="copy">Copy output</button>
-  </div>
 
   <section class="options panel">
     <div class="opt-group">
@@ -433,17 +437,49 @@
   });
   document.getElementById("clear").addEventListener("click", () => {
     input.value = "";
+    loadedName = "";
     render();
     input.focus();
   });
+  async function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove();
+  }
   document.getElementById("copy").addEventListener("click", async () => {
     const btn = document.getElementById("copy");
-    try {
-      await navigator.clipboard.writeText(output.textContent);
-      const prev = btn.textContent;
-      btn.textContent = "Copied ✓";
-      setTimeout(() => { btn.textContent = prev; }, 1200);
-    } catch (e) { /* clipboard blocked; ignore */ }
+    try { await copyText(output.textContent); btn.textContent = "copied"; }
+    catch (_e) { btn.textContent = "press ⌘C"; }
+    setTimeout(() => { btn.textContent = "copy"; }, 1200);
+  });
+
+  // load a Devanagari text file into the input; download the romanized output.
+  // both run entirely in the browser — nothing is uploaded.
+  let loadedName = "";
+  document.getElementById("loadFile").addEventListener("click", () => document.getElementById("fileInput").click());
+  document.getElementById("fileInput").addEventListener("change", (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    loadedName = file.name;
+    const reader = new FileReader();
+    reader.onload = () => { input.value = reader.result; render(); input.focus(); };
+    reader.readAsText(file);
+    e.target.value = ""; // let the same file be chosen again later
+  });
+  document.getElementById("download").addEventListener("click", () => {
+    const blob = new Blob([output.textContent], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = loadedName ? loadedName.replace(/\.[^.]+$/, "") + "-romanized.txt" : "romanized.txt";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
   });
 
   async function loadWasm() {
