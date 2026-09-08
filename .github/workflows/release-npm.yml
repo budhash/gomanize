@@ -1,0 +1,55 @@
+name: Publish npm package
+
+# Publishes @budhash/gomanize via npm OIDC "trusted publishing" — no NPM_TOKEN.
+#
+# One-time setup on npmjs.com (after the first manual publish): the package's
+# Trusted Publisher must point at:
+#   Publisher: GitHub Actions
+#   Organization or user: budhash
+#   Repository:           gomanize
+#   Workflow filename:    release-npm.yml   (this file)
+# Until that trusted publisher exists the publish step will fail (auth), so the
+# first v1.0.0 publish is done manually:  make npm && cd npm && npm publish --access public
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write        # required for OIDC trusted publishing
+
+jobs:
+  publish:
+    name: Build, test, publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+          cache: true
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Upgrade npm (OIDC trusted publishing needs npm >= 11.5.1)
+        run: npm install -g npm@latest
+
+      - name: Build + smoke-test the package
+        run: make npm-test
+
+      - name: Sync package version to the tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          TAG: ${{ github.ref_name }}
+        run: npm --prefix npm version "${TAG#v}" --no-git-tag-version --allow-same-version
+
+      - name: Publish to npm (OIDC — no token; provenance is automatic)
+        run: npm --prefix npm publish --access public
