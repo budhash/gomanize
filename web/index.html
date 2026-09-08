@@ -291,6 +291,15 @@
   @media (max-width: 480px) {
     .opts { grid-template-columns: 1fr; }
   }
+  @media (max-width: 560px) {
+    /* header: let the description use the full width. put the top links in
+       normal flow (a right-aligned row) instead of reserving a padding gutter,
+       and ease the eyebrow so it doesn't wrap into a cramped block */
+    header { padding-right: 0; }
+    .top-links { position: static; display: flex; justify-content: flex-end; margin-bottom: 16px; }
+    .eyebrow { letter-spacing: 0.12em; }
+    .eyebrow::before { display: none; }
+  }
 </style>
 </head>
 <body>
