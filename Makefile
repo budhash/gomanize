@@ -66,11 +66,12 @@ version: ## Show version info
 
 WASM_DIR := web
 
-wasm: ## Build the WebAssembly demo into web/ (gomanize.wasm + wasm_exec.js)
+wasm: ## Build the WebAssembly demo into web/ (gomanize.wasm + wasm_exec.js + vendored loader)
 	@echo "Building WebAssembly demo..."
 	@GOOS=js GOARCH=wasm $(GOBUILD) -o $(WASM_DIR)/gomanize.wasm ./cmd/gomanize-wasm
 	@cp "$$($(GOCMD) env GOROOT)/lib/wasm/wasm_exec.js" $(WASM_DIR)/wasm_exec.js 2>/dev/null \
 		|| cp "$$($(GOCMD) env GOROOT)/misc/wasm/wasm_exec.js" $(WASM_DIR)/wasm_exec.js
+	@cp $(NPM_DIR)/index.mjs $(WASM_DIR)/gomanize.mjs
 	@echo "✓ WASM demo built. Serve locally with: make wasm-serve"
 
 wasm-serve: wasm ## Build and serve the WASM demo at http://localhost:8080
