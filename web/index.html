@@ -517,16 +517,37 @@ fmt.Println(g.Translit("नमस्ते दुनिया")) <span class="c"
     reader.readAsText(file);
     e.target.value = ""; // let the same file be chosen again later
   });
-  document.getElementById("download").addEventListener("click", () => {
-    const blob = new Blob([output.textContent], { type: "text/plain" });
+  // save the output: use the native "Save As" picker where supported
+  // (Chromium desktop), otherwise fall back to a direct download.
+  async function saveText(text, suggestedName) {
+    if (window.showSaveFilePicker && window.isSecureContext) {
+      try {
+        const handle = await window.showSaveFilePicker({
+          suggestedName,
+          types: [{ description: "Text", accept: { "text/plain": [".txt"] } }],
+        });
+        const w = await handle.createWritable();
+        await w.write(text);
+        await w.close();
+        return;
+      } catch (e) {
+        if (e && e.name === "AbortError") return; // user cancelled the picker
+        // any other error: fall through to the download fallback
+      }
+    }
+    const blob = new Blob([text], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = loadedName ? loadedName.replace(/\.[^.]+$/, "") + "-romanized.txt" : "romanized.txt";
+    a.download = suggestedName;
     document.body.appendChild(a);
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
+  }
+  document.getElementById("download").addEventListener("click", () => {
+    const name = loadedName ? loadedName.replace(/\.[^.]+$/, "") + "-romanized.txt" : "romanized.txt";
+    saveText(output.textContent, name);
   });
 
   async function loadWasm() {
