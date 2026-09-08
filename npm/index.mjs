@@ -9,10 +9,10 @@ const isNode = () =>
   typeof process !== "undefined" && !!(process.versions && process.versions.node);
 
 // wasm_exec.js is a plain script (not a module) shipped by the Go toolchain; it
-// defines globalThis.Go. Evaluate it once in the global scope.
-async function ensureGo() {
+// defines globalThis.Go. Evaluate it once in the global scope. If a host page
+// already loaded it (e.g. via a <script> tag), this is a no-op.
+async function ensureGo(url) {
   if (typeof globalThis.Go !== "undefined") return;
-  const url = new URL("./dist/wasm_exec.js", import.meta.url);
   if (isNode()) {
     const { readFile } = await import("node:fs/promises");
     const vm = await import("node:vm");
@@ -23,8 +23,7 @@ async function ensureGo() {
   }
 }
 
-async function wasmBytes() {
-  const url = new URL("./dist/gomanize.wasm", import.meta.url);
+async function wasmBytes(url) {
   if (isNode()) {
     const { readFile } = await import("node:fs/promises");
     return readFile(url);
@@ -32,11 +31,18 @@ async function wasmBytes() {
   return (await fetch(url)).arrayBuffer();
 }
 
-export async function load() {
+/**
+ * @param {{ wasmURL?: string|URL, execURL?: string|URL }} [opts]
+ *   Override where the .wasm and wasm_exec.js are loaded from. Defaults resolve
+ *   to ./dist/* next to this module (npm layout).
+ */
+export async function load(opts = {}) {
   if (_instance) return _instance;
-  await ensureGo();
+  const execURL = opts.execURL ?? new URL("./dist/wasm_exec.js", import.meta.url);
+  const wasmURL = opts.wasmURL ?? new URL("./dist/gomanize.wasm", import.meta.url);
+  await ensureGo(execURL);
   const go = new globalThis.Go();
-  const { instance } = await WebAssembly.instantiate(await wasmBytes(), go.importObject);
+  const { instance } = await WebAssembly.instantiate(await wasmBytes(wasmURL), go.importObject);
   // main() sets globalThis.gomanizeTranslit and then blocks, keeping the
   // exported function callable for the lifetime of the instance.
   go.run(instance);

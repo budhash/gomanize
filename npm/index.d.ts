@@ -28,6 +28,14 @@ export interface Gomanize {
   translit(text: string, options?: Options): string;
 }
 
+/** Where to load the engine assets from. Defaults resolve next to the module. */
+export interface LoadOptions {
+  /** URL/path to gomanize.wasm. */
+  wasmURL?: string | URL;
+  /** URL/path to wasm_exec.js (ignored if a host page already defines `Go`). */
+  execURL?: string | URL;
+}
+
 /**
  * Load and instantiate the WebAssembly engine. The result is cached, so calling
  * `load()` again returns the same instance. `translit` is synchronous once
@@ -40,7 +48,7 @@ export interface Gomanize {
  * g.translit("गाना", { longVowels: true }); // "gaanaa"
  * ```
  */
-export function load(): Promise<Gomanize>;
+export function load(opts?: LoadOptions): Promise<Gomanize>;
 
 declare const _default: { load: typeof load };
 export default _default;

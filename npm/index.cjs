@@ -3,15 +3,17 @@
 
 let _instance;
 
-async function load() {
+async function load(opts = {}) {
   if (_instance) return _instance;
   const fs = require("node:fs");
   const path = require("node:path");
+  const execPath = opts.execURL || path.join(__dirname, "dist", "wasm_exec.js");
+  const wasmPath = opts.wasmURL || path.join(__dirname, "dist", "gomanize.wasm");
   if (typeof globalThis.Go === "undefined") {
     const vm = require("node:vm");
-    vm.runInThisContext(fs.readFileSync(path.join(__dirname, "dist", "wasm_exec.js"), "utf8"));
+    vm.runInThisContext(fs.readFileSync(execPath, "utf8"));
   }
-  const bytes = fs.readFileSync(path.join(__dirname, "dist", "gomanize.wasm"));
+  const bytes = fs.readFileSync(wasmPath);
   const go = new globalThis.Go();
   const { instance } = await WebAssembly.instantiate(bytes, go.importObject);
   go.run(instance);

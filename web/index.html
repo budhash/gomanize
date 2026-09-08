@@ -449,12 +449,17 @@ fmt.Println(g.Translit("नमस्ते दुनिया")) <span class="c"
 </main>
 
 <script src="wasm_exec.js"></script>
-<script>
+<script type="module">
+  // The demo consumes the same loader shipped in the @budhash/gomanize npm
+  // package (vendored here as gomanize.mjs by `make wasm`), pointed at the
+  // local wasm so the page stays self-contained and offline.
+  import { load } from "./gomanize.mjs";
+
   const input = document.getElementById("input");
   const output = document.getElementById("output");
   const status = document.getElementById("status");
   const checkboxes = Array.from(document.querySelectorAll("input[data-flag]"));
-  let ready = false;
+  let engine = null;
 
   // About dialog
   const about = document.getElementById("about");
@@ -469,9 +474,9 @@ fmt.Println(g.Translit("नमस्ते दुनिया")) <span class="c"
   }
 
   function render() {
-    if (!ready) return;
+    if (!engine) return;
     const text = input.value;
-    output.textContent = text ? window.gomanizeTranslit(text, currentOptions()) : "";
+    output.textContent = text ? engine.translit(text, currentOptions()) : "";
   }
 
   input.addEventListener("input", render);
@@ -550,23 +555,9 @@ fmt.Println(g.Translit("नमस्ते दुनिया")) <span class="c"
     saveText(output.textContent, name);
   });
 
-  async function loadWasm() {
-    const go = new Go();
+  (async () => {
     try {
-      let result;
-      if (WebAssembly.instantiateStreaming) {
-        try {
-          result = await WebAssembly.instantiateStreaming(fetch("gomanize.wasm"), go.importObject);
-        } catch (streamErr) {
-          const bytes = await (await fetch("gomanize.wasm")).arrayBuffer();
-          result = await WebAssembly.instantiate(bytes, go.importObject);
-        }
-      } else {
-        const bytes = await (await fetch("gomanize.wasm")).arrayBuffer();
-        result = await WebAssembly.instantiate(bytes, go.importObject);
-      }
-      go.run(result.instance);
-      ready = true;
+      engine = await load({ wasmURL: new URL("gomanize.wasm", import.meta.url) });
       status.textContent = "ready · offline";
       status.classList.add("ready");
       render();
@@ -575,9 +566,7 @@ fmt.Println(g.Translit("नमस्ते दुनिया")) <span class="c"
       status.classList.add("error");
       console.error(err);
     }
-  }
-
-  loadWasm();
+  })();
 </script>
 </body>
 </html>
