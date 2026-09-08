@@ -118,7 +118,7 @@ gomanize/
 │   ├── archive/                   # Historical docs (2025-era, bannered)
 │   └── reference/                 # External reference material
 ├── .claude/                       # Claude Code configuration + hooks
-├── .github/workflows/             # ci.yml + release.yml (GoReleaser) + pages.yml (WASM demo) + npm-publish.yml
+├── .github/workflows/             # ci.yml + release.yml (GoReleaser) + pages.yml (WASM demo) + release-npm.yml (OIDC npm publish)
 ├── Makefile / TASKS.md / README.md / CLAUDE.md
 ```
 
