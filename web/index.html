@@ -280,6 +280,26 @@
 
   footer { margin-top: 22px; font-size: 12px; color: var(--paper-dimmer); }
 
+  /* ── section headings (live / tool), foldable options, tool docs ────────── */
+  .section-head { display: flex; align-items: center; gap: 14px; margin: clamp(28px, 5vh, 48px) 0 16px; }
+  .section-head .label { white-space: nowrap; font-size: 11px; letter-spacing: 0.18em; color: var(--paper-dim); }
+  .section-head::after { content: ""; flex: 1 1 auto; height: 1px; background: var(--rule); }
+
+  .options-fold { margin: 0; }
+  .options-fold > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; padding: 4px 0; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper-dim); }
+  .options-fold > summary::-webkit-details-marker { display: none; }
+  .options-fold > summary::before { content: "▸"; color: var(--paper-dimmer); font-size: 10px; transition: transform .12s; }
+  .options-fold[open] > summary::before { transform: rotate(90deg); }
+  .options-fold .options { margin-top: 8px; }
+
+  pre.code { margin: 8px 0 0; max-width: 100%; overflow-x: auto; white-space: pre; background: var(--well); border: 1px solid var(--rule); border-radius: 8px; padding: 11px 13px; font-family: var(--mono); font-size: 12.5px; line-height: 1.55; color: var(--paper); }
+  pre.code .c { color: var(--paper-dimmer); }
+  .tooldoc { padding: 20px 22px; }
+  .tooldoc > .label { display: block; }
+  .tooldoc > .label ~ .label { margin-top: 18px; }
+  .tooldoc p { margin: 16px 0 0; color: var(--paper-dim); font-size: 14px; line-height: 1.6; }
+  .tooldoc p code { font-family: var(--mono); font-size: 12px; background: var(--chip); padding: 1px 5px; border-radius: 4px; color: var(--paper); }
+
   @media (max-width: 780px) {
     .io { grid-template-columns: 1fr; }
     #input, .output { min-height: 200px; }
@@ -317,6 +337,36 @@
     <p class="subtitle">Romanize Hindi (Devanagari) into readable, diacritic-free Latin script — tuned for song lyrics. Everything runs client-side on WebAssembly; nothing is ever sent to a server.</p>
   </header>
 
+  <div class="section-head"><span class="label">live</span></div>
+
+  <details class="options-fold">
+    <summary>options · rule tweaks &amp; learned models</summary>
+    <section class="options panel">
+      <div class="opt-group">
+        <span class="label">Rule tweaks</span>
+        <div class="opts">
+          <label class="opt"><input type="checkbox" data-flag="longVowels">
+            <span class="opt-text"><span class="opt-name">Long vowels</span><span class="opt-hint">गाना → <code>gaanaa</code></span></span></label>
+          <label class="opt"><input type="checkbox" data-flag="simpleNasals">
+            <span class="opt-text"><span class="opt-name">Simple nasals</span><span class="opt-hint">करें → <code>karen</code>, not karein</span></span></label>
+          <label class="opt"><input type="checkbox" data-flag="keepMedialSchwa">
+            <span class="opt-text"><span class="opt-name">Keep medial schwa</span><span class="opt-hint">जनता → <code>janata</code></span></span></label>
+        </div>
+      </div>
+      <div class="opt-group">
+        <span class="label">Learned <span style="opacity:.6">(opt-in)</span></span>
+        <div class="opts">
+          <label class="opt"><input type="checkbox" data-flag="schwaModel">
+            <span class="opt-text"><span class="opt-name">Schwa model</span><span class="opt-hint">decision-tree schwa classifier</span></span></label>
+          <label class="opt"><input type="checkbox" data-flag="lexicon">
+            <span class="opt-text"><span class="opt-name">Lexicon</span><span class="opt-hint">attested spellings for known words</span></span></label>
+          <label class="opt"><input type="checkbox" data-flag="rerank">
+            <span class="opt-text"><span class="opt-name">Re-ranker</span><span class="opt-hint">most natural candidate (n-gram LM)</span></span></label>
+        </div>
+      </div>
+    </section>
+  </details>
+
   <section class="io">
     <div class="io-col">
       <div class="io-head">
@@ -344,30 +394,27 @@
     </div>
   </section>
 
-  <section class="options panel">
-    <div class="opt-group">
-      <span class="label">Rule tweaks</span>
-      <div class="opts">
-        <label class="opt"><input type="checkbox" data-flag="longVowels">
-          <span class="opt-text"><span class="opt-name">Long vowels</span><span class="opt-hint">गाना → <code>gaanaa</code></span></span></label>
-        <label class="opt"><input type="checkbox" data-flag="simpleNasals">
-          <span class="opt-text"><span class="opt-name">Simple nasals</span><span class="opt-hint">करें → <code>karen</code>, not karein</span></span></label>
-        <label class="opt"><input type="checkbox" data-flag="keepMedialSchwa">
-          <span class="opt-text"><span class="opt-name">Keep medial schwa</span><span class="opt-hint">जनता → <code>janata</code></span></span></label>
-      </div>
-    </div>
-    <div class="opt-group">
-      <span class="label">Learned <span style="opacity:.6">(opt-in)</span></span>
-      <div class="opts">
-        <label class="opt"><input type="checkbox" data-flag="schwaModel">
-          <span class="opt-text"><span class="opt-name">Schwa model</span><span class="opt-hint">decision-tree schwa classifier</span></span></label>
-        <label class="opt"><input type="checkbox" data-flag="lexicon">
-          <span class="opt-text"><span class="opt-name">Lexicon</span><span class="opt-hint">attested spellings for known words</span></span></label>
-        <label class="opt"><input type="checkbox" data-flag="rerank">
-          <span class="opt-text"><span class="opt-name">Re-ranker</span><span class="opt-hint">most natural candidate (n-gram LM)</span></span></label>
-      </div>
-    </div>
-  </section>
+  <div class="section-head"><span class="label">tool</span></div>
+
+  <div class="tooldoc panel">
+    <span class="label">install</span>
+    <pre class="code"><span class="c"># library</span>
+go get github.com/budhash/gomanize
+
+<span class="c"># CLI</span>
+go install github.com/budhash/gomanize/cmd/gomanize@latest</pre>
+
+    <span class="label">command line</span>
+    <pre class="code">gomanize "नमस्ते भारत"        <span class="c"># namaste bharat</span>
+echo "हिंदी गाना" | gomanize   <span class="c"># hindi gana</span></pre>
+
+    <span class="label">library</span>
+    <pre class="code"><span class="c">// go</span>
+g, _ := gomanize.New("hindi")
+fmt.Println(g.Translit("नमस्ते दुनिया")) <span class="c">// namaste duniya</span></pre>
+
+    <p>The toggles in the demo above are the CLI flags — <code>--long-vowels</code>, <code>--simple-nasals</code>, <code>--keep-medial-schwa</code>, <code>--schwa-model</code>, <code>--lexicon</code>, <code>--rerank</code>. Full reference in the <a href="https://github.com/budhash/gomanize" rel="noopener">README</a>.</p>
+  </div>
 
   <footer>
     Runs on WebAssembly compiled from the
