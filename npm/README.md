@@ -10,7 +10,7 @@ Live demo: <https://budhash.com/gomanize>
 ## Install
 
 ```bash
-npm i @budhash/gomanize
+npm install @budhash/gomanize
 ```
 
 ## Use
