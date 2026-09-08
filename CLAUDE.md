@@ -62,6 +62,10 @@ make tasks ARGS=".." # Task tracker passthrough
 # Web / WASM demo
 make wasm           # Build web/gomanize.wasm + copy wasm_exec.js
 make wasm-serve     # Build + serve the demo at http://localhost:8080
+
+# npm package (@budhash/gomanize — WASM engine + JS wrapper)
+make npm            # Assemble npm/ (copies wasm + wasm_exec.js into npm/dist)
+make npm-test       # Build + smoke-test the package under Node
 ```
 
 ## Task Tracking & Process
@@ -91,6 +95,7 @@ gomanize/
 ├── scheme/colloquial/             # Colloquial romanization scheme
 ├── webdemo/                       # Host-testable JS-flag → Options mapping (WASM demo)
 ├── web/                           # Browser demo: index.html → budhash.com/gomanize
+├── npm/                           # npm package @budhash/gomanize (WASM engine + JS/TS wrapper)
 ├── script/brahmic/                # Brahmic script support (shared by future languages)
 │   ├── brahmic.go / parser.go / renderer.go / runs.go
 │   └── schwa_rules.go             # Shared Brahmic schwa rules (brahmic.SchwaRules())
@@ -113,7 +118,7 @@ gomanize/
 │   ├── archive/                   # Historical docs (2025-era, bannered)
 │   └── reference/                 # External reference material
 ├── .claude/                       # Claude Code configuration + hooks
-├── .github/workflows/             # ci.yml + release.yml (GoReleaser) + pages.yml (WASM demo → Pages)
+├── .github/workflows/             # ci.yml + release.yml (GoReleaser) + pages.yml (WASM demo) + npm-publish.yml
 ├── Makefile / TASKS.md / README.md / CLAUDE.md
 ```
 

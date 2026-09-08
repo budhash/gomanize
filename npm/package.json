@@ -1,0 +1,41 @@
+{
+  "name": "@budhash/gomanize",
+  "version": "1.0.0",
+  "description": "Romanize Hindi (Devanagari) into readable, diacritic-free Latin script — the gomanize engine compiled to WebAssembly.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.mjs",
+      "require": "./index.cjs"
+    }
+  },
+  "types": "./index.d.ts",
+  "files": [
+    "index.mjs",
+    "index.cjs",
+    "index.d.ts",
+    "dist/gomanize.wasm",
+    "dist/wasm_exec.js",
+    "README.md"
+  ],
+  "engines": { "node": ">=18" },
+  "sideEffects": false,
+  "keywords": [
+    "hindi",
+    "devanagari",
+    "romanization",
+    "transliteration",
+    "romanize",
+    "transliterate",
+    "wasm",
+    "webassembly",
+    "nlp",
+    "indic"
+  ],
+  "license": "MIT",
+  "author": "budhash",
+  "homepage": "https://budhash.com/gomanize",
+  "repository": { "type": "git", "url": "git+https://github.com/budhash/gomanize.git" },
+  "bugs": { "url": "https://github.com/budhash/gomanize/issues" }
+}

@@ -18,6 +18,9 @@ gomanize
 web/gomanize.wasm
 web/wasm_exec.js
 
+# npm package build outputs (rebuilt by `make npm`)
+npm/dist/
+
 # IDE
 .idea/
 *.iml
