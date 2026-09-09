@@ -44,7 +44,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
 
 - [ ] (F-0010) [P2] [todo] Structured parser QA: construct-coverage + invariants (find systematic parsing bugs) @shadow
   - [x] (T-0038) [P2] [done] Tier 1: per-construct accuracy analyzer (make target + benchmark; rank by prevalence x error) @done=2026-09-08
-  - [ ] (T-0039) [P2] [doing] Tier 2: parser invariant/property tests (schwa-kept=>vowel; independent-vowel=>own unit; matra != independent; nuclei count)
+  - [x] (T-0039) [P2] [done] Tier 2: parser invariant/property tests (schwa-kept=>vowel; independent-vowel=>own unit; matra != independent; nuclei count) @done=2026-09-08
   - [ ] (T-0043) [P2] [todo] Corpus-diff transition matrix (rules-only; exact + minCER + variant-drift; stratified by dataset/split/construct/mode; lexical/acronym tagged)
   - [ ] (T-0044) [P3] [todo] Held-out running-text regression set (50-150 curated lyrics/sentence tokens covering the target constructs)
 - [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow
