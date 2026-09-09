@@ -50,5 +50,8 @@ export interface LoadOptions {
  */
 export function load(opts?: LoadOptions): Promise<Gomanize>;
 
-declare const _default: { load: typeof load };
+/** Package version, e.g. "1.1.0". */
+export const version: string;
+
+declare const _default: { load: typeof load; version: string };
 export default _default;

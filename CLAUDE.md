@@ -16,7 +16,7 @@ For architecture and the rule system: `docs/DESIGN.md`.
 make init                      # First-time setup (deps + pre-commit hooks)
 make build
 
-./gomanize "नमस्ते भारत"        # namaste bharat
+./gomanize "नमस्ते दुनिया"       # namaste duniya
 echo "हिंदी गाना" | ./gomanize   # hindi gana
 # Flags (--lexicon, --rerank, --schwa-model, ...): see README.md
 
@@ -60,7 +60,7 @@ make bench          # Performance benchmarks
 make tasks ARGS=".." # Task tracker passthrough
 
 # Web / WASM demo
-make wasm           # Build web/gomanize.wasm + copy wasm_exec.js
+make wasm           # Build web/gomanize.wasm + copy wasm_exec.js + vendored loader (gomanize.mjs)
 make wasm-serve     # Build + serve the demo at http://localhost:8080
 
 # npm package (@budhash/gomanize — WASM engine + JS wrapper)
@@ -127,9 +127,11 @@ gomanize/
 
 ## Current Status
 
-**Shipped:** v1.0.0 (tagged) and the browser (WASM) demo — live at
+**Shipped:** v1.0.0 (tagged); the browser (WASM) demo — live at
 <https://budhash.com/gomanize> (F-0006: `make wasm`, auto-deployed by
-`pages.yml`). Remaining F-0006 work is T-0030 (consent-based correction capture).
+`pages.yml`); and the npm package `@budhash/gomanize` — the WASM engine + JS/TS
+wrapper (F-0009: `make npm`, published by `release-npm.yml`). Remaining F-0006
+work is T-0030 (consent-based correction capture).
 
 Full results: [`docs/RESEARCH.md`](docs/RESEARCH.md) §4. The CI regression gate
 is strict top-1 pure ≥85% on curated Dakshina (`make test-dakshina`); overrides
@@ -174,4 +176,4 @@ changelog; verify with `./gomanize --version`.
 
 Live backlog: `TASKS.md` via `./tools/tasks tree`. History and reasoning:
 `docs/reviews/`. Post-1.0 directions with tradeoffs: [`docs/ROADMAP.md`](docs/ROADMAP.md)
-(seeded as features F-0006–F-0008); design constraints in [`docs/DESIGN.md`](docs/DESIGN.md) §6.
+(seeded as features F-0006–F-0009); design constraints in [`docs/DESIGN.md`](docs/DESIGN.md) §6.

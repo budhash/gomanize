@@ -1,6 +1,9 @@
 // @budhash/gomanize — CommonJS loader (Node). Same engine as index.mjs.
 "use strict";
 
+/** Package version (kept in sync with package.json on release). */
+const version = "1.1.0";
+
 let _instance;
 
 async function load(opts = {}) {
@@ -27,5 +30,5 @@ async function load(opts = {}) {
   return _instance;
 }
 
-module.exports = { load };
+module.exports = { load, version };
 module.exports.default = module.exports;
