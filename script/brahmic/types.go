@@ -58,6 +58,12 @@ type BrahmicData struct {
 	// AfterHalant indicates this unit followed a halant (part of conjunct)
 	AfterHalant bool
 
+	// IsMatra indicates a dependent vowel sign (matra), as opposed to an
+	// independent vowel. Only a matra binds to the preceding consonant and
+	// suppresses its inherent schwa; an independent vowel (e.g. ई in गई) starts
+	// its own syllable, so the consonant keeps its schwa.
+	IsMatra bool
+
 	// Schwa state for consonants/conjuncts
 	Schwa SchwaState
 
@@ -84,6 +90,14 @@ func GetBrahmicData(u *core.Unit) *BrahmicData {
 // SetBrahmicData sets BrahmicData on a core.Unit.
 func SetBrahmicData(u *core.Unit, bd *BrahmicData) {
 	u.ScriptData = bd
+}
+
+// IsMatraUnit reports whether a unit is a dependent vowel sign (matra), as
+// opposed to an independent vowel. Only a matra suppresses the preceding
+// consonant's inherent schwa.
+func IsMatraUnit(u *core.Unit) bool {
+	bd := GetBrahmicData(u)
+	return bd != nil && bd.IsMatra
 }
 
 // NewBrahmicData creates BrahmicData with default values.

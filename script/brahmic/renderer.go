@@ -27,9 +27,23 @@ func (r *Renderer) Render(word *core.Word) string {
 
 		// Schwa handling for consonants/conjuncts
 		if unit.Type == core.UnitConsonant || unit.Type == core.UnitConjunct {
-			// Skip schwa if followed by vowel/matra (vowel provides the sound)
-			// Note: UnitModifier (anusvara, visarga, chandrabindu) does NOT suppress schwa
+			// A following vowel unit is either a matra (dependent sign) or an
+			// independent vowel (both are core.UnitVowel).
 			if unit.Next != nil && unit.Next.Type == core.UnitVowel {
+				// Suppress this consonant's inherent schwa when the next vowel
+				//   (a) is a MATRA — it binds here and supplies the vowel; or
+				//   (b) is the independent bare-'a' vowel अ (U+0905) / ऄ (U+0904)
+				//       — it *is* the schwa vowel, so the two coalesce into one
+				//       "a" (दरअसल → "darasal", not "daraasal").
+				if IsMatraUnit(unit.Next) || isInherentAVowel(unit.Next) {
+					continue
+				}
+				// Any other independent vowel (ई, ए, ऋ, … ) starts its own
+				// syllable, so this consonant keeps its inherent "a"
+				// unconditionally — it cannot be vowel-less before an independent
+				// vowel, regardless of the schwa rules/model (गई → "gai",
+				// कऋ → "kari", never collapsing onto the matra form कृ → "kri").
+				sb.WriteString("a")
 				continue
 			}
 
@@ -50,6 +64,14 @@ func (r *Renderer) Render(word *core.Word) string {
 	}
 
 	return sb.String()
+}
+
+// isInherentAVowel reports whether a unit is the independent bare-'a' vowel
+// (Devanagari अ U+0905 / ऄ U+0904) — the vowel identical to the inherent schwa,
+// which therefore coalesces with a preceding consonant's schwa. Checked by
+// source rune (not romanized output) so it is stable across rule phases.
+func isInherentAVowel(u *core.Unit) bool {
+	return len(u.Runes) == 1 && (u.Runes[0] == 0x0905 || u.Runes[0] == 0x0904)
 }
 
 // RenderDebug returns a detailed debug representation of the word.

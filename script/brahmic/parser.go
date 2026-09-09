@@ -148,6 +148,7 @@ func (p *Parser) createUnitWithInfo(runes []rune, runeIdx int, afterHalant bool,
 
 	bd := NewBrahmicData()
 	bd.AfterHalant = afterHalant
+	bd.IsMatra = info.Category == CatMatra
 
 	// Only consonants and conjuncts need schwa tracking
 	if unitType != core.UnitConsonant && unitType != core.UnitConjunct {
