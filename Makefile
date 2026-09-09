@@ -138,6 +138,10 @@ test-analysis: ## Run failure analysis (shows breakdown of issues)
 	@echo "Running failure pattern analysis..."
 	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkFailureAnalysis"
 
+test-constructs: ## Per-construct accuracy analysis (find systematic parser weaknesses)
+	@echo "Running per-construct accuracy analysis..."
+	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkConstructAnalysis"
+
 bench: ## Run performance benchmarks
 	@echo "Running performance benchmarks..."
 	@$(GOTEST) ./benchmark/... -bench=. -benchmem
