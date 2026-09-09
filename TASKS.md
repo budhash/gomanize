@@ -97,6 +97,13 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
 
 - [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper)
   - [x] (T-0037) [P3] [done] CI: gated npm publish workflow on version tag (needs NPM_TOKEN) @done=2026-09-08
+
+- [ ] (F-0010) [P2] [todo] Structured parser QA: construct-coverage + invariants (find systematic parsing bugs)
+  - [ ] (T-0038) [P2] [todo] Tier 1: per-construct accuracy analyzer (make target + benchmark; rank by prevalence x error)
+  - [ ] (T-0039) [P2] [todo] Tier 2: parser invariant/property tests (schwa-kept=>vowel; independent-vowel=>own unit; matra != independent; nuclei count)
+  - [ ] (T-0040) [P2] [todo] Tier 5 anchor + Phase B fix: consonant + independent-vowel parsing (गई class), construct-anchored golden, benchmark-gated
+  - [ ] (T-0041) [P3] [todo] Tier 3: combinatorial construct enumeration + parse-well-formedness coverage test (CI)
+  - [ ] (T-0042) [P3] [todo] Tier 4: differential parse vs Unicode akshara (UAX #29) segmentation reference
 ## Skipped
 
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow
