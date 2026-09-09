@@ -66,7 +66,6 @@ func TestInvariantWellFormed(t *testing.T) {
 // the same quality are different syllabifications (गी = "gī" one syllable; गई =
 // "ga-ī" two), so they must romanize differently. Convention-free.
 func TestInvariantMatraDiffersFromIndependent(t *testing.T) {
-	t.Skip("TODO(T-0040): independent vowels are parsed as matras (categories.go/renderer.go), so C+matra == C+independent, e.g. गी==गई==\"gi\". Unskip when fixed.")
 	g := invEngine(t)
 	for _, c := range invConsonants {
 		for _, v := range invVowelForms {
@@ -79,20 +78,16 @@ func TestInvariantMatraDiffersFromIndependent(t *testing.T) {
 	}
 }
 
-// Construct golden: linguistic-rule truth for the two known bug classes, as
-// accepted reference SETS (per Codex review). The word-final chandrabindu cases
-// must keep the nasal.
-func TestConstructGolden(t *testing.T) {
-	t.Skip("TODO(T-0040): consonant+independent-vowel drops the inherent 'a' and word-final chandrabindu drops the nasal. Unskip when fixed.")
+// Construct golden — consonant + independent vowel keeps the consonant's
+// inherent vowel (linguistic-rule truth), as accepted reference SETS.
+func TestGoldenIndependentVowel(t *testing.T) {
 	g := invEngine(t)
 	gold := map[string][]string{
-		"गई":   {"gai", "gayi"},
-		"नई":   {"nai", "nayi"},
-		"कई":   {"kai", "kayi"},
-		"गए":   {"gae", "gaye"},
-		"हुई":  {"hui", "huyi"},
-		"कहाँ": {"kahan", "kahaan"},
-		"चाँद": {"chand", "chaand"},
+		"गई":  {"gai", "gayi"},
+		"नई":  {"nai", "nayi"},
+		"कई":  {"kai", "kayi"},
+		"गए":  {"gae", "gaye"},
+		"हुई": {"hui", "huyi"},
 	}
 	for native, accepted := range gold {
 		got := g.Translit(native)
@@ -103,6 +98,24 @@ func TestConstructGolden(t *testing.T) {
 	// contrast: the matra form and the independent form must not coincide
 	if g.Translit("गी") == g.Translit("गई") {
 		t.Errorf("गी == गई == %q; matra and independent forms must differ", g.Translit("गी"))
+	}
+}
+
+// Construct golden — word-final chandrabindu must keep its nasal. Tracked
+// separately (the render.chandrabindu.final-silent rule drops it mid-word too,
+// e.g. चाँद→chaad); unskip when that is fixed.
+func TestGoldenChandrabinduNasal(t *testing.T) {
+	t.Skip("TODO(F-0010): render.chandrabindu.final-silent drops the nasal (कहाँ→kahaa, चाँद→chaad). Unskip when fixed.")
+	g := invEngine(t)
+	gold := map[string][]string{
+		"कहाँ": {"kahan", "kahaan"},
+		"चाँद": {"chand", "chaand"},
+	}
+	for native, accepted := range gold {
+		got := g.Translit(native)
+		if !containsStr(accepted, got) {
+			t.Errorf("%s → %q; want one of %v", native, got, accepted)
+		}
 	}
 }
 

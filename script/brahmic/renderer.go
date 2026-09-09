@@ -27,9 +27,17 @@ func (r *Renderer) Render(word *core.Word) string {
 
 		// Schwa handling for consonants/conjuncts
 		if unit.Type == core.UnitConsonant || unit.Type == core.UnitConjunct {
-			// Skip schwa if followed by vowel/matra (vowel provides the sound)
-			// Note: UnitModifier (anusvara, visarga, chandrabindu) does NOT suppress schwa
-			if unit.Next != nil && unit.Next.Type == core.UnitVowel {
+			// Skip this consonant's inherent schwa when the next unit either
+			//   (a) is a MATRA (dependent vowel sign) — it binds here and supplies
+			//       the vowel; or
+			//   (b) is the independent bare-'a' vowel (अ, BaseRom "a") — it *is*
+			//       the schwa vowel, so the two coalesce into a single "a"
+			//       (दरअसल → "darasal", not "daraasal").
+			// Any other independent vowel (ई, ए, … — also a UnitVowel) starts its
+			// own syllable, so the consonant keeps its schwa (गई → "gai", not "gi").
+			// UnitModifier (anusvara, visarga, chandrabindu) does NOT suppress schwa.
+			if unit.Next != nil && unit.Next.Type == core.UnitVowel &&
+				(IsMatraUnit(unit.Next) || unit.Next.BaseRom == "a") {
 				continue
 			}
 

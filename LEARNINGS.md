@@ -3,6 +3,28 @@
 Durable insights, gotchas, and decisions — the "why" that isn't obvious from the
 code or git history. Newest first.
 
+## Parser fix — independent vowels vs matras (2026-09, F-0010)
+
+- **Bug:** `गई` (ग + independent ई) romanized to `gi`, same as `गी` (ग + matra
+  ी). Root cause: `script/brahmic/categories.go` maps *both* independent vowels
+  (`core.CatVowel`) and matras (`CatMatra`) to `core.UnitVowel`, and
+  `renderer.go` suppressed the consonant's inherent schwa before *any*
+  `UnitVowel`. So an independent vowel behaved like a matra and dropped the
+  consonant's `a`.
+- **Fix:** store `IsMatra` on `BrahmicData` (set from the source category) and
+  suppress the schwa only before a matra — an independent vowel starts its own
+  syllable, so the consonant keeps its `a` (`गई→gai`).
+- **Gotcha the regression harness caught:** independent **अ** *is* the bare-`a`
+  vowel, so keeping the schwa *and* अ doubled it (`दरअसल→daraasal`). अ must
+  coalesce with the schwa. The refined rule: suppress before a matra **or** the
+  independent अ (`BaseRom=="a"`); keep it before ई/उ/ए/…. Two exact regressions
+  in the transition-matrix diff surfaced this immediately — aggregate accuracy
+  (which *rose* slightly) would not have.
+- **Process that worked:** baseline snapshot → fix → `make regression-diff`
+  (net +44 exact, 0 regressions, after the अ refinement) → un-skip the staged
+  invariant/golden anchors → pure gate + full suite + multi-mode spot-check. The
+  gold-free differential (`गी ≠ गई`) is the cheapest guard; keep writing those.
+
 ## v1.1.0 — WASM demo, npm distribution, tokenless release (2026-09)
 
 ### Distribution: ship the engine, don't reimplement it
