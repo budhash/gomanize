@@ -44,6 +44,9 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
 
 - [ ] (F-0010) [P2] [todo] Structured parser QA: construct-coverage + invariants (find systematic parsing bugs) @shadow
   - [x] (T-0038) [P2] [done] Tier 1: per-construct accuracy analyzer (make target + benchmark; rank by prevalence x error) @done=2026-09-08
+  - [ ] (T-0039) [P2] [doing] Tier 2: parser invariant/property tests (schwa-kept=>vowel; independent-vowel=>own unit; matra != independent; nuclei count)
+  - [ ] (T-0043) [P2] [todo] Corpus-diff transition matrix (rules-only; exact + minCER + variant-drift; stratified by dataset/split/construct/mode; lexical/acronym tagged)
+  - [ ] (T-0044) [P3] [todo] Held-out running-text regression set (50-150 curated lyrics/sentence tokens covering the target constructs)
 - [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow
   - [x] (T-0036) [P2] [done] Package the WASM engine as @budhash/gomanize with loader, types, make target, and Node smoke test @done=2026-09-08
 - [ ] (F-0006) [P2] [todo] WASM build + web demo (data flywheel) @shadow
@@ -101,7 +104,6 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0037) [P3] [done] CI: gated npm publish workflow on version tag (needs NPM_TOKEN) @done=2026-09-08
 
 - [ ] (F-0010) [P2] [todo] Structured parser QA: construct-coverage + invariants (find systematic parsing bugs)
-  - [ ] (T-0039) [P2] [todo] Tier 2: parser invariant/property tests (schwa-kept=>vowel; independent-vowel=>own unit; matra != independent; nuclei count)
   - [ ] (T-0040) [P2] [todo] Tier 5 anchor + Phase B fix: consonant + independent-vowel parsing (गई class), construct-anchored golden, benchmark-gated
   - [ ] (T-0041) [P3] [todo] Tier 3: combinatorial construct enumeration + parse-well-formedness coverage test (CI)
   - [ ] (T-0042) [P3] [todo] Tier 4: differential parse vs Unicode akshara (UAX #29) segmentation reference
