@@ -405,13 +405,18 @@ go get github.com/budhash/gomanize
 go install github.com/budhash/gomanize/cmd/gomanize@latest</pre>
 
     <span class="label">command line</span>
-    <pre class="code">gomanize "नमस्ते भारत"        <span class="c"># namaste bharat</span>
+    <pre class="code">gomanize "नमस्ते दुनिया"       <span class="c"># namaste duniya</span>
 echo "हिंदी गाना" | gomanize   <span class="c"># hindi gana</span></pre>
 
-    <span class="label">library</span>
-    <pre class="code"><span class="c">// go</span>
-g, _ := gomanize.New("hindi")
+    <span class="label">go library</span>
+    <pre class="code">g, _ := gomanize.New("hindi")
 fmt.Println(g.Translit("नमस्ते दुनिया")) <span class="c">// namaste duniya</span></pre>
+
+    <span class="label">javascript / npm</span>
+    <pre class="code"><span class="c">// npm install @budhash/gomanize  — the same engine (this page runs it)</span>
+import { load } from "@budhash/gomanize";
+const g = await load();
+g.translit("नमस्ते दुनिया"); <span class="c">// "namaste duniya"</span></pre>
 
     <p>The toggles in the demo above are the CLI flags — <code>--long-vowels</code>, <code>--simple-nasals</code>, <code>--keep-medial-schwa</code>, <code>--schwa-model</code>, <code>--lexicon</code>, <code>--rerank</code>. Full reference in the <a href="https://github.com/budhash/gomanize" rel="noopener">README</a>.</p>
   </div>
@@ -433,7 +438,7 @@ fmt.Println(g.Translit("नमस्ते दुनिया")) <span class="c"
       <p>A rule-based engine makes the core decisions — schwa deletion, and consonant, vowel, and rendering rules. Three optional learned components, toggleable above, trade a little more computation for accuracy: a decision-tree <strong>schwa model</strong>, an ~8,000-word attested <strong>lexicon</strong>, and a character n-gram <strong>re-ranker</strong>.</p>
 
       <h3>Accuracy</h3>
-      <p>On the curated Dakshina benchmark: <strong>86.1%</strong> exact (pure) and <strong>92.8%</strong> match-any-attested-variant, rising to <strong>94.7%</strong> with the re-ranker. On a gold lyrics set the character error rate is ≈ 0.047 — close to the ~0.054 human floor.</p>
+      <p>On the curated Dakshina benchmark: <strong>86.1%</strong> exact (pure) and <strong>92.8%</strong> match-any-attested-variant, rising to <strong>94.7%</strong> with the re-ranker. On a gold lyrics set the character error rate is ≈ 0.049 (0.039 with the lexicon) — close to the ~0.054 human floor.</p>
 
       <h3>Privacy</h3>
       <p>Everything runs client-side in your browser via WebAssembly. No text is ever sent to a server.</p>
