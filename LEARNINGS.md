@@ -3,6 +3,36 @@
 Durable insights, gotchas, and decisions — the "why" that isn't obvious from the
 code or git history. Newest first.
 
+## Parser fix — chandrabindu nasal, and lexical vs structural rules (2026-09, T-0045)
+
+- **Bug:** `render.chandrabindu.final-silent` suppressed the nasal 'n' for *any*
+  `ा`+`ँ` sequence, so it dropped mid-word (चाँद→"chaad", पाँच→"paach") and in
+  longer word-final forms (कहाँ→"kahaa"). Only माँ→"maa" was right — by luck.
+- **The trap — a structural guard that can't work.** The obvious fix was to
+  mirror the anusvara sibling (`word-final` + `consonantCount<=1`). It passed the
+  30k-Dakshina regression harness (+2/0)… but Codex review found the
+  counterexample: **हाँ→"haan"** and माँ→"maa" have the *identical* shape
+  (C+ा+ँ, word-final, one consonant) yet romanize differently. No structural
+  guard can separate them — **the distinction is lexical, not structural.** The
+  fix is a whole-word **allowlist** (`{माँ}`); everything else keeps the nasal.
+  Lesson: when two inputs share every structural feature but need different
+  output, stop looking for a cleverer predicate — it's a lexical exception.
+- **Why the harness missed हाँ (argues for T-0044).** The regression harness
+  runs over Dakshina natives only; हाँ isn't in that 30k, so `consonantCount<=1`
+  looked clean there. Codex caught it by grepping the *other* bundled corpora
+  (COMI-LINGUA, Aksharantar) where हाँ→haan is attested. A single-corpus
+  regression gate has blind spots exactly where that corpus is thin — this is
+  the case for the multi-source held-out construct set (T-0044).
+- **Data settles scheme calls, but the maintainer owns iconic ones.** माँ→"maan"
+  is the *plurality* in the aggregate data (count 13 vs maa's 8), which argued
+  for dropping the exception entirely. But माँ→"maa" is iconic and Dakshina's
+  preference; the maintainer's call was maa. Frequency informs; it doesn't
+  override a deliberate convention (cf. DESIGN §3 divergences).
+- **Process:** Codex design/code review on the *diff + regression evidence*
+  (not a pre-design) was the high-signal use — it found the हाँ counterexample
+  and confirmed the labial-`m` inconsistency (साँप→saanp vs संबंध→sambandh) as a
+  separate task (T-0046), not scope creep here.
+
 ## Parser fix — independent vowels vs matras (2026-09, F-0010)
 
 - **Bug:** `गई` (ग + independent ई) romanized to `gi`, same as `गी` (ग + matra

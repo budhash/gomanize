@@ -48,7 +48,9 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0043) [P2] [done] Corpus-diff transition matrix (rules-only; exact + minCER + variant-drift; stratified by dataset/split/construct/mode; lexical/acronym tagged) @done=2026-09-08
   - [ ] (T-0044) [P3] [todo] Held-out running-text regression set (50-150 curated lyrics/sentence tokens covering the target constructs)
   - [x] (T-0040) [P2] [done] Tier 5 anchor + Phase B fix: consonant + independent-vowel parsing (गई class), construct-anchored golden, benchmark-gated @done=2026-09-08
-  - [ ] (T-0045) [P2] [todo] Fix render.chandrabindu.final-silent to require IsWordFinal (drops nasal mid-word: चाँद→chaad); un-skip TestGoldenChandrabinduNasal
+  - [x] (T-0045) [P2] [done] Fix render.chandrabindu.final-silent to require IsWordFinal (drops nasal mid-word: चाँद→chaad); un-skip TestGoldenChandrabinduNasal @done=2026-09-08
+  - [ ] (T-0046) [P3] [todo] Chandrabindu-before-labial: data-driven review of ँ→m vs n (साँप saanp/saamp); align with anusvara labial assimilation if warranted
+  - [ ] (T-0047) [P3] [todo] Add --schwa-model coverage to the chandrabindu golden set (optional; confirm nasal output holds under the learned schwa model)
 - [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow
   - [x] (T-0036) [P2] [done] Package the WASM engine as @budhash/gomanize with loader, types, make target, and Node smoke test @done=2026-09-08
 - [ ] (F-0006) [P2] [todo] WASM build + web demo (data flywheel) @shadow

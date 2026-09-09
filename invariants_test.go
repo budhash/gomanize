@@ -7,8 +7,8 @@ package gomanize
 //
 // The well-formedness invariant guards everything that works; the differential
 // (गी ≠ गई, default and under the schwa model) and the independent-vowel golden
-// lock the T-0040 fix. The word-final chandrabindu golden stays Skip-staged
-// until that separate rule bug (T-0045) is fixed.
+// lock the T-0040 fix. The chandrabindu golden locks the T-0045 fix: chandrabindu
+// always keeps its nasal (चाँद→chaand, कहाँ→kahaan, माँ→maan, हाँ→haan).
 
 import "testing"
 
@@ -128,15 +128,20 @@ func TestGoldenIndependentVowel(t *testing.T) {
 	}
 }
 
-// Construct golden — word-final chandrabindu must keep its nasal. Tracked
-// separately (the render.chandrabindu.final-silent rule drops it mid-word too,
-// e.g. चाँद→chaad); unskip when that is fixed.
+// Construct golden — chandrabindu keeps its nasal 'n' everywhere except the
+// lexical allowlist (माँ→maa). Locks T-0045: the render.chandrabindu.final-silent
+// rule used to drop the nasal for any ा+ँ (चाँद→chaad, पाँच→paach) and a
+// word-final+monosyllabic guard still silenced हाँ→haa; it is now a whole-word
+// allowlist so माँ→maa but हाँ→haan, चाँद→chaand, कहाँ→kahaan.
 func TestGoldenChandrabinduNasal(t *testing.T) {
-	t.Skip("TODO(F-0010): render.chandrabindu.final-silent drops the nasal (कहाँ→kahaa, चाँद→chaad). Unskip when fixed.")
 	g := invEngine(t)
 	gold := map[string][]string{
 		"कहाँ": {"kahan", "kahaan"},
 		"चाँद": {"chand", "chaand"},
+		"साँस": {"sans", "saans"},
+		"पाँच": {"panch", "paanch"},
+		"माँ":  {"maa"},  // lexical exception (allowlist): the iconic form, never "maan"
+		"हाँ":  {"haan"}, // same shape as माँ but NOT silenced — never "haa"
 	}
 	for native, accepted := range gold {
 		got := g.Translit(native)
