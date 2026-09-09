@@ -117,3 +117,55 @@ and filed individually rather than fixed en masse.
 
 Adopt the tiered approach. Track as **F-0010**; build incrementally, Phase A
 first.
+
+## Codex review — refinements (2026-09-08)
+
+A design review by Codex (gpt-5.5) confirmed the shape and sharpened it. Key
+points folded into the plan:
+
+**Root causes located in code (targets for the T-0040 fix):**
+- `script/brahmic/categories.go` maps *both* `CatVowel` (independent) and
+  `CatMatra` to `UnitVowel`, and `script/brahmic/renderer.go` suppresses the
+  inherent schwa before *any* `UnitVowel` — that is exactly why `गी` (matra) and
+  `गई` (independent) collapse to the same output. The fix must let the renderer
+  distinguish an independent vowel from a matra.
+- `lang/hindi/rules.go` `render.chandrabindu.final-silent` does **not** require
+  `u.IsWordFinal()`, so it fires mid-word too: `चाँद→chaad`, `चाँदी→chadi`, not
+  just word-final `कहाँ→kahaa`. Scope the rule to word-final.
+
+**Regression-safety upgrades:**
+- "Net-positive" is too weak alone — stratify by construct × dataset × split ×
+  option mode × reference quality, or one high-severity structural regression
+  gets washed out by many low-value wins.
+- The corpus diff must be a **transition matrix**, not a changed-token list:
+  per native × reference set, classify `improved_exact` / `regressed_exact` /
+  `improved_distance` / `regressed_distance` (minCER beyond epsilon) /
+  `variant_drift` (hit→hit but output changed) / `neutral`. **Tag lexical /
+  acronym rows** (`आईएसएल→isl`, `अंकल→uncle`) so CER wins on unromanizable
+  loanwords don't masquerade as parser improvements. (T-0043)
+- Evaluate the parser diff **rules-only** — the lexicon is built from Dakshina
+  train and curated is drawn from the same pool, so lexicon-mode scoring on
+  curated is circular; report lexicon/schwa-model/rerank modes separately, and
+  weight the independent Aksharantar / COMI-LINGUA evidence more. But a parser
+  fix must still be **checked in the rerank and schwa-model paths**, not only
+  rules-only.
+- `match-any` ignores attestation weight, so a shift from the dominant variant to
+  a rare one still scores neutral — hence `variant_drift` reporting weighted by
+  Dakshina attestation counts.
+- The curated **pure ≥ 85% gate stays as a continuity floor but is not the
+  parser safety net** — it has 0–2 examples of the target constructs.
+- The **construct-anchored golden must use accepted reference *sets***
+  (`गई→{gai,gayi}`, `नई→{nai,nayi}`, `कई→{kai,kayi}`, `गए→{gae,gaye}`,
+  `कहाँ→{kahan}`), plus a `गी ≠ गई` contrast; low-N constructs are guarded by
+  golden coverage rather than statistical floors.
+- Beyond `गई`, the fix should cover related shapes: consonant + `ए/ओ`,
+  matra + independent vowel, modifier + independent vowel, and non-final
+  chandrabindu.
+
+**Task deltas:** T-0039 (this) adds the gold-free invariants incl. the
+`गी ≠ गई` differential (staged as skipped until T-0040 fixes it, to keep CI
+green while documenting the bug); T-0040 targets the `categories.go`/`renderer.go`
+root cause + the chandrabindu word-final scope, with reference-set goldens and
+multi-mode checks; T-0041 becomes a *gated* analyzer (floors/golden-coverage, not
+just logging). New: **T-0043** (transition-matrix corpus diff) and **T-0044**
+(held-out running-text regression set).
