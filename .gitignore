@@ -47,3 +47,6 @@ benchmark/ushuaia
 __pycache__/
 *.pyc
 mined_candidates_hi.csv
+
+# Parser regression baseline (ephemeral; regenerate with make regression-baseline)
+.regression-baseline.tsv
