@@ -15,39 +15,35 @@ returns. What is distinctive is elsewhere:
 
 - A zero-dependency, embeddable, **native-to-Roman** engine in Go — a direction
   the field mostly ignores (most work goes Roman-to-native with neural models).
-- An evaluation methodology (multi-reference scoring, contamination discipline,
-  recorded negative results) more rigorous than much of the published work.
-- The only lyrics-oriented Devanagari-Roman gold set that exists, small as it is.
+- An evaluation methodology: multi-reference scoring, contamination discipline,
+  and recorded negative results.
+- A small lyrics-oriented Devanagari-Roman gold set.
 
-The three directions below build on those, roughly in order of compounding value.
+Since v1.0.0, the highest-leverage direction below — the WASM build + browser
+demo — has shipped, and the engine is now distributed on npm. The sections below
+mark what has shipped and what remains.
 
-## Direction 1 — WASM build + web demo (highest leverage)
+## Direction 1 — WASM build + web demo — shipped
 
-The stated purpose has always been song lyrics. The gap is not accuracy; it is
-reach. Go compiles to WebAssembly cleanly, and the whole engine (including the
-~518 KB of embedded model data) fits in a browser with no server.
+The stated purpose has always been song lyrics; the gap was reach, not accuracy.
+The engine compiles to WebAssembly cleanly — the whole engine, including the
+~460 KB of embedded model data, runs in the browser with no server — and the
+demo is **live at <https://budhash.com/gomanize>**: paste Devanagari, toggle the
+flags, copy or save the output. `make wasm` builds it and `pages.yml` auto-deploys
+`web/` on push to `main`. The same engine is also **published to npm as
+`@budhash/gomanize`** (the WASM engine + a JS/TS wrapper; `make npm`, published by
+`release-npm.yml`), so JavaScript/TypeScript projects can embed it too.
 
-The reason this matters beyond convenience: **it closes the data loop**. The
+The reason this mattered beyond convenience: **it closes the data loop**. The
 lexicon's coverage stops at 78.2% of the Dakshina-train vocabulary, and the one
 thing that raises it is human-attested spellings — data that cannot be mined
 (measured at 43% precision) and is expensive to license. A public tool where
 users paste lyrics and can correct a romanization turns those users into the
-annotators the research says are required. Tool brings users; users bring
-attestations; attestations improve the tool.
+annotators the research says are required.
 
-Scope:
-- `GOOS=js GOARCH=wasm` build target in the Makefile; verify embedded assets
-  load under WASM (they should — `go:embed` is compile-time).
-- A single static page: paste Devanagari, get romanization, toggle the flags,
-  edit an output inline.
-- Optional and deferred: a lightweight, consent-based mechanism to collect
-  user corrections as candidate lexicon entries (with the same human-review gate
-  the existing miner uses — corrections are proposals, not auto-promotions).
-- Distribution: the page is static, so GitHub Pages or any CDN serves it.
-
-Risks: WASM binary size (mitigate by confirming the model files dominate and are
-acceptable, or gating `--rerank`/`--lexicon` behind lazy loading); browser
-input-method quirks (the Cf-stripping and NFC work already done helps here).
+Remaining (T-0030, still open): a lightweight, consent-based mechanism to collect
+user corrections as candidate lexicon entries — with the same human-review gate
+the existing miner uses (corrections are proposals, not auto-promotions).
 
 ## Direction 2 — Aksharantar convention parity
 
@@ -112,8 +108,8 @@ than Direction 1, but a natural way to broaden the library's reach.
 - **Roman-to-Devanagari.** A different problem wearing the same name (lossy,
   sequence-disambiguation); it deserves its own project, not a bolt-on here.
 
-## Not doing anything is also fine
+## Not doing anything more is also fine
 
-v1.0.0 is a complete, documented, honest artifact. Small tools are allowed to be
-done. If this sits at 1.0, the decision records and tracker mean a future
-contributor — or a future you — can pick any direction above from a cold start.
+The project is a complete, documented, honest artifact. Small tools are allowed
+to be done. The decision records and tracker mean a future contributor — or a
+future you — can pick any remaining direction above from a cold start.

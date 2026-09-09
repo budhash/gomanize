@@ -3,6 +3,9 @@
 // it, resolved relative to this module via import.meta.url). No top-level Node
 // imports, so bundling for the browser stays clean.
 
+/** Package version (kept in sync with package.json on release). */
+export const version = "1.1.0";
+
 let _instance;
 
 const isNode = () =>
@@ -56,4 +59,4 @@ export async function load(opts = {}) {
   return _instance;
 }
 
-export default { load };
+export default { load, version };

@@ -13,14 +13,17 @@ server, no backend, and no text ever leaves the machine. The embedded models
 | `README.md` | this file | yes |
 | `gomanize.wasm` | `make wasm` (from `cmd/gomanize-wasm`) | no — gitignored, built |
 | `wasm_exec.js` | copied from the Go toolchain by `make wasm` | no — gitignored, built |
+| `gomanize.mjs` | vendored from `npm/index.mjs` by `make wasm` | no — gitignored, built |
 
 `wasm_exec.js` must match the Go version that built the `.wasm`, which is why it
-is copied fresh on every build rather than committed.
+is copied fresh on every build rather than committed. `gomanize.mjs` is the same
+loader shipped in the `@budhash/gomanize` npm package — the page consumes it
+(pointed at the local `.wasm`) so the demo and the package share one loader.
 
 ## Build & run locally
 
 ```bash
-make wasm         # build web/gomanize.wasm + copy web/wasm_exec.js
+make wasm         # build web/gomanize.wasm + wasm_exec.js + vendored gomanize.mjs
 make wasm-serve   # build, then serve web/ at http://localhost:8080
 ```
 

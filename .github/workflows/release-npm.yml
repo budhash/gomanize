@@ -1,15 +1,17 @@
-name: Publish npm package
+name: release-npm
 
-# Publishes @budhash/gomanize via npm OIDC "trusted publishing" — no NPM_TOKEN.
+# Publishes @budhash/gomanize via npm Trusted Publishing (OIDC): no stored token,
+# no NPM_TOKEN secret. GitHub Actions mints a short-lived identity token that npm
+# verifies against the trusted publisher configured on the package
+# (npmjs.com -> @budhash/gomanize -> Settings -> Trusted Publisher:
+# repo budhash/gomanize, workflow release-npm.yml). Provenance is automatic.
 #
-# One-time setup on npmjs.com (after the first manual publish): the package's
-# Trusted Publisher must point at:
-#   Publisher: GitHub Actions
-#   Organization or user: budhash
-#   Repository:           gomanize
-#   Workflow filename:    release-npm.yml   (this file)
-# Until that trusted publisher exists the publish step will fail (auth), so the
-# first v1.0.0 publish is done manually:  make npm && cd npm && npm publish --access public
+# Unlike confix/zap-sh (where the JS port versions independently on js-v* tags),
+# the gomanize npm package IS the same engine compiled to WebAssembly, so it
+# rides the project's own `v*` release tag: one `git tag v1.1.0` publishes both
+# the Go binaries (release.yml) and @budhash/gomanize@1.1.0 (here). Bump
+# npm/package.json to match the tag before tagging — the version check below
+# fails the publish on a mismatch rather than guessing.
 
 on:
   push:
@@ -18,11 +20,11 @@ on:
 
 permissions:
   contents: read
-  id-token: write        # required for OIDC trusted publishing
+  id-token: write   # required for OIDC trusted publishing (and provenance)
 
 jobs:
   publish:
-    name: Build, test, publish
+    name: publish to npm
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -37,19 +39,34 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: 20
+          registry-url: https://registry.npmjs.org
 
-      - name: Upgrade npm (OIDC trusted publishing needs npm >= 11.5.1)
-        run: npm install -g npm@latest
+      - name: Use an npm that supports trusted publishing
+        # trusted publishing needs npm >= 11.5.1; node 20 ships npm 10, and
+        # npm@latest (12.x) requires node >= 22, so pin the 11.x line.
+        run: npm install -g npm@11
 
       - name: Build + smoke-test the package
         run: make npm-test
 
-      - name: Sync package version to the tag
+      - name: Tag must match the package version
         if: startsWith(github.ref, 'refs/tags/v')
         env:
           TAG: ${{ github.ref_name }}
-        run: npm --prefix npm version "${TAG#v}" --no-git-tag-version --allow-same-version
+        run: |
+          tag="${TAG#v}"
+          pkg=$(node -p "require('./npm/package.json').version")
+          echo "tag=$tag  package.json=$pkg"
+          if [ "$tag" != "$pkg" ]; then
+            echo "::error file=npm/package.json::tag $TAG does not match npm version $pkg — bump npm/package.json (and the version constants) or retag"
+            exit 1
+          fi
 
-      - name: Publish to npm (OIDC — no token; provenance is automatic)
-        run: npm --prefix npm publish --access public
+      - name: Verify packaged contents
+        working-directory: npm
+        run: npm pack --dry-run
+
+      - name: Publish (trusted publishing, no token)
+        working-directory: npm
+        run: npm publish --access public

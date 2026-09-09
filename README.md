@@ -7,7 +7,7 @@ script, built for song lyrics and other colloquial text. Rule-based engine with
 optional embedded learned components; no runtime dependencies.
 
 ```
-नमस्ते भारत  →  namaste bharat
+नमस्ते दुनिया  →  namaste duniya
 ```
 
 **Try it in your browser → [budhash.com/gomanize](https://budhash.com/gomanize)** —
@@ -53,7 +53,7 @@ g.translit("गाना", { longVowels: true }); // "gaanaa"
 ### CLI
 
 ```bash
-./gomanize "नमस्ते भारत"        # namaste bharat
+./gomanize "नमस्ते दुनिया"       # namaste duniya
 echo "हिंदी गाना" | ./gomanize   # hindi gana
 ```
 
@@ -90,7 +90,7 @@ result set including negative results):
 
 | Benchmark | Result |
 |-----------|--------|
-| Curated Dakshina, default rules | 92.8% (94.7% with `--rerank`) |
+| Curated Dakshina | 86.1% exact / 92.8% any attested variant (94.7% with `--rerank`) |
 | Naturally-typed Hindi (COMI-LINGUA), token-weighted | 78.9% (85.7% with `--lexicon`) |
 | Held-out unseen words | 69.0% (70.4% with `--rerank`) |
 | Song lyrics, line-level character error | 0.049, or 0.039 with `--lexicon` (human agreement floor is about 0.054) |
