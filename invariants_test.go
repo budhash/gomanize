@@ -5,11 +5,10 @@ package gomanize
 // invariants over the orthographic construct space. These catch parser bugs by
 // contradiction — no "correct" romanization needed — and are convention-free.
 //
-// The well-formedness invariant guards everything that currently works (an
-// immediate regression net). The differential (गी ≠ गई) and construct golden
-// pin the exact spec for the T-0040 fix; they currently fail (independent vowels
-// are parsed as matras), so they are Skip-staged with a TODO — flip them on when
-// T-0040 lands rather than letting CI go red now.
+// The well-formedness invariant guards everything that works; the differential
+// (गी ≠ गई, default and under the schwa model) and the independent-vowel golden
+// lock the T-0040 fix. The word-final chandrabindu golden stays Skip-staged
+// until that separate rule bug (T-0045) is fixed.
 
 import "testing"
 
@@ -30,6 +29,8 @@ var invVowelForms = []struct {
 	{"ai", "ै", "ऐ"},
 	{"o", "ो", "ओ"},
 	{"au", "ौ", "औ"},
+	{"ri", "ृ", "ऋ"},
+	{"rri", "ॄ", "ॠ"},
 }
 
 func invEngine(t *testing.T) *Gomanize {
@@ -39,6 +40,33 @@ func invEngine(t *testing.T) *Gomanize {
 		t.Fatalf("New(hindi): %v", err)
 	}
 	return g
+}
+
+// invEngineSchwaModel returns an engine using the learned schwa classifier — the
+// mode most likely to re-collapse the matra/independent distinction if the fix
+// leaned on the default schwa rules (Codex review).
+func invEngineSchwaModel(t *testing.T) *Gomanize {
+	t.Helper()
+	g := invEngine(t)
+	o := NewOptions()
+	o.SchwaModel = true
+	g.SetOptions(o)
+	return g
+}
+
+// diffMatraVsIndependent asserts C+matra ≠ C+independent across the vowel forms.
+func diffMatraVsIndependent(t *testing.T, g *Gomanize, mode string) {
+	t.Helper()
+	for _, c := range invConsonants {
+		for _, v := range invVowelForms {
+			matra := g.Translit(c + v.matra)
+			indep := g.Translit(c + v.indep)
+			if matra == indep {
+				t.Errorf("[%s] %s%s (matra) == %s%s (independent) == %q; they must differ",
+					mode, c, v.matra, c, v.indep, matra)
+			}
+		}
+	}
 }
 
 // Well-formedness: every construct in the space romanizes to non-empty,
@@ -66,16 +94,14 @@ func TestInvariantWellFormed(t *testing.T) {
 // the same quality are different syllabifications (गी = "gī" one syllable; गई =
 // "ga-ī" two), so they must romanize differently. Convention-free.
 func TestInvariantMatraDiffersFromIndependent(t *testing.T) {
-	g := invEngine(t)
-	for _, c := range invConsonants {
-		for _, v := range invVowelForms {
-			matra := g.Translit(c + v.matra)
-			indep := g.Translit(c + v.indep)
-			if matra == indep {
-				t.Errorf("%s%s (matra) == %s%s (independent) == %q; they must differ", c, v.matra, c, v.indep, matra)
-			}
-		}
-	}
+	diffMatraVsIndependent(t, invEngine(t), "default")
+}
+
+// Same differential under the learned schwa model — the model must not
+// re-collapse the distinction by deleting a consonant's schwa before an
+// independent vowel (Codex review: कऋ vs कृ, कॠ vs कॄ).
+func TestInvariantMatraDiffersFromIndependentSchwaModel(t *testing.T) {
+	diffMatraVsIndependent(t, invEngineSchwaModel(t), "schwa-model")
 }
 
 // Construct golden — consonant + independent vowel keeps the consonant's
@@ -83,11 +109,12 @@ func TestInvariantMatraDiffersFromIndependent(t *testing.T) {
 func TestGoldenIndependentVowel(t *testing.T) {
 	g := invEngine(t)
 	gold := map[string][]string{
-		"गई":  {"gai", "gayi"},
-		"नई":  {"nai", "nayi"},
-		"कई":  {"kai", "kayi"},
-		"गए":  {"gae", "gaye"},
-		"हुई": {"hui", "huyi"},
+		"गई":    {"gai", "gayi"},
+		"नई":    {"nai", "nayi"},
+		"कई":    {"kai", "kayi"},
+		"गए":    {"gae", "gaye"},
+		"हुई":   {"hui", "huyi"},
+		"दरअसल": {"darasal"}, // independent अ coalesces with the schwa (not "daraasal")
 	}
 	for native, accepted := range gold {
 		got := g.Translit(native)
