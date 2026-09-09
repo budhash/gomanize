@@ -1,7 +1,7 @@
 # Gomanize - Hindi Transliteration Library
 # Development workflow Makefile
 
-.PHONY: help init hooks hooks-update build version wasm wasm-serve npm npm-test test test-quick test-verbose test-cover test-unit test-integration test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets tasks
+.PHONY: help init hooks hooks-update build version wasm wasm-serve npm npm-test regression-baseline regression-diff test test-quick test-verbose test-cover test-unit test-integration test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets tasks
 
 # Go parameters
 GOCMD := go
@@ -141,6 +141,14 @@ test-analysis: ## Run failure analysis (shows breakdown of issues)
 test-constructs: ## Per-construct accuracy analysis (find systematic parser weaknesses)
 	@echo "Running per-construct accuracy analysis..."
 	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkConstructAnalysis"
+
+REGRESSION_BASE := .regression-baseline.tsv
+
+regression-baseline: ## Snapshot current engine outputs (rules-only) as the regression baseline
+	@$(GOCMD) run ./tools/regression dump $(REGRESSION_BASE)
+
+regression-diff: ## Classify current engine output vs the baseline (improved/regressed/drift)
+	@$(GOCMD) run ./tools/regression diff $(REGRESSION_BASE)
 
 bench: ## Run performance benchmarks
 	@echo "Running performance benchmarks..."
