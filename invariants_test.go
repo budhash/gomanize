@@ -151,6 +151,28 @@ func TestGoldenChandrabinduNasal(t *testing.T) {
 	}
 }
 
+// Construct golden — chandrabindu before a labial (प/फ/ब/भ/म) keeps its nasal
+// 'n'; it does NOT assimilate to 'm' the way anusvara does (संबंध→sambandh).
+// Locks the T-0046 decision (docs/reviews/2026-09-10-chandrabindu-before-labial.md):
+// ँ is vowel nasalization, ं is a homorganic nasal, so the marks differ. The
+// dominant native class is 'n' (काँपना, साँप, हाँफना); m-cases (ताँबा, सँभाल)
+// are lexical, not rule-governed. A blanket ँ→m rule would trip this test.
+func TestGoldenChandrabinduLabial(t *testing.T) {
+	g := invEngine(t)
+	gold := map[string][]string{
+		"काँप": {"kanp", "kaanp"},
+		"साँप": {"sanp", "saanp"},
+		"हाँफ": {"hanf", "haanf"},
+		"धाँप": {"dhanp", "dhaanp"},
+	}
+	for native, accepted := range gold {
+		got := g.Translit(native)
+		if !containsStr(accepted, got) {
+			t.Errorf("%s → %q; want one of %v (chandrabindu+labial must stay n, not m)", native, got, accepted)
+		}
+	}
+}
+
 func containsStr(xs []string, s string) bool {
 	for _, x := range xs {
 		if x == s {

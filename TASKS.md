@@ -49,7 +49,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0044) [P3] [done] Held-out running-text regression set (50-150 curated lyrics/sentence tokens covering the target constructs) @done=2026-09-09
   - [x] (T-0040) [P2] [done] Tier 5 anchor + Phase B fix: consonant + independent-vowel parsing (गई class), construct-anchored golden, benchmark-gated @done=2026-09-08
   - [x] (T-0045) [P2] [done] Fix render.chandrabindu.final-silent to require IsWordFinal (drops nasal mid-word: चाँद→chaad); un-skip TestGoldenChandrabinduNasal @done=2026-09-08
-  - [ ] (T-0046) [P3] [todo] Chandrabindu-before-labial: data-driven review of ँ→m vs n (साँप saanp/saamp); align with anusvara labial assimilation if warranted
+  - [x] (T-0046) [P3] [done] Chandrabindu-before-labial: data-driven review of ँ→m vs n (साँप saanp/saamp); align with anusvara labial assimilation if warranted @done=2026-09-10
   - [ ] (T-0047) [P3] [todo] Add --schwa-model coverage to the chandrabindu golden set (optional; confirm nasal output holds under the learned schwa model)
   - [ ] (T-0048) [P3] [todo] Held-out misses: schwa-retention gaps (अंततः→antatah, दरअस्ल→darasal, बाईं→bai) surfaced by TestBenchmarkHeldoutConstructs; measure candidate fix on Dakshina pure gate before changing rules
   - [ ] (T-0049) [P3] [todo] Held-out misses: vowel-length aa boundary (फाँसी→faansi, तांगा→taanga) from TestBenchmarkHeldoutConstructs; confirm against DESIGN §3 no-length convention (likely won't-fix — document the decision)
