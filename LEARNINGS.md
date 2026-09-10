@@ -3,6 +3,31 @@
 Durable insights, gotchas, and decisions — the "why" that isn't obvious from the
 code or git history. Newest first.
 
+## Held-out construct regression set (2026-09, T-0044)
+
+- **Purpose, and why it's not another curated_hi.** The frequency/curation-sampled
+  benchmarks barely cover rare constructs (गई-family ≈0.2% of curated), so
+  systematic parser bugs in them are invisible to aggregate accuracy. This set is
+  stratified *by construct* and held out from all training/benchmarks — a targeted
+  regression net, the coverage complement to curated_hi.
+- **Build pipeline that worked:** `tools/mine_constructs.py` frequency-ranks
+  construct-bearing tokens from external corpora, dedupes against every
+  `benchmark/data` native (contamination guard), and fills engine output as a
+  *non-anchoring* reference column → human triages `AUTO_OK`/`CHANGED`/`drop`.
+  Scored **match-any** by reusing `loadReferenceSets` + `matchesAny` (one CSV row
+  per accepted variant; नहिं→`nahin`/`nahi`), with per-construct floors below
+  current rates (overall 93%, chandrabindu 96%) so a construct-level regression
+  trips them but intended small changes pass.
+- **Source register matters more than volume.** Two corpora, ~167 mined tokens →
+  **129 kept**. The frequency-list batch (modern prose) was clean; the verse
+  batch (RAW.tsv) was **Awadhi/Braj/Chhattisgarhi + hyper-technical Jain verse** —
+  off-domain for a colloquial/lyrics romanizer, so most of it was dropped. Mining
+  volume is cheap; on-register, license-clean source text is the scarce input.
+- **A gold set records known misses, it doesn't hide them.** 9/129 default misses
+  survived validation (vowel-length aa: फाँसी→faansi, तांगा→taanga; schwa: अंततः→
+  antatah, दरअस्ल→darasal) — real future work, logged by the test rather than
+  papered over by setting gold = current engine output.
+
 ## Parser fix — chandrabindu nasal, and lexical vs structural rules (2026-09, T-0045)
 
 - **Bug:** `render.chandrabindu.final-silent` suppressed the nasal 'n' for *any*
