@@ -142,6 +142,10 @@ test-constructs: ## Per-construct accuracy analysis (find systematic parser weak
 	@echo "Running per-construct accuracy analysis..."
 	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkConstructAnalysis"
 
+test-heldout: ## Held-out construct regression set (match-any, per-construct floors)
+	@echo "Running held-out construct regression set..."
+	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkHeldoutConstructs"
+
 REGRESSION_BASE := .regression-baseline.tsv
 
 regression-baseline: ## Snapshot current engine outputs (rules-only) as the regression baseline
