@@ -385,6 +385,14 @@ func isVaRune(u *core.Unit) bool {
 	return len(u.Runes) >= 1 && u.Runes[0] == 'व'
 }
 
+// chandrabinduFinalSilentWords is the allowlist of whole words whose word-final
+// chandrabindu (ँ) nasal is dropped in romanization (माँ→maa, not "maan"). See
+// render.chandrabindu.final-silent — the distinction is lexical, not structural
+// (माँ and हाँ share the same shape but romanize maa vs haan). Grow as needed.
+var chandrabinduFinalSilentWords = map[string]bool{
+	"माँ": true,
+}
+
 // renderRules returns all render phase rules.
 func renderRules() []core.Rule {
 	return []core.Rule{
@@ -435,8 +443,15 @@ func renderRules() []core.Rule {
 		},
 
 		// render.chandrabindu.final-silent (Language:45)
-		// Word-final chandrabindu after ा-matra is nasalization only: माँ→maa
-		// Chandrabindu (ँ) is always pure nasalization, never adds a consonant sound
+		// Chandrabindu (ँ) normally keeps its nasal 'n' everywhere (चाँद→chaand,
+		// पाँच→paanch, कहाँ→kahaan, हाँ→haan). माँ is a LEXICAL exception — the
+		// iconic romanization is "maa", not "maan" — so the final nasal is dropped
+		// only for this specific word. This is an allowlist, not a shape rule: माँ
+		// and हाँ have the same shape (C+ा+ँ, word-final, one consonant) yet
+		// romanize differently (maa vs haan), so no structural guard can separate
+		// them — the distinction is lexical. The old rule instead dropped the
+		// nasal for ANY ा+ँ (T-0045: चाँद→chaad, पाँच→paach); a word-final +
+		// consonantCount<=1 guard still wrongly silenced हाँ→haa, इहाँ→eehaa.
 		{
 			Name:     "render.chandrabindu.final-silent",
 			Phase:    core.PhaseRender,
@@ -444,24 +459,17 @@ func renderRules() []core.Rule {
 			Priority: 45,
 			Mode:     core.ModeAlways,
 			Condition: func(u *core.Unit, w *core.Word) bool {
-				// Check if this is chandrabindu (ँ)
-				if u.Type != core.UnitModifier {
+				// Word-final chandrabindu (ँ) whose whole word is in the allowlist.
+				if u.Type != core.UnitModifier || !u.IsWordFinal() {
 					return false
 				}
 				if len(u.Runes) != 1 || u.Runes[0] != 'ँ' {
 					return false
 				}
-				// Check if preceded by ा-matra
-				if u.Prev == nil || u.Prev.Type != core.UnitVowel {
-					return false
-				}
-				if len(u.Prev.Runes) != 1 || u.Prev.Runes[0] != 'ा' {
-					return false
-				}
-				return true
+				return chandrabinduFinalSilentWords[w.Original]
 			},
 			Action: func(u *core.Unit, w *core.Word) {
-				// Suppress the 'n' - chandrabindu is nasalization only
+				// Suppress the 'n' - nasalization only, for these lexical items.
 				u.BaseRom = ""
 			},
 		},
