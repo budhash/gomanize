@@ -51,6 +51,8 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0045) [P2] [done] Fix render.chandrabindu.final-silent to require IsWordFinal (drops nasal mid-word: चाँद→chaad); un-skip TestGoldenChandrabinduNasal @done=2026-09-08
   - [ ] (T-0046) [P3] [todo] Chandrabindu-before-labial: data-driven review of ँ→m vs n (साँप saanp/saamp); align with anusvara labial assimilation if warranted
   - [ ] (T-0047) [P3] [todo] Add --schwa-model coverage to the chandrabindu golden set (optional; confirm nasal output holds under the learned schwa model)
+  - [ ] (T-0048) [P3] [todo] Held-out misses: schwa-retention gaps (अंततः→antatah, दरअस्ल→darasal, बाईं→bai) surfaced by TestBenchmarkHeldoutConstructs; measure candidate fix on Dakshina pure gate before changing rules
+  - [ ] (T-0049) [P3] [todo] Held-out misses: vowel-length aa boundary (फाँसी→faansi, तांगा→taanga) from TestBenchmarkHeldoutConstructs; confirm against DESIGN §3 no-length convention (likely won't-fix — document the decision)
 - [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow
   - [x] (T-0036) [P2] [done] Package the WASM engine as @budhash/gomanize with loader, types, make target, and Node smoke test @done=2026-09-08
 - [ ] (F-0006) [P2] [todo] WASM build + web demo (data flywheel) @shadow
