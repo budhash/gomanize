@@ -1,6 +1,10 @@
 # Gomanize
 
 [![CI](https://github.com/budhash/gomanize/actions/workflows/ci.yml/badge.svg)](https://github.com/budhash/gomanize/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/@budhash/gomanize?logo=npm)](https://www.npmjs.com/package/@budhash/gomanize)
+[![Go Reference](https://pkg.go.dev/badge/github.com/budhash/gomanize.svg)](https://pkg.go.dev/github.com/budhash/gomanize)
+[![Go Report Card](https://goreportcard.com/badge/github.com/budhash/gomanize)](https://goreportcard.com/report/github.com/budhash/gomanize)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A Go library and CLI that romanizes Devanagari (Hindi) into readable Latin
 script, built for song lyrics and other colloquial text. Rule-based engine with
