@@ -98,10 +98,11 @@ func TestBenchmarkHeldoutConstructs(t *testing.T) {
 		t.Logf("  MISS (recorded gap): %s", m)
 	}
 
-	// Regression floors — below current rates (default 96.1%, best 96.9%,
-	// chandrabindu 96%; after the T-0048 gold corrections) with headroom, so
-	// intended small changes pass but a construct-level regression trips them.
-	const overallFloor = 94.0
+	// Regression floors — below current rates (default 97.7%, best 98.4%,
+	// chandrabindu 100%; after the T-0048/T-0049 gold corrections) with
+	// headroom, so intended small changes pass but a construct-level regression
+	// trips them. Remaining misses are 3 honest schwa-on-rare-word gaps (T-0048).
+	const overallFloor = 95.0
 	if p := pct(defHit, total); p < overallFloor {
 		t.Errorf("default match-any %.1f%% below floor %.1f%%", p, overallFloor)
 	}
