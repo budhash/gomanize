@@ -133,22 +133,38 @@ func TestGoldenIndependentVowel(t *testing.T) {
 // rule used to drop the nasal for any ा+ँ (चाँद→chaad, पाँच→paach) and a
 // word-final+monosyllabic guard still silenced हाँ→haa; it is now a whole-word
 // allowlist so माँ→maa but हाँ→haan, चाँद→chaand, कहाँ→kahaan.
-func TestGoldenChandrabinduNasal(t *testing.T) {
-	g := invEngine(t)
-	gold := map[string][]string{
-		"कहाँ": {"kahan", "kahaan"},
-		"चाँद": {"chand", "chaand"},
-		"साँस": {"sans", "saans"},
-		"पाँच": {"panch", "paanch"},
-		"माँ":  {"maa"},  // lexical exception (allowlist): the iconic form, never "maan"
-		"हाँ":  {"haan"}, // same shape as माँ but NOT silenced — never "haa"
-	}
+// chandrabinduNasalGold is the T-0045 gold, checked under both the default rules
+// and the learned schwa model (they must agree — the model must not disturb
+// chandrabindu rendering).
+var chandrabinduNasalGold = map[string][]string{
+	"कहाँ": {"kahan", "kahaan"},
+	"चाँद": {"chand", "chaand"},
+	"साँस": {"sans", "saans"},
+	"पाँच": {"panch", "paanch"},
+	"माँ":  {"maa"},  // lexical exception (allowlist): the iconic form, never "maan"
+	"हाँ":  {"haan"}, // same shape as माँ but NOT silenced — never "haa"
+}
+
+func checkGold(t *testing.T, g *Gomanize, mode string, gold map[string][]string) {
+	t.Helper()
 	for native, accepted := range gold {
 		got := g.Translit(native)
 		if !containsStr(accepted, got) {
-			t.Errorf("%s → %q; want one of %v", native, got, accepted)
+			t.Errorf("[%s] %s → %q; want one of %v", mode, native, got, accepted)
 		}
 	}
+}
+
+func TestGoldenChandrabinduNasal(t *testing.T) {
+	checkGold(t, invEngine(t), "default", chandrabinduNasalGold)
+}
+
+// Same gold under the learned schwa model (T-0047): Codex's T-0045 review noted
+// no chandrabindu golden ran under --schwa-model. The model is a schwa-phase
+// rule and consonants before ँ/ं are excluded from its decision path, so output
+// must be identical — this locks that.
+func TestGoldenChandrabinduNasalSchwaModel(t *testing.T) {
+	checkGold(t, invEngineSchwaModel(t), "schwa-model", chandrabinduNasalGold)
 }
 
 // Construct golden — chandrabindu before a labial (प/फ/ब/भ/म) keeps its nasal
@@ -157,20 +173,20 @@ func TestGoldenChandrabinduNasal(t *testing.T) {
 // ँ is vowel nasalization, ं is a homorganic nasal, so the marks differ. The
 // dominant native class is 'n' (काँपना, साँप, हाँफना); m-cases (ताँबा, सँभाल)
 // are lexical, not rule-governed. A blanket ँ→m rule would trip this test.
+var chandrabinduLabialGold = map[string][]string{
+	"काँप": {"kanp", "kaanp"},
+	"साँप": {"sanp", "saanp"},
+	"हाँफ": {"hanf", "haanf"},
+	"धाँप": {"dhanp", "dhaanp"},
+}
+
 func TestGoldenChandrabinduLabial(t *testing.T) {
-	g := invEngine(t)
-	gold := map[string][]string{
-		"काँप": {"kanp", "kaanp"},
-		"साँप": {"sanp", "saanp"},
-		"हाँफ": {"hanf", "haanf"},
-		"धाँप": {"dhanp", "dhaanp"},
-	}
-	for native, accepted := range gold {
-		got := g.Translit(native)
-		if !containsStr(accepted, got) {
-			t.Errorf("%s → %q; want one of %v (chandrabindu+labial must stay n, not m)", native, got, accepted)
-		}
-	}
+	checkGold(t, invEngine(t), "default", chandrabinduLabialGold)
+}
+
+// Same under the learned schwa model (T-0047).
+func TestGoldenChandrabinduLabialSchwaModel(t *testing.T) {
+	checkGold(t, invEngineSchwaModel(t), "schwa-model", chandrabinduLabialGold)
 }
 
 func containsStr(xs []string, s string) bool {
