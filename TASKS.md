@@ -42,19 +42,6 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0003) [P1] [done] Add docs/PROCESS.md + PR template + task-aware CLAUDE.md section @done=2026-09-04
   - [x] (T-0004) [P2] [done] Pre-commit parity: no-commit-to-branch + large-file/whitespace guards @done=2026-09-04
 
-- [x] (F-0010) [P2] [done] Structured parser QA: construct-coverage + invariants (find systematic parsing bugs) @shadow @done=2026-09-11
-  - [x] (T-0038) [P2] [done] Tier 1: per-construct accuracy analyzer (make target + benchmark; rank by prevalence x error) @done=2026-09-08
-  - [x] (T-0039) [P2] [done] Tier 2: parser invariant/property tests (schwa-kept=>vowel; independent-vowel=>own unit; matra != independent; nuclei count) @done=2026-09-08
-  - [x] (T-0043) [P2] [done] Corpus-diff transition matrix (rules-only; exact + minCER + variant-drift; stratified by dataset/split/construct/mode; lexical/acronym tagged) @done=2026-09-08
-  - [x] (T-0044) [P3] [done] Held-out running-text regression set (50-150 curated lyrics/sentence tokens covering the target constructs) @done=2026-09-09
-  - [x] (T-0040) [P2] [done] Tier 5 anchor + Phase B fix: consonant + independent-vowel parsing (गई class), construct-anchored golden, benchmark-gated @done=2026-09-08
-  - [x] (T-0045) [P2] [done] Fix render.chandrabindu.final-silent to require IsWordFinal (drops nasal mid-word: चाँद→chaad); un-skip TestGoldenChandrabinduNasal @done=2026-09-08
-  - [x] (T-0046) [P3] [done] Chandrabindu-before-labial: data-driven review of ँ→m vs n (साँप saanp/saamp); align with anusvara labial assimilation if warranted @done=2026-09-10
-  - [x] (T-0047) [P3] [done] Add --schwa-model coverage to the chandrabindu golden set (optional; confirm nasal output holds under the learned schwa model) @done=2026-09-10
-  - [x] (T-0048) [P3] [done] Held-out misses: schwa-retention gaps (अंततः→antatah, दरअस्ल→darasal, बाईं→bai) surfaced by TestBenchmarkHeldoutConstructs; measure candidate fix on Dakshina pure gate before changing rules @done=2026-09-11
-  - [x] (T-0049) [P3] [done] Held-out misses: vowel-length aa boundary (फाँसी→faansi, तांगा→taanga) from TestBenchmarkHeldoutConstructs; confirm against DESIGN §3 no-length convention (likely won't-fix — document the decision) @done=2026-09-11
-  - [x] (T-0041) [P3] [done] Tier 3: combinatorial construct enumeration + parse-well-formedness coverage test (CI) @done=2026-09-11
-  - [x] (T-0042) [P3] [done] Tier 4: differential parse vs Unicode akshara (UAX #29) segmentation reference @done=2026-09-11
 - [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow
   - [x] (T-0036) [P2] [done] Package the WASM engine as @budhash/gomanize with loader, types, make target, and Node smoke test @done=2026-09-08
 - [ ] (F-0006) [P2] [todo] WASM build + web demo (data flywheel) @shadow
@@ -111,7 +98,19 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
 - [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper)
   - [x] (T-0037) [P3] [done] CI: gated npm publish workflow on version tag (needs NPM_TOKEN) @done=2026-09-08
 
-- [ ] (F-0010) [P2] [todo] Structured parser QA: construct-coverage + invariants (find systematic parsing bugs)
+- [x] (F-0010) [P2] [done] Structured parser QA: construct-coverage + invariants (find systematic parsing bugs) @done=2026-09-11
+  - [x] (T-0038) [P2] [done] Tier 1: per-construct accuracy analyzer (make target + benchmark; rank by prevalence x error) @done=2026-09-08
+  - [x] (T-0039) [P2] [done] Tier 2: parser invariant/property tests (schwa-kept=>vowel; independent-vowel=>own unit; matra != independent; nuclei count) @done=2026-09-08
+  - [x] (T-0043) [P2] [done] Corpus-diff transition matrix (rules-only; exact + minCER + variant-drift; stratified by dataset/split/construct/mode; lexical/acronym tagged) @done=2026-09-08
+  - [x] (T-0044) [P3] [done] Held-out running-text regression set (50-150 curated lyrics/sentence tokens covering the target constructs) @done=2026-09-09
+  - [x] (T-0040) [P2] [done] Tier 5 anchor + Phase B fix: consonant + independent-vowel parsing (गई class), construct-anchored golden, benchmark-gated @done=2026-09-08
+  - [x] (T-0045) [P2] [done] Fix render.chandrabindu.final-silent to require IsWordFinal (drops nasal mid-word: चाँद→chaad); un-skip TestGoldenChandrabinduNasal @done=2026-09-08
+  - [x] (T-0046) [P3] [done] Chandrabindu-before-labial: data-driven review of ँ→m vs n (साँप saanp/saamp); align with anusvara labial assimilation if warranted @done=2026-09-10
+  - [x] (T-0047) [P3] [done] Add --schwa-model coverage to the chandrabindu golden set (optional; confirm nasal output holds under the learned schwa model) @done=2026-09-10
+  - [x] (T-0048) [P3] [done] Held-out misses: schwa-retention gaps (अंततः→antatah, दरअस्ल→darasal, बाईं→bai) surfaced by TestBenchmarkHeldoutConstructs; measure candidate fix on Dakshina pure gate before changing rules @done=2026-09-11
+  - [x] (T-0049) [P3] [done] Held-out misses: vowel-length aa boundary (फाँसी→faansi, तांगा→taanga) from TestBenchmarkHeldoutConstructs; confirm against DESIGN §3 no-length convention (likely won't-fix — document the decision) @done=2026-09-11
+  - [x] (T-0041) [P3] [done] Tier 3: combinatorial construct enumeration + parse-well-formedness coverage test (CI) @done=2026-09-11
+  - [x] (T-0042) [P3] [done] Tier 4: differential parse vs Unicode akshara (UAX #29) segmentation reference @done=2026-09-11
 ## Skipped
 
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow
