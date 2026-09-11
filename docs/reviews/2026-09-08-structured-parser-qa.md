@@ -89,6 +89,14 @@ replace) growing the lyrics gold set toward the real distribution.
 - **Phase B (fix highest-impact):** repair the consonant + independent-vowel
   class against a Tier-5 golden; measure on Dakshina — pure must not regress.
 - **Phase C (durable net):** Tier 3 combinatorial coverage wired into CI.
+  *Shipped (T-0041):* `script/brahmic/combinatorial_test.go` enumerates the full
+  cross-product off the Hindi symbol map (~1,900 constructs) and asserts parse
+  well-formedness — unit count/types, IsMatra vs independent-vowel, after-halant
+  conjuncts, precomposed-nukta combination, monotonic non-overlapping unit
+  spans. `make test-combinatorial`; runs in CI via `test-cover`. Two initial
+  assertions were relaxed to documented behaviour (nukta combines only where a
+  precomposed mapping exists; halant is consumed, so conjunct unit spans have a
+  one-rune gap) — no parser bugs surfaced.
 - **Phase D (deep):** Tier 4 differential vs. the Unicode reference.
 
 Each phase is its own PR, benchmark-gated. Fixes surfaced by Phase A are triaged
