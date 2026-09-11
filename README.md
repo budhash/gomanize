@@ -14,6 +14,10 @@ optional embedded learned components; no runtime dependencies.
 the full engine, compiled to WebAssembly, runs entirely client-side (no server;
 no text leaves your machine).
 
+**Use it from JavaScript/TypeScript → [`@budhash/gomanize`](https://www.npmjs.com/package/@budhash/gomanize) on npm** —
+the same engine as a WebAssembly package for Node and the browser (not a
+reimplementation, so output is byte-identical to the CLI).
+
 It does *romanization* — spelling Hindi the way it sounds (नमस्ते → *namaste*) —
 not the strict, reversible *transliteration* of IAST or ISO 15919. There is no
 single correct answer (जनता is validly *janata*, *janta*, or *janataa*), so it
@@ -24,24 +28,16 @@ limitations: [docs/RESEARCH.md](docs/RESEARCH.md).
 ## Install
 
 ```bash
-# Library
+# Go library
 go get github.com/budhash/gomanize
+
+# JavaScript/TypeScript (Node or browser) — the same engine as WebAssembly
+npm install @budhash/gomanize
 
 # CLI from source
 git clone https://github.com/budhash/gomanize
 cd gomanize
 make build
-```
-
-For JavaScript/TypeScript, the engine is published to npm as
-[`@budhash/gomanize`](https://www.npmjs.com/package/@budhash/gomanize) — the same
-engine compiled to WebAssembly (not a reimplementation), so output is identical:
-
-```js
-import { load } from "@budhash/gomanize";
-const g = await load();
-g.translit("नमस्ते दुनिया");            // "namaste duniya"
-g.translit("गाना", { longVowels: true }); // "gaanaa"
 ```
 
 ## Usage
@@ -64,7 +60,7 @@ echo "हिंदी गाना" | ./gomanize   # hindi gana
 | `--rerank` | Character-LM picks best of rules/schwa-model outputs | see Accuracy below |
 | `--list-rules`, `--debug` | Inspect and trace the rule engine | |
 
-### Library
+### Library (Go)
 
 ```go
 import gomanize "github.com/budhash/gomanize"
@@ -77,6 +73,23 @@ fmt.Println(g.Translit("नमस्ते दुनिया")) // "namaste dun
 ```
 
 Options mirror the CLI flags via `gomanize.NewWithOptions`.
+
+### Library (JavaScript/TypeScript)
+
+The [`@budhash/gomanize`](https://www.npmjs.com/package/@budhash/gomanize) package
+is the same engine compiled to WebAssembly — not a reimplementation, so output is
+byte-identical to the Go CLI. Works in Node and the browser:
+
+```js
+import { load } from "@budhash/gomanize";
+
+const g = await load();
+g.translit("नमस्ते दुनिया");              // "namaste duniya"
+g.translit("गाना", { longVowels: true }); // "gaanaa"
+```
+
+The same flags are accepted as options (`longVowels`, `simpleNasals`,
+`keepMedialSchwa`, `schwaModel`, `lexicon`, `rerank`).
 
 ## Accuracy
 
