@@ -150,6 +150,10 @@ test-combinatorial: ## Tier 3: combinatorial construct enumeration (parse well-f
 	@echo "Running combinatorial construct enumeration..."
 	@$(GOTEST) ./script/brahmic/ -v -run "TestCombinatorial"
 
+test-akshara: ## Tier 4: unit segmentation vs Devanagari akshara-boundary reference
+	@echo "Running akshara segmentation differential..."
+	@$(GOTEST) ./benchmark/ -v -run "TestAkshara"
+
 REGRESSION_BASE := .regression-baseline.tsv
 
 regression-baseline: ## Snapshot current engine outputs (rules-only) as the regression baseline
