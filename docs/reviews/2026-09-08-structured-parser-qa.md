@@ -98,6 +98,17 @@ replace) growing the lyrics gold set toward the real distribution.
   precomposed mapping exists; halant is consumed, so conjunct unit spans have a
   one-rune gap) — no parser bugs surfaced.
 - **Phase D (deep):** Tier 4 differential vs. the Unicode reference.
+  *Shipped (T-0042):* `benchmark/akshara_test.go` checks gomanize's unit
+  boundaries against an in-repo Devanagari akshara-boundary reference
+  (dependency-free — no external UAX #29 library). gomanize splits finer than
+  aksharas, so the relation is **refinement**: every akshara boundary must be a
+  gomanize unit boundary (a *missing* one = the segmentation shape of the गई
+  merge). Run over 30,000 Dakshina natives + synthetic construct cases:
+  **0 missing boundaries**. `make test-akshara`; runs in CI via `test-cover`.
+  Honest scope note: T-0040 was a *rendering* bug (schwa folded), not a
+  segmentation merge — the parser always kept गई as two units — so this tier
+  guards segmentation correctness rather than re-catching T-0040; a negative
+  control confirms the reference *would* flag a real merge.
 
 Each phase is its own PR, benchmark-gated. Fixes surfaced by Phase A are triaged
 and filed individually rather than fixed en masse.

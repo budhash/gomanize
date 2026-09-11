@@ -3,6 +3,31 @@
 Durable insights, gotchas, and decisions — the "why" that isn't obvious from the
 code or git history. Newest first.
 
+## Structured parser-QA complete — coverage nets vs bug-finding (2026-09, F-0010)
+
+The 5-tier plan (Tiers 1–5) is fully shipped. What each tier actually bought:
+- **The bugs were found by Tiers 1–2 + real usage** (per-construct analyzer,
+  gold-free invariants) and the corpus-diff harness — गई (T-0040), chandrabindu
+  (T-0045). **Tiers 3–4 found none** — and that's the point of a coverage net:
+  it's built *after* the known bugs are fixed, to prove the space is exercised
+  and to fail loudly on *future* regressions, not to find today's bugs.
+- **Tier 3 (combinatorial, T-0041):** ~1,900 constructs off the symbol map,
+  asserting parse well-formedness. Two of my initial assertions were over-strict
+  and had to be relaxed to documented behaviour (nukta combines only where a
+  precomposed mapping exists; halant is consumed so conjunct spans have a gap).
+  Writing a coverage net teaches you your own invariants.
+- **Tier 4 (akshara differential, T-0042):** the key realization is that
+  gomanize splits *finer* than aksharas (matra + each conjunct member are their
+  own units), so the correct relation is **refinement** (akshara boundaries ⊆
+  gomanize boundaries), not equality. A missing boundary = a merge bug; extra
+  boundaries are by design. Also honest: T-0040 was a *render* bug, not a
+  segmentation merge — the parser always kept गई as two units — so Tier 4 guards
+  segmentation, it would not have caught T-0040. A negative control proves the
+  reference isn't vacuously passing.
+- **Dependency-free constraint shapes test design too:** no UAX #29 library, so
+  the akshara reference is ~15 lines of codepoint rules in-repo. Cheaper than a
+  dependency and it encodes exactly the boundary semantics we care about.
+
 ## Held-out construct regression set (2026-09, T-0044)
 
 - **Purpose, and why it's not another curated_hi.** The frequency/curation-sampled
