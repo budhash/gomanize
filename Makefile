@@ -146,6 +146,10 @@ test-heldout: ## Held-out construct regression set (match-any, per-construct flo
 	@echo "Running held-out construct regression set..."
 	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkHeldoutConstructs"
 
+test-combinatorial: ## Tier 3: combinatorial construct enumeration (parse well-formedness)
+	@echo "Running combinatorial construct enumeration..."
+	@$(GOTEST) ./script/brahmic/ -v -run "TestCombinatorial"
+
 REGRESSION_BASE := .regression-baseline.tsv
 
 regression-baseline: ## Snapshot current engine outputs (rules-only) as the regression baseline
