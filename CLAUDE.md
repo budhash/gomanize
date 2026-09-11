@@ -99,13 +99,19 @@ gomanize/
 ├── script/brahmic/                # Brahmic script support (shared by future languages)
 │   ├── brahmic.go / parser.go / renderer.go / runs.go
 │   └── schwa_rules.go             # Shared Brahmic schwa rules (brahmic.SchwaRules())
-├── benchmark/                     # Five evaluation suites
-│   ├── benchmark_test.go          # All benchmark tests
+├── invariants_test.go             # Tier 2 parser invariants + construct goldens (F-0010)
+├── benchmark/                     # Evaluation + parser-QA suites (accuracy, construct coverage)
+│   ├── benchmark_test.go          # Curated/Dakshina/Aksharantar/COMI/lyrics/frequency suites
 │   ├── metrics_test.go            # CER / minCER / match-any / reference loaders
+│   ├── construct_test.go          # Tier 1: per-construct accuracy analyzer
+│   ├── heldout_test.go            # Held-out construct regression set (T-0044)
+│   ├── akshara_test.go            # Tier 4: unit-vs-akshara segmentation differential
 │   └── data/                      # Datasets (licenses: docs/RESEARCH.md §3)
 ├── tools/                         # All dev tooling
 │   ├── tasks, tasks.py            # Task tracker CLI over TASKS.md
 │   ├── ushuaia                    # Compare against ushuaia.pl schemes
+│   ├── regression/                # Corpus-diff transition-matrix harness (make regression-*)
+│   ├── mine_constructs.py         # Construct-stratified candidate mining (F-0010)
 │   ├── schwa/                     # Schwa classifier training + build_lexicon.py
 │   └── build_freq.py / build_aksharantar_test.py / build_comilingua.py /
 │       train_ngram.py / mine_overrides.py
@@ -113,10 +119,11 @@ gomanize/
 ├── docs/
 │   ├── RESEARCH.md                # Problem, literature, datasets, methodology, results
 │   ├── DESIGN.md                  # Architecture, rule system, scheme, learned components
+│   ├── ROADMAP.md                 # Post-1.0 directions with tradeoffs
 │   ├── PROCESS.md                 # Task tracking, PR discipline, accuracy reporting
 │   ├── reviews/                   # Dated decision records (incl. negative results)
 │   ├── archive/                   # Historical docs (2025-era, bannered)
-│   └── reference/                 # External reference material
+│   └── reference/                 # External reference material (incl. candidate-datasets.md)
 ├── .claude/                       # Claude Code configuration + hooks
 ├── .github/workflows/             # ci.yml + release.yml (GoReleaser) + pages.yml (WASM demo) + release-npm.yml (OIDC npm publish)
 ├── Makefile / TASKS.md / README.md / CLAUDE.md
@@ -127,11 +134,15 @@ gomanize/
 
 ## Current Status
 
-**Shipped:** v1.0.0 (tagged); the browser (WASM) demo — live at
-<https://budhash.com/gomanize> (F-0006: `make wasm`, auto-deployed by
-`pages.yml`); and the npm package `@budhash/gomanize` — the WASM engine + JS/TS
-wrapper (F-0009: `make npm`, published by `release-npm.yml`). Remaining F-0006
-work is T-0030 (consent-based correction capture).
+**Shipped:** v1.1.0 (tagged; v1.2.0 in prep — see `CHANGELOG.md`); the browser
+(WASM) demo — live at <https://budhash.com/gomanize> (F-0006: `make wasm`,
+auto-deployed by `pages.yml`); the npm package `@budhash/gomanize` — the WASM
+engine + JS/TS wrapper (F-0009: `make npm`, published by `release-npm.yml`); and
+the structured parser-QA program (F-0010, complete) that fixed the गई
+independent-vowel and chandrabindu-nasal bugs and added construct-coverage
+regression nets (`make test-constructs` / `test-heldout` / `test-combinatorial`
+/ `test-akshara`). Remaining F-0006 work is T-0030 (consent-based correction
+capture).
 
 Full results: [`docs/RESEARCH.md`](docs/RESEARCH.md) §4. The CI regression gate
 is strict top-1 pure ≥85% on curated Dakshina (`make test-dakshina`); overrides
@@ -166,7 +177,7 @@ accuracy benchmarks.
 Releases are automated by GoReleaser on version tags:
 
 ```bash
-git tag v1.0.0 && git push origin v1.0.0
+git tag v1.2.0 && git push origin v1.2.0
 ```
 
 This publishes binaries (Linux/macOS/Windows, amd64+arm64), checksums, and a

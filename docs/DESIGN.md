@@ -154,7 +154,7 @@ Measured and intentional (each backed by a decision record):
 |---|---|---|---|
 | Schwa classifier (`--schwa-model`) | CART tree, 34 KB JSON (`lang/hindi/schwa_tree.json`) | `schwa.model.predict` rule (Language:90, Exclusive) takes over inherent-schwa decisions | 90.67% per-schwa held-out; ties/beats the 8 hand rules word-level |
 | Lexicon (`--lexicon`) | 8,367-entry TSV, ~204 KB (`lang/hindi/lexicon.tsv`) | `core.LexiconProvider` pre-pipeline short-circuit; lossless OOV fallthrough | 71.1% token coverage; +5.9 to +7.9 pts on three independent evals |
-| Re-ranker (`--rerank`) | Char 4-gram LM, 31K grams, 224 KB (`lang/hindi/roman_ngrams.tsv`) | `core.Reranker`: scores {default rules, schwa-model} outputs, stupid backoff, per-char normalized; ties keep the default | Improved held-out (69.0→70.4%), curated match-any (92.8→94.7%), and lyrics CER (0.0492→0.0465) |
+| Re-ranker (`--rerank`) | Char 4-gram LM, 31K grams, 224 KB (`lang/hindi/roman_ngrams.tsv`) | `core.Reranker`: scores {default rules, schwa-model} outputs, stupid backoff, per-char normalized; ties keep the default | Improved held-out (69.0→70.4%), curated match-any (92.9→94.8%), and lyrics CER (0.0492→0.0465) |
 
 Design constraints that shaped them:
 - **Train on Dakshina TRAIN only** (splits are type-disjoint, so held-out results are uncontaminated).
@@ -177,7 +177,7 @@ Design constraints that shaped them:
 - Public API: `New(lang)`, `NewWithOptions(lang, opts, engineOpts...)`,
   `Translit(text)`, `TranslitDebug(word)`, rule management via
   `ListRules/DisableRule/EnableRule`
-- Evaluation: five benchmark suites (see RESEARCH §3–4) run by `make ci`
+- Evaluation: accuracy + parser-QA suites (see RESEARCH §3–4) run by `make ci`
 
 ## 6. Future directions
 
