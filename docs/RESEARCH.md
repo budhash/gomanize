@@ -133,6 +133,17 @@ held-out 69.0% and validating the harness. Romanization conventions differ
 IndicXlit — an 11M-parameter transformer trained on Aksharantar itself —
 reports ~52% top-1 in this direction.
 
+### Known limitations
+
+- **Vowel-length spelling** (ee/oo vs i/u, aa vs a) is a lexical convention, not
+  rule-governed; roughly half of remaining errors are this class. Positional
+  rules for it measured net-negative and were rejected (§5).
+- **Named entities and loanwords** are weak without `--lexicon` — names have
+  conventional spellings no phonetic rule can produce (दीक्षित → *dixit*).
+- **Convention differs between annotation efforts**, so scores against corpora
+  with other conventions (e.g. Aksharantar's frequent-word slice) are
+  substantially lower than against Dakshina-style references (see above).
+
 ## 5. Negative results (kept deliberately)
 
 1. **Medial ee/oo rule** (ी→ee, ू→oo word-medially): every variant net-negative
