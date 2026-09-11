@@ -3,6 +3,30 @@
 Durable insights, gotchas, and decisions — the "why" that isn't obvious from the
 code or git history. Newest first.
 
+## "Bugs" that were bad gold — measure before touching rules (2026-09, T-0048)
+
+The held-out set's schwa-retention misses (अंततः, दरअस्ल, बाईं) looked like
+schwa bugs; investigation showed **none was an engine bug**:
+- **Two were my own validation errors:** बाईं→bain and अम्मां→ammaan — my golds
+  (bai, amma) had dropped the anusvara nasal. दरअस्ल→darasl — my gold assumed the
+  halant-*less* spelling दरअसल; for the literal mined string (with the स्ल
+  conjunct) the engine was right.
+- **One was a legitimate variant:** अंततः→anttah is the schwa-deleted form of a
+  visarga-tatsama word, and Dakshina attests exactly this deletion elsewhere
+  (मूलतः→**multah**). Accept it match-any, don't fight it in the rules.
+- **Contamination detail:** दरअसल (correct spelling) is in Dakshina + the
+  lexicon, so it can't go in a *held-out* set — which is precisely why the miner
+  picked the halant misspelling. When a mined token looks slightly off, check
+  whether the clean form is training data.
+- **Evidence-based line on what to accept:** accept the engine's schwa-deleted
+  variant only where humans attest it (multah → yes for अंततः); keep the gold
+  strict where they attest the retained form (अनंत→anant, so अनन्त→annt stays a
+  recorded miss). Don't rig a regression net to go green.
+- **Net:** held-out default match-any 93.0% → 96.1% by fixing *gold*, zero engine
+  change, pure gate untouched. Lesson: a "systematic bug" surfaced by a small
+  hand-validated set is often a gold-quality problem — measure and check
+  attestation before editing near-optimal rules.
+
 ## Structured parser-QA complete — coverage nets vs bug-finding (2026-09, F-0010)
 
 The 5-tier plan (Tiers 1–5) is fully shipped. What each tier actually bought:
