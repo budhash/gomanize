@@ -15,15 +15,11 @@ the full engine, compiled to WebAssembly, runs entirely client-side (no server;
 no text leaves your machine).
 
 It does *romanization* — spelling Hindi the way it sounds (नमस्ते → *namaste*) —
-rather than the strict, reversible *transliteration* of schemes like IAST or
-ISO 15919. ("Transliteration" is the common colloquial term for the same task,
-and the API keeps the `Translit` name.)
-
-Romanization has no single correct answer — जनता is validly *janata*, *janta*,
-or *janataa* — so this project measures itself against all human-attested
-variants. On its primary use case, romanizing verse, its character error rate
-is at the level where human romanizers disagree with each other. Details,
-methodology, and known limitations: [docs/RESEARCH.md](docs/RESEARCH.md).
+not the strict, reversible *transliteration* of IAST or ISO 15919. There is no
+single correct answer (जनता is validly *janata*, *janta*, or *janataa*), so it
+is measured against all human-attested variants; on verse, its error rate is at
+the level where human romanizers disagree. Background, methodology, and
+limitations: [docs/RESEARCH.md](docs/RESEARCH.md).
 
 ## Install
 
@@ -95,16 +91,8 @@ result set including negative results):
 | Held-out unseen words | 69.0% (70.4% with `--rerank`) |
 | Song lyrics, line-level character error | 0.049, or 0.039 with `--lexicon` (human agreement floor is about 0.054) |
 
-Known limitations:
-
-- Vowel-length spelling (ee/oo vs i/u) is a lexical convention, not
-  rule-governed; roughly half of remaining errors are this class. Positional
-  rules for it measured net-negative and were rejected (docs/RESEARCH.md, §5).
-- Named entities and loanwords are weak without `--lexicon` (names have
-  conventional spellings no phonetic rule can produce: दीक्षित → dixit).
-- Different annotation efforts use different conventions; scores against
-  corpora with other conventions (e.g. Aksharantar's frequent-word slice) are
-  substantially lower than against Dakshina-style references.
+Known limitations (vowel-length spelling, named entities, cross-convention
+scoring): [docs/RESEARCH.md §4](docs/RESEARCH.md).
 
 ## Documentation
 
