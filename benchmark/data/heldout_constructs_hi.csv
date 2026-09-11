@@ -5,7 +5,8 @@ native,roman,notes
 कंठसंलग्न,kanthsanlagn,class=anusvara source=heldout-batch2
 किंवा,kinwa,class=anusvara source=heldout-batch2
 झंझट,jhanjhat,class=anusvara source=heldout-batch1
-तांगा,taanga,class=anusvara source=heldout-batch1
+तांगा,tanga,class=anusvara source=heldout-batch1 note=design-s3-open-syllable-single-a
+तांगा,taanga,class=anusvara source=heldout-batch1 note=aksharantar-doubling-variant
 दायूं,dayun,class=anusvara source=heldout-batch1
 नहिं,nahin,class=anusvara source=heldout-batch2
 नहिं,nahi,class=anusvara source=heldout-batch2
@@ -36,7 +37,8 @@ native,roman,notes
 धरूँ,dharun,class=chandrabindu source=heldout-batch2
 पूँजी,punji,class=chandrabindu source=heldout-batch1
 फँस,fans,class=chandrabindu source=heldout-batch1
-फाँसी,faansi,class=chandrabindu source=heldout-batch1
+फाँसी,fansi,class=chandrabindu source=heldout-batch1 note=design-s3-open-syllable-single-a
+फाँसी,faansi,class=chandrabindu source=heldout-batch1 note=aksharantar-doubling-variant
 बँधे,bandhe,class=chandrabindu source=heldout-batch2
 बाँह,baanh,class=chandrabindu source=heldout-batch1
 मुँह,munh,class=chandrabindu source=heldout-batch1

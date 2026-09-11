@@ -3,6 +3,25 @@
 Durable insights, gotchas, and decisions — the "why" that isn't obvious from the
 code or git history. Newest first.
 
+## F-0010 closed — what the structured parser-QA program actually yielded (2026-09)
+
+The whole program (Tiers 1–5 + follow-ups, T-0038–T-0049) is done. Scorecard:
+- **Real engine bugs found & fixed: 2** — गई→gi (T-0040, a *render* schwa fold)
+  and the chandrabindu nasal drop (T-0045). Both surfaced from *real usage* +
+  Tier 1–2 diagnostics, not from the coverage tiers.
+- **Coverage tiers (3, 4) found 0 bugs** — by design; they are durable nets that
+  prove the construct space is exercised and fail on *future* regressions.
+- **Follow-up investigations (T-0046/48/49) all resolved to "no engine change"**
+  — a rejected rule (chandrabindu labials) and gold-quality/convention fixes.
+  The held-out set's default match-any rose 93.0% → 97.7% *without touching the
+  engine*, purely by correcting my own validation errors and accepting
+  human-attested variants.
+- **Meta-lesson:** once the rule engine is near-optimal (RESEARCH §4), most
+  "misses" a small hand-validated set shows are gold-quality issues, not bugs.
+  Measure, check corpus attestation, and only change near-optimal rules with
+  benchmark evidence — the pure gate and the attestation data are the arbiters,
+  not intuition about "correct" spelling.
+
 ## "Bugs" that were bad gold — measure before touching rules (2026-09, T-0048)
 
 The held-out set's schwa-retention misses (अंततः, दरअस्ल, बाईं) looked like
