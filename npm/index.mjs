@@ -4,7 +4,7 @@
 // imports, so bundling for the browser stays clean.
 
 /** Package version (kept in sync with package.json on release). */
-export const version = "1.1.0";
+export const version = "1.2.0";
 
 let _instance;
 

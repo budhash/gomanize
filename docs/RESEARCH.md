@@ -94,21 +94,21 @@ for human romanizations, kept out-of-repo for copyright reasons.
 
 | Metric | Score |
 |---|---|
-| Match-any + `--rerank` | **94.7%** |
-| Match-any, default rules | 92.8% |
-| Strict top-1, pure (CI gate ≥85%) | 86.1% |
-| Mean minCER | 0.0116 (human floor ≈ 0.054) |
+| Match-any + `--rerank` | **94.8%** |
+| Match-any, default rules | 92.9% |
+| Strict top-1, pure (CI gate ≥85%) | 86.2% |
+| Mean minCER | 0.0114 (human floor ≈ 0.054) |
 
 ### Generalization & real-world
 
 | Benchmark | Default rules | Best configuration |
 |---|---|---|
-| Held-out Dakshina test (2,500 unseen words) | 69.0% | **70.4%** (`--rerank`), minCER 0.0955 |
-| COMI-LINGUA, token-weighted | 78.9% | **85.7%** (`--lexicon`) |
+| Held-out Dakshina test (2,500 unseen words) | 69.3% | **70.7%** (`--rerank`), minCER 0.0963 |
+| COMI-LINGUA, token-weighted | 79.9% | **86.6%** (`--lexicon`) |
 | Frequency-weighted (Shabd ∩ gold, 9,987 words) | 82.8% | **97.4%** (`--lexicon`) |
 | Lyrics gold, mean line CER | 0.0492 | **0.0394** (`--lexicon`); 0.0465 (`--rerank`) |
-| Aksharantar AK-NEI (Indian names) | 43.0% | 50.9% (`--lexicon`) |
-| Aksharantar AK-Freq | 42.6% | — (convention shift, see below) |
+| Aksharantar AK-NEI (Indian names) | 43.5% | 51.3% (`--lexicon`) |
+| Aksharantar AK-Freq | 43.0% | — (convention shift, see below) |
 
 ### Learned-component numbers
 - **Schwa classifier**: CART tree trained on 24,473 force-aligned schwa
@@ -123,12 +123,12 @@ for human romanizations, kept out-of-repo for copyright reasons.
   candidates; improved all three benchmarks it was measured on — held-out,
   curated multi-reference, lyrics CER (ablation in §5).
 
-### Cross-dataset convention shift (why AK-Freq is "only" 42.6%)
+### Cross-dataset convention shift (why AK-Freq is "only" 43.0%)
 Aksharantar's annotators systematically prefer doubled vowels
 (*atyaachaarapoorn*) where Dakshina's curated set prefers single
 (*atyacharpurn*); ~29% of AK-Freq failures are pure aa/ee/oo/v-w convention
-differences, and the re-included Dakshina slice scores 68.8% — matching the project's own
-held-out 69.0% and validating the harness. Romanization conventions differ
+differences, and the re-included Dakshina slice scores 69.1% — matching the project's own
+held-out 69.3% and validating the harness. Romanization conventions differ
 **between annotation efforts**, not just between annotators. For scale:
 IndicXlit — an 11M-parameter transformer trained on Aksharantar itself —
 reports ~52% top-1 in this direction.

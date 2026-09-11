@@ -86,9 +86,9 @@ result set including negative results):
 
 | Benchmark | Result |
 |-----------|--------|
-| Curated Dakshina | 86.1% exact / 92.8% any attested variant (94.7% with `--rerank`) |
-| Naturally-typed Hindi (COMI-LINGUA), token-weighted | 78.9% (85.7% with `--lexicon`) |
-| Held-out unseen words | 69.0% (70.4% with `--rerank`) |
+| Curated Dakshina | 86.2% exact / 92.9% any attested variant (94.8% with `--rerank`) |
+| Naturally-typed Hindi (COMI-LINGUA), token-weighted | 79.9% (86.6% with `--lexicon`) |
+| Held-out unseen words | 69.3% (70.7% with `--rerank`) |
 | Song lyrics, line-level character error | 0.049, or 0.039 with `--lexicon` (human agreement floor is about 0.054) |
 
 Known limitations (vowel-length spelling, named entities, cross-convention
@@ -98,6 +98,7 @@ scoring): [docs/RESEARCH.md §4](docs/RESEARCH.md).
 
 | Document | Contents |
 |----------|----------|
+| [CHANGELOG.md](CHANGELOG.md) | Release history and notable changes |
 | [docs/RESEARCH.md](docs/RESEARCH.md) | The problem, literature, datasets and licenses, evaluation methodology, all results including negatives |
 | [docs/DESIGN.md](docs/DESIGN.md) | Engine architecture, rule system, character mappings, learned components, future directions |
 | [docs/ROADMAP.md](docs/ROADMAP.md) | Post-1.0 directions (convention schemes, more languages) with tradeoffs |

@@ -2,7 +2,7 @@
 "use strict";
 
 /** Package version (kept in sync with package.json on release). */
-const version = "1.1.0";
+const version = "1.2.0";
 
 let _instance;
 
