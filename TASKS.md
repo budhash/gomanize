@@ -51,7 +51,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0045) [P2] [done] Fix render.chandrabindu.final-silent to require IsWordFinal (drops nasal mid-word: चाँद→chaad); un-skip TestGoldenChandrabinduNasal @done=2026-09-08
   - [x] (T-0046) [P3] [done] Chandrabindu-before-labial: data-driven review of ँ→m vs n (साँप saanp/saamp); align with anusvara labial assimilation if warranted @done=2026-09-10
   - [x] (T-0047) [P3] [done] Add --schwa-model coverage to the chandrabindu golden set (optional; confirm nasal output holds under the learned schwa model) @done=2026-09-10
-  - [ ] (T-0048) [P3] [todo] Held-out misses: schwa-retention gaps (अंततः→antatah, दरअस्ल→darasal, बाईं→bai) surfaced by TestBenchmarkHeldoutConstructs; measure candidate fix on Dakshina pure gate before changing rules
+  - [x] (T-0048) [P3] [done] Held-out misses: schwa-retention gaps (अंततः→antatah, दरअस्ल→darasal, बाईं→bai) surfaced by TestBenchmarkHeldoutConstructs; measure candidate fix on Dakshina pure gate before changing rules @done=2026-09-11
   - [ ] (T-0049) [P3] [todo] Held-out misses: vowel-length aa boundary (फाँसी→faansi, तांगा→taanga) from TestBenchmarkHeldoutConstructs; confirm against DESIGN §3 no-length convention (likely won't-fix — document the decision)
   - [x] (T-0041) [P3] [done] Tier 3: combinatorial construct enumeration + parse-well-formedness coverage test (CI) @done=2026-09-11
   - [x] (T-0042) [P3] [done] Tier 4: differential parse vs Unicode akshara (UAX #29) segmentation reference @done=2026-09-11

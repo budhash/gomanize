@@ -1,5 +1,6 @@
 native,roman,notes
 अंतर्विरोध,antarvirodh,class=anusvara source=heldout-batch1
+अम्मां,ammaan,class=anusvara source=heldout-batch1
 अम्मां,amma,class=anusvara source=heldout-batch1
 कंठसंलग्न,kanthsanlagn,class=anusvara source=heldout-batch2
 किंवा,kinwa,class=anusvara source=heldout-batch2
@@ -80,14 +81,15 @@ native,roman,notes
 गोआ,goaa,class=indep_vowel_medial source=heldout-batch1
 ढिठाई,dhithai,class=indep_vowel_medial source=heldout-batch1
 तिपाई,tipai,class=indep_vowel_medial source=heldout-batch1
-दरअस्ल,darasal,class=indep_vowel_medial source=heldout-batch1
+दरअस्ल,darasl,class=indep_vowel_medial source=heldout-batch1 note=literal-halant-spelling-of-darasal
 दीजिएगा,dijiyega,class=indep_vowel_medial source=heldout-batch1
 ध्याऊँ,dhyaun,class=indep_vowel_medial source=heldout-batch2
 नईं,nain,class=indep_vowel_medial source=heldout-batch1
 पढ़ाए,padhae,class=indep_vowel_medial source=heldout-batch2
 फरमाइश,farmaish,class=indep_vowel_medial source=heldout-batch1
 बम्बई,bambai,class=indep_vowel_medial source=heldout-batch1
-बाईं,bai,class=indep_vowel_medial source=heldout-batch1
+बाईं,bain,class=indep_vowel_medial source=heldout-batch1
+बाईं,baain,class=indep_vowel_medial source=heldout-batch1
 बुचई,buchai,class=indep_vowel_medial source=heldout-batch1
 ब्लाउज,blauj,class=indep_vowel_medial source=heldout-batch1
 भइल,bhail,class=indep_vowel_medial source=heldout-batch1
@@ -120,6 +122,7 @@ native,roman,notes
 लड़,lad,class=nukta source=heldout-batch1
 सिकुड़,sikud,class=nukta source=heldout-batch2
 अंततः,antatah,class=visarga source=heldout-batch1
+अंततः,anttah,class=visarga source=heldout-batch1 note=schwa-deleted-variant-cf-moolatah-multah
 अन्तः,antah,class=visarga source=heldout-batch2
 नमः,namah,class=visarga source=heldout-batch2
 निःशल्य,nihshalya,class=visarga source=heldout-batch2
