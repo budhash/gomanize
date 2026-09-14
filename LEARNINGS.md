@@ -148,6 +148,33 @@ The 5-tier plan (Tiers 1–5) is fully shipped. What each tier actually bought:
   invariant/golden anchors → pure gate + full suite + multi-mode spot-check. The
   gold-free differential (`गी ≠ गई`) is the cheapest guard; keep writing those.
 
+## v1.2.1 — Homebrew tap distribution (2026-09)
+
+- **Shared tap pattern.** A personal tap is one repo, `homebrew-<name>`, that hosts
+  many tools' formulae; the install path is `user/<name>/<formula>`. We chose
+  `budhash/homebrew-tools` → `brew install budhash/tools/gomanize`, reusable for
+  confix/zap-sh (each pushes its own `Formula/*.rb`). A per-tool `homebrew-<tool>`
+  repo would force the ugly `user/<tool>/<tool>` and defeat reuse.
+- **GoReleaser `brews:` needs a cross-repo PAT.** The workflow's built-in
+  `GITHUB_TOKEN` can only write to the current repo, so pushing the formula to a
+  *separate* tap repo needs a fine-grained PAT (Contents: read+write on the tap)
+  passed as `HOMEBREW_TAP_TOKEN`. Each tool repo needs its own copy of that secret.
+- **Safe-fail ordering.** If the brew step fails (missing/expired token), the
+  binaries and npm still publish — the formula push is the last, non-critical step.
+  So the tap can be wired before the token exists without risking a release.
+- **Don't re-tag a published version to add a formula.** npm versions are
+  immutable and the GitHub release already exists, so re-pushing `v1.2.0` fails the
+  npm publish (duplicate) and errors GoReleaser (release exists). Cut a patch
+  (`v1.2.1`) instead — clean, everything green, formula lands.
+- **The `brew install` CLT error is Homebrew's, not the tool's.** A static Go
+  binary (`CGO_ENABLED=0`) needs no Xcode Command Line Tools to run, but Homebrew
+  checks for current CLT at install time — an outdated-CLT failure after
+  "Verified … downloaded" means the formula is correct and the fix is
+  `sudo xcode-select --install`, nothing in the formula.
+- **The tap repo needs an initial commit.** Creating it empty (no README/license)
+  gives it no default branch, and GoReleaser pushes to `main` — so initialize the
+  tap with a README (which also serves as its front page).
+
 ## v1.1.0 — WASM demo, npm distribution, tokenless release (2026-09)
 
 ### Distribution: ship the engine, don't reimplement it
