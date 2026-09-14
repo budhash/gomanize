@@ -31,6 +31,9 @@ limitations: [docs/RESEARCH.md](docs/RESEARCH.md).
 ## Install
 
 ```bash
+# CLI via Homebrew (macOS/Linux)
+brew install budhash/tools/gomanize
+
 # Go library
 go get github.com/budhash/gomanize
 
@@ -42,6 +45,9 @@ git clone https://github.com/budhash/gomanize
 cd gomanize
 make build
 ```
+
+Prebuilt binaries for Linux/macOS/Windows (amd64+arm64) are also attached to each
+[GitHub release](https://github.com/budhash/gomanize/releases).
 
 ## Usage
 

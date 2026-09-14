@@ -9,6 +9,14 @@ is the same engine compiled to WebAssembly and shares this version line. Each
 tagged release also has auto-generated notes on the
 [GitHub releases page](https://github.com/budhash/gomanize/releases).
 
+## [Unreleased]
+
+### Added
+
+- Homebrew install: `brew install budhash/tools/gomanize` (formula auto-published
+  to the shared [`budhash/homebrew-tools`](https://github.com/budhash/homebrew-tools)
+  by GoReleaser on each release).
+
 ## [1.2.0] - 2026-09-11
 
 Behaviour-changing romanization fixes for two common construct classes, plus a

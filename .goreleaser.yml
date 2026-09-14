@@ -43,6 +43,33 @@ archives:
 checksum:
   name_template: 'checksums.txt'
 
+# Homebrew formula, pushed to the shared personal tap on each release.
+# Users install with:  brew install budhash/tools/gomanize
+# (or:  brew tap budhash/tools && brew install gomanize)
+#
+# Requires a HOMEBREW_TAP_TOKEN secret (a PAT with contents:write on
+# budhash/homebrew-tools) — see the "Homebrew" section in README.md. Without it
+# the release still succeeds for binaries/npm; only the formula push fails, so
+# create the tap repo + token before the first tagged release that includes this.
+brews:
+  - name: gomanize
+    repository:
+      owner: budhash
+      name: homebrew-tools
+      branch: main
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    directory: Formula
+    homepage: "https://github.com/budhash/gomanize"
+    description: "Romanize Devanagari (Hindi) into readable Latin script"
+    license: "MIT"
+    commit_author:
+      name: budhash
+      email: budhash@gmail.com
+    install: |
+      bin.install "gomanize"
+    test: |
+      assert_match "namaste", shell_output("#{bin}/gomanize नमस्ते")
+
 changelog:
   sort: asc
   use: github
