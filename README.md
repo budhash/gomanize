@@ -56,6 +56,11 @@ Prebuilt binaries for Linux/macOS/Windows (amd64+arm64) are also attached to eac
 ```bash
 ./gomanize "नमस्ते दुनिया"       # namaste duniya
 echo "हिंदी गाना" | ./gomanize   # hindi gana
+
+# Batch a file — one word/phrase per line (# comments and blank lines skipped)
+./gomanize --input=lyrics.txt
+./gomanize --input=words.txt --lexicon --rerank   # flags apply
+./gomanize < lyrics.txt                           # stdin/pipe also works
 ```
 
 | Flag | Effect | Example |
