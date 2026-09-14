@@ -9,13 +9,13 @@ is the same engine compiled to WebAssembly and shares this version line. Each
 tagged release also has auto-generated notes on the
 [GitHub releases page](https://github.com/budhash/gomanize/releases).
 
-## [Unreleased]
+## [1.2.1] - 2026-09-13
 
 ### Added
 
 - Homebrew install: `brew install budhash/tools/gomanize` (formula auto-published
   to the shared [`budhash/homebrew-tools`](https://github.com/budhash/homebrew-tools)
-  by GoReleaser on each release).
+  by GoReleaser on each release). No engine changes since 1.2.0.
 
 ## [1.2.0] - 2026-09-11
 
@@ -70,6 +70,7 @@ Initial public release: Go library and CLI romanizing Devanagari (Hindi) to
 Latin, with a rule-based engine and optional embedded learned components
 (schwa classifier, attested lexicon, character-LM re-ranker). MIT licensed.
 
+[1.2.1]: https://github.com/budhash/gomanize/releases/tag/v1.2.1
 [1.2.0]: https://github.com/budhash/gomanize/releases/tag/v1.2.0
 [1.1.0]: https://github.com/budhash/gomanize/releases/tag/v1.1.0
 [1.0.0]: https://github.com/budhash/gomanize/releases/tag/v1.0.0
