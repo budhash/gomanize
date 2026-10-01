@@ -1,7 +1,9 @@
 # Bengali Support — Design
 
 **Date:** 2026-09-30
-**Status:** Design proposal (not yet implemented). Tracked as F-0011.
+**Status:** Design proposal, v2 (not yet implemented). Reviewed independently by a
+Fable subagent and by Codex (read-only); §1.5 records the outcome and the
+resulting changes. Tracked as F-0011.
 **Scope:** Add Bengali (Bangla) as the second language, in two dependency-ordered
 pieces: (A) make the shared Brahmic layer genuinely script-general with zero
 change to Hindi output, then (B) build the `lang/bengali` package on top of it.
@@ -53,6 +55,97 @@ from the `bn` data, not copied from Hindi's 85%.
 
 ---
 
+## 1.5 Review outcome and resolutions (v2)
+
+Two independent adversarial reviews (Fable subagent + Codex, both read-only)
+converged on the same verdict: **the core representation is viable, but the
+plumbing was underspecified and several Bengali edge cases were missing — not
+implementation-ready as v1 was written.** Both confirmed the sound parts: the
+five identified literals are the real remaining ones; binary keep/delete plus a
+separate vowel-quality field can model the three-way outcome; reusing
+`colloquial.SelectRules` is right; shipping Part A alone is the right discipline.
+The resolutions below are folded into the sections that follow.
+
+**Convergent must-fixes (both reviewers):**
+
+1. **Config reaches only the parser today.** The renderer, `PrepareWord`, and
+   `brahmic.SchwaRules()` receive no `Config`. **Resolution:** the parser stamps
+   the resolved profile onto the word (`WordBrahmicData`); renderer and rules read
+   it there. Fix `IdentifyRuns`, which currently replaces `WordBrahmicData`
+   wholesale (`runs.go:53`) — it must merge, not clobber. No `core.Script`
+   signature change. (A.2)
+2. **Zero-value `Config` would silently break Hindi for public callers** (exported
+   struct, documented as `Config{Halant, Nukta}`; new fields default empty →
+   renderer writes nothing). **Resolution:** `Config.normalize()` fills Devanagari
+   defaults (`InherentVowel="a"`, bare-vowel runes, aa-matra, indep range,
+   sonorants); add a "zero-value Config still romanizes Hindi" test. (A.2)
+3. **Store vowel *quality*, not a literal spelling.** A `SchwaRom string` conflates
+   phonological class with output style. **Resolution:** a semantic
+   `SchwaQuality` (`Default`/`Raised`) on the unit, mapped to a spelling at render
+   time by the scheme/flag. (A.3)
+4. **Neighbor mutation is real but hazardous** — the `acted` map never marks the
+   mutated neighbor, `BaseRom`-matching rules mis-fire after a string rewrite, and
+   it is invisible to `--debug`. ("No Hindi precedent" was wrong: `aanv-to-aon`
+   already mutates `u.Next`.) **Resolution (J2, approved):** gemination is a
+   render-time field (`BrahmicData.Geminate` + a per-consonant geminate onset in
+   the symbol table), applied by the renderer — never a `BaseRom` string rewrite.
+   This dissolves all three hazards and gives correct `kh→kkh` (not `khkh`). (B.3)
+5. **Rule-order ties unchecked + unstable sort** (`NewRuleEngine` lacks the
+   tie-check `AddRule` has; `sort.Slice` is unstable). Hindi is safe only because
+   all its effective priorities are distinct. **Resolution:** Bengali's catalog
+   adds a priority-uniqueness test; Part A must not reorder Hindi's priorities. (A.2)
+6. **The frozen snapshot is too weak** (samples other suites; aggregate counts
+   hide different-wrong-words; default options only; lexicon short-circuits the
+   pipeline). **Resolution:** per-input frozen output for every suite **and** every
+   meaningful option profile (SchwaModel, Lexicon, Rerank, KeepMedialSchwa,
+   LongVowels, SimpleNasals, disable-rule configs), plus the invariants constructs
+   (गई, कऋ, दरअसल, ऄ). (A.4)
+7. **Khanda ta ৎ is not expressible** via `SymbolInfo{Category, BaseRom}`.
+   **Resolution:** add a `BrahmicData.NoInherentVowel` flag (parser-set for ৎ),
+   honored by the renderer and run logic. (B.1)
+8. **ো/ৌ need to be `SymbolMap` keys**, not only `MultiChar` (segmentation vs
+   lookup are separate). Register the decomposed two-part forms as `CatMatra`
+   keys *and* MultiChar. (B.1)
+
+**Sharpest single-reviewer catches (adopted):**
+
+- **The ɔ→o raising rule cannot live in `PhaseSchwa`** — the acted-map would
+  swallow the keep/delete decision. It must be a *post-Schwa* (Vowel/Render) rule
+  conditioned on `SchwaKeep`; the harmony lookahead is only valid after schwa
+  decisions. **And** under the default `o` style, raising is a no-op (ɔ→o, o→o),
+  so colloquial B1 does not need it — it defers to the academic/phonemic scheme
+  and the B2 classifier. (B.3, milestones)
+- **`InherentVowel="o"` + the unconditional pre-independent-vowel write → "oo"**:
+  হও→*hoo*, হওয়া→*hooya*. Bengali needs a `C+ও` rule on day one of B1. (B.3)
+- **`"Delete"→delete` is not authoritative** before an independent vowel — the
+  renderer there ignores `SchwaState`. The Bengali classifier/rules must exclude
+  those contexts. (A.3)
+- **Rune-index fragility (J1, approved).** Only `cccc-final` (`u.Start.Rune==1`)
+  is rune-fragile (`isWordInitialConjunct` uses a unit index). Fix is one
+  predicate → logical second-consonant. **This is behavior-*changing*** for
+  nukta-initial Hindi words (fixes a latent bug), so it is split out as **A.2'
+  (measured), separate from the byte-identical config lift (A.1).**
+- **Independent অ (অতি→oti) needs the ɔ/o/style treatment too** — `SchwaQuality`
+  only covers consonant-borne vowels; a vowel-phase `BaseRom` rule (and the
+  classifier) must cover independent অ. (B.3)
+- **Metrics:** pair match-any with macro minCER, strict top-1, attestation strata,
+  and the independent Aksharantar number; match-any is *inflated* by `bn`'s 3.8
+  refs/word vs Hindi's 1.8, so "trailing Hindi" could mislead — report the
+  reference-count-controlled number and say so. (§3)
+- **B1 gate "beats B0" is near-vacuous** — pre-register a bar from the B0
+  histograms. (milestones)
+
+**Deferred / open-flagged (recorded, decided in B-phases against `bn` data):**
+lexicon short-circuit ignores the style flag (style-key the lexicon or disable it
+under non-default style); rerank candidates are Hindi-shaped (base + SchwaModel) —
+Bengali's axis is o-vs-a; the schwa-model loader is Hindi-package-private with
+Devanagari tables (lifting it to shared is extra regression surface — likely copy
+into `lang/bengali` for B2); options must be bools (`Rule.Conditional` is a
+bool-option name); terminal explicit virama is a pre-existing Brahmic limitation
+to note.
+
+---
+
 ## Part A — Generalize the Brahmic layer (zero Hindi regression)
 
 ### A.1 The Devanagari-specific sites in the "shared" layer
@@ -88,45 +181,74 @@ type Config struct {
 }
 ```
 
-The five sites read from config instead of literals. **Hindi's config reproduces
-the current values exactly**, so this step is behavior-preserving by construction.
+**Plumbing (the review's #1 gap).** Only the parser receives `Config` today. The
+parser resolves the profile and stamps it onto the word via `WordBrahmicData`;
+the renderer and `brahmic.SchwaRules()` read it from the word. `IdentifyRuns`
+must be changed to *merge* into `WordBrahmicData` rather than replacing it
+(`runs.go:53` currently clobbers). No `core.Script` / `NewRenderer` /
+`PrepareWord` signature changes. **Defaulting:** `Config.normalize()` fills the
+Devanagari values for any empty field so the exported zero-value `Config{Halant,
+Nukta}` still romanizes Hindi correctly; a dedicated test asserts this.
+
+The five sites then read from config instead of literals. **Hindi's config
+reproduces the current values exactly**, so this lift is behavior-preserving by
+construction.
+
+**A.1 vs A.2' — two risk classes, kept separate.** The config lift above (A.1) is
+byte-identical *by construction*. The `cccc-final` rune-index fix (J1) is a
+*separate* step (A.2'): replacing `u.Start.Rune == 1` with a logical
+second-consonant predicate is behavior-*changing* for multi-rune-initial words
+(nukta-initial Hindi, where it fixes a latent bug), so it ships as its own commit
+with its own measurement — how many curated Hindi words move (expected ~0 on the
+test set, but non-zero in principle), confirmed neutral-or-better, with the golden
+snapshot updated *deliberately* and justified. It does **not** shelter under the
+byte-identical guarantee.
 
 ### A.3 Separate "keep vs delete" from "what a kept schwa spells"
 
 This is the structural change the inherent vowel forces. Keep `SchwaState` binary
 (`Keep` / `Delete`) — that decision is shared and correct for both languages.
-Add a per-unit spelling slot so the renderer never hardcodes a vowel:
+Store a per-unit *semantic quality*, not a literal string (the review's #3 —
+a literal `SchwaRom` conflates phonological class with output style, and a global
+`"o"` rewrite would also rewrite genuinely raised /o/):
 
 ```go
 // in BrahmicData
-SchwaRom string // optional; romanization of a KEPT inherent vowel.
-                // Empty => renderer uses Config.InherentVowel.
+SchwaQuality int // Default | Raised. Mapped to a spelling at render time
+                 // by the scheme/flag; Default => Config.InherentVowel.
 ```
 
-Renderer: where it writes `"a"` for a kept schwa, write
-`unitSchwaRom(unit)` which returns `BrahmicData.SchwaRom` if set, else
-`Config.InherentVowel`.
+Renderer: where it writes `"a"` for a kept schwa, map `(SchwaQuality, scheme)` to
+a spelling — Default→`Config.InherentVowel`, Raised→the scheme's raised form.
 
-- **Hindi**: no rule ever sets `SchwaRom`; `InherentVowel="a"` → every call site
-  emits `"a"` exactly as today. Byte-identical.
-- **Bengali**: `InherentVowel="o"` gives the common case for free; a Bengali
-  raising rule (or the classifier) sets `SchwaRom="o"`/`"a"`/`"ô"` per unit for
-  the ɔ-vs-o distinction without the shared layer knowing anything Bengali.
+- **Hindi**: no rule sets `SchwaQuality` (stays Default); `InherentVowel="a"` →
+  every site emits `"a"` exactly as today. Byte-identical.
+- **Bengali**: `InherentVowel="o"` gives the common case for free; a post-Schwa
+  raising rule (or the classifier) sets `Raised` where harmony/ra-phala/final
+  applies. The colloquial scheme maps both Default and Raised to `o`; an
+  academic/phonemic scheme maps Default→`a`/`ô`, Raised→`o`.
 
-This cleanly maps the three-way Bengali outcome onto existing machinery:
-`Delete` → delete; `ɔ`/`o` → `Keep` + `SchwaRom`. The classifier's three classes
-collapse to (binary state) + (spelling string).
+This maps the three-way outcome onto existing machinery: `Delete` → delete;
+ɔ/o → `Keep` + `SchwaQuality`. **Caveat (review):** before an *independent* vowel
+the renderer ignores `SchwaState` entirely (it emits unconditionally), so the
+classifier/rules must exclude those contexts; and independent অ itself
+(অতি→oti) is handled by a vowel-phase `BaseRom` rule, not `SchwaQuality` (which
+only covers consonant-borne inherent vowels).
 
 ### A.4 Zero-regression guarantee — three independent nets
 
 1. **Byte-identical benchmark gate.** The full Hindi suite
    (`make test-dakshina` + the five benchmark suites) must not move a single
    count: 86.2% pure, 92.9% match-any, 94.8% rerank, held-out, lyrics, COMI.
-2. **Frozen Hindi golden snapshot.** Before the refactor, commit a snapshot of
-   current Hindi output across the entire curated set (and a sample of each other
-   suite) as `testdata/hindi_golden.tsv`; a test diffs live output to it and
-   must be exactly zero. This catches any per-word drift the aggregate rates
-   could mask.
+2. **Frozen Hindi golden snapshot (strengthened per review #6).** Before the
+   refactor, commit **per-input** output — not aggregate counts, which can hide
+   different-wrong-words — across every suite **and** every meaningful option
+   profile (default, SchwaModel, Lexicon, Rerank, KeepMedialSchwa, LongVowels,
+   SimpleNasals, representative disable-rule configs), plus the invariants
+   constructs (गई, कऋ, दरअसल, ऄ) and the `SchwaPending` render path (the new code
+   must keep `!= SchwaDelete`, not switch to `== SchwaKeep`). A test diffs live
+   output to it and must be exactly zero. The A.2' index fix updates this snapshot
+   deliberately (see A.2), the config lift must not touch it at all.
 3. **Ship Part A alone, first.** Part A merges as its own PR, green, *before any
    Bengali code exists*. If a count moves, there is no Bengali to blame — it is a
    pure refactor regression and gets fixed in that PR.
@@ -160,8 +282,14 @@ modifier tables). Notable mappings that differ from Hindi:
 - **Aliases (reuse Hindi's `init()` pattern):** ড়/ঢ়/য় are composition-excluded,
   so NFC keeps them decomposed while keyboards emit precomposed — register both.
 - **MultiChar:** `ক্ষ`, `জ্ঞ`, `হ্ম`, `হ্ন`, and the **decomposed two-part
-  matras** `ে`+`া` (→ো) and `ে`+`ৗ` (→ৌ), plus lone `ৗ`. Alternatively
-  NFC-normalize at `Translit` entry; registering MultiChar is more surgical.
+  matras** `ে`+`া` (→ো) and `ে`+`ৗ` (→ৌ). Note (review #8): MultiChar only controls
+  *segmentation*; the parser then does an exact `SymbolMap` lookup of the matched
+  string, so ো/ৌ (and precomposed forms) must **also** be `CatMatra` keys in the
+  symbol map, or they become empty/unknown units.
+- **Khanda ta ৎ (review #7):** not expressible as `SymbolInfo{Category, BaseRom}`
+  — as a consonant it would acquire an inherent vowel (হঠাৎ→*hothato* once final
+  deletion weakens); as a symbol it breaks run lookaheads. Add a parser-set
+  `BrahmicData.NoInherentVowel` flag honored by the renderer and run logic.
 
 ### B.2 Bengali `Config`
 
@@ -187,20 +315,33 @@ the current rule engine:
 - **Final-হ keep:** গ্রহ *groho*.
 - **Weaker word-final deletion generally** (Bengali lacks Hindi's strong final
   prohibition); plus a documented homograph error class (বল, হল, কোন, মত).
-- **ɔ→o raising** via `ConsonantRun` lookahead: high-vowel harmony (বলি *boli*,
-  মধু *modhu*), ra-phala-initial (প্রথম *prothom*), any retained final → `o`.
-  Implemented by setting `SchwaRom="o"` (A.3).
+- **ɔ→o raising** — a *post-Schwa* (Vowel/Render-phase) rule conditioned on
+  `SchwaKeep` (not Schwa phase; see §1.5), setting `SchwaQuality=Raised` on
+  harmony/ra-phala-initial/retained-final consonants. **Deferred out of B1:**
+  under the colloquial `o` default this is a no-op (both map to `o`); it only
+  matters for the academic/phonemic scheme and the B2 classifier. Independent
+  অ (অতি→oti) is handled by a separate vowel-phase `BaseRom` rule.
+- **`C + ও` rule (B1, day one):** with `InherentVowel="o"`, the renderer's
+  unconditional pre-independent-vowel write would yield হও→*hoo*, হওয়া→*hooya*.
+  A B1 rule fixes this (quality=Default→`a` before ও, or ও→`w` medially).
 - **Sanskritic medial retention:** Bengali keeps many medial schwas Hindi deletes
   (রচনা *rochona* not *rochna*); the `ccv` deletion needs a Bengali-tuned guard.
-- **Positional phala rules** (no Hindi precedent; mutate neighbors):
-  ya-phala ্য (initial → æ vowel; medial → geminate + silent য), ba-phala ্ব
-  (initial silent; medial geminate), ma-phala ্ম (similar), with short exception
-  lists.
+- **Positional phala rules** (ya/ba/ma). The mechanism is a **render-time
+  gemination field**, not neighbor `BaseRom` mutation (§1.5 #4, J2): the rule sets
+  `Geminate`/silences the phala consonant; the renderer doubles the rendered onset
+  (`kh→kkh`, never `khkh`). ya-phala ্য (initial → æ, via `SchwaQuality`/`BaseRom`
+  on the phala-bearing unit — *not* a following vowel, which may not exist;
+  medial → geminate + silent য), ba-phala ্ব and ma-phala ্ম (initial silent;
+  medial geminate), each with an exception set. "Initial" needs a cluster-position
+  predicate, not `IsWordInitial()` (the phala unit always has a preceding
+  consonant).
 - **Positional conjuncts:** ক্ষ (initial `kh` / medial `kkh`), জ্ঞ (initial
   `g`/`gæ` / medial `gg`).
 - **Modifiers:** anusvara ং → `ng` always (retire Hindi's homorganic rules for
-  Bengali); visarga ঃ medial → geminate next consonant (দুঃখ *dukkho*);
-  chandrabindu ঁ → default drop (colloquial), `n` as a scheme option.
+  Bengali); visarga ঃ medial → geminate the next consonant via the same
+  render-time gemination field (দুঃখ *dukkho*); chandrabindu ঁ → **data-gated**
+  (J3, see T-0055 — likely positional, `n` medially; the earlier "drop" default
+  was an unmeasured guess and is retracted).
 
 ### B.4 The inherent-vowel classifier (Phase B2)
 
@@ -271,7 +412,7 @@ Dependency-ordered. Each ships as its own green PR.
 |---|---|---|---|
 | **A** | Generalized Brahmic layer + Hindi golden snapshot | 2–3 days | Hindi byte-identical (3 nets, A.4) |
 | **B0** | `lang/bengali` symbol table, config, compositional conjuncts, `bengali` wired into `New()`; naive output; `bn` benchmark harness that **emits the o/a-split and attestation histograms** (gates the Q1 default and the curation threshold) | 3–5 days | builds; Hindi untouched; baseline + histograms measured |
-| **B1 (light)** | Non-schwa rules in full; only the cheap/obvious schwa wins (final-cluster keep, ɔ→o raising) + the phala/anusvara/visarga rules; behavioral flags (B.6). Deliberately **not** an exhaustive schwa-rule tuning pass | 1 week | match-any on Dakshina `bn` beats the B0 baseline; bn-specific gate set empirically |
+| **B1 (light)** | Non-schwa rules in full; cheap schwa wins (final-cluster keep) + phala (render-time gemination) + anusvara/visarga + the `C+ও` rule + behavioral flags (B.6); priority-tie test on the composed catalog. ɔ→o raising deferred (no-op under `o`). Deliberately **not** exhaustive schwa tuning | 1 week | match-any on Dakshina `bn` clears a bar **pre-registered from the B0 histograms** (not merely "beats B0"); bn-specific gate set empirically |
 | **B2** | Bengali learned components (3-way schwa classifier, lexicon, reranker) | 1–2 weeks | each improves held-out `bn` match-any; contamination asserted |
 | **B3** | Bengali PD lyrics gold set + line-level suite | 2–4 days | line-CER reported |
 
@@ -281,9 +422,12 @@ These are rough; the rule-tuning in B1 is the least predictable because of the
 inherent-vowel irregularity.
 
 **Metrics discipline for Bengali:** match-any / minCER is the headline (2×
-variance, bimodal target). Report AK-Freq / AK-NEF / AK-NEI slices as for Hindi.
-Set the pure-accuracy CI gate from the observed `bn` distribution; do not copy
-85%. The Hindi gate and suites are untouched.
+variance, bimodal target), but report it **alongside** strict top-1, macro minCER,
+attestation-count strata, and the independent Aksharantar number — because `bn`'s
+3.8 refs/word (vs Hindi's 1.8) *inflates* match-any, so a naive "trailing Hindi"
+read could invert and mislead (review). Report AK-Freq / AK-NEF / AK-NEI slices as
+for Hindi. Set the pure-accuracy CI gate from the observed `bn` distribution; do
+not copy 85%. The Hindi gate and suites are untouched.
 
 ---
 
@@ -296,11 +440,17 @@ Set the pure-accuracy CI gate from the observed `bn` distribution; do not copy
   Accept and document the error class, as RESEARCH §5 does for Hindi.
 - **æ (ya-phala-initial) has no settled Banglish spelling** → those words are
   inherently multi-reference.
-- **Rule-engine expressiveness:** phala rules mutate *neighboring* units
-  (gemination, following-vowel æ). The engine passes `*core.Unit` + `*core.Word`
-  so this is expressible, but it is new; prototype one phala rule early in B1 to
-  confirm before committing to the full set.
+- **Gemination correctness.** Phala/visarga gemination is a render-time field
+  (§1.5 #4), which removes the acted-map / BaseRom-match / debug-blindness hazards
+  the reviews found in the naive neighbor-mutation approach — but the
+  gemination-onset table (`kh→kkh`) and the exception matrix (no gemination after a
+  MultiChar conjunct like লক্ষ্য, or after an already-after-halant consonant) still
+  need care; prototype one phala + the visarga rule early in B1.
+- **Cluster/phala ordering.** The "স→s in clusters" rule must test the next unit's
+  *identity*, not just after-halant, or স্বামী → *sami* instead of *shami* (review).
 - **Frequency data** must be derived, not adopted (no Shabd equivalent).
+- **Pre-existing:** a terminal explicit virama is dropped by the parser (the
+  preceding consonant regains its inherent vowel); noted, not introduced here.
 
 ## 5. Decisions and remaining open questions
 
