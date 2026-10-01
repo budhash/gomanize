@@ -111,6 +111,14 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0049) [P3] [done] Held-out misses: vowel-length aa boundary (फाँसी→faansi, तांगा→taanga) from TestBenchmarkHeldoutConstructs; confirm against DESIGN §3 no-length convention (likely won't-fix — document the decision) @done=2026-09-11
   - [x] (T-0041) [P3] [done] Tier 3: combinatorial construct enumeration + parse-well-formedness coverage test (CI) @done=2026-09-11
   - [x] (T-0042) [P3] [done] Tier 4: differential parse vs Unicode akshara (UAX #29) segmentation reference @done=2026-09-11
+
+- [ ] (F-0011) [P2] [todo] Bengali (Bangla) support
+  - [ ] (T-0050) [P2] [todo] Part A: generalize Brahmic layer (ScriptProfile config + SchwaRom); zero Hindi regression + golden snapshot
+  - [ ] (T-0051) [P2] [todo] B0: lang/bengali symbol table + config + compositional conjuncts; wire New(); bn benchmark harness
+  - [ ] (T-0052) [P2] [todo] B1: Bengali rules-only schwa (final-cluster keep, ɔ→o raising, phalas, anusvara/visarga)
+  - [ ] (T-0053) [P3] [todo] B2: Bengali learned components (3-way schwa classifier, lexicon, reranker)
+  - [ ] (T-0054) [P3] [todo] B3: Bengali PD lyrics gold set (Tagore Gitabitan via Wikisource) + line-level suite
+  - [ ] (T-0055) [P2] [todo] Measure o/a split + attestation histogram on Dakshina bn (gates Q1 default + curation threshold)
 ## Skipped
 
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow
