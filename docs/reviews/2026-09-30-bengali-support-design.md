@@ -212,12 +212,34 @@ transcription → ∅/ɔ/o labels directly; train-split-only under our contamina
 rules), with Dakshina `bn` supplying the colloquial *spelling* of a kept vowel.
 Dakshina `bn` remains the benchmark, never a training source.
 
-### B.5 Scheme
+### B.5 Scheme (decided: reuse `colloquial`)
 
-A `bengali-colloquial` scheme (or a Bengali variant of `colloquial`) selects the
-Bengali rule catalog. An academic/ISO-15919 Bengali scheme (inherent vowel `a`,
-graphemic) is a natural later addition and is a good test of the scheme layer,
-but is out of scope for v1.
+**Decision:** reuse the existing `colloquial` scheme as-is; do **not** add a
+`bengali-colloquial` scheme. `colloquial.SelectRules` is `return
+catalog.AllRules()` — already language-agnostic. All of Bengali's rule divergence
+lives in the Bengali `RuleCatalog`, not in the scheme. The scheme axis is output
+*style* (colloquial vs. academic/IAST), orthogonal to language; coupling style to
+language would start an N×M scheme explosion. An academic/ISO-15919 scheme
+(inherent vowel `a`, graphemic) is a natural later addition that would then serve
+both languages for free. Out of scope for v1.
+
+### B.6 Behavioral options (flags)
+
+Following Hindi's opt-in philosophy (sensible colloquial default; named flags to
+switch behavior), Bengali's headline behavioral choices are exposed as `Options`
+fields / CLI flags rather than baked in:
+
+- **Kept-vowel style** — the colloquial default spells a kept inherent vowel `o`
+  (B.3); a flag selects the academic/graphemic `a` (and later `ô` for the
+  ɔ-marking convention). This is the switch for the Q1 register tension: `o` by
+  default, `a` on demand, with the lexicon/classifier handling the per-word
+  exceptions in between.
+- **Chandrabindu** — default drop (colloquial); flag to emit `n`.
+- The existing **generic** `--enable-rule` / `--disable-rule` pattern mechanism
+  applies to Bengali rules unchanged, so any individual rule is switchable for
+  testing without a new flag.
+
+Each flag is covered by the same before/after measurement discipline as Hindi's.
 
 ---
 
@@ -248,8 +270,8 @@ Dependency-ordered. Each ships as its own green PR.
 | Phase | Deliverable | Rough effort | Gate |
 |---|---|---|---|
 | **A** | Generalized Brahmic layer + Hindi golden snapshot | 2–3 days | Hindi byte-identical (3 nets, A.4) |
-| **B0** | `lang/bengali` symbol table, config, compositional conjuncts, `bengali` wired into `New()`; naive output; `bn` benchmark harness | 3–5 days | builds; Hindi untouched; baseline measured |
-| **B1** | Bengali rules-only schwa (final-cluster keep, ɔ→o raising, phalas, anusvara/visarga) | 1–2 weeks | match-any on Dakshina `bn` beats the B0 baseline; bn-specific gate set empirically |
+| **B0** | `lang/bengali` symbol table, config, compositional conjuncts, `bengali` wired into `New()`; naive output; `bn` benchmark harness that **emits the o/a-split and attestation histograms** (gates the Q1 default and the curation threshold) | 3–5 days | builds; Hindi untouched; baseline + histograms measured |
+| **B1 (light)** | Non-schwa rules in full; only the cheap/obvious schwa wins (final-cluster keep, ɔ→o raising) + the phala/anusvara/visarga rules; behavioral flags (B.6). Deliberately **not** an exhaustive schwa-rule tuning pass | 1 week | match-any on Dakshina `bn` beats the B0 baseline; bn-specific gate set empirically |
 | **B2** | Bengali learned components (3-way schwa classifier, lexicon, reranker) | 1–2 weeks | each improves held-out `bn` match-any; contamination asserted |
 | **B3** | Bengali PD lyrics gold set + line-level suite | 2–4 days | line-CER reported |
 
@@ -280,16 +302,34 @@ Set the pure-accuracy CI gate from the observed `bn` distribution; do not copy
   confirm before committing to the full set.
 - **Frequency data** must be derived, not adopted (no Shabd equivalent).
 
-## 5. Open decisions (resolve against `bn` data, not a priori)
+## 5. Decisions and remaining open questions
 
-1. Default spelling of a kept inherent vowel in the colloquial scheme: `o`
-   everywhere vs. `o`/`a` split by register. Measure on Dakshina `bn` first.
-2. æ romanization for ya-phala-initial (`a` / `e` / `ya`).
-3. Curated-set attestation threshold for `bn` (Hindi's ≥4 likely yields too few
-   given 3.8 variants/type — inspect the histogram).
-4. Chandrabindu default (drop vs `n`).
-5. One `colloquial` scheme parameterized per language, or a distinct
-   `bengali-colloquial` scheme. Lean toward the latter given rule divergence.
+**Decided (this review):**
+- **Scheme:** reuse `colloquial` (B.5). Not language-coupled.
+- **Kept-vowel default:** `o` as the rules default, exposed as a switchable flag
+  (B.6); the `a`-exceptions (Sanskritic words, proper names) are handled by the
+  lexicon and ɔ/o classifier, not hardcoded as rules. **Precondition:** measure
+  the actual o/a split on Dakshina `bn` before locking the default value — the
+  B0 benchmark harness emits this histogram first (T-0055). Front-load the Bengali
+  **lexicon for proper nouns**, since names are high-salience (a mangled name is
+  noticed where a mangled common word is forgiven), exactly as Hindi's lexicon
+  earned its keep on loanwords.
+- **Milestone shape:** "B1 light." Build B0 + the non-schwa rules fully (the bulk
+  of correctness, needed regardless), implement only the cheap/obvious schwa wins
+  (final-cluster keep, ɔ→o raising — which double as the classifier's OOV
+  fallback), measure the honest baseline, then invest the saved rule-tuning time
+  in the B2 classifier. We do **not** repeat Hindi's exhaustive rule-ceiling arc:
+  Johny & Jansche already established it (~85% rules, classifier needed).
+- **Success bar for v1:** honestly measured and genuinely useful, **trailing
+  Hindi by design** — not matching Hindi's 92.9%. Match-any / minCER is the
+  headline; the pure gate is set empirically from `bn`.
+
+**Still open (resolve against `bn` data):**
+1. æ romanization for ya-phala-initial (`a` / `e` / `ya`).
+2. Curated-set attestation threshold for `bn` (Hindi's ≥4 likely yields too few
+   given 3.8 variants/type — inspect the histogram alongside the o/a split).
+3. The exact `o` vs `a` default, pending the T-0055 measurement (the mechanism is
+   decided; the default *value* is data-gated).
 
 ## 6. References
 
