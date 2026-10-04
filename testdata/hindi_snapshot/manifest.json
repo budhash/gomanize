@@ -1,0 +1,30 @@
+{
+  "profiles": [
+    "default",
+    "schwa-model",
+    "lexicon",
+    "rerank",
+    "keep-medial",
+    "long-vowels",
+    "simple-nasals",
+    "combined-style",
+    "learned-style",
+    "lexicon-rerank",
+    "no-schwa-rules",
+    "no-final-delete",
+    "no-rules"
+  ],
+  "source_sha256": {
+    "benchmark/data/aksharantar_hi.csv": "d846fd134333436c137654732fbb7a57acfb864beffe77358e00db088bd67021",
+    "benchmark/data/aksharantar_test_hi.csv": "a1d1fe8dc8e4d3767397b9863d7332fbd1cc80f74d3aa6ec8212a710b4cc23f9",
+    "benchmark/data/comilingua_hi.csv": "3640c39810288944de83d113e54c9bf223f0799733922b9a8ed257a46954effb",
+    "benchmark/data/curated_hi.csv": "466121f0e62ea87632315d325b2bba92fa8cc392492d26bd31826b3c2404067b",
+    "benchmark/data/dakshina_hi.csv": "f8f32061d4b7dcded57b324a07577c4a17ea22a8c6c908c07e4181995de05811",
+    "benchmark/data/freq_hi.csv": "88104367d9fd0ea79a18cefb56673170081fc553422e84b532c9b4b06e16a612",
+    "benchmark/data/heldout_constructs_hi.csv": "91c114b2d45a60c6d9c7b3cd982377f2e48ca5eba24ab6a8bfdfa49e0c2ed874",
+    "benchmark/data/ignore_hi.csv": "c899d9eee2882d4e24ecf5ca5df42fe5bb41619f5a5416af7eb87e6fd85085e4",
+    "benchmark/data/lyrics_gold_hi.csv": "2a4ed018ac9c481a033c96c042c58dc49ba4afd1155f3c3d792cbd8cb7ea26c2",
+    "benchmark/data/override_hi.csv": "fad0a65bc0452be8643bc69ca98e8aab59f2b85677a98f8b3d9ab4e4993bcb9c"
+  },
+  "inputs": 264064
+}
