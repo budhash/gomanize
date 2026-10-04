@@ -237,9 +237,10 @@ func (e *RuleEngine) applyPhase(phase RulePhase, word *Word) {
 			}
 			if rule.Condition(unit, word) {
 				before := unit.BaseRom
+				beforeMeta := e.unitMetadata(unit)
 				rule.Action(unit, word)
 				acted[unit] = true
-				e.traceRule(phase, rule, unit, idx, before)
+				e.traceRule(phase, rule, unit, idx, before, beforeMeta)
 			}
 		}
 	}
@@ -256,9 +257,10 @@ func (e *RuleEngine) applyPhase(phase RulePhase, word *Word) {
 			}
 			if rule.Condition(unit, word) {
 				before := unit.BaseRom
+				beforeMeta := e.unitMetadata(unit)
 				rule.Action(unit, word)
 				acted[unit] = true
-				e.traceRule(phase, rule, unit, idx, before)
+				e.traceRule(phase, rule, unit, idx, before, beforeMeta)
 			}
 		}
 	}
@@ -371,14 +373,11 @@ func (e *RuleEngine) Traces() []RuleTrace {
 }
 
 // traceRule records a rule application if debugging is enabled.
-func (e *RuleEngine) traceRule(phase RulePhase, rule *Rule, unit *Unit, unitIdx int, before string) {
+func (e *RuleEngine) traceRule(phase RulePhase, rule *Rule, unit *Unit, unitIdx int, before, beforeMeta string) {
 	if !e.debugEnabled {
 		return
 	}
-	meta := ""
-	if e.debugMeta != nil {
-		meta = e.debugMeta(unit)
-	}
+	meta := e.unitMetadata(unit)
 	trace := RuleTrace{
 		Phase:    phase.String(),
 		Rule:     rule.Name,
@@ -389,7 +388,15 @@ func (e *RuleEngine) traceRule(phase RulePhase, rule *Rule, unit *Unit, unitIdx 
 		Metadata: meta,
 	}
 	// Only record if something changed or it's a schwa rule
-	if before != unit.BaseRom || phase == PhaseSchwa {
+	if before != unit.BaseRom || beforeMeta != meta || phase == PhaseSchwa {
 		e.traces = append(e.traces, trace)
 	}
+}
+
+// unitMetadata never invokes the script extractor outside debug execution.
+func (e *RuleEngine) unitMetadata(unit *Unit) string {
+	if e.debugEnabled && e.debugMeta != nil {
+		return e.debugMeta(unit)
+	}
+	return ""
 }

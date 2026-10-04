@@ -13,6 +13,9 @@ tagged release also has auto-generated notes on the
 
 ### Changed
 
+- Debug rule traces now retain metadata-only changes in all phases and fallback
+  passes; metadata extraction remains disabled outside debug execution.
+
 - Generalized the Brahmic renderer and shared rule constants through an optional
   script profile, with separate retained-vowel quality. Legacy callers retain
   Devanagari defaults; Hindi output is protected by a frozen corpus snapshot.
@@ -20,6 +23,9 @@ tagged release also has auto-generated notes on the
   matching `AddRule`, including rules disabled by default.
 
 ### Added
+
+- Brahmic render-time gemination modes with independent vowel ownership,
+  validated by test-only Bengali B1 prototypes. Public Bengali rules remain B0.
 
 - Experimental Bengali B0 through the Go API: symbols, Unicode aliases,
   compositional conjuncts, khanda-ta support, and split-aware Dakshina baseline.

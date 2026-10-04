@@ -42,6 +42,13 @@ Parse → Prepare → Rules → Render
    the schwa decision. Halant-linked clusters suppress the preceding vowel,
    and otherwise `Delete` suppresses it while `Pending` behaves like `Keep`.
 
+`BrahmicData.Gemination` supports `RepeatPrevious` (a halant-linked phala
+substitutes the preceding simple onset's geminate pair) and `GeminateSelf`
+(the unit repeats its own onset). Aspirated pairs use `kh → k + kh`.
+Rendering does not mutate neighboring units or force a vowel decision. Atomic,
+larger-cluster, and intrinsically dead onsets are rejected. These modes are
+currently exercised only by the Bengali B1 prototype tests.
+
 `brahmic.ScriptProfile` holds inherent/raised spellings, bare-vowel identities,
 the aa-matra, sonorants, and the independent-vowel range. Hindi supplies
 `DevanagariProfile()` explicitly. Legacy `Config` values and words without a
@@ -88,8 +95,9 @@ sites are tracked for conversion — matching on output strings couples rules to
 the symbol table.
 
 The whole catalog is runtime-inspectable and toggleable: `--list-rules`,
-`--disable-rule`, `--enable-rule`, and `--debug` traces every rule application
-per unit.
+`--disable-rule`, `--enable-rule`, and `--debug` traces changes to base romanization or script metadata
+per unit, plus every applied Schwa rule. Normal and fallback passes both capture
+metadata before/after actions; debug-off execution never calls the extractor.
 
 ### Schwa handling — the core mechanism
 Every consonant starts `SchwaPending`; schwa-phase rules move it to `Keep` or

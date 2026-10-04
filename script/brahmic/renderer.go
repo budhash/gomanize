@@ -23,7 +23,7 @@ func (r *Renderer) Render(word *core.Word) string {
 	var sb strings.Builder
 
 	for _, unit := range word.Units {
-		sb.WriteString(unit.BaseRom)
+		sb.WriteString(renderOnset(unit))
 
 		// Schwa handling for consonants/conjuncts
 		if unit.Type == core.UnitConsonant || unit.Type == core.UnitConjunct {
@@ -168,4 +168,54 @@ func (r *Renderer) RenderDebug(word *core.Word) string {
 	sb.WriteString(r.Render(word))
 
 	return sb.String()
+}
+
+// geminatePair deliberately recognizes simple onsets only. Atomic conjuncts and
+// arbitrary strings are not eligible for automatic doubling.
+func geminatePair(onset string) (string, string, bool) {
+	switch onset {
+	case "k", "g", "ch", "j", "t", "d", "n", "p", "b", "m", "r", "l", "s", "sh", "h", "y":
+		return onset, onset, true
+	case "kh", "gh", "jh", "th", "dh", "ph", "bh":
+		return onset[:1], onset, true
+	case "chh":
+		return "ch", onset, true
+	default:
+		return "", "", false
+	}
+}
+
+func simpleGeminationUnit(u *core.Unit) bool {
+	bd := GetBrahmicData(u)
+	return u != nil && u.Type == core.UnitConsonant && len(u.Runes) == 1 && bd != nil && !bd.NoInherentVowel
+}
+
+func repeatEligible(u *core.Unit) bool {
+	if !simpleGeminationUnit(u) || !simpleGeminationUnit(u.Prev) {
+		return false
+	}
+	bd, prev := GetBrahmicData(u), GetBrahmicData(u.Prev)
+	// Require a real halant, a simple preceding onset, and no larger cluster.
+	if bd.Gemination != RepeatPrevious || !bd.AfterHalant || IsAfterHalant(u.Prev) || prev.Gemination != GeminationNone || (u.Next != nil && IsAfterHalant(u.Next)) {
+		return false
+	}
+	_, _, ok := geminatePair(u.Prev.BaseRom)
+	return ok
+}
+
+func renderOnset(u *core.Unit) string {
+	if repeatEligible(u) {
+		_, right, _ := geminatePair(u.Prev.BaseRom)
+		return right
+	}
+	if u.Next != nil && repeatEligible(u.Next) {
+		left, _, _ := geminatePair(u.BaseRom)
+		return left
+	}
+	if bd := GetBrahmicData(u); bd != nil && bd.Gemination == GeminateSelf && simpleGeminationUnit(u) && !IsAfterHalant(u) && (u.Next == nil || !IsAfterHalant(u.Next)) {
+		if left, right, ok := geminatePair(u.BaseRom); ok {
+			return left + right
+		}
+	}
+	return u.BaseRom
 }

@@ -1112,3 +1112,39 @@ func TestConstructorPriorityConflicts(t *testing.T) {
 	other.Scope = ScopeLanguage
 	NewRuleEngine([]Rule{base, other})
 }
+
+func TestMetadataOnlyTraces(t *testing.T) {
+	for _, mode := range []RuleMode{ModeAlways, ModeFallback} {
+		for _, debug := range []bool{false, true} {
+			for _, change := range []bool{false, true} {
+				t.Run(fmt.Sprintf("mode=%v/debug=%v/change=%v", mode, debug, change), func(t *testing.T) {
+					calls := 0
+					e := NewRuleEngine([]Rule{{Name: "metadata-only", Phase: PhaseRender, Scope: ScopeLanguage, Priority: 10, Mode: mode,
+						Condition: func(u *Unit, w *Word) bool { return true },
+						Action: func(u *Unit, w *Word) {
+							if change {
+								u.ScriptData = "changed"
+							}
+						},
+					}})
+					e.SetDebugMetaExtractor(func(u *Unit) string { calls++; return u.ScriptData.(string) })
+					e.EnableDebug(debug)
+					w := NewWord("x")
+					w.AddUnit(&Unit{Runes: []rune("x"), BaseRom: "x", ScriptData: "before"})
+					e.Apply(w)
+					if !debug && calls != 0 {
+						t.Fatalf("debug-off extraction: %d", calls)
+					}
+					traces := e.Traces()
+					if debug && change {
+						if len(traces) != 1 || traces[0].Rule != "metadata-only" || traces[0].Metadata != "changed" || traces[0].Phase != "Render" || traces[0].Before != "x" || traces[0].After != "x" {
+							t.Fatalf("missing metadata trace: %+v", traces)
+						}
+					} else if len(traces) != 0 {
+						t.Fatalf("unexpected traces: %+v", traces)
+					}
+				})
+			}
+		}
+	}
+}
