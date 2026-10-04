@@ -50,7 +50,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0055) [P2] [done] Measure o/a split + attestation histogram on Dakshina bn (gates Q1 default + curation threshold) @deps=T-0051 @branch=feature/bengali-evaluation-gate @done=2026-10-04
   - [x] (T-0052) [P2] [done] B1: Bengali rules-only schwa (final-cluster keep, ɔ→o raising, phalas, anusvara/visarga) @deps=T-0055,T-0056 @branch=feature/bengali-b1-rules @done=2026-10-04
   - [x] (T-0060) [P2] [done] Audit user-supplied Bengali repositories and import pinned BanglaTLit test-only evaluation with provenance @done=2026-10-04 @branch=feature/bengali-b1-rules
-  - [x] (T-0057) [P2] [done] Freeze Bengali normalized split manifests and cross-source exclusions before B2 training; assert provenance and report overlap @deps=T-0051 @branch=feature/bengali-b2-data @done=2026-10-04
+  - [x] (T-0057) [P2] [done] Freeze Bengali normalized split manifests and cross-source exclusions before B2 training; assert provenance and report overlap @deps=T-0051 @branch=feature/bengali-b2-data @done=2026-10-04 @pr=117
 
 - [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow
   - [x] (T-0036) [P2] [done] Package the WASM engine as @budhash/gomanize with loader, types, make target, and Node smoke test @done=2026-09-08
