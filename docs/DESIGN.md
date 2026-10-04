@@ -184,7 +184,8 @@ Design constraints that shaped them:
 **Tractable next (unblocked by current design):**
 - **Bengali (Bangla)** — the second language, designed in
   [`reviews/2026-09-30-bengali-support-design.md`](reviews/2026-09-30-bengali-support-design.md)
-  (tracked as F-0011). It splits into a behavior-preserving generalization of the
+  (v4, tracked as F-0011; B1 prototype and B2 training-isolation gates are
+  T-0056/T-0057). It splits into a behavior-preserving generalization of the
   Brahmic layer (lifting the Devanagari literals below into config, and separating
   "keep vs delete" from "what a kept schwa spells") and the `lang/bengali`
   package. Bengali's inherent vowel (ɔ/o, not `a`) and weaker word-final deletion

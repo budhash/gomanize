@@ -1,10 +1,10 @@
 # Bengali Support — Design
 
 **Date:** 2026-09-30
-**Status:** Design proposal, v3 (not yet implemented). Reviewed independently by a
-Fable subagent and by Codex (read-only) across two passes; §1.5 records the first
-pass, §1.6 the second (which confirmed Part A is ready after two text fixes, now
-applied). Tracked as F-0011.
+**Status:** Design proposal, v4 (not yet implemented), revised 2026-10-04.
+Sections 1.5 and 1.6 record the earlier Fable/Codex reviews; §1.7 records the
+latest Codex review and accepted resolutions. Part A remains independently
+implementable; Bengali behavior must pass the B1 prototype gate. Tracked as F-0011.
 **Scope:** Add Bengali (Bangla) as the second language, in two dependency-ordered
 pieces: (A) make the shared Brahmic layer genuinely script-general with zero
 change to Hindi output, then (B) build the `lang/bengali` package on top of it.
@@ -44,7 +44,7 @@ The hard part is one thing, and it is not mechanical: **the inherent vowel.**
 Consequence for the architecture: the shared renderer's assumption that a kept
 inherent vowel has one fixed spelling is false for Bengali, and the shared
 word-final deletion rule encodes Hindi regularity Bengali lacks. Part A fixes the
-first (a config value + a per-unit spelling slot); Part B supplies the second (a
+first (a config value + a per-unit vowel-quality slot); Part B supplies the second (a
 Bengali rule set, and eventually a Bengali-trained classifier).
 
 A second consequence is for measurement: Dakshina `bn` has **3.8 attested
@@ -65,7 +65,8 @@ implementation-ready as v1 was written.** Both confirmed the sound parts: the
 five identified literals are the real remaining ones; binary keep/delete plus a
 separate vowel-quality field can model the three-way outcome; reusing
 `colloquial.SelectRules` is right; shipping Part A alone is the right discipline.
-The resolutions below are folded into the sections that follow.
+These are historical review outcomes; v4 refinements in §1.7 and the operative
+Part A/B contracts below supersede earlier wording where noted.
 
 **Convergent must-fixes (both reviewers):**
 
@@ -90,7 +91,8 @@ The resolutions below are folded into the sections that follow.
    already mutates `u.Next`.) **Resolution (J2, approved):** gemination is a
    render-time field (`BrahmicData.Geminate` + a per-consonant geminate onset in
    the symbol table), applied by the renderer — never a `BaseRom` string rewrite.
-   This dissolves all three hazards and gives correct `kh→kkh` (not `khkh`). (B.3)
+   V4 replaces the boolean with explicit modes and also changes trace recording;
+   the field alone does not resolve debug visibility. See B.3.1 and B.3.3.
 5. **Rule-order ties unchecked + unstable sort** (`NewRuleEngine` lacks the
    tie-check `AddRule` has; `sort.Slice` is unstable). Hindi is safe only because
    all its effective priorities are distinct. **Resolution:** Bengali's catalog
@@ -165,18 +167,15 @@ short list of refinements. The two that gated Part A are **applied in this v3**:
   `Rule.Conditional` only names bool options), and the readers take a **nil-profile
   Devanagari fallback** (a future/mocked `Word` not built by the brahmic parser).
 
-Pinned **before B1** (do not block A): (1) gemination **unit ownership** — the
-phala/post-visarga unit carries `Geminate` ("emit Prev's onset in place of my
-BaseRom, then my own vowel slot"), so no neighbor write; the onset is derived from
-the **final** `BaseRom` (consonant-phase rules rewrite it: স sh→s, ফ ph→f), and
-`Geminate`/`SchwaQuality`/`NoInherentVowel` are added to the debug extractor or the
-"invisible to --debug" hazard returns. (2) **`C+ও` needs a third quality**
-(`Open`→`a`): the two-value enum can't express হও→*hao* (Default already →`o`).
-(3) **Khanda ta** needs a parser hook — a `Config.VowellessConsonants []rune` (or
-a dead-consonant category) set by the generic parser, with the consonant after ৎ
-treated as after-halant-equivalent so run lookaheads don't miscount. (4) The
-priority-tie check belongs in **`NewRuleEngine`** (durable), with a Hindi-catalog
-tie test added in Part A at zero behavior cost.
+The v3 pins covered gemination ownership, an `Open` vowel quality for হও,
+khanda-ta parser support, and priority validation. **Superseded in v4:** one
+"emit Prev's onset" operation cannot handle both phalas and post-visarga
+consonants; the debug extractor alone cannot record metadata-only rule traces;
+and the হও rule cannot also generate হওয়া. The operative contracts are B.3.1–3.
+Khanda ta still requires `Config.VowellessConsonants []rune` (or a dead-consonant
+category), with the following consonant treated as after-halant-equivalent for
+run lookaheads. Priority-tie validation belongs in `NewRuleEngine`, with a Hindi
+catalog tie test in Part A; existing Hindi priorities must remain unchanged.
 
 Also fixed in v3: two internal contradictions — §5 no longer lists ɔ→o raising
 among B1 wins (it is deferred; no-op under `o`), and B.6's chandrabindu is
@@ -184,6 +183,38 @@ data-gated (J3), not "default drop".
 
 **Verdict (both, second pass): Part A is implementation-ready; the B1 pins above
 are resolved before B1 starts, not before A.**
+
+## 1.7 Third review and accepted resolutions (v4, 2026-10-04)
+
+The latest review checked remote commit `1524d43` against the current engine.
+Five findings are resolved as design contracts below, not claimed implemented:
+
+1. **Gemination ownership:** separate phala substitution from self-gemination
+   after visarga; specify aspirated onset pairs and vowel ownership (B.3.1).
+2. **Independent ও:** separate the exact হও and হওয়া transformations, including
+   the glide and suppressed য় onset; broader contexts remain data-gated (B.3.2).
+3. **Pronunciation versus spelling:** the three-class classifier cannot select
+   default-style `a` exceptions when both kept classes render as `o`. The lexicon
+   owns those exceptions initially; a learned spelling selector is deferred (B.4).
+4. **Debug traces:** record metadata-only rule changes as well as exposing final
+   unit metadata; a focused regression test must prove the rule is visible (B.3.3).
+5. **Training isolation:** freeze normalized word-type exclusions before external
+   training, assert disjointness, and report other corpus overlap (B.4.1).
+
+**Delivery order:** revise this design and task dependencies first; implement
+Part A with frozen Hindi outputs independently; then prove phala, visarga,
+khanda-ta, and independent-vowel examples in a small B0/B1 prototype before
+expanding the rule catalog. Keep A.2' separately measurable. No implementation
+or benchmark improvement is asserted by this documentation revision.
+
+**Task mapping:** T-0056 gates B1 catalog expansion with the prototype and trace
+checks; T-0057 gates B2 training with split manifests and exclusions. Existing
+T-0050 title shorthand `SchwaRom` means the semantic `SchwaQuality` contract in
+A.3; T-0052's older raising label is deferred to B2 as specified in B.3.
+
+**Acceptance:** every proposed field and rule must produce its documented
+examples without an unspecified extra transformation. A Bengali example is an
+acceptance target until the prototype passes, not evidence that a rule works.
 
 ---
 
@@ -262,8 +293,8 @@ SchwaQuality int // Default | Raised | Open. Mapped to a spelling at render time
                  // Open => "a" (e.g. the C+ও case).
 ```
 
-Renderer: where it writes `"a"` for a kept schwa, map `(SchwaQuality, scheme)` to
-a spelling — Default→`Config.InherentVowel`, Raised→the scheme's raised form.
+Renderer: where it writes `"a"` for a kept schwa, map the quality using the
+resolved profile and `Word.Options`; it does not read the `Scheme`.
 
 - **Hindi**: no rule sets `SchwaQuality` (stays Default); `InherentVowel="a"` →
   every site emits `"a"` exactly as today. Byte-identical.
@@ -306,8 +337,10 @@ only covers consonant-borne inherent vowels).
 Everything Hindi-specific already lives in `lang/hindi` and does **not** move:
 the Hindi symbol table, the फ→f rule, the व→w rules, the Hindi anusvara
 (homorganic n/m) render rules, and `schwa_tree.json` / `lexicon.tsv` /
-`roman_ngrams.tsv` (Hindi-trained data). Part A touches only `script/brahmic` and
-the Hindi `Config` construction in `lang/hindi/symbols.go`.
+`roman_ngrams.tsv` (Hindi-trained data). Part A touches `script/brahmic` and
+the Hindi `Config` construction in `lang/hindi/symbols.go`, plus the necessary
+`core.Options` style field, constructor priority validation, and regression tests.
+B1 owns gemination modes and the metadata-only trace change (B.3.3).
 
 ---
 
@@ -369,17 +402,14 @@ the current rule engine:
   under the colloquial `o` default this is a no-op (both map to `o`); it only
   matters for the academic/phonemic scheme and the B2 classifier. Independent
   অ (অতি→oti) is handled by a separate vowel-phase `BaseRom` rule.
-- **`C + ও` rule (B1, day one):** with `InherentVowel="o"`, the renderer's
-  unconditional pre-independent-vowel write would yield হও→*hoo*, হওয়া→*hooya*.
-  The two-value quality can't express this (Default already →`o`), so
-  `SchwaQuality` is a **three-value enum** `Default | Raised | Open`, where `Open`
-  maps to `a`: a B1 rule sets `Open` on the consonant before ও (হও→*hao*), and
-  ও→`w` medially handles হওয়া→*howa*.
+- **Independent ও (B1, day one):** use the separate, explicitly scoped
+  transformations in B.3.2. Do not compose a blanket `C+ও → Open` rule with a
+  blanket medial `ও→w` rule: they do not yield the documented হওয়া output.
 - **Sanskritic medial retention:** Bengali keeps many medial schwas Hindi deletes
   (রচনা *rochona* not *rochna*); the `ccv` deletion needs a Bengali-tuned guard.
 - **Positional phala rules** (ya/ba/ma). The mechanism is a **render-time
-  gemination field**, not neighbor `BaseRom` mutation (§1.5 #4, J2): the rule sets
-  `Geminate`/silences the phala consonant; the renderer doubles the rendered onset
+  gemination mode**, not neighbor `BaseRom` mutation (§1.5 #4, J2): the phala
+  carries `RepeatPrevious`, with onset-pair rendering defined in B.3.1
   (`kh→kkh`, never `khkh`). ya-phala ্য (initial → æ, via `SchwaQuality`/`BaseRom`
   on the phala-bearing unit — *not* a following vowel, which may not exist;
   medial → geminate + silent য), ba-phala ্ব and ma-phala ্ম (initial silent;
@@ -389,20 +419,123 @@ the current rule engine:
 - **Positional conjuncts:** ক্ষ (initial `kh` / medial `kkh`), জ্ঞ (initial
   `g`/`gæ` / medial `gg`).
 - **Modifiers:** anusvara ং → `ng` always (retire Hindi's homorganic rules for
-  Bengali); visarga ঃ medial → geminate the next consonant via the same
-  render-time gemination field (দুঃখ *dukkho*); chandrabindu ঁ → **data-gated**
+  Bengali); visarga ঃ medial → the following consonant carries `GeminateSelf`
+  and the visarga suppresses its own output (দুঃখ *dukkho*, B.3.1);
+  chandrabindu ঁ → **data-gated**
   (J3, see T-0055 — likely positional, `n` medially; the earlier "drop" default
   was an unmeasured guess and is retracted).
+
+### B.3.1 Gemination modes and vowel ownership (B1 contract)
+
+Use `GeminationMode{None, RepeatPrevious, GeminateSelf}` on `BrahmicData`.
+`None` is zero and preserves existing rendering. Rules set only their own unit's
+mode; source identity and `BaseRom` remain available to later rules.
+
+- **RepeatPrevious:** owned by the phala. Replace its consonant onset with the
+  right member of the preceding consonant's geminate pair; emit the left member
+  at that preceding consonant. The renderer may inspect adjacent modes, but no
+  rule mutates the preceding unit. The pair is derived from the preceding unit's
+  final `BaseRom` after consonant rules: `t → (t,t)`, `kh → (k,kh)`. Thus an
+  aspirated onset is emitted as `kkh`, not `khkh`. Validate adjacency/cluster
+  eligibility; MultiChar and already-clustered exceptions must not be doubled
+  automatically. The preceding consonant has no vowel before the halant-linked
+  phala; the phala retains its own vowel slot or following matra.
+- **GeminateSelf:** owned by the consonant immediately following visarga. Emit
+  both members of its own final onset pair, then its own vowel slot or matra.
+  Never derive this onset from `Prev`, which is the modifier. The visarga unit's
+  separate rule suppresses only its own output.
+
+Prototype acceptance examples: মধ্য parses as `ম | ধ | য(after-halant)` and
+emits `mo | d | dh+o → moddho` when the phala selects the `(d,dh)` pair;
+দুঃখ parses as `দ | ু | ঃ | খ` and emits `d | u | empty | kkh+o → dukkho`.
+The phala/post-visarga vowel keep decisions are explicit Schwa-phase rules;
+gemination must not silently force retention. Test aspirated/unaspirated pairs,
+following matras, changed final onsets, and cluster exceptions independently.
+
+### B.3.2 Independent ও: exact prototype transformations
+
+Start with exact source-word contexts for these acceptance examples. Broader
+rules require attested positive and negative cases; the examples alone do not
+justify a general `C+ও` rewrite. Match source identity, including both য় aliases,
+not a `BaseRom` changed by an earlier phase. Each rule acts on its own unit.
+
+| Input / parsed units | Explicit actions | Rendered pieces (default style) |
+|---|---|---|
+| হও: `হ \| ও` | On হ, set `Open`; leave independent ও as `o` | `h+a \| o → hao` |
+| হওয়া: `হ \| ও \| য় \| া` | Leave হ at Default; on ও set `BaseRom=w`; on য় suppress its own onset; leave া as `a` | `h+o \| w \| empty \| a → howa` |
+
+The হও-specific `Open` rule must not match হওয়া. য় stays a consonant with its
+following matra, so it acquires no extra inherent vowel when its onset is empty.
+Changing ও's romanization must not change its independent-vowel unit type; the
+preceding consonant still takes the pre-independent-vowel renderer path.
+These are scoped linguistic rules, not lexicon hits; test with Lexicon/Rerank
+both off. Require equivalent decomposed/precomposed য় outputs and negative
+cases for standalone ও, unrelated medial ও, and য়+া outside হওয়া. Assert rule
+traces for every affected unit. Test the style flag separately: Default changes
+with style, while Open stays `a`; do not promise `howa` under every style.
+
+### B.3.3 Metadata-only rule tracing
+
+Extending `DebugMetaExtractor` exposes final fields but does not fix rule traces:
+`core.RuleEngine.traceRule` currently discards non-Schwa rules unless `BaseRom`
+changes. During debug execution, capture metadata before and after each applied
+rule and retain a trace when either metadata or `BaseRom` changes (preserve the
+existing Schwa trace behavior). Apply this to both normal and fallback passes.
+Keep extraction behind the debug flag. Include gemination mode, vowel quality,
+and `NoInherentVowel` in Brahmic metadata. A focused test must show a Render-phase
+metadata-only rule in `Traces`, with its rule name and resulting metadata; also
+cover unchanged rules and debug-off execution. Final unit metadata alone is not
+a passing test.
 
 ### B.4 The inherent-vowel classifier (Phase B2)
 
 Rules alone cap near ~85% on Bengali deletion and cannot do ɔ-vs-o reliably. The
 learned path mirrors Hindi's schwa model but with **three output classes
 (∅/ɔ/o)**, which the tree-inference loader must support (minor generalization).
-Training data: the Google `bn` pronunciation lexicon (60k+ entries with phonemic
-transcription → ∅/ɔ/o labels directly; train-split-only under our contamination
-rules), with Dakshina `bn` supplying the colloquial *spelling* of a kept vowel.
-Dakshina `bn` remains the benchmark, never a training source.
+Training data: the Google `bn` pronunciation lexicon (60k+ entries). Derive
+∅/ɔ/o labels through grapheme–phoneme alignment, with rejected/ambiguous
+alignments counted; a phoneme string alone does not identify each unit's label.
+The classifier predicts phonological outcomes only. It never uses `Open` as a
+proxy for an attested Latin `a` spelling; `Open` belongs to the scoped B1 rules.
+Under default style both retained classes render as `o`, so classifier quality
+alone cannot resolve Sanskritic/name `a` spellings. Initially those spellings
+belong exclusively to the train-only lexicon. A learned spelling selector is
+separate, deferred work requiring measured benefit. Do not promise lexical
+exception coverage for unseen names.
+
+Dakshina **train** supplies attested spellings for the lexicon and reranker;
+**dev** supports tuning and B0 histograms; **test** is held out for final
+reporting. This replaces the contradictory v3 statement that all of Dakshina is
+benchmark-only. No held-out romanization is a training/mining input. The
+non-default-style lexicon policy (style-key or bypass) must be chosen and tested
+before B2 ships, so a lookup cannot silently override the requested style.
+
+### B.4.1 Normalization, splits, and overlap assertions
+
+Before training any B2 artifact, commit source versions/checksums, the split
+seed, and normalized word-type manifests. Normalize comparison keys consistently
+across all sources: Unicode NFC (including composition-excluded nukta aliases),
+format-character removal matching the parser, and canonical equivalence of split
+matras. Preserve source text for audit; do not merge distinct spellings using
+romanized output. If normalization creates cross-split duplicates, exclude the
+conflicting training entries rather than moving held-out types into training.
+
+Exclude every normalized Dakshina dev/test type from the Google lexicon training
+pool **before alignment or feature extraction**. Split the remaining external
+pool by normalized word type; all pronunciations and schwa instances of a word
+stay together. Train on its train subset only and tune on its dev subset. Assert
+zero overlap between external training and both external held-out sets and
+Dakshina dev/test. Apply the Dakshina exclusion check to lexicon and reranker
+training inputs too, and require zero held-out lexicon coverage.
+
+Report overlap with Aksharantar, BanglaTLit, and lyrics gold separately, including
+full-corpus and unseen-type metrics where applicable. They remain evaluation
+sources, never sources of learned spelling entries. Record counts before/after
+normalization and exclusion, ambiguous alignment counts, and manifest hashes
+with every trained artifact. A pipeline rerun must fail on violated exclusions;
+a random split of the Google lexicon alone is not evidence of Dakshina isolation.
+Update RESEARCH's Hindi-only training policy with this explicit Bengali extension
+in the B2 implementation PR. No overlap counts have been measured in this design.
 
 ### B.5 Scheme (decided: reuse `colloquial`)
 
@@ -424,8 +557,8 @@ fields / CLI flags rather than baked in:
 - **Kept-vowel style** — the colloquial default spells a kept inherent vowel `o`
   (B.3); a flag selects the academic/graphemic `a` (and later `ô` for the
   ɔ-marking convention). This is the switch for the Q1 register tension: `o` by
-  default, `a` on demand, with the lexicon/classifier handling the per-word
-  exceptions in between.
+  default, `a` on demand, with the lexicon handling attested per-word spelling
+  exceptions. The classifier predicts pronunciation, not the spelling register.
 - **Chandrabindu** — data-gated (J3, T-0055), likely positional (`n` medially);
   not a hardcoded "drop" default. Exposed as a flag once measured.
 - The existing **generic** `--enable-rule` / `--disable-rule` pattern mechanism
@@ -440,7 +573,8 @@ Each flag is covered by the same before/after measurement discipline as Hindi's.
 
 | Role | Hindi used | Bengali equivalent | License |
 |---|---|---|---|
-| Primary benchmark + training | Dakshina hi | **Dakshina bn** — 25k/2.5k/2.5k word types, 3.8 variants/type | CC BY-SA 4.0 |
+| Primary benchmark + training | Dakshina hi | **Dakshina bn** — train/dev/test: 25k/2.5k/2.5k word types, 3.8 variants/type; roles and exclusions in B.4.1 | CC BY-SA 4.0 |
+| Phonological classifier training | Dakshina hi alignment | **Google bn pronunciation lexicon** — aligned labels; external splits and Dakshina exclusions (B.4.1) | CC BY 4.0 |
 | Independent human benchmark | Aksharantar hi test | **Aksharantar ben test** — 5,009 Karya-annotated (AK-Freq 1,071 / AK-Uni 1,198 / AK-NEF 1,059 / AK-NEI 1,681) | CC-BY |
 | Naturally-typed (COMI role) | COMI-LINGUA | **BanglaTLit** — 42,705 Banglish↔Bengali sentence pairs | MIT |
 | Frequency ranking (Shabd role) | Shabd (CC0) | **derive from IndicCorp v2 Bengali** (~29.6M rows, CC0); Leipzig `ben_wikipedia_2021` as quick first pass | CC0 / CC-BY |
@@ -458,14 +592,16 @@ provenance/license to be confirmed before anything is committed.
 
 ## 3. Milestones, effort, and gates
 
-Dependency-ordered. Each ships as its own green PR.
+Dependency-ordered. Each implementation phase ships as its own green PR. The
+v4 design revision stays on `feature/bengali-design`. B0 freezes evaluation boundaries and uses
+train/dev for exploratory histograms; test results must not guide rule tuning.
 
 | Phase | Deliverable | Rough effort | Gate |
 |---|---|---|---|
 | **A** | Generalized Brahmic layer + Hindi golden snapshot | 2–3 days | Hindi byte-identical (3 nets, A.4) |
 | **B0** | `lang/bengali` symbol table, config, compositional conjuncts, `bengali` wired into `New()`; naive output; `bn` benchmark harness that **emits the o/a-split and attestation histograms** (gates the Q1 default and the curation threshold) | 3–5 days | builds; Hindi untouched; baseline + histograms measured |
-| **B1 (light)** | Non-schwa rules in full; cheap schwa wins (final-cluster keep) + phala (render-time gemination) + anusvara/visarga + the `C+ও` rule + behavioral flags (B.6); priority-tie test on the composed catalog. ɔ→o raising deferred (no-op under `o`). Deliberately **not** exhaustive schwa tuning | 1 week | match-any on Dakshina `bn` clears a bar **pre-registered from the B0 histograms** (not merely "beats B0"); bn-specific gate set empirically |
-| **B2** | Bengali learned components (3-way schwa classifier, lexicon, reranker) | 1–2 weeks | each improves held-out `bn` match-any; contamination asserted |
+| **B1 (light)** | Non-schwa rules in full; cheap schwa wins (final-cluster keep) + phala (explicit gemination modes) + anusvara/visarga + the `C+ও` rule + behavioral flags (B.6); priority-tie test on the composed catalog. ɔ→o raising deferred (no-op under `o`). Deliberately **not** exhaustive schwa tuning | 1 week | B.3.1–3 prototype examples and traces pass before catalog expansion; match-any on Dakshina `bn` clears a bar **pre-registered from the B0 histograms** (not merely "beats B0"); bn-specific gate set empirically |
+| **B2** | Bengali learned components (3-way schwa classifier, lexicon, reranker) | 1–2 weeks | each improves held-out `bn` match-any; normalized exclusions and artifact provenance asserted (B.4.1) |
 | **B3** | Bengali PD lyrics gold set + line-level suite | 2–4 days | line-CER reported |
 
 A usable, honestly-measured rules-only Bengali exists after **A + B0 + B1**
@@ -492,12 +628,10 @@ not copy 85%. The Hindi gate and suites are untouched.
   Accept and document the error class, as RESEARCH §5 does for Hindi.
 - **æ (ya-phala-initial) has no settled Banglish spelling** → those words are
   inherently multi-reference.
-- **Gemination correctness.** Phala/visarga gemination is a render-time field
-  (§1.5 #4), which removes the acted-map / BaseRom-match / debug-blindness hazards
-  the reviews found in the naive neighbor-mutation approach — but the
-  gemination-onset table (`kh→kkh`) and the exception matrix (no gemination after a
-  MultiChar conjunct like লক্ষ্য, or after an already-after-halant consonant) still
-  need care; prototype one phala + the visarga rule early in B1.
+- **Gemination correctness.** Explicit render-time modes avoid neighbor mutation,
+  but aspiration placement, vowel ownership, and cluster exceptions still require
+  the B.3.1 prototype gate. Metadata-only trace visibility requires the core
+  change in B.3.3, not just a new field or extractor.
 - **Cluster/phala ordering.** The "স→s in clusters" rule must test the next unit's
   *identity*, not just after-halant, or স্বামী → *sami* instead of *shami* (review).
 - **Frequency data** must be derived, not adopted (no Shabd equivalent).
@@ -510,8 +644,9 @@ not copy 85%. The Hindi gate and suites are untouched.
 - **Scheme:** reuse `colloquial` (B.5). Not language-coupled.
 - **Kept-vowel default:** `o` as the rules default, exposed as a switchable flag
   (B.6); the `a`-exceptions (Sanskritic words, proper names) are handled by the
-  lexicon and ɔ/o classifier, not hardcoded as rules. **Precondition:** measure
-  the actual o/a split on Dakshina `bn` before locking the default value — the
+  train-only lexicon; the ɔ/o classifier cannot select `a` under default style.
+  **Precondition:** measure the actual o/a split on Dakshina `bn` train/dev before
+  locking the default value — the
   B0 benchmark harness emits this histogram first (T-0055). Front-load the Bengali
   **lexicon for proper nouns**, since names are high-salience (a mangled name is
   noticed where a mangled common word is forgiven), exactly as Hindi's lexicon

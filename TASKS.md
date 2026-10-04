@@ -114,11 +114,13 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
 
 - [ ] (F-0011) [P2] [todo] Bengali (Bangla) support
   - [ ] (T-0050) [P2] [todo] Part A: generalize Brahmic layer (ScriptProfile config + SchwaRom); zero Hindi regression + golden snapshot
-  - [ ] (T-0051) [P2] [todo] B0: lang/bengali symbol table + config + compositional conjuncts; wire New(); bn benchmark harness
-  - [ ] (T-0052) [P2] [todo] B1: Bengali rules-only schwa (final-cluster keep, ɔ→o raising, phalas, anusvara/visarga)
-  - [ ] (T-0053) [P3] [todo] B2: Bengali learned components (3-way schwa classifier, lexicon, reranker)
+  - [ ] (T-0051) [P2] [todo] B0: lang/bengali symbol table + config + compositional conjuncts; wire New(); bn benchmark harness @deps=T-0050
+  - [ ] (T-0052) [P2] [todo] B1: Bengali rules-only schwa (final-cluster keep, ɔ→o raising, phalas, anusvara/visarga) @deps=T-0055,T-0056
+  - [ ] (T-0053) [P3] [todo] B2: Bengali learned components (3-way schwa classifier, lexicon, reranker) @deps=T-0052,T-0057
   - [ ] (T-0054) [P3] [todo] B3: Bengali PD lyrics gold set (Tagore Gitabitan via Wikisource) + line-level suite
-  - [ ] (T-0055) [P2] [todo] Measure o/a split + attestation histogram on Dakshina bn (gates Q1 default + curation threshold)
+  - [ ] (T-0055) [P2] [todo] Measure o/a split + attestation histogram on Dakshina bn (gates Q1 default + curation threshold) @deps=T-0051
+  - [ ] (T-0056) [P2] [todo] B1 prototype: phala/self gemination modes, hao/howa contexts, khanda-ta and metadata-only rule traces; gate catalog expansion @deps=T-0051
+  - [ ] (T-0057) [P2] [todo] Freeze Bengali normalized split manifests and cross-source exclusions before B2 training; assert provenance and report overlap @deps=T-0051
 ## Skipped
 
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow
