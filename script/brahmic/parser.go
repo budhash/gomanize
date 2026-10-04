@@ -12,6 +12,7 @@ import (
 // Handles halant tracking and nukta combinations.
 // Implements core.Parser interface.
 type Parser struct {
+	profile   *ScriptProfile
 	multiChar []string
 	halant    string
 	nukta     string
@@ -24,7 +25,9 @@ func NewParser(config interface{}) *Parser {
 	if !ok {
 		panic(fmt.Sprintf("brahmic.NewParser: expected brahmic.Config, got %T", config))
 	}
+	cfg = cfg.normalize()
 	return &Parser{
+		profile:   cfg.Profile,
 		halant:    cfg.Halant,
 		nukta:     cfg.Nukta,
 		multiChar: cfg.MultiChar,
@@ -133,6 +136,7 @@ func (p *Parser) Parse(input string, symbols core.SymbolMap) *core.Word {
 		runeIdx++
 	}
 
+	SetWordBrahmicData(word, &WordBrahmicData{Profile: p.profile})
 	return word
 }
 

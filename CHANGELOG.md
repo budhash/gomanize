@@ -9,6 +9,21 @@ is the same engine compiled to WebAssembly and shares this version line. Each
 tagged release also has auto-generated notes on the
 [GitHub releases page](https://github.com/budhash/gomanize/releases).
 
+## [Unreleased]
+
+### Changed
+
+- Generalized the Brahmic renderer and shared rule constants through an optional
+  script profile, with separate retained-vowel quality. Legacy callers retain
+  Devanagari defaults; Hindi output is protected by a frozen corpus snapshot.
+- Rule-engine construction now rejects same-phase effective-priority conflicts,
+  matching `AddRule`, including rules disabled by default.
+
+### Added
+
+- `Options.InherentVowelA` for profile-aware rendering; no Hindi output change.
+  This API option is not yet a CLI flag or a complete academic scheme.
+
 ## [1.2.1] - 2026-09-13
 
 ### Added

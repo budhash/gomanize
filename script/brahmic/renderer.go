@@ -32,18 +32,18 @@ func (r *Renderer) Render(word *core.Word) string {
 			if unit.Next != nil && unit.Next.Type == core.UnitVowel {
 				// Suppress this consonant's inherent schwa when the next vowel
 				//   (a) is a MATRA — it binds here and supplies the vowel; or
-				//   (b) is the independent bare-'a' vowel अ (U+0905) / ऄ (U+0904)
+				//   (b) is a configured bare independent vowel (Hindi अ / ऄ)
 				//       — it *is* the schwa vowel, so the two coalesce into one
 				//       "a" (दरअसल → "darasal", not "daraasal").
-				if IsMatraUnit(unit.Next) || isInherentAVowel(unit.Next) {
+				if IsMatraUnit(unit.Next) || isBareVowel(unit.Next, word) {
 					continue
 				}
 				// Any other independent vowel (ई, ए, ऋ, … ) starts its own
-				// syllable, so this consonant keeps its inherent "a"
+				// syllable, so this consonant keeps its inherent vowel
 				// unconditionally — it cannot be vowel-less before an independent
 				// vowel, regardless of the schwa rules/model (गई → "gai",
 				// कऋ → "kari", never collapsing onto the matra form कृ → "kri").
-				sb.WriteString("a")
+				sb.WriteString(inherentVowel(unit, word))
 				continue
 			}
 
@@ -54,11 +54,11 @@ func (r *Renderer) Render(word *core.Word) string {
 			}
 
 			// Use SchwaState decision from rules
-			// - SchwaKeep: add "a"
+			// - SchwaKeep: add the configured inherent vowel
 			// - SchwaDelete: no schwa
 			// - SchwaPending: treat as Keep (rules didn't run or fallback applies)
 			if GetSchwa(unit) != SchwaDelete {
-				sb.WriteString("a")
+				sb.WriteString(inherentVowel(unit, word))
 			}
 		}
 	}
@@ -66,12 +66,31 @@ func (r *Renderer) Render(word *core.Word) string {
 	return sb.String()
 }
 
-// isInherentAVowel reports whether a unit is the independent bare-'a' vowel
-// (Devanagari अ U+0905 / ऄ U+0904) — the vowel identical to the inherent schwa,
-// which therefore coalesces with a preceding consonant's schwa. Checked by
-// source rune (not romanized output) so it is stable across rule phases.
-func isInherentAVowel(u *core.Unit) bool {
-	return len(u.Runes) == 1 && (u.Runes[0] == 0x0905 || u.Runes[0] == 0x0904)
+// isBareVowel checks source identity so vowel-phase rewrites cannot change
+// whether an independent bare vowel coalesces with the preceding inherent one.
+func isBareVowel(u *core.Unit, w *core.Word) bool {
+	if len(u.Runes) != 1 {
+		return false
+	}
+	return containsRune(profileFor(w).BareVowelRunes, u.Runes[0])
+}
+
+// inherentVowel is also used before non-bare independent vowels, where the
+// renderer intentionally ignores SchwaState (but honors vowel quality).
+func inherentVowel(u *core.Unit, w *core.Word) string {
+	profile := profileFor(w)
+	if bd := GetBrahmicData(u); bd != nil {
+		switch bd.SchwaQuality {
+		case SchwaRaised:
+			return profile.RaisedVowel
+		case SchwaOpen:
+			return "a"
+		}
+	}
+	if w.Options.InherentVowelA {
+		return "a"
+	}
+	return profile.InherentVowel
 }
 
 // RenderDebug returns a detailed debug representation of the word.

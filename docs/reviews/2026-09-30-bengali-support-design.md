@@ -1,10 +1,11 @@
 # Bengali Support — Design
 
 **Date:** 2026-09-30
-**Status:** Design proposal, v4 (not yet implemented), revised 2026-10-04.
+**Status:** Design v4; Part A config/quality refactor implemented on the feature
+branch, 2026-10-04. Bengali and A.2' remain unimplemented.
 Sections 1.5 and 1.6 record the earlier Fable/Codex reviews; §1.7 records the
-latest Codex review and accepted resolutions. Part A remains independently
-implementable; Bengali behavior must pass the B1 prototype gate. Tracked as F-0011.
+latest Codex review and accepted resolutions. Part A is independent of Bengali
+implementation; Bengali behavior must pass the B1 prototype gate. Tracked as F-0011.
 **Scope:** Add Bengali (Bangla) as the second language, in two dependency-ordered
 pieces: (A) make the shared Brahmic layer genuinely script-general with zero
 change to Hindi output, then (B) build the `lang/bengali` package on top of it.
@@ -237,30 +238,30 @@ is clean. These five are the remaining leaks.
 
 ### A.2 `ScriptProfile`: lift the literals into config
 
-Extend `brahmic.Config` (or add a `Profile` field) with:
+Implemented as `brahmic.Config.Profile *ScriptProfile`; the existing Halant,
+Nukta, and MultiChar fields stay on Config. The resolved profile contains:
 
 ```go
-type Config struct {
-    Halant    string
-    Nukta     string
-    MultiChar []string
-    // New (script-general parameters; Hindi values reproduce today's literals):
-    InherentVowel        string   // Hindi "a"; Bengali "o"
-    BareVowelRunes       []rune   // Hindi {0x0905, 0x0904}; Bengali {0x0985}
-    AaMatra              rune     // Hindi 0x093E; Bengali 0x09BE
-    SonorousRunes        []rune   // Hindi {र,य,व}; Bengali {র,য,ব,...}
-    IndependentVowelRange [2]rune // Hindi {0x0905,0x0914}; Bengali {0x0985,0x0994}
+type ScriptProfile struct {
+    InherentVowel         string   // Hindi "a"; future Bengali "o"
+    RaisedVowel           string   // "o" by default
+    BareVowelRunes        []rune   // Hindi {0x0905, 0x0904}
+    AaMatra               rune     // Hindi 0x093E
+    SonorousRunes         []rune   // Hindi {र,य,व}
+    IndependentVowelRange [2]rune  // Hindi {0x0905,0x0914}
 }
 ```
 
 **Plumbing (the review's #1 gap).** Only the parser receives `Config` today. The
 parser resolves the profile and stamps it onto the word via `WordBrahmicData`;
 the renderer and `brahmic.SchwaRules()` read it from the word. `IdentifyRuns`
-must be changed to *merge* into `WordBrahmicData` rather than replacing it
-(`runs.go:53` currently clobbers). No `core.Script` / `NewRenderer` /
+merges runs into existing `WordBrahmicData` rather than replacing the profile. No `core.Script` / `NewRenderer` /
 `PrepareWord` signature changes. **Defaulting:** `Config.normalize()` fills the
-Devanagari values for any empty field so the exported zero-value `Config{Halant,
-Nukta}` still romanizes Hindi correctly; a dedicated test asserts this.
+Devanagari values for zero scalar fields and nil slices; explicit empty rune
+slices disable membership. Nil Profile and legacy `Config{Halant, Nukta}` callers
+retain Hindi behavior. The parser copies caller-owned profile slices; parsed
+profiles are read-only. Dedicated tests cover partial defaults and nil-profile
+fallbacks, including manually built words.
 
 The five sites then read from config instead of literals. **Hindi's config
 reproduces the current values exactly**, so this lift is behavior-preserving by
@@ -272,7 +273,7 @@ byte-identical *by construction*. The `cccc-final` rune-index fix (J1) is a
 predicate `w.Units[1] == u` (NOT "second consonant" — that would wrongly flip
 vowel-initial words like অজগর). This is behavior-*changing* for any **multi-rune
 first unit** (nukta- and ज্ঞ/ক্ষ-initial), so it ships as its own commit with its
-own measurement. It is **not** assumed neutral: `cccc-final` already mis-deletes
+own measurement (tracked separately as T-0058). It is **not** assumed neutral: `cccc-final` already mis-deletes
 some words (जबरदस्त→*jabradast*), so this can propagate that deletion to
 nukta-initial forms — evaluate the moved words against attested data, update the
 golden snapshot *deliberately*, and justify. It does **not** shelter under the
@@ -288,9 +289,10 @@ a literal `SchwaRom` conflates phonological class with output style, and a globa
 
 ```go
 // in BrahmicData
-SchwaQuality int // Default | Raised | Open. Mapped to a spelling at render time
-                 // by a core.Options bool; Default => Config.InherentVowel,
-                 // Open => "a" (e.g. the C+ও case).
+SchwaQuality SchwaQuality // SchwaDefault | SchwaRaised | SchwaOpen.
+                          // Default => Profile.InherentVowel (or "a" with
+                          // Options.InherentVowelA); Raised => Profile.RaisedVowel;
+                          // Open => "a" (the scoped হও case).
 ```
 
 Renderer: where it writes `"a"` for a kept schwa, map the quality using the
@@ -301,9 +303,10 @@ resolved profile and `Word.Options`; it does not read the `Scheme`.
 - **Bengali**: `InherentVowel="o"` gives the common case for free; a post-Schwa
   raising rule (or the classifier) sets `Raised` where harmony/ra-phala/final
   applies. The quality→spelling map is read from a **`core.Options` bool** (the
-  renderer sees `Word.Options`, not the `Scheme`): colloquial (default) maps
-  Default and Raised both to `o`; the academic option maps Default→`a`/`ô`,
-  Raised→`o`. Readers fall back to Devanagari defaults when the profile is nil.
+  renderer sees `Word.Options`, not the `Scheme`): a future Bengali profile
+  maps Default and Raised both to `o`; `InherentVowelA` maps Default→`a` and
+  leaves Raised→`o`. The `ô` convention and full academic scheme are deferred.
+  Readers fall back to Devanagari defaults when the profile is nil.
 
 This maps the three-way outcome onto existing machinery: `Delete` → delete;
 ɔ/o → `Keep` + `SchwaQuality`. **Caveat (review):** before an *independent* vowel
@@ -331,6 +334,20 @@ only covers consonant-borne inherent vowels).
 3. **Ship Part A alone, first.** Part A merges as its own PR, green, *before any
    Bengali code exists*. If a count moves, there is no Bengali to blame — it is a
    pure refactor regression and gets fixed in that PR.
+
+The initial frozen fixture is committed before the refactor in `6f59b22`:
+264,064 distinct inputs from all ten Hindi CSVs plus invariant constructs,
+13 option/rule profiles, and 3,432,832 exact outputs. See
+`testdata/hindi_snapshot/README.md` for provenance and deliberate regeneration.
+The fixture is a compatibility baseline, not an accuracy benchmark.
+
+Part A validation (2026-10-04): all 3,432,832 outputs matched without regenerating
+the fixture. A deliberate default-vowel mutation made the snapshot fail and was
+restored. `make ci` passed formatting, lint, build, race/coverage (62.3% total),
+and accuracy suites: curated pure 1147/1330 (86.2%), match-any 1236/1330 (92.9%),
+and held-out constructs 126/129 default (97.7%). The full instrumented snapshot
+replay took 515 seconds; the coverage target now permits 20 minutes per package
+for slower workers. The rune-index correction is still pending as T-0058.
 
 ### A.5 Scope boundary — what stays Hindi-only
 
@@ -375,13 +392,18 @@ modifier tables). Notable mappings that differ from Hindi:
 ### B.2 Bengali `Config`
 
 ```go
-InherentVowel:         "o",
-BareVowelRunes:        []rune{0x0985},            // অ
-AaMatra:               0x09BE,                     // া
-SonorousRunes:         []rune{'র','য','ব', ...},   // tune against bn data
-IndependentVowelRange: [2]rune{0x0985, 0x0994},
-Halant:                "্",
-Nukta:                 "়",
+brahmic.Config{
+    Halant: "্",
+    Nukta:  "়",
+    Profile: &brahmic.ScriptProfile{
+        InherentVowel:         "o",
+        RaisedVowel:           "o",
+        BareVowelRunes:        []rune{0x0985}, // অ
+        AaMatra:               0x09BE,        // া
+        SonorousRunes:         []rune{'র', 'য', 'ব'}, // tune against bn data
+        IndependentVowelRange: [2]rune{0x0985, 0x0994},
+    },
+}
 ```
 
 ### B.3 Bengali rules (the real linguistic work)

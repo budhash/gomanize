@@ -31,3 +31,7 @@ go test . -run '^TestHindiFrozenSnapshot$' -update-hindi-snapshot -count=1 -v
 Record the baseline commit and explain per-input changes when regenerating.
 Never regenerate to make a behavior-preserving refactor pass. Corpus sources
 and their licenses are documented in `docs/RESEARCH.md`.
+
+The initial full replay took about 20 seconds normally and 515 seconds with
+race/coverage instrumentation on the development machine. `make test-cover`
+allows 20 minutes per package so slower CI workers can complete the full net.

@@ -100,6 +100,12 @@ func (w *Word) AddUnit(u *Unit) {
 
 // Options configures transliteration behavior.
 type Options struct {
+	// InherentVowelA renders a default-quality inherent vowel as "a" instead
+	// of the script profile's default. Raised/open qualities are unchanged.
+	// This renderer option does not rewrite explicit vowels or lexicon hits.
+	// It has no effect on Hindi output; language support for other styles is
+	// independent of this option (it is not a full academic scheme).
+	InherentVowelA bool
 	// LongVowels outputs "aa" for all ā (aa-matra) positions.
 	LongVowels bool
 	// SimpleNasals uses simplified nasal endings (करें→karen instead of karein).

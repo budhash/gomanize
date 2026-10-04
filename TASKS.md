@@ -43,7 +43,8 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0004) [P2] [done] Pre-commit parity: no-commit-to-branch + large-file/whitespace guards @done=2026-09-04
 
 - [ ] (F-0011) [P2] [todo] Bengali (Bangla) support @shadow
-  - [ ] (T-0050) [P2] [doing] Part A: generalize Brahmic layer (ScriptProfile config + SchwaRom); zero Hindi regression + golden snapshot
+  - [x] (T-0050) [P2] [done] Part A: generalize Brahmic layer (ScriptProfile config + SchwaRom); zero Hindi regression + golden snapshot @done=2026-10-04
+  - [ ] (T-0058) [P2] [todo] A.2: measure second-unit cccc-final index correction against attested Hindi data; review per-input snapshot deltas separately @deps=T-0050
 - [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow
   - [x] (T-0036) [P2] [done] Package the WASM engine as @budhash/gomanize with loader, types, make target, and Node smoke test @done=2026-09-08
 - [ ] (F-0006) [P2] [todo] WASM build + web demo (data flywheel) @shadow

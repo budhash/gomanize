@@ -115,7 +115,8 @@ test-verbose: ## Run tests with verbose output and coverage
 
 test-cover: ## Run tests with coverage report
 	@echo "Running tests with coverage..."
-	@$(GOTEST) -race -coverpkg=./... -coverprofile=coverage.out ./...
+	# Full frozen-corpus replay is much slower under race + atomic coverage.
+	@$(GOTEST) -timeout=20m -race -coverpkg=./... -coverprofile=coverage.out ./...
 	@$(GOCMD) tool cover -func=coverage.out | tail -1
 	@echo "✓ Coverage report: coverage.out"
 

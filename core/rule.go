@@ -121,9 +121,10 @@ type RuleEngine struct {
 }
 
 // NewRuleEngine creates a new rule engine with the given rules.
-// Panics if any rule has nil Condition or Action functions.
+// Panics for missing functions, invalid priorities, or same-phase priority ties.
 func NewRuleEngine(rules []Rule) *RuleEngine {
-	// Validate all rules have required functions
+	// Validate before sorting, including disabled rules that may be enabled later.
+	seen := make(map[[2]int]string)
 	for i, r := range rules {
 		if r.Condition == nil {
 			panic(fmt.Sprintf("core.NewRuleEngine: rule %d (%q) has nil Condition", i, r.Name))
@@ -134,6 +135,11 @@ func NewRuleEngine(rules []Rule) *RuleEngine {
 		if r.Priority < 0 || r.Priority > 99 {
 			panic(fmt.Sprintf("core.NewRuleEngine: rule %d (%q) has invalid Priority %d (must be 0-99)", i, r.Name, r.Priority))
 		}
+		key := [2]int{int(r.Phase), r.EffectivePriority()}
+		if name, exists := seen[key]; exists {
+			panic(fmt.Sprintf("core.NewRuleEngine: priority conflict: rules %q and %q both have effective priority %d in phase %s", name, r.Name, r.EffectivePriority(), r.Phase))
+		}
+		seen[key] = r.Name
 	}
 
 	e := &RuleEngine{
