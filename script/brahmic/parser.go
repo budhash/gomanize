@@ -12,10 +12,11 @@ import (
 // Handles halant tracking and nukta combinations.
 // Implements core.Parser interface.
 type Parser struct {
-	profile   *ScriptProfile
-	multiChar []string
-	halant    string
-	nukta     string
+	vowellessConsonants []rune
+	profile             *ScriptProfile
+	multiChar           []string
+	halant              string
+	nukta               string
 }
 
 // NewParser creates a parser with the given configuration.
@@ -27,10 +28,11 @@ func NewParser(config interface{}) *Parser {
 	}
 	cfg = cfg.normalize()
 	return &Parser{
-		profile:   cfg.Profile,
-		halant:    cfg.Halant,
-		nukta:     cfg.Nukta,
-		multiChar: cfg.MultiChar,
+		profile:             cfg.Profile,
+		vowellessConsonants: append([]rune(nil), cfg.VowellessConsonants...),
+		halant:              cfg.Halant,
+		nukta:               cfg.Nukta,
+		multiChar:           cfg.MultiChar,
 	}
 }
 
@@ -153,6 +155,10 @@ func (p *Parser) createUnitWithInfo(runes []rune, runeIdx int, afterHalant bool,
 	bd := NewBrahmicData()
 	bd.AfterHalant = afterHalant
 	bd.IsMatra = info.Category == CatMatra
+	if unitType == core.UnitConsonant && len(runes) == 1 && containsRune(p.vowellessConsonants, runes[0]) {
+		bd.NoInherentVowel = true
+		bd.Schwa = SchwaDelete
+	}
 
 	// Only consonants and conjuncts need schwa tracking
 	if unitType != core.UnitConsonant && unitType != core.UnitConjunct {

@@ -2,7 +2,9 @@
 
 **Date:** 2026-09-30
 **Status:** Design v4; Part A config/quality refactor implemented on the feature
-branch, 2026-10-04. Bengali and A.2' remain unimplemented.
+branch, 2026-10-04. Experimental Bengali B0 is implemented in its dependent
+branch; B1/B2/B3 and A.2' remain unimplemented. B0 measurements and remaining
+T-0055 decisions are in [the B0 report](2026-10-04-bengali-b0-baseline.md).
 Sections 1.5 and 1.6 record the earlier Fable/Codex reviews; §1.7 records the
 latest Codex review and accepted resolutions. Part A is independent of Bengali
 implementation; Bengali behavior must pass the B1 prototype gate. Tracked as F-0011.

@@ -192,3 +192,12 @@ requires human-attested data, not more rules.
   Methods. [osf.io/xfbhd](https://osf.io/xfbhd/)
 
 Full provenance for every number above: [`reviews/`](reviews/) (2026-09-04 onward).
+
+## Bengali B0 measurement
+
+The experimental Bengali baseline and split-specific metrics are recorded in
+[the B0 report](reviews/2026-10-04-bengali-b0-baseline.md). Bengali Dakshina v1.0
+fixtures retain all references/votes under CC BY-SA 4.0 with member and fixture
+hashes in `benchmark/data/bengali/manifest.json`. Train/dev support exploratory
+style/attestation histograms; test remains evaluation-only. No Bengali learned
+artifacts exist yet, and the Hindi training policy above remains unchanged.

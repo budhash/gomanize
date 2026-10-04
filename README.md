@@ -153,3 +153,19 @@ MIT. Copyright (c) 2023-2026 Budhaditya (budhash@gmail.com).
 Benchmark data derives from Dakshina (CC BY-SA 4.0), Aksharantar (CC-BY 4.0),
 COMI-LINGUA (CC-BY 4.0), and Shabd (CC0); see
 [docs/RESEARCH.md](docs/RESEARCH.md) for full attribution.
+
+## Experimental Bengali Go API
+
+The Go library now accepts `gomanize.New("bengali")`. This is the B0 mechanical
+baseline: symbols, Unicode aliases, compositional conjuncts, and simple vowel
+retention/deletion. Positional phalas, final-cluster pronunciation, and learned
+components are still planned; CLI, npm, and web-demo language selection remains
+Hindi-only. See the [B0 measurements and limitations](docs/reviews/2026-10-04-bengali-b0-baseline.md).
+
+```go
+g, err := gomanize.New("bengali")
+if err != nil {
+    panic(err)
+}
+fmt.Println(g.Translit("আমি বাংলা")) // ami bangla
+```

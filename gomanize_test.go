@@ -1,6 +1,9 @@
 package gomanize
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestTranslitWhitespace(t *testing.T) {
 	g, err := New("hindi")
@@ -110,5 +113,24 @@ func TestNewWithOptionsAndEngineOpts(t *testing.T) {
 	}
 	if got := g.Translit("जनता"); got == "janta" {
 		t.Errorf("WithDisabledRules had no effect: got %q", got)
+	}
+}
+
+func TestBengaliPublicAPI(t *testing.T) {
+	g, err := New("Bengali")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := g.Translit("আমি\tবাংলা\nমন। ১২!"); got != "ami\tbangla\nmon। 12!" {
+		t.Fatal(got)
+	}
+	if g.DisableRule("schwa.delete.word-final") != 1 {
+		t.Fatal("missing B0 final-deletion rule")
+	}
+	if got := g.Translit("মন"); got != "mono" {
+		t.Fatal(got)
+	}
+	if got, info := g.TranslitDebug("ৎ"); got != "t" || info == nil || !strings.Contains(info.Units[0].Metadata, "no-inherent-vowel") {
+		t.Fatalf("Bengali debug: %q, %+v", got, info)
 	}
 }

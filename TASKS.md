@@ -45,6 +45,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
 - [ ] (F-0011) [P2] [todo] Bengali (Bangla) support @shadow
   - [x] (T-0050) [P2] [done] Part A: generalize Brahmic layer (ScriptProfile config + SchwaRom); zero Hindi regression + golden snapshot @done=2026-10-04
   - [ ] (T-0058) [P2] [todo] A.2: measure second-unit cccc-final index correction against attested Hindi data; review per-input snapshot deltas separately @deps=T-0050
+  - [x] (T-0051) [P2] [done] B0: lang/bengali symbol table + config + compositional conjuncts; wire New(); bn benchmark harness @deps=T-0050 @branch=feature/bengali-b0 @done=2026-10-04
 - [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow
   - [x] (T-0036) [P2] [done] Package the WASM engine as @budhash/gomanize with loader, types, make target, and Node smoke test @done=2026-09-08
 - [ ] (F-0006) [P2] [todo] WASM build + web demo (data flywheel) @shadow
@@ -116,7 +117,6 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0042) [P3] [done] Tier 4: differential parse vs Unicode akshara (UAX #29) segmentation reference @done=2026-09-11
 
 - [ ] (F-0011) [P2] [todo] Bengali (Bangla) support
-  - [ ] (T-0051) [P2] [todo] B0: lang/bengali symbol table + config + compositional conjuncts; wire New(); bn benchmark harness @deps=T-0050
   - [ ] (T-0052) [P2] [todo] B1: Bengali rules-only schwa (final-cluster keep, ɔ→o raising, phalas, anusvara/visarga) @deps=T-0055,T-0056
   - [ ] (T-0053) [P3] [todo] B2: Bengali learned components (3-way schwa classifier, lexicon, reranker) @deps=T-0052,T-0057
   - [ ] (T-0054) [P3] [todo] B3: Bengali PD lyrics gold set (Tagore Gitabitan via Wikisource) + line-level suite

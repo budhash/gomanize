@@ -65,6 +65,10 @@ func (s *Script) DebugMetaExtractor() func(*core.Unit) string {
 		if IsAfterHalant(u) {
 			afterHalant = " after-halant"
 		}
-		return schwa.String() + afterHalant
+		dead := ""
+		if bd := GetBrahmicData(u); bd != nil && bd.NoInherentVowel {
+			dead = " no-inherent-vowel"
+		}
+		return schwa.String() + afterHalant + dead
 	}
 }

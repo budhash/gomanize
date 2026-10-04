@@ -1,7 +1,7 @@
 # Gomanize - Hindi Transliteration Library
 # Development workflow Makefile
 
-.PHONY: help init hooks hooks-update build version wasm wasm-serve npm npm-test regression-baseline regression-diff test test-quick test-verbose test-cover test-unit test-integration test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets tasks
+.PHONY: help init hooks hooks-update build version wasm wasm-serve npm npm-test regression-baseline regression-diff test test-quick test-verbose test-cover test-unit test-integration test-bengali test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets tasks
 
 # Go parameters
 GOCMD := go
@@ -129,6 +129,10 @@ test-integration: ## Run integration tests (full Dakshina + Aksharantar datasets
 	@echo "Running integration tests..."
 	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkDakshinaHindi|TestBenchmarkAksharantarHindi"
 	@echo "✓ Integration tests complete"
+
+test-bengali: ## Experimental B0 fixtures, symbols, and split-aware benchmark
+	@python3 -m unittest discover -s tools -p 'build_bengali_test.py'
+	@$(GOTEST) . ./lang/bengali ./benchmark -run 'Test(B0|Canonical|Khanda|Bengali|BenchmarkBengaliB0)' -count=1 -v
 
 test-dakshina: ## Run Dakshina accuracy test (curated high-confidence subset)
 	@echo "Running Dakshina accuracy test..."
