@@ -43,3 +43,13 @@ best normalized edit distance. Reports separate reference-count strata from
 attestation-count strata. The o/a histogram measures whole-word support for two
 B0 candidates; it does not align or identify each human-spelled inherent vowel.
 The `neither` and `same-candidate` groups must be reported with the preferences.
+
+## Frozen B0 dev outputs
+
+`b0-dev.csv.gz` contains engine outputs for the existing 2,500 dev keys, with
+columns `native,b0_default`. It is separate from the source-reference fixtures
+and their manifest. The [evaluation decision](../../../docs/reviews/2026-10-04-bengali-evaluation-gate.md)
+records provenance, hash, capture command, and the preregistered B1 gate. It
+does not add references or training data. The original Dakshina attribution and
+CC BY-SA 4.0 terms above still apply to its native keys. Never regenerate it
+from changed B1 behavior.

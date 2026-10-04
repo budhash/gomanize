@@ -79,7 +79,7 @@ func bnStyleSupport(o, a string, refs []bnReference) string {
 	return "neither"
 }
 
-func loadBengali(t *testing.T) map[string][]bnWord {
+func loadBengali(t *testing.T, splits ...string) map[string][]bnWord {
 	t.Helper()
 	dir := getTestDataPath("bengali")
 	raw, err := os.ReadFile(filepath.Join(dir, "manifest.json"))
@@ -96,9 +96,12 @@ func loadBengali(t *testing.T) map[string][]bnWord {
 	if err = json.Unmarshal(raw, &manifest); err != nil {
 		t.Fatal(err)
 	}
+	if len(splits) == 0 {
+		splits = []string{"train", "dev", "test"}
+	}
 	result := map[string][]bnWord{}
 	seen := map[string]string{}
-	for _, split := range []string{"train", "dev", "test"} {
+	for _, split := range splits {
 		meta, ok := manifest.Splits[split]
 		if !ok {
 			t.Fatalf("missing %s manifest", split)

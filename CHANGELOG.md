@@ -24,6 +24,9 @@ tagged release also has auto-generated notes on the
 
 ### Added
 
+- Bengali train/dev vowel evidence, frozen B0 dev outputs, and a preregistered
+  B1 acceptance command (`make test-bengali-b1-gate`; B0 intentionally fails).
+
 - Brahmic render-time gemination modes with independent vowel ownership,
   validated by test-only Bengali B1 prototypes. Public Bengali rules remain B0.
 
