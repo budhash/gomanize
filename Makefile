@@ -1,7 +1,7 @@
 # Gomanize - Hindi Transliteration Library
 # Development workflow Makefile
 
-.PHONY: help init hooks hooks-update build version wasm wasm-serve npm npm-test regression-baseline regression-diff test test-quick test-verbose test-cover test-unit test-integration test-bengali test-bengali-b1-gate test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets tasks
+.PHONY: help init hooks hooks-update build version wasm wasm-serve npm npm-test regression-baseline regression-diff test test-quick test-verbose test-cover test-unit test-integration test-bengali test-bengali-data test-bengali-b1-gate test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets tasks
 
 # Go parameters
 GOCMD := go
@@ -130,6 +130,10 @@ test-integration: ## Run integration tests (full Dakshina + Aksharantar datasets
 	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkDakshinaHindi|TestBenchmarkAksharantarHindi"
 	@echo "✓ Integration tests complete"
 
+test-bengali-data: ## Verify frozen Bengali training partitions and isolation guards
+	@python3 -m unittest discover -s tools -p 'bengali_training_data_test.py'
+	@python3 tools/bengali_training_data.py --verify
+
 test-bengali-b1-gate: ## Enforce preregistered B1 dev accuracy gate
 	@BENGALI_REQUIRE_B1=1 $(GOTEST) ./benchmark -run '^TestBengaliDevGate$$' -count=1 -v
 
@@ -223,7 +227,7 @@ dev: check test ## Full development workflow (format, vet, test)
 dev-quick: fmt test-quick ## Quick development workflow
 	@echo "✓ Quick development workflow complete"
 
-ci: fmt-check lint build test-cover benchmark test-bengali-b1-gate ## Full CI pipeline (format, lint, build, test, benchmark)
+ci: fmt-check lint build test-cover benchmark test-bengali-b1-gate test-bengali-data ## Full CI pipeline (format, lint, build, test, benchmark)
 	@echo "✓ CI pipeline complete"
 
 # ============================================================================

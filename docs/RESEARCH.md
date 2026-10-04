@@ -59,10 +59,14 @@ then small learned components for the lexical gap.
 1. **Overrides are not accuracy.** `override_hi.csv` is an exception list; the
    historical "90.1%" headline was 86.1% pure + 53 hand-edited answers. Pure and
    match-any are what get reported; CI gates on pure.
-2. **Contamination discipline.** All learned artifacts (schwa tree, lexicon,
+2. **Contamination discipline.** Hindi learned artifacts (schwa tree, lexicon,
    n-gram LM) train on the Dakshina **train** split only. Dakshina's splits are
    type-disjoint (0 shared words), so held-out results are genuine
    generalization. The lexicon coverage test *asserts* 0% held-out coverage.
+   Bengali B2 uses the Google pronunciation lexicon for phonological learning
+   and Dakshina train for spelling/roman n-grams, through the frozen
+   [training partitions](../training/data/bengali/README.md). Both training
+   sources exclude all normalized Dakshina and Google held-out word types.
 3. **Benchmarks are never training/mining sources.** COMI-LINGUA overlap may
    estimate a miner's precision, never feed the lexicon.
 4. **Every proposed change is measured before shipping**, and negative results

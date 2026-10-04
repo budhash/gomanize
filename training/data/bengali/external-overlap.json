@@ -1,0 +1,41 @@
+{
+  "policy": "evaluation overlap only; neither corpus supplies training rows or answers",
+  "Aksharantar": {
+    "url": "https://huggingface.co/datasets/ai4bharat/Aksharantar/resolve/main/ben.zip",
+    "license": "CC-BY-4.0",
+    "archive_sha256": "4ab6edcc6ab556040d8f43ee75eec73cc25af0cf72d09e4650dab26b196d5fe7",
+    "test_member_sha256": "b00ff14b8a9dda6318eb5298a8314930c590607ed17c8a8f90c4a6e66e1bd20a",
+    "rows": 14167,
+    "types": 7134,
+    "by_partition": {
+      "dakshina-dev": 41,
+      "dakshina-test": 2500,
+      "dakshina-train": 375,
+      "google-dev": 59,
+      "google-test": 53,
+      "google-train": 1047
+    },
+    "training_union": 1098,
+    "unseen_training_types": 6036
+  },
+  "BanglaTLit": {
+    "fixture_sha256": "386721b4221e2d93b16ab73f3761c7c4e4cd295adf1160fe9c95c06cb34c5386",
+    "sentences": 2500,
+    "tokenization": "Cf removal + NFC; maximal Bengali Unicode block letter/mark runs",
+    "types": 4200,
+    "by_partition": {
+      "dakshina-dev": 135,
+      "dakshina-test": 124,
+      "dakshina-train": 1492,
+      "google-dev": 126,
+      "google-test": 101,
+      "google-train": 2123
+    },
+    "training_union": 2219,
+    "unseen_training_types": 1981
+  },
+  "lyrics_gold": {
+    "status": "not yet built (T-0054); overlap unknown, not zero"
+  },
+  "accuracy": "no model exists yet; full and unseen-type accuracy required when evaluating B2 artifacts"
+}
