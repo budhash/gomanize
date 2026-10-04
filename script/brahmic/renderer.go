@@ -174,7 +174,7 @@ func (r *Renderer) RenderDebug(word *core.Word) string {
 // arbitrary strings are not eligible for automatic doubling.
 func geminatePair(onset string) (string, string, bool) {
 	switch onset {
-	case "k", "g", "ch", "j", "t", "d", "n", "p", "b", "m", "r", "l", "s", "sh", "h", "y":
+	case "f", "k", "g", "ch", "j", "t", "d", "n", "p", "b", "m", "r", "l", "s", "sh", "h", "y":
 		return onset, onset, true
 	case "kh", "gh", "jh", "th", "dh", "ph", "bh":
 		return onset[:1], onset, true

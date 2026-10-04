@@ -91,6 +91,9 @@ func bnCaptureDev(t *testing.T, path string, words []bnWord, engine *gomanize.Go
 	if err := z.Close(); err != nil {
 		t.Fatal(err)
 	}
+	if fmt.Sprintf("%x", sha256.Sum256(buf.Bytes())) != bnB0DevSHA {
+		t.Fatal("refusing to capture changed outputs as the frozen B0 baseline; use the recorded B0 commit")
+	}
 	f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0600)
 	if err != nil {
 		t.Fatal(err)

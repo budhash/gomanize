@@ -1,0 +1,14 @@
+{
+  "source_repository": "https://github.com/farhanishmam/BanglaTLit",
+  "source_commit": "f780fcdd5176ddfe6364ffe7948acb6a1c2ea58e",
+  "source_path": "data/BanglaTLiT_test.csv",
+  "source_sha256": "2e6d3d3e3a1eab578011971be14807fdb20ae13384bc749c1d54eb209234c872",
+  "fixture_sha256": "386721b4221e2d93b16ab73f3761c7c4e4cd295adf1160fe9c95c06cb34c5386",
+  "license": "MIT; Copyright (c) 2024 Aplycaebous",
+  "role": "external sentence evaluation only; neither training nor rule tuning",
+  "normalization": "native: remove Unicode Cf then NFC; roman, IDs and row order unchanged",
+  "unicode_version": "13.0.0",
+  "rows": 2500,
+  "unique_normalized_native": 2498,
+  "changed_native_rows": 761
+}

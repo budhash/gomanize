@@ -24,6 +24,11 @@ tagged release also has auto-generated notes on the
 
 ### Added
 
+- Experimental Bengali B1 rules: scoped phalas/conjuncts, final-cluster vowels,
+  f spelling, and হও/হওয়া handling; fixed dev acceptance gate now enforced in CI.
+- Pinned BanglaTLit sentence test fixture and importer, plus reviewed Bengali
+  and reverse-transliteration references with provenance/overlap findings.
+
 - Bengali train/dev vowel evidence, frozen B0 dev outputs, and a preregistered
   B1 acceptance command (`make test-bengali-b1-gate`; B0 intentionally fails).
 

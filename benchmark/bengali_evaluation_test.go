@@ -16,7 +16,9 @@ import (
 func bnVowelPattern(native string) string {
 	w := brahmic.NewParser(bengali.Bengali{}.ScriptConfig()).Parse(native, bengali.Symbols)
 	brahmic.IdentifyRuns(w)
-	core.NewRuleEngine(bengali.RuleCatalog().AllRules()).Apply(w)
+	all := bengali.RuleCatalog().AllRules()
+	baseline := core.AppendIfFound(core.AppendIfFound(nil, all, "schwa.delete.word-final"), all, "schwa.keep.default")
+	core.NewRuleEngine(baseline).Apply(w)
 	wd := brahmic.GetWordBrahmicData(w)
 	if wd == nil {
 		return ""

@@ -156,11 +156,13 @@ COMI-LINGUA (CC-BY 4.0), and Shabd (CC0); see
 
 ## Experimental Bengali Go API
 
-The Go library now accepts `gomanize.New("bengali")`. This is the B0 mechanical
-baseline: symbols, Unicode aliases, compositional conjuncts, and simple vowel
-retention/deletion. Positional phalas, final-cluster pronunciation, and learned
-components are still planned; CLI, npm, and web-demo language selection remains
-Hindi-only. See the [B0 measurements and limitations](docs/reviews/2026-10-04-bengali-b0-baseline.md).
+The Go library accepts `gomanize.New("bengali")`. Experimental B1 adds scoped
+phalas, positional conjuncts, final-cluster vowels, and হও/হওয়া handling to the
+B0 symbols and Unicode aliases. It reaches 56.52% match-any on the held-out
+Dakshina word set; pronunciation ambiguities remain. CLI, npm, and web-demo
+language selection is still Hindi-only. See the [B1 results and
+limitations](docs/reviews/2026-10-04-bengali-b1-results.md).
+
 
 ```go
 g, err := gomanize.New("bengali")

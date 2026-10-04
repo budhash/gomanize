@@ -47,7 +47,7 @@ substitutes the preceding simple onset's geminate pair) and `GeminateSelf`
 (the unit repeats its own onset). Aspirated pairs use `kh → k + kh`.
 Rendering does not mutate neighboring units or force a vowel decision. Atomic,
 larger-cluster, and intrinsically dead onsets are rejected. These modes are
-currently exercised only by the Bengali B1 prototype tests.
+used by the Bengali B1 catalog and independently checked by prototype tests.
 
 `brahmic.ScriptProfile` holds inherent/raised spellings, bare-vowel identities,
 the aa-matra, sonorants, and the independent-vowel range. Hindi supplies
@@ -212,7 +212,7 @@ Design constraints that shaped them:
   (v4, tracked as F-0011; B1 prototype and B2 training-isolation gates are
   T-0056/T-0057). It splits into a behavior-preserving generalization of the
   Brahmic layer (implemented on the feature branch with script profiles and
-  separate vowel quality) and the experimental `lang/bengali` B0 package. Bengali's
+  separate vowel quality) and the experimental `lang/bengali` B1 rule package. Bengali's
   inherent vowel (ɔ/o, not `a`) and weaker word-final deletion
   make it the stress test of the shared-layer abstraction.
 - **Marathi / Nepali** — implement `core.Language` (symbol map + config + rule
@@ -237,3 +237,9 @@ Design constraints that shaped them:
 - **Roman→Devanagari** — the pipeline is lossy (schwa deletion, ई/इ collapse,
   श/ष merge) and one-directional; the reverse task is a sequence-disambiguation
   problem best served by a separate model, not this engine.
+
+Bengali B1 uses source-identity predicates and per-unit gemination metadata for
+scoped phalas and visarga, alongside positional conjunct rewrites. Its numerical
+dev gate runs in `make ci`. See the [B1 record](reviews/2026-10-04-bengali-b1-results.md)
+and [viable repository references](reference/bengali-repositories.md), including
+pronunciation-lexicon plumbing relevant to later B2 and reverse conversion.

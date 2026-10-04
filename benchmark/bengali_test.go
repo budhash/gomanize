@@ -166,7 +166,7 @@ func loadBengali(t *testing.T, splits ...string) map[string][]bnWord {
 	return result
 }
 
-func TestBenchmarkBengaliB0(t *testing.T) {
+func TestBenchmarkBengali(t *testing.T) {
 	datasets := loadBengali(t)
 	o, err := gomanize.New("bengali")
 	if err != nil {
@@ -214,8 +214,8 @@ func TestBenchmarkBengaliB0(t *testing.T) {
 			logScore := func(name string, c bnCounts) {
 				t.Logf("%s: words=%d strict=%d (%.2f%%) match-any=%d (%.2f%%) macro-minCER=%.5f", name, c.words, c.strict, 100*float64(c.strict)/float64(c.words), c.any, 100*float64(c.any)/float64(c.words), c.minCER/float64(c.words))
 			}
-			logScore("B0 default-o", defaultScore)
-			logScore("B0 alternate-a", altScore)
+			logScore("Current default-o", defaultScore)
+			logScore("Current alternate-a", altScore)
 			t.Logf("references=%d mean-refs/word=%.4f", refsTotal, float64(refsTotal)/float64(defaultScore.words))
 			for _, bucket := range []string{"1", "2", "3", "4+"} {
 				t.Logf("bucket=%s ref-count-words=%d variant-attestations=%d best-attestation-words=%d", bucket, refHist[bucket], voteHist[bucket], topVoteHist[bucket])
