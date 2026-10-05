@@ -6,7 +6,7 @@ Sections 1.5 and 1.6 record the earlier Fable/Codex reviews; §1.7 records the
 latest Codex review and accepted resolutions. Part A remains independently
 implementable; Bengali behavior must pass the B1 prototype gate. Tracked as F-0011.
 **Scope:** Add Bengali (Bangla) as the second language, in two dependency-ordered
-pieces: (A) make the shared Brahmic layer genuinely script-general with zero
+pieces: (A) make the shared Brahmic layer script-general with zero
 change to Hindi output, then (B) build the `lang/bengali` package on top of it.
 
 This doc is grounded in two research passes (2026-09-30): a linguistics review of
@@ -19,10 +19,10 @@ recorded) carries over unchanged.
 
 ## 1. Summary and the one hard finding
 
-The data story is strong: Bengali has permissively-licensed analogues for every
-Hindi data source (Dakshina `bn`, Aksharantar `ben`, BanglaTLit, IndicCorp v2),
-plus a *better* lyrics opportunity than Hindi ever had (Tagore's Gitabitan, 2,232
-public-domain songs). The engine is partly ready: the parser, category system,
+Bengali has permissively-licensed analogues for every Hindi data source
+(Dakshina `bn`, Aksharantar `ben`, BanglaTLit, IndicCorp v2), plus a large
+public-domain lyrics source with no Hindi equivalent (Tagore's Gitabitan, 2,232
+songs). The engine is partly ready: the parser, category system,
 run identification, rule-engine mechanics, scheme layer, and the three
 learned-component loaders are all reusable.
 
@@ -132,7 +132,8 @@ Part A/B contracts below supersede earlier wording where noted.
   only covers consonant-borne vowels; a vowel-phase `BaseRom` rule (and the
   classifier) must cover independent অ. (B.3)
 - **Metrics:** pair match-any with macro minCER, strict top-1, attestation strata,
-  and the independent Aksharantar number; match-any is *inflated* by `bn`'s 3.8
+  and the Aksharantar number (full and Dakshina-test-unseen slices: Aksharantar
+  contains the Dakshina test vocabulary, so it is not independent); match-any is *inflated* by `bn`'s 3.8
   refs/word vs Hindi's 1.8, so "trailing Hindi" could mislead — report the
   reference-count-controlled number and say so. (§3)
 - **B1 gate "beats B0" is near-vacuous** — pre-register a bar from the B0
@@ -154,10 +155,10 @@ resolutions held. Both confirmed **A.1 (the config lift) is ready**, and found a
 short list of refinements. The two that gated Part A are **applied in this v3**:
 
 - **A.2' predicate was mis-worded.** `u.Start.Rune == 1` means "second *unit*",
-  which in a vowel-initial word is the *first* consonant (অজগর→*ajgar*); "second
+  which in a vowel-initial word is the *first* consonant (अजगर→*ajgar*); "second
   *consonant*" would wrongly flip every vowel-initial word (→*ajagar*). The
   faithful predicate is **`w.Units[1] == u`**, and the affected class is **any
-  multi-rune first unit** (nukta- *and* ज্ঞ/ক্ষ-initial), not just nukta. Also:
+  multi-rune first unit** (nukta- *and* ज्ञ/क्ष-initial), not just nukta. Also:
   A.2' is **not assumed neutral** — `cccc-final` already mis-deletes some words
   (जबरदस्त→*jabradast*), so the fix can propagate that to nukta-initial forms; it
   must be *measured* against data, which is exactly why it is gated separately.
@@ -227,7 +228,7 @@ Verified against current `main` (v1.2.0 prep):
 | Location | Hardcoded (Devanagari) | Role |
 |---|---|---|
 | `script/brahmic/renderer.go` (kept-schwa writes) | literal `"a"` | spelling of a kept inherent vowel |
-| `script/brahmic/renderer.go` `isInherentAVowel` | `অ`→ no; `अ` U+0905 / ऄ U+0904 | the bare-a vowel that coalesces with a preceding schwa |
+| `script/brahmic/renderer.go` `isInherentAVowel` | only `अ` U+0905 / `ऄ` U+0904 (Bengali `অ` U+0985 not recognized) | the bare-a vowel that coalesces with a preceding schwa |
 | `script/brahmic/schwa_rules.go` `isSonorousRune` | र/य/व | sonorant-final schwa retention |
 | `script/brahmic/schwa_rules.go` `before-cc` | aa-matra `ा` U+093E | Sanskrit-heuristic deletion guard |
 | `script/brahmic/schwa_rules.go` `isWordInitialConjunct` | indep-vowel range U+0905–U+0914 | word-initial conjunct detection |
@@ -270,8 +271,8 @@ construction.
 byte-identical *by construction*. The `cccc-final` rune-index fix (J1) is a
 *separate* step (A.2'): replacing `u.Start.Rune == 1` with the **second-unit**
 predicate `w.Units[1] == u` (NOT "second consonant" — that would wrongly flip
-vowel-initial words like অজগর). This is behavior-*changing* for any **multi-rune
-first unit** (nukta- and ज্ঞ/ক্ষ-initial), so it ships as its own commit with its
+vowel-initial words like अजगर). This is behavior-*changing* for any **multi-rune
+first unit** (nukta- and ज्ञ/क्ष-initial), so it ships as its own commit with its
 own measurement. It is **not** assumed neutral: `cccc-final` already mis-deletes
 some words (जबरदस्त→*jabradast*), so this can propagate that deletion to
 nukta-initial forms — evaluate the moved words against attested data, update the
@@ -384,7 +385,7 @@ Halant:                "্",
 Nukta:                 "়",
 ```
 
-### B.3 Bengali rules (the real linguistic work)
+### B.3 Bengali rules
 
 Bengali composes *some* of `brahmic.SchwaRules()` but overrides the word-final
 behavior, which is where it diverges most. New/changed rules, all expressible in
@@ -520,8 +521,10 @@ matras. Preserve source text for audit; do not merge distinct spellings using
 romanized output. If normalization creates cross-split duplicates, exclude the
 conflicting training entries rather than moving held-out types into training.
 
-Exclude every normalized Dakshina dev/test type from the Google lexicon training
-pool **before alignment or feature extraction**. Split the remaining external
+Exclude the **union** of normalized Google dev/test and Dakshina dev/test types
+from **every** training pool (the Google pronunciation pool and the Dakshina-train
+spelling pool alike) **before alignment, feature extraction, or lexicon
+construction**. Split the remaining external
 pool by normalized word type; all pronunciations and schwa instances of a word
 stay together. Train on its train subset only and tune on its dev subset. Assert
 zero overlap between external training and both external held-out sets and
@@ -532,7 +535,9 @@ Report overlap with Aksharantar, BanglaTLit, and lyrics gold separately, includi
 full-corpus and unseen-type metrics where applicable. They remain evaluation
 sources, never sources of learned spelling entries. Record counts before/after
 normalization and exclusion, ambiguous alignment counts, and manifest hashes
-with every trained artifact. A pipeline rerun must fail on violated exclusions;
+with every trained artifact. BanglaTLit's upstream `train` CSV contains every
+official dev/test pair; only the pinned official test split may be imported, and
+only for evaluation. A pipeline rerun must fail on violated exclusions;
 a random split of the Google lexicon alone is not evidence of Dakshina isolation.
 Update RESEARCH's Hindi-only training policy with this explicit Bengali extension
 in the B2 implementation PR. No overlap counts have been measured in this design.
@@ -575,18 +580,19 @@ Each flag is covered by the same before/after measurement discipline as Hindi's.
 |---|---|---|---|
 | Primary benchmark + training | Dakshina hi | **Dakshina bn** — train/dev/test: 25k/2.5k/2.5k word types, 3.8 variants/type; roles and exclusions in B.4.1 | CC BY-SA 4.0 |
 | Phonological classifier training | Dakshina hi alignment | **Google bn pronunciation lexicon** — aligned labels; external splits and Dakshina exclusions (B.4.1) | CC BY 4.0 |
-| Independent human benchmark | Aksharantar hi test | **Aksharantar ben test** — 5,009 Karya-annotated (AK-Freq 1,071 / AK-Uni 1,198 / AK-NEF 1,059 / AK-NEI 1,681) | CC-BY |
-| Naturally-typed (COMI role) | COMI-LINGUA | **BanglaTLit** — 42,705 Banglish↔Bengali sentence pairs | MIT |
+| Human benchmark (**not independent**: contains the Dakshina test vocabulary; report full and unseen slices) | Aksharantar hi test | **Aksharantar ben test** — published slices AK-Freq 1,071 / AK-Uni 1,198 / AK-NEF 1,059 / AK-NEI 1,681 (5,009); the released test file deduplicates to more word types (count recorded at evaluation time) | CC-BY |
+| Naturally-typed (COMI role) | COMI-LINGUA | **BanglaTLit** — 42,705 Banglish↔Bengali sentence pairs; evaluation-only, official test split only (upstream `train` CSV contains dev/test pairs) | MIT |
 | Frequency ranking (Shabd role) | Shabd (CC0) | **derive from IndicCorp v2 Bengali** (~29.6M rows, CC0); Leipzig `ben_wikipedia_2021` as quick first pass | CC0 / CC-BY |
 | Lyrics gold | 43 PD lines | **Tagore Gitabitan** (2,232 PD songs, bn.wikisource) + Lalon, D.L. Roy, Atulprasad; Nazrul excluded until 2037 | PD |
 
-Pipelines mirror the Hindi `tools/build_*.py`. The one genuine gap vs. Hindi:
+Derived artifacts inherit their sources' terms: code stays MIT; artifacts built
+from the Google lexicon carry CC BY 4.0 attribution, and Dakshina-derived
+artifacts (spelling lexicon, any selector trained on Dakshina spellings) are
+CC BY-SA 4.0. Packaged notices must carry these.
+
+Pipelines mirror the Hindi `tools/build_*.py`. The one gap vs. Hindi:
 no ready CC0 psycholinguistic frequency DB, so the Bengali frequency list is
 derived (documented pipeline) rather than adopted.
-
-A scratchpad Bengali frequency list (`bn_50k.txt`, "word count" format) is already
-present from the research pass and can seed the frequency suite for a first pass;
-provenance/license to be confirmed before anything is committed.
 
 ---
 
@@ -601,7 +607,7 @@ train/dev for exploratory histograms; test results must not guide rule tuning.
 | **A** | Generalized Brahmic layer + Hindi golden snapshot | 2–3 days | Hindi byte-identical (3 nets, A.4) |
 | **B0** | `lang/bengali` symbol table, config, compositional conjuncts, `bengali` wired into `New()`; naive output; `bn` benchmark harness that **emits the o/a-split and attestation histograms** (gates the Q1 default and the curation threshold) | 3–5 days | builds; Hindi untouched; baseline + histograms measured |
 | **B1 (light)** | Non-schwa rules in full; cheap schwa wins (final-cluster keep) + phala (explicit gemination modes) + anusvara/visarga + the `C+ও` rule + behavioral flags (B.6); priority-tie test on the composed catalog. ɔ→o raising deferred (no-op under `o`). Deliberately **not** exhaustive schwa tuning | 1 week | B.3.1–3 prototype examples and traces pass before catalog expansion; match-any on Dakshina `bn` clears a bar **pre-registered from the B0 histograms** (not merely "beats B0"); bn-specific gate set empirically |
-| **B2** | Bengali learned components (3-way schwa classifier, lexicon, reranker) | 1–2 weeks | each improves held-out `bn` match-any; normalized exclusions and artifact provenance asserted (B.4.1) |
+| **B2** | Bengali learned components (3-way schwa classifier, lexicon, reranker) | 1–2 weeks | each selected on Dakshina **dev** against pre-recorded bars; held-out test reported once after selection, never used to accept/reject; lexicon judged on in-sample/external coverage with no held-out regression; normalized exclusions and artifact provenance asserted (B.4.1) — *amended 2026-10-05* |
 | **B3** | Bengali PD lyrics gold set + line-level suite | 2–4 days | line-CER reported |
 
 A usable, honestly-measured rules-only Bengali exists after **A + B0 + B1**
@@ -609,9 +615,15 @@ A usable, honestly-measured rules-only Bengali exists after **A + B0 + B1**
 These are rough; the rule-tuning in B1 is the least predictable because of the
 inherent-vowel irregularity.
 
+**Amendment (2026-10-05, stack review):** the v4 B2 gate read "each improves
+held-out `bn` match-any". That contradicted B.4 (test is for final reporting only)
+and B.4.1 (zero held-out lexicon coverage, so the lexicon cannot move a held-out
+score). The gate as amended above is the one the B2 work actually applied.
+
 **Metrics discipline for Bengali:** match-any / minCER is the headline (2×
 variance, bimodal target), but report it **alongside** strict top-1, macro minCER,
-attestation-count strata, and the independent Aksharantar number — because `bn`'s
+attestation-count strata, and the Aksharantar number (full and Dakshina-test-unseen
+slices) — because `bn`'s
 3.8 refs/word (vs Hindi's 1.8) *inflates* match-any, so a naive "trailing Hindi"
 read could invert and mislead (review). Report AK-Freq / AK-NEF / AK-NEI slices as
 for Hindi. Set the pure-accuracy CI gate from the observed `bn` distribution; do
@@ -658,7 +670,7 @@ not copy 85%. The Hindi gate and suites are untouched.
   rule-tuning time
   in the B2 classifier. We do **not** repeat Hindi's exhaustive rule-ceiling arc:
   Johny & Jansche already established it (~85% rules, classifier needed).
-- **Success bar for v1:** honestly measured and genuinely useful, **trailing
+- **Success bar for v1:** honestly measured and useful, **trailing
   Hindi by design** — not matching Hindi's 92.9%. Match-any / minCER is the
   headline; the pure gate is set empirically from `bn`.
 
@@ -682,5 +694,3 @@ Unicode U+0980 chart and UCD. Data: Dakshina,
 Sangraha (AI4Bharat); Tagore PD status,
 <https://spicyip.com/2015/01/guest-post-iprs-indian-railways-rabindrasangeet.html>;
 Gitabitan on Bengali Wikisource, <https://bn.wikisource.org/wiki/গীতবিতান>.
-Full citations and per-source detail live in the two 2026-09-30 research reports
-(session artifacts).
