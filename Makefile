@@ -1,7 +1,7 @@
 # Gomanize - Hindi Transliteration Library
 # Development workflow Makefile
 
-.PHONY: help init hooks hooks-update build version wasm wasm-serve npm npm-test regression-baseline regression-diff test test-quick test-verbose test-cover test-unit test-integration test-bengali test-bengali-rerank test-bengali-lexicon test-bengali-vowels test-bengali-data test-bengali-b1-gate test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets tasks
+.PHONY: help init hooks hooks-update build version wasm wasm-serve npm npm-test regression-baseline regression-diff test test-quick test-verbose test-cover test-unit test-integration test-bengali test-bengali-native-selector test-bengali-rerank test-bengali-lexicon test-bengali-vowels test-bengali-data test-bengali-b1-gate test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets tasks
 
 # Go parameters
 GOCMD := go
@@ -130,6 +130,9 @@ test-integration: ## Run integration tests (full Dakshina + Aksharantar datasets
 	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkDakshinaHindi|TestBenchmarkAksharantarHindi"
 	@echo "✓ Integration tests complete"
 
+test-bengali-native-selector: ## Verify native selector isolation, learning and dev gate
+	@python3 -m unittest discover -s tools -p 'bengali_native_selector_test.py'
+
 test-bengali-rerank: ## Verify Bengali reranker isolation and dev selection guards
 	@python3 -m unittest discover -s tools -p 'bengali_reranker_test.py'
 
@@ -238,7 +241,7 @@ dev: check test ## Full development workflow (format, vet, test)
 dev-quick: fmt test-quick ## Quick development workflow
 	@echo "✓ Quick development workflow complete"
 
-ci: fmt-check lint build test-cover benchmark test-bengali-b1-gate test-bengali-data test-bengali-vowels test-bengali-lexicon test-bengali-rerank ## Full CI pipeline (format, lint, build, test, benchmark)
+ci: fmt-check lint build test-cover benchmark test-bengali-b1-gate test-bengali-data test-bengali-vowels test-bengali-lexicon test-bengali-rerank test-bengali-native-selector ## Full CI pipeline (format, lint, build, test, benchmark)
 	@echo "✓ CI pipeline complete"
 
 # ============================================================================

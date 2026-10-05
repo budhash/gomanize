@@ -1,0 +1,142 @@
+{
+  "classes": [
+    "model",
+    "B1"
+  ],
+  "depth": 5,
+  "license": "CC-BY-SA-4.0",
+  "min_leaf": 30,
+  "schema": 1,
+  "tree": {
+    "counts": [
+      572,
+      129
+    ],
+    "feature": "has_u",
+    "no": {
+      "counts": [
+        167,
+        17
+      ],
+      "feature": "length",
+      "no": {
+        "counts": [
+          133,
+          9
+        ],
+        "feature": "length",
+        "no": {
+          "counts": [
+            99,
+            9
+          ],
+          "feature": "last",
+          "no": {
+            "counts": [
+              66,
+              8
+            ]
+          },
+          "value": "র",
+          "yes": {
+            "counts": [
+              33,
+              1
+            ]
+          }
+        },
+        "value": "7",
+        "yes": {
+          "counts": [
+            34,
+            0
+          ]
+        }
+      },
+      "value": "6",
+      "yes": {
+        "counts": [
+          34,
+          8
+        ]
+      }
+    },
+    "value": "False",
+    "yes": {
+      "counts": [
+        405,
+        112
+      ],
+      "feature": "last2",
+      "no": {
+        "counts": [
+          362,
+          84
+        ],
+        "feature": "last2",
+        "no": {
+          "counts": [
+            316,
+            84
+          ],
+          "feature": "after",
+          "no": {
+            "counts": [
+              297,
+              72
+            ],
+            "feature": "has_i",
+            "no": {
+              "counts": [
+                157,
+                49
+              ]
+            },
+            "value": "False",
+            "yes": {
+              "counts": [
+                140,
+                23
+              ]
+            }
+          },
+          "value": "",
+          "yes": {
+            "counts": [
+              19,
+              12
+            ]
+          }
+        },
+        "value": "কে",
+        "yes": {
+          "counts": [
+            46,
+            0
+          ]
+        }
+      },
+      "value": "ের",
+      "yes": {
+        "counts": [
+          43,
+          28
+        ],
+        "feature": "has_i",
+        "no": {
+          "counts": [
+            23,
+            9
+          ]
+        },
+        "value": "False",
+        "yes": {
+          "counts": [
+            20,
+            19
+          ]
+        }
+      }
+    }
+  }
+}
