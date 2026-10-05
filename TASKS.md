@@ -58,7 +58,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0064) [P3] [done] B2 native-conditioned candidate selection: train-only features and fixed dev gate after character-only rejection @deps=T-0063 @branch=feature/bengali-b2-native-selector @tags=dev-rejected,heldout-not-run @done=2026-10-04 @pr=121
   - [x] (T-0065) [P3] [done] B2 candidate expansion and out-of-fold selector training: preregister before further dev selection @deps=T-0064 @branch=feature/bengali-b2-crossfit @done=2026-10-04 @pr=122
   - [x] (T-0066) [P2] [done] B2 promote cross-fitted selector: native-aware runtime contract, parity, style fallbacks and external validation @deps=T-0065 @branch=feature/bengali-b2-runtime-rerank @rel=T-0054 @done=2026-10-05 @pr=123
-  - [x] (T-0067) [P2] [done] B3 source-pinned Bengali lyrics pilot, provisional references and line-level evaluation @deps=T-0066 @branch=feature/bengali-b3-lyrics-seed @done=2026-10-05
+  - [x] (T-0067) [P2] [done] B3 source-pinned Bengali lyrics pilot, provisional references and line-level evaluation @deps=T-0066 @branch=feature/bengali-b3-lyrics-seed @done=2026-10-05 @pr=124
   - [ ] (T-0068) [P2] [todo] B3 independent Bengali reference review: correct and attest the lyrics pilot before gold promotion @deps=T-0067
 - [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow
   - [x] (T-0036) [P2] [done] Package the WASM engine as @budhash/gomanize with loader, types, make target, and Node smoke test @done=2026-09-08
