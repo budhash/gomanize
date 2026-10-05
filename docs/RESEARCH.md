@@ -91,6 +91,12 @@ also failed the dev improvement gate: all six predeclared thresholds retained
 the vowel model. Its training excludes Google training words as well as all
 held-out partitions; neither rejected selector is installed in runtime.
 
+A [cross-fitted selector with single-slot vowel alternatives](reviews/2026-10-04-bengali-b2-crossfit.md)
+passes dev and improves held-out match-any from 62.76% to **63.04%** (seven
+additional words out of 2,500), with improved strict accuracy and CER. This is
+an offline research result; runtime integration and external validation remain
+pending, and the existing runtime configuration is unchanged.
+
 ## 3. Datasets
 
 | Dataset | Size (as used) | License | Role |

@@ -1,0 +1,32 @@
+{
+  "artifact_sha256": "37215f8f26586d831e32d6c2cb84cca80526a8d1ed6edfc23180f6d2b8f7d5d2",
+  "dev_report_sha256": "270637bcf9905b23030e92c084febda3c0b9ca0e134daa2a4e0e8fc08a9af5ce",
+  "evaluator_sha256": "ab54e721536caa00474ef29b25973e0ed7d745a63d9979cd236b4dbb727babd6",
+  "frozen_threshold": 0.6,
+  "test": {
+    "baseline": {
+      "CER": 0.07642207338413215,
+      "any": 1569,
+      "strict": 914,
+      "words": 2500
+    },
+    "candidates": {
+      "baseline_any": 1569,
+      "oracle_any": 1662,
+      "pairs": 1699,
+      "words": 2500,
+      "words_with_alternatives": 984
+    },
+    "fixture_sha256": "9cb15941b0893acdcc2891130ff98ba403645fd9170b955372af62f64bd33ca0",
+    "trials": [
+      {
+        "CER": 0.07572118427324305,
+        "any": 1576,
+        "changed": 21,
+        "strict": 916,
+        "threshold": 0.6,
+        "words": 2500
+      }
+    ]
+  }
+}
