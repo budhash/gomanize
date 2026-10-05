@@ -81,6 +81,11 @@ The optional Bengali spelling lexicon adds 8,980 isolated training spellings.
 It leaves dev/test output unchanged (zero coverage); external improvements and
 in-sample coverage are reported separately in the [lexicon record](reviews/2026-10-04-bengali-b2-lexicon.md).
 
+A Bengali character-only reranker was rejected on dev: no tested margin improved
+match-any while preserving strict accuracy and improving CER. The
+[negative result](reviews/2026-10-04-bengali-b2-rerank.md) is reproducible;
+Bengali runtime behavior and held-out model results remain unchanged.
+
 ## 3. Datasets
 
 | Dataset | Size (as used) | License | Role |
