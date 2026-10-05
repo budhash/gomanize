@@ -2,6 +2,8 @@
 // output matches the CLI across a few option combos (ESM + CJS entry points).
 import { load } from "./index.mjs";
 import { createRequire } from "node:module";
+import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 
 const cases = [
   ["नमस्ते दुनिया", {}, "namaste duniya"],
@@ -27,6 +29,39 @@ const cjsOut = g2.translit("भारत");
 const cjsOk = cjsOut === "bharat";
 if (!cjsOk) fail++;
 console.log(`${cjsOk ? "PASS" : "FAIL"}  (cjs) भारत -> ${JSON.stringify(cjsOut)}`);
+
+for (const [name, engine] of [["ESM", g], ["CJS", g2]]) {
+  assert.equal(engine.translit("আমি বাংলা", { language: "bengali" }), "ami bangla", name);
+  assert.equal(engine.translit("আমি বাংলা", { language: "BENGALI" }), "ami bangla", name);
+  assert.equal(engine.translit("নমস্কার", { language: "bengali" }), "nomoskar", name);
+  assert.equal(engine.translit("गाना", { language: "hindi", longVowels: true }), "gaanaa", name);
+  assert.equal(engine.translit("गाना"), "gana", name);
+  assert.equal(engine.translit("গান", { language: "bengali" }), "gan", name);
+  assert.equal(engine.translit("नमस्ते दुनिया"), "namaste duniya", name);
+  assert.equal(engine.translit("আমি বাংলা"), "আমি বাংলা", name);
+  assert.equal(engine.translit(null, { language: "bengali" }), "", name);
+  for (const language of ["", "bn", "unknown", null, false, 7, {}, 1n, Symbol("bn")]) {
+    assert.throws(() => engine.translit("আমি বাংলা", { language }), /language/, name);
+    assert.equal(engine.translit("भारत"), "bharat", `${name}: runtime survives invalid language`);
+  }
+  // make npm-test supplies the freshly built CLI for cross-interface parity.
+  if (process.env.GOMANIZE_CLI) {
+    const profiles = [{}, { schwaModel: true }, { lexicon: true },
+      { schwaModel: true, lexicon: true }, { schwaModel: true, rerank: true },
+      { schwaModel: true, rerank: true, lexicon: true },
+      { longVowels: true, schwaModel: true, rerank: true, lexicon: true },
+      { simpleNasals: true }, { keepMedialSchwa: true }];
+    for (const language of ["hindi", "bengali"]) {
+      const text = "সমতা, অডিও। আমি বাংলা\nनमस्ते दुनिया, जनता। English 123";
+      for (const profile of profiles) {
+        const flags = Object.keys(profile).map(k => "--" + k.replace(/[A-Z]/g, c => "-"+c.toLowerCase()));
+        const cli = execFileSync(process.env.GOMANIZE_CLI, ["--language="+language, ...flags, text], { encoding: "utf8" });
+        assert.equal(engine.translit(text, { language, ...profile })+"\n", cli, `${name} ${language} ${JSON.stringify(profile)}`);
+      }
+    }
+  }
+  console.log(`PASS ${name}: Bengali, language/option reset, invalid language recovery and CLI parity`);
+}
 
 console.log(fail ? `\n${fail} FAILED` : "\nall passed");
 process.exit(fail ? 1 : 0);

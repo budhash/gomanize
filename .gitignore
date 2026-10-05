@@ -50,3 +50,6 @@ mined_candidates_hi.csv
 
 # Parser regression baseline (ephemeral; regenerate with make regression-baseline)
 .regression-baseline.tsv
+
+# Copied with the WASM demo assets from npm/NOTICE.md
+/web/NOTICE.md

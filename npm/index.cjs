@@ -24,7 +24,13 @@ async function load(opts = {}) {
   if (typeof fn !== "function") throw new Error("gomanize: wasm did not initialize");
   _instance = {
     translit(text, options) {
-      return fn(text == null ? "" : String(text), options || {});
+      // Reject unsupported JS types before crossing syscall/js (e.g. BigInt).
+      if (options != null && options.language !== undefined && typeof options.language !== "string") {
+        throw new TypeError("gomanize: language must be hindi or bengali");
+      }
+      const result = fn(text == null ? "" : String(text), options || {});
+      if (result instanceof Error) throw result;
+      return result;
     },
   };
   return _instance;

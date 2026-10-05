@@ -60,8 +60,8 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0066) [P2] [done] B2 promote cross-fitted selector: native-aware runtime contract, parity, style fallbacks and external validation @deps=T-0065 @branch=feature/bengali-b2-runtime-rerank @rel=T-0054 @done=2026-10-05 @pr=123
   - [x] (T-0067) [P2] [done] B3 source-pinned Bengali lyrics pilot, provisional references and line-level evaluation @deps=T-0066 @branch=feature/bengali-b3-lyrics-seed @done=2026-10-05 @pr=124
   - [ ] (T-0068) [P2] [todo] B3 independent Bengali reference review: correct and attest the lyrics pilot before gold promotion @deps=T-0067
-  - [x] (T-0069) [P2] [done] Expose Bengali in CLI with explicit language selection and Hindi-default compatibility @deps=T-0067 @branch=feature/bengali-cli @done=2026-10-05
-  - [ ] (T-0070) [P2] [todo] Expose Bengali through npm/WASM and browser language selection with Hindi defaults @deps=T-0069
+  - [x] (T-0069) [P2] [done] Expose Bengali in CLI with explicit language selection and Hindi-default compatibility @deps=T-0067 @branch=feature/bengali-cli @done=2026-10-05 @pr=125
+  - [x] (T-0070) [P2] [done] Expose Bengali through npm/WASM and browser language selection with Hindi defaults @deps=T-0069 @branch=feature/bengali-web-npm @done=2026-10-05
 - [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow
   - [x] (T-0036) [P2] [done] Package the WASM engine as @budhash/gomanize with loader, types, make target, and Node smoke test @done=2026-09-08
 - [ ] (F-0006) [P2] [todo] WASM build + web demo (data flywheel) @shadow

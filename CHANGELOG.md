@@ -13,6 +13,10 @@ tagged release also has auto-generated notes on the
 
 ### Changed
 
+- npm/WASM accepts per-call `language: "bengali"`; omitted language remains Hindi.
+  The browser adds explicit language selection and remembers options per language.
+  Unsupported JavaScript language values throw without terminating the WASM engine.
+
 - CLI accepts `--language=bengali` or `--language bengali` for every input mode;
   omitted language remains Hindi. Bengali learned components stay opt-in.
 
