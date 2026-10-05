@@ -13,6 +13,9 @@ tagged release also has auto-generated notes on the
 
 ### Changed
 
+- CLI accepts `--language=bengali` or `--language bengali` for every input mode;
+  omitted language remains Hindi. Bengali learned components stay opt-in.
+
 - Debug rule traces now retain metadata-only changes in all phases and fallback
   passes; metadata extraction remains disabled outside debug execution.
 

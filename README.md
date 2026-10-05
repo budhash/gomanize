@@ -67,6 +67,7 @@ gomanize < lyrics.txt                           # stdin/pipe also works
 |------|--------|---------|
 | (default) | Colloquial rules | जनता → janta |
 | `--keep-medial-schwa` | Retain medial schwa | जनता → janata |
+| `--language=NAME` | `hindi` (default) or experimental `bengali` | `--language bengali` also works |
 | `--long-vowels` | aa for every ā | गाना → gaanaa |
 | `--simple-nasals` | Simplified nasal endings | करें → karen |
 | `--schwa-model` | Learned schwa classifier | जनता → janta |
@@ -154,13 +155,14 @@ Benchmark data derives from Dakshina (CC BY-SA 4.0), Aksharantar (CC-BY 4.0),
 COMI-LINGUA (CC-BY 4.0), and Shabd (CC0); see
 [docs/RESEARCH.md](docs/RESEARCH.md) for full attribution.
 
-## Experimental Bengali Go API
+## Experimental Bengali support
 
 The Go library accepts `gomanize.New("bengali")`. Experimental B1 adds scoped
 phalas, positional conjuncts, final-cluster vowels, and হও/হওয়া handling to the
 B0 symbols and Unicode aliases. It reaches 56.52% match-any on the held-out
-Dakshina word set; pronunciation ambiguities remain. CLI, npm, and web-demo
-language selection is still Hindi-only. See the [B1 results and
+Dakshina word set; pronunciation ambiguities remain. The CLI accepts `--language=bengali` (or
+`--language bengali`); omitting it preserves Hindi. npm and web-demo language
+selection will follow in a separate change. See the [B1 results and
 limitations](docs/reviews/2026-10-04-bengali-b1-results.md).
 
 
@@ -183,3 +185,15 @@ if err != nil {
 }
 fmt.Println(g.Translit("আমি বাংলা")) // ami bangla
 ```
+
+```sh
+gomanize --language=bengali "আমি বাংলা"  # ami bangla
+echo "আমি বাংলা" | gomanize --language bengali --schwa-model --rerank
+gomanize --language=bengali --input=lyrics.txt
+gomanize --language=bengali --list-rules
+```
+
+Language selection also applies to `--test`, `--debug`, and rule overrides.
+Only `hindi` and `bengali` are accepted (case-insensitive); unsupported or empty
+languages fail with a nonzero exit. Bengali reranking needs `--schwa-model`;
+style flags retain the library's documented learned-component fallbacks.
