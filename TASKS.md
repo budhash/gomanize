@@ -57,7 +57,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0063) [P2] [done] B2 Bengali candidate reranking: isolated character model, dev selection and held-out validation @deps=T-0057,T-0061,T-0062 @branch=feature/bengali-b2-rerank @done=2026-10-04 @tags=dev-rejected,heldout-not-run @pr=120
   - [x] (T-0064) [P3] [done] B2 native-conditioned candidate selection: train-only features and fixed dev gate after character-only rejection @deps=T-0063 @branch=feature/bengali-b2-native-selector @tags=dev-rejected,heldout-not-run @done=2026-10-04 @pr=121
   - [x] (T-0065) [P3] [done] B2 candidate expansion and out-of-fold selector training: preregister before further dev selection @deps=T-0064 @branch=feature/bengali-b2-crossfit @done=2026-10-04 @pr=122
-  - [ ] (T-0066) [P2] [doing] B2 promote cross-fitted selector: native-aware runtime contract, parity, style fallbacks and external validation @deps=T-0065 @branch=feature/bengali-b2-runtime-rerank @rel=T-0054
+  - [x] (T-0066) [P2] [done] B2 promote cross-fitted selector: native-aware runtime contract, parity, style fallbacks and external validation @deps=T-0065 @branch=feature/bengali-b2-runtime-rerank @rel=T-0054 @done=2026-10-05
 - [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow
   - [x] (T-0036) [P2] [done] Package the WASM engine as @budhash/gomanize with loader, types, make target, and Node smoke test @done=2026-09-08
 - [ ] (F-0006) [P2] [todo] WASM build + web demo (data flywheel) @shadow
@@ -129,7 +129,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0042) [P3] [done] Tier 4: differential parse vs Unicode akshara (UAX #29) segmentation reference @done=2026-09-11
 
 - [ ] (F-0011) [P2] [todo] Bengali (Bangla) support
-  - [ ] (T-0053) [P3] [todo] B2: Bengali learned components (3-way schwa classifier, lexicon, reranker) @deps=T-0052,T-0057,T-0061,T-0062,T-0063,T-0064,T-0065,T-0066
+  - [x] (T-0053) [P3] [done] B2: Bengali learned components (3-way schwa classifier, lexicon, reranker) @deps=T-0052,T-0057,T-0061,T-0062,T-0063,T-0064,T-0065,T-0066 @done=2026-10-05
   - [ ] (T-0054) [P3] [todo] B3: Bengali PD lyrics gold set (Tagore Gitabitan via Wikisource) + line-level suite @rel=T-0066
 - [ ] (F-0012) [P2] [todo] Roman-to-Hindi/Bengali transliteration: ambiguity, candidate ranking, and independent evaluation
   - [ ] (T-0059) [P2] [todo] Define reverse API and candidate-ranking contract; audit bntranslit and Romabangla references before implementation
