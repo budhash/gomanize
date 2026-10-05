@@ -182,10 +182,19 @@ Design constraints that shaped them:
 ## 6. Future directions
 
 **Tractable next (unblocked by current design):**
+- **Bengali (Bangla)** — the second language, designed in
+  [`reviews/2026-09-30-bengali-support-design.md`](reviews/2026-09-30-bengali-support-design.md)
+  (v4, tracked as F-0011; B1 prototype and B2 training-isolation gates are
+  T-0056/T-0057). It splits into a behavior-preserving generalization of the
+  Brahmic layer (lifting the Devanagari literals below into config, and separating
+  "keep vs delete" from "what a kept schwa spells") and the `lang/bengali`
+  package. Bengali's inherent vowel (ɔ/o, not `a`) and weaker word-final deletion
+  make it the stress test of the shared-layer abstraction.
 - **Marathi / Nepali** — implement `core.Language` (symbol map + config + rule
   catalog composing `brahmic.SchwaRules()`); parser/renderer/runs are reused.
   Caveats: renderer's inherent-vowel is hardcoded `"a"`; a few Hindi rules
-  carry Devanagari literals worth auditing per language.
+  carry Devanagari literals worth auditing per language. The F-0011 Part A
+  generalization removes these caveats for all future Brahmic languages.
 - **Lexicon growth** past the 78.2% train-gold coverage ceiling — human review
   of mined candidates, or new attested sources (Xlit-Crowd is CC-BY-NC-SA).
 - **Lyrics gold expansion** — more public-domain verse in-repo; Giitaayan

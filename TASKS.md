@@ -111,6 +111,16 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0049) [P3] [done] Held-out misses: vowel-length aa boundary (फाँसी→faansi, तांगा→taanga) from TestBenchmarkHeldoutConstructs; confirm against DESIGN §3 no-length convention (likely won't-fix — document the decision) @done=2026-09-11
   - [x] (T-0041) [P3] [done] Tier 3: combinatorial construct enumeration + parse-well-formedness coverage test (CI) @done=2026-09-11
   - [x] (T-0042) [P3] [done] Tier 4: differential parse vs Unicode akshara (UAX #29) segmentation reference @done=2026-09-11
+
+- [ ] (F-0011) [P2] [todo] Bengali (Bangla) support
+  - [ ] (T-0050) [P2] [todo] Part A: generalize Brahmic layer (ScriptProfile config + SchwaRom); zero Hindi regression + golden snapshot
+  - [ ] (T-0051) [P2] [todo] B0: lang/bengali symbol table + config + compositional conjuncts; wire New(); bn benchmark harness @deps=T-0050
+  - [ ] (T-0052) [P2] [todo] B1: Bengali rules-only schwa (final-cluster keep, ɔ→o raising, phalas, anusvara/visarga) @deps=T-0055,T-0056
+  - [ ] (T-0053) [P3] [todo] B2: Bengali learned components (3-way schwa classifier, lexicon, reranker) @deps=T-0052,T-0057
+  - [ ] (T-0054) [P3] [todo] B3: Bengali PD lyrics gold set (Tagore Gitabitan via Wikisource) + line-level suite
+  - [ ] (T-0055) [P2] [todo] Measure o/a split + attestation histogram on Dakshina bn (gates Q1 default + curation threshold) @deps=T-0051
+  - [ ] (T-0056) [P2] [todo] B1 prototype: phala/self gemination modes, hao/howa contexts, khanda-ta and metadata-only rule traces; gate catalog expansion @deps=T-0051
+  - [ ] (T-0057) [P2] [todo] Freeze Bengali normalized split manifests and cross-source exclusions before B2 training; assert provenance and report overlap @deps=T-0051
 ## Skipped
 
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow
