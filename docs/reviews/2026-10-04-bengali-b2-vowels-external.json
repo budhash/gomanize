@@ -1,0 +1,65 @@
+{
+  "model_sha256": "016a05588b21f121c7799a91e668120a3a1ad5cdd1cf35d3bfb38c2dae2fdc87",
+  "aksharantar_archive_sha256": "4ab6edcc6ab556040d8f43ee75eec73cc25af0cf72d09e4650dab26b196d5fe7",
+  "aksharantar_test_sha256": "b00ff14b8a9dda6318eb5298a8314930c590607ed17c8a8f90c4a6e66e1bd20a",
+  "banglatlit_fixture_sha256": "386721b4221e2d93b16ab73f3761c7c4e4cd295adf1160fe9c95c06cb34c5386",
+  "unseen_definition": "absent from union of frozen Google and Dakshina training vocabularies (conservative; not just successfully aligned Google types)",
+  "Aksharantar": {
+    "full_types": {
+      "items": 7134,
+      "B1": {
+        "match_any": 1967,
+        "accuracy": 0.27572189514998596,
+        "macro_minCER": 0.2269146503202099
+      },
+      "model": {
+        "match_any": 2200,
+        "accuracy": 0.3083823941687693,
+        "macro_minCER": 0.21640004921222142
+      }
+    },
+    "unseen_types": {
+      "items": 6036,
+      "B1": {
+        "match_any": 1835,
+        "accuracy": 0.3040092776673294,
+        "macro_minCER": 0.21595809815532904
+      },
+      "model": {
+        "match_any": 2052,
+        "accuracy": 0.3399602385685885,
+        "macro_minCER": 0.20464678486763915
+      }
+    }
+  },
+  "BanglaTLit": {
+    "full_sentences": {
+      "items": 2500,
+      "B1": {
+        "match_any": 8,
+        "accuracy": 0.0032,
+        "macro_minCER": 0.33149375595752184
+      },
+      "model": {
+        "match_any": 12,
+        "accuracy": 0.0048,
+        "macro_minCER": 0.31286250291213874
+      }
+    },
+    "all_tokens_unseen_sentences": {
+      "items": 38,
+      "B1": {
+        "match_any": 1,
+        "accuracy": 0.02631578947368421,
+        "macro_minCER": 0.5318006872679402
+      },
+      "model": {
+        "match_any": 2,
+        "accuracy": 0.05263157894736842,
+        "macro_minCER": 0.5209574734642001
+      }
+    },
+    "limitation": "sentence-level Roman references do not support isolated unseen-token accuracy"
+  },
+  "lyrics_gold": "not yet built (T-0054)"
+}

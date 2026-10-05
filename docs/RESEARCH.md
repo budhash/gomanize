@@ -72,6 +72,11 @@ then small learned components for the lexical gap.
 4. **Every proposed change is measured before shipping**, and negative results
    are recorded (see §5).
 
+The experimental Bengali vowel model is evaluated separately from Hindi: its
+opt-in held-out Dakshina match-any is 62.76% versus B1's 56.52%, without lexicon
+or overrides. [B2 report](reviews/2026-10-04-bengali-b2-vowels.md) records strict
+accuracy, CER, alignment coverage, and full/unseen external results.
+
 ## 3. Datasets
 
 | Dataset | Size (as used) | License | Role |

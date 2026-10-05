@@ -27,6 +27,21 @@ func RuleCatalog() core.RuleCatalog {
 			c.Render = append(c.Render, r)
 		}
 	}
+	add("schwa.bengali.model", core.PhaseSchwa, 70, func(u *core.Unit, w *core.Word) bool {
+		_, ok := vowelModelDecision(w, u)
+		return ok
+	}, func(u *core.Unit, w *core.Word) {
+		label, _ := vowelModelDecision(w, u)
+		if label == 0 {
+			brahmic.SetSchwa(u, brahmic.SchwaDelete)
+		} else {
+			brahmic.SetSchwa(u, brahmic.SchwaKeep)
+			if label == 2 {
+				brahmic.GetBrahmicData(u).SchwaQuality = brahmic.SchwaRaised
+			}
+		}
+	})
+	c.Schwa[len(c.Schwa)-1].Conditional = "SchwaModel"
 	keep := func(u *core.Unit, w *core.Word) { brahmic.SetSchwa(u, brahmic.SchwaKeep) }
 	add("schwa.bengali.final-cluster", core.PhaseSchwa, 80, func(u *core.Unit, w *core.Word) bool {
 		return consonant(u) && u.IsWordFinal() && brahmic.IsAfterHalant(u) && !brahmic.GetBrahmicData(u).NoInherentVowel && !loanCoda(u)

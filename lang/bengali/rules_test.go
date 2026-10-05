@@ -96,6 +96,7 @@ func TestB1RulesOwnTheirUnits(t *testing.T) {
 		for _, input := range []string{"অন্ত", "মোহ", "দুঃখ", "ক্ষতি", "কক্ষ", "জ্ঞান", "বিজ্ঞ", "চিহ্ন", "ফল", "স্তর", "স্বামী", "ব্যবহার", "মধ্য", "হও", "হওয়া"} {
 			w := brahmic.NewParser(Bengali{}.ScriptConfig()).Parse(input, Symbols)
 			w.Options.InherentVowelA = true
+			w.Options.SchwaModel = true
 			brahmic.IdentifyRuns(w)
 			for _, u := range w.Units {
 				if r.Condition(u, w) {

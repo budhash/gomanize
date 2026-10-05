@@ -1,4 +1,4 @@
-// Package bengali provides experimental rules-only Bengali romanization.
+// Package bengali provides experimental Bengali romanization with B1 rules and an opt-in vowel model.
 // Parsing remains compositional; scoped B1 rules handle positional behavior.
 // Character identities follow the Unicode Bengali block.
 package bengali

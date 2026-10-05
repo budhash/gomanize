@@ -114,8 +114,9 @@ type Options struct {
 	// This produces output closer to some datasets (जनता→janata instead of janta).
 	KeepMedialSchwa bool
 	// SchwaModel uses the learned decision-tree schwa classifier for inherent-schwa
-	// decisions instead of the hand-written heuristic schwa rules. See
-	// lang/hindi/schwa_model.go and docs/reviews for the held-out evaluation.
+	// decisions instead of the hand-written heuristic schwa rules. Bengali uses
+	// a three-class model on supported simple words and retains B1 rules elsewhere.
+	// See lang/{hindi,bengali} and docs/reviews for held-out evaluations.
 	SchwaModel bool
 	// Lexicon consults the language's high-confidence romanization lexicon first;
 	// known words return the attested human spelling, unknown words fall through
