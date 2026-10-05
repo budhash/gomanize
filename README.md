@@ -170,6 +170,12 @@ training spellings; it helps known words and leaves the excluded held-out score
 unchanged. Both are opt-in and can be combined. Alternate-style flags bypass the
 lexicon so the requested style is preserved. See the [lexicon evaluation](docs/reviews/2026-10-04-bengali-b2-lexicon.md).
 
+Add `Rerank: true` alongside `SchwaModel: true` to enable the experimental
+[native selector](docs/reviews/2026-10-05-bengali-b2-runtime.md): held-out match-any
+is 63.04%. It preserves alternate styles by bypassing selection, and lexicon
+hits still win first. External word results improve slightly; sentence character
+error worsens slightly. It remains opt-in, pending independent lyrics validation.
+
 ```go
 g, err := gomanize.New("bengali")
 if err != nil {

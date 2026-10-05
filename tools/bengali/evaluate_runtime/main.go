@@ -1,0 +1,57 @@
+// Command evaluate_runtime streams baseline, lexicon and native-reranker profiles.
+package main
+
+import (
+	"bufio"
+	"encoding/json"
+	"fmt"
+	"os"
+
+	gomanize "github.com/budhash/gomanize"
+)
+
+func main() {
+	baseline, err := gomanize.New("bengali")
+	if err != nil {
+		panic(err)
+	}
+	model, err := gomanize.NewWithOptions("bengali", gomanize.Options{SchwaModel: true})
+	if err != nil {
+		panic(err)
+	}
+	lexicon, err := gomanize.NewWithOptions("bengali", gomanize.Options{Lexicon: true})
+	if err != nil {
+		panic(err)
+	}
+	combined, err := gomanize.NewWithOptions("bengali", gomanize.Options{SchwaModel: true, Lexicon: true})
+	if err != nil {
+		panic(err)
+	}
+	rerank, err := gomanize.NewWithOptions("bengali", gomanize.Options{SchwaModel: true, Rerank: true})
+	if err != nil {
+		panic(err)
+	}
+	combinedRerank, err := gomanize.NewWithOptions("bengali", gomanize.Options{SchwaModel: true, Rerank: true, Lexicon: true})
+	if err != nil {
+		panic(err)
+	}
+
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Buffer(make([]byte, 4096), 1024*1024)
+	encoder := json.NewEncoder(os.Stdout)
+	for scanner.Scan() {
+		var native string
+		if err = json.Unmarshal(scanner.Bytes(), &native); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		if err = encoder.Encode([]string{baseline.Translit(native), model.Translit(native), lexicon.Translit(native), combined.Translit(native), rerank.Translit(native), combinedRerank.Translit(native)}); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+	}
+	if err = scanner.Err(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}

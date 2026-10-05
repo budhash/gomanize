@@ -69,6 +69,13 @@ language may implement (`core/engine.go`):
   Hindi retains the original interface and behavior.
 - `Reranker` — `Options.Rerank`: the engine runs the pipeline under candidate
   configurations and the language picks the most natural output.
+- `NativeReranker` takes precedence over `Reranker`, including on a decline.
+  It receives source text/options and a synchronous `CandidateRenderer` callback
+  preserving the caller's scheme and rule controls. Candidate rendering disables
+  recursive reranking, lexicon lookup and debug traces. Declines retain the original
+  pipeline; handled results return no single-path debug trace. Bengali uses this
+  for its frozen selector, requiring `SchwaModel` plus `Rerank` and default style.
+  See the [runtime contract](reviews/2026-10-05-bengali-b2-runtime.md).
 
 The sentence-level API (`gomanize.Translit`) segments on **all whitespace and
 punctuation, preserved verbatim** — so multi-line lyrics romanize correctly and
