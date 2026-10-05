@@ -54,7 +54,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
 
   - [x] (T-0061) [P2] [done] B2 vowel alignment and three-class model: train on isolated Google data and gate on Bengali dev @deps=T-0052,T-0057 @branch=feature/bengali-b2-vowels @done=2026-10-04 @pr=118
   - [x] (T-0062) [P2] [done] B2 isolated Bengali spelling lexicon with style-aware lookup and measured coverage @deps=T-0057,T-0061 @branch=feature/bengali-b2-lexicon @done=2026-10-04 @pr=119
-  - [x] (T-0063) [P2] [done] B2 Bengali candidate reranking: isolated character model, dev selection and held-out validation @deps=T-0057,T-0061,T-0062 @branch=feature/bengali-b2-rerank @done=2026-10-04 @tags=dev-rejected,heldout-not-run
+  - [x] (T-0063) [P2] [done] B2 Bengali candidate reranking: isolated character model, dev selection and held-out validation @deps=T-0057,T-0061,T-0062 @branch=feature/bengali-b2-rerank @done=2026-10-04 @tags=dev-rejected,heldout-not-run @pr=120
   - [ ] (T-0064) [P3] [todo] B2 native-conditioned candidate selection: train-only features and fixed dev gate after character-only rejection @deps=T-0063
 - [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow
   - [x] (T-0036) [P2] [done] Package the WASM engine as @budhash/gomanize with loader, types, make target, and Node smoke test @done=2026-09-08
