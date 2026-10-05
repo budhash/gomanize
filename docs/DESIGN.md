@@ -62,8 +62,11 @@ It does not change Hindi output and is not exposed as a CLI/WASM flag yet.
 Two optional capabilities hook in *before* the pipeline, via interfaces a
 language may implement (`core/engine.go`):
 
-- `LexiconProvider` — `Options.Lexicon`: known words short-circuit to their
-  attested spelling; OOV falls through unchanged (lossless).
+- `LexiconProvider` / `OptionsLexiconProvider` — `Options.Lexicon`: known words
+  short-circuit to their attested spelling; OOV falls through unchanged. The
+  option-aware interface takes precedence, including on a miss. Bengali uses it
+  to bypass its default-style lexicon when alternate-style flags are requested;
+  Hindi retains the original interface and behavior.
 - `Reranker` — `Options.Rerank`: the engine runs the pipeline under candidate
   configurations and the language picks the most natural output.
 

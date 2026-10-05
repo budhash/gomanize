@@ -77,11 +77,15 @@ opt-in held-out Dakshina match-any is 62.76% versus B1's 56.52%, without lexicon
 or overrides. [B2 report](reviews/2026-10-04-bengali-b2-vowels.md) records strict
 accuracy, CER, alignment coverage, and full/unseen external results.
 
+The optional Bengali spelling lexicon adds 8,980 isolated training spellings.
+It leaves dev/test output unchanged (zero coverage); external improvements and
+in-sample coverage are reported separately in the [lexicon record](reviews/2026-10-04-bengali-b2-lexicon.md).
+
 ## 3. Datasets
 
 | Dataset | Size (as used) | License | Role |
 |---|---|---|---|
-| [Dakshina](https://github.com/google-research-datasets/dakshina) (Google, 2020; repo archived 2026) | 53K rows; 25K/2.5K/2.5K disjoint splits with attestation counts | CC BY-SA 4.0 | Curated benchmark (1,330 high-attestation words), multi-reference variant sets, held-out test, and the sole training source for all learned components |
+| [Dakshina](https://github.com/google-research-datasets/dakshina) (Google, 2020; repo archived 2026) | 53K rows; 25K/2.5K/2.5K disjoint splits with attestation counts | CC BY-SA 4.0 | Curated benchmark (1,330 high-attestation words), multi-reference variant sets, held-out test, and the sole training source for Hindi learned components |
 | [Aksharantar test set](https://huggingface.co/datasets/ai4bharat/Aksharantar) (AI4Bharat, 2022) | 10,112 human-annotated pairs; slices AK-Freq / AK-NEF / AK-NEI / Dakshina | CC-BY 4.0 | Independent human benchmark (Karya native-speaker annotators); exposes named-entity weakness and cross-dataset convention shift |
 | [COMI-LINGUA](https://huggingface.co/datasets/LingoIITGN/COMI-LINGUA) MT split (IIT-GN, EMNLP Findings 2025) | 9,606 word types / 152K token occurrences extracted from expert-annotated parallel Devanagari↔Roman sentences | CC-BY 4.0 | *Naturally-typed* colloquial Hindi — the closest proxy to song lyrics; token-weighted scoring |
 | [Shabd](https://osf.io/xfbhd/) (psycholinguistic DB, 1.4B-token corpus) | Top-15K Devanagari words by frequency | CC0 | Frequency weighting; lexicon ranking; token-coverage estimation |

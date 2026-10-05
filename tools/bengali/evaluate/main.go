@@ -19,6 +19,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	lexicon, err := gomanize.NewWithOptions("bengali", gomanize.Options{Lexicon: true})
+	if err != nil {
+		panic(err)
+	}
+	combined, err := gomanize.NewWithOptions("bengali", gomanize.Options{SchwaModel: true, Lexicon: true})
+	if err != nil {
+		panic(err)
+	}
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Buffer(make([]byte, 4096), 1024*1024)
 	encoder := json.NewEncoder(os.Stdout)
@@ -28,7 +36,7 @@ func main() {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
-		if err = encoder.Encode([]string{baseline.Translit(native), model.Translit(native)}); err != nil {
+		if err = encoder.Encode([]string{baseline.Translit(native), model.Translit(native), lexicon.Translit(native), combined.Translit(native)}); err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}

@@ -1,5 +1,5 @@
 // Package gomanize transliterates Hindi and experimental Bengali text into
-// readable Latin script, using a rule-based engine with optional Hindi learned components
+// readable Latin script, using a rule-based engine with optional language-specific learned components
 // (a schwa classifier, an attested-spelling lexicon, and a character-LM
 // re-ranker). It targets colloquial, diacritic-free romanization of the kind
 // used for song lyrics.
