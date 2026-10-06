@@ -151,7 +151,8 @@ suite.
 MIT. Copyright (c) 2023-2026 Budhaditya (budhash@gmail.com).
 
 Benchmark data derives from Dakshina (CC BY-SA 4.0), Aksharantar (CC-BY 4.0),
-COMI-LINGUA (CC-BY 4.0), and Shabd (CC0); see
+COMI-LINGUA (CC-BY 4.0), and Shabd (CC0). Experimental Bengali training data also
+derives from Google's Bengali pronunciation lexicon (CC BY 4.0); see
 [docs/RESEARCH.md](docs/RESEARCH.md) for full attribution.
 
 ## Experimental Bengali Go API
