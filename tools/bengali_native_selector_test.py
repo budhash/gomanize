@@ -4,7 +4,7 @@ import sys
 import unittest
 sys.path.insert(0, str(Path(__file__).parent/'bengali'))
 from train_native_selector import (features, training_references, target, fit,
-                                   probability, predictions, select)
+                                   probability, predictions, select, build)
 from bengali_training_data import ROOT, training_rows, verify
 
 
@@ -73,6 +73,16 @@ class BengaliNativeSelectorTest(unittest.TestCase):
         report = json.loads((ROOT/'docs/reviews/2026-10-04-bengali-b2-native-selector.json').read_text())
         self.assertIsNone(select(report['dev_model'], report['dev_trials']))
         self.assertIsNone(report['selected'])
+
+    def test_committed_record_reproduces(self):
+        # Rebuild against the current engine: the tree and the committed
+        # training/dev outcome must still reproduce (provenance hashes are not
+        # compared; they drift with any engine edit).
+        payload, rebuilt = build()
+        self.assertEqual(payload, (ROOT/'docs/reviews/2026-10-04-bengali-b2-native-selector-tree.json').read_bytes())
+        committed = json.loads((ROOT/'docs/reviews/2026-10-04-bengali-b2-native-selector.json').read_text())
+        for key in ('artifact_sha256', 'training', 'policy', 'dev_model', 'dev_trials', 'selected'):
+            self.assertEqual(json.loads(json.dumps(rebuilt[key])), committed[key], key)
 
 
 if __name__ == '__main__':
