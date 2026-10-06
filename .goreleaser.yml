@@ -39,6 +39,9 @@ archives:
     files:
       - README.md
       - LICENSE
+      # Binaries embed CC BY-SA / CC BY data; ship the attribution notice.
+      - src: npm/NOTICE.md
+        dst: NOTICE.md
 
 checksum:
   name_template: 'checksums.txt'

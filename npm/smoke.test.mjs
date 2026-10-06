@@ -44,6 +44,14 @@ for (const [name, engine] of [["ESM", g], ["CJS", g2]]) {
     assert.throws(() => engine.translit("আমি বাংলা", { language }), /language/, name);
     assert.equal(engine.translit("भारत"), "bharat", `${name}: runtime survives invalid language`);
   }
+  // Non-boolean flags (a BigInt used to panic the Go runtime) and non-object
+  // options are rejected in JS; the instance must survive every one.
+  for (const value of [1n, Symbol("x"), "false", 1, {}]) {
+    assert.throws(() => engine.translit("गाना", { longVowels: value }), /must be a boolean/, name);
+    assert.equal(engine.translit("गाना"), "gana", `${name}: runtime survives bad flag`);
+  }
+  assert.throws(() => engine.translit("গান", "bengali"), /options must be an object/, name);
+  assert.equal(engine.translit("गाना", { longVowels: false, schwaModel: null }), "gana", name);
   // make npm-test supplies the freshly built CLI for cross-interface parity.
   if (process.env.GOMANIZE_CLI) {
     const profiles = [{}, { schwaModel: true }, { lexicon: true },

@@ -36,7 +36,7 @@
     "nlp",
     "indic"
   ],
-  "license": "MIT",
+  "license": "MIT AND CC-BY-SA-4.0 AND CC-BY-4.0",
   "author": "budhash",
   "homepage": "https://budhash.com/gomanize",
   "repository": { "type": "git", "url": "git+https://github.com/budhash/gomanize.git" },

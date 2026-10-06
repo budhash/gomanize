@@ -54,4 +54,4 @@ is explicit, not script detection. Input in other scripts is preserved.
 - `load()` is async (instantiates the wasm) and cached; `translit` is synchronous after.
 - The `.wasm` embeds both languages and their learned data; Bengali needs no additional download.
 - Runs on **Node ≥ 18** and modern browsers/bundlers (the wasm + `wasm_exec.js` are resolved relative to the module).
-- Romanization, not strict transliteration — see the [project README](https://github.com/budhash/gomanize). MIT code; embedded data has separate licenses in [NOTICE.md](NOTICE.md).
+- Romanization, not strict transliteration — see the [project README](https://github.com/budhash/gomanize). MIT code; embedded data has separate licenses in [NOTICE.md](https://github.com/budhash/gomanize/blob/main/npm/NOTICE.md) (shipped in this package).

@@ -24,7 +24,7 @@
   "operatingSystem": "Any (web browser)",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "description": "Romanize Hindi and experimental Bengali into readable Latin script. Runs client-side on WebAssembly.",
-  "inLanguage": ["hi", "en"],
+  "inLanguage": ["hi", "bn", "en"],
   "author": { "@type": "Person", "name": "budhash", "url": "https://github.com/budhash" }
 }
 </script>
@@ -346,7 +346,7 @@
 
   <div class="language-control">
     <label for="language" class="label">Language</label>
-    <select id="language" aria-describedby="languageHint">
+    <select id="language" aria-describedby="languageHint" autocomplete="off">
       <option value="hindi" selected>Hindi</option>
       <option value="bengali">Bengali (experimental)</option>
     </select>

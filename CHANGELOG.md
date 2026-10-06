@@ -21,6 +21,9 @@ tagged release also has auto-generated notes on the
   omitted language remains Hindi. Bengali learned components stay opt-in.
   Unsupported names fail with the supported list; Bengali `--rerank` without
   `--schwa-model` prints a warning instead of being silently ignored.
+- npm wrappers reject non-object options and non-boolean flags (a BigInt flag
+  previously crashed the WASM runtime). The npm license field and release
+  archives now carry the embedded-data licenses (`NOTICE.md`).
 
 - Debug rule traces now retain metadata-only changes in all phases and fallback
   passes; metadata extraction remains disabled outside debug execution.

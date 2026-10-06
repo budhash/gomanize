@@ -4,21 +4,29 @@ Gomanize implementation code is MIT licensed, Copyright (c) 2023–2026
 Budhaditya (budhash@gmail.com). The WebAssembly binary also embeds learned data;
 the code license does not replace the data licenses below.
 
+Every gomanize build (CLI binaries, the WebAssembly module, the npm package and
+the web demo) embeds the data files below:
+
+| Embedded file | Derived from | License | Changes from the source |
+|---|---|---|---|
+| `lang/hindi/lexicon.tsv` | Dakshina Hindi train spellings; Shabd frequencies (CC0) for ranking | CC BY-SA 4.0 | High-attestation winning spelling per word, frequency-filtered, serialized as TSV |
+| `lang/hindi/schwa_tree.json` | Dakshina Hindi train alignments | CC BY-SA 4.0 | Decision tree learned over aligned schwa positions |
+| `lang/hindi/roman_ngrams.tsv` | Dakshina Hindi train romanizations | CC BY-SA 4.0 | Character 4-gram counts |
+| `lang/bengali/lexicon.tsv` | Dakshina Bengali train spellings | CC BY-SA 4.0 | Normalized native keys, held-out vocabularies excluded, unique high-attestation winners, TSV |
+| `lang/bengali/vowel_tree.json` | Google Bengali pronunciation lexicon (train partition) | CC BY 4.0 | Grapheme–phoneme alignment; inherent-vowel decision tree |
+| `lang/bengali/selector.json` | Dakshina Bengali train spellings and the Google Bengali lexicon | CC BY-SA 4.0 | Out-of-fold candidate generation; preference tree |
+
+Sources:
+
 - **Google Dakshina**, Google / Roark et al., 2020:
   [source](https://github.com/google-research-datasets/dakshina),
   [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
-  Hindi learned components and the Bengali spelling lexicon use filtered
-  training spellings. The Bengali lexicon normalizes native keys, excludes
-  held-out vocabularies, selects unique high-attestation winners and serializes
-  those spellings as TSV; its derived data remains CC BY-SA 4.0.
 - **Google Bengali pronunciation lexicon**, Copyright Google 2015/2016:
   [source](https://github.com/googlei18n/language-resources/tree/master/bn),
   [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
-  The Bengali vowel model is learned from aligned, isolated training entries.
-  The embedded model is attributed to this CC BY 4.0 source.
-- **Bengali native selector** combines training-derived features from both
-  sources above through out-of-fold candidate generation and tree learning.
-  This derived selector is CC BY-SA 4.0.
+- **Shabd** psycholinguistic database: [source](https://osf.io/xfbhd/),
+  [CC0](https://creativecommons.org/publicdomain/zero/1.0/) (no attribution
+  required; credited for transparency).
 
 Source hashes, transformations, exclusions and reproduction tools are recorded
 in the [training data record](https://github.com/budhash/gomanize/blob/main/training/data/bengali/README.md),

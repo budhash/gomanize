@@ -46,3 +46,24 @@ and remembered Bengali learned options. A final page check confirms that only
 supported learned controls appear for Bengali. The second full local `make ci`
 result is recorded in the npm/browser PR. Hosted full CI remains configured for
 main-targeting PRs, so these stacked-branch full runs are local.
+
+## Review notes (2026-10-05)
+
+Independent stack review; language/option isolation, ESM/CJS parity, textContent
+output and per-language UI state verified.
+
+- **Flag types are validated in JS.** Only `language` was type-checked, so a
+  BigInt flag (`{longVowels: 1n}`) panicked inside the Go runtime and every later
+  call failed with "Go program has already exited"; string flags were truthy
+  (`"false"` meant true). Both wrappers now reject non-object options and
+  non-boolean flags with `TypeError`; the smoke test asserts each case and that
+  the instance survives.
+- **Licensing.** `NOTICE.md` lists every embedded data file (Hindi lexicon, schwa
+  tree, n-grams; Bengali lexicon, vowel tree, selector) with source, license and
+  changes. `package.json` declares `MIT AND CC-BY-SA-4.0 AND CC-BY-4.0`. GoReleaser
+  archives now include `NOTICE.md`; the npm README links it absolutely.
+- **Web.** The language select opts out of browser form restoration so a restored
+  value cannot desynchronize the UI; structured data lists `bn`.
+- Tracked: unknown option keys are ignored; npm Bengali `rerank` without
+  `schwaModel` is silent (the CLI warns); the About dialog still describes the
+  Hindi components only.
