@@ -13,7 +13,7 @@ func TestBengaliRerankerFrozenMetrics(t *testing.T) {
 	for _, tc := range []struct {
 		split       string
 		strict, any int
-	}{{"dev", 897, 1552}, {"test", 916, 1576}} {
+	}{{"dev", 898, 1553}, {"test", 916, 1576}} {
 		var before, after bnCounts
 		for _, w := range loadBengali(t, tc.split)[tc.split] {
 			a, b := model.Translit(w.native), rank.Translit(w.native)
