@@ -1,0 +1,2087 @@
+{
+  "schema": 1,
+  "classes": [
+    "absent",
+    "default",
+    "raised"
+  ],
+  "features": [
+    "cons",
+    "prev",
+    "next",
+    "next2",
+    "first",
+    "last",
+    "length",
+    "position"
+  ],
+  "scope": "simple-whole-words-v1",
+  "provenance": {
+    "google_sha256": "1bc2edda15da62bd4ef8576114e391c9a89ad8971f1eef3635e8fee0d7c1dd61",
+    "split_manifest_sha256": "936d0549138932900bdd51621acb4ef9b037f7ee3263205ec342d00045177a89",
+    "training_scripts_sha256": {
+      "vowels.py": "15704a3a8db23a68686f9e82e320aa55c6f883ce9647268ea82d0e55cf9d1bf9",
+      "train_vowels.py": "3ebcfc27cb19c486a3274bd602326c2c713cf1eaba5cffbeedadadcb634bfe68"
+    },
+    "depth": 10,
+    "min_leaf": 20
+  },
+  "alignment": {
+    "train": {
+      "accepted_types": 19662,
+      "aligned_rows": 19727,
+      "ambiguous_rows": 0,
+      "class_0": 20737,
+      "class_1": 5464,
+      "class_2": 6387,
+      "conflicting_variant_types": 29,
+      "instances": 32588,
+      "no_slots_rows": 5936,
+      "rejected_types": 35430,
+      "source_rows": 55181,
+      "source_types": 55121,
+      "unmatched_rows": 74,
+      "unsupported_rows": 29444
+    },
+    "dev": {
+      "accepted_types": 1140,
+      "aligned_rows": 1140,
+      "ambiguous_rows": 0,
+      "class_0": 1217,
+      "class_1": 292,
+      "class_2": 343,
+      "conflicting_variant_types": 0,
+      "instances": 1852,
+      "no_slots_rows": 317,
+      "rejected_types": 2044,
+      "source_rows": 3186,
+      "source_types": 3184,
+      "unmatched_rows": 7,
+      "unsupported_rows": 1722
+    },
+    "test": {
+      "accepted_types": 1100,
+      "aligned_rows": 1105,
+      "ambiguous_rows": 0,
+      "class_0": 1151,
+      "class_1": 303,
+      "class_2": 339,
+      "conflicting_variant_types": 2,
+      "instances": 1793,
+      "no_slots_rows": 324,
+      "rejected_types": 1921,
+      "source_rows": 3027,
+      "source_types": 3023,
+      "unmatched_rows": 7,
+      "unsupported_rows": 1591
+    }
+  },
+  "metrics": {
+    "train": {
+      "instances": 32588,
+      "correct": 28124,
+      "accuracy": 0.8630170614950289,
+      "confusion_actual_rows": [
+        [
+          20014,
+          204,
+          519
+        ],
+        [
+          568,
+          4312,
+          584
+        ],
+        [
+          1659,
+          930,
+          3798
+        ]
+      ]
+    },
+    "dev": {
+      "instances": 1852,
+      "correct": 1593,
+      "accuracy": 0.8601511879049676,
+      "confusion_actual_rows": [
+        [
+          1168,
+          12,
+          37
+        ],
+        [
+          30,
+          229,
+          33
+        ],
+        [
+          92,
+          55,
+          196
+        ]
+      ]
+    },
+    "test": {
+      "instances": 1793,
+      "correct": 1532,
+      "accuracy": 0.8544339096486335,
+      "confusion_actual_rows": [
+        [
+          1115,
+          8,
+          28
+        ],
+        [
+          32,
+          236,
+          35
+        ],
+        [
+          92,
+          66,
+          181
+        ]
+      ]
+    }
+  },
+  "tree": {
+    "f": "prev",
+    "v": "^",
+    "yes": {
+      "f": "next2",
+      "v": "ি",
+      "yes": {
+        "f": "cons",
+        "v": "ক",
+        "yes": {
+          "f": "next",
+          "v": "ম",
+          "yes": {
+            "leaf": 1,
+            "counts": [
+              0,
+              28,
+              2
+            ]
+          },
+          "no": {
+            "f": "next",
+            "v": "ব",
+            "yes": {
+              "leaf": 2,
+              "counts": [
+                0,
+                0,
+                34
+              ]
+            },
+            "no": {
+              "f": "next",
+              "v": "র",
+              "yes": {
+                "leaf": 2,
+                "counts": [
+                  0,
+                  3,
+                  26
+                ]
+              },
+              "no": {
+                "leaf": 2,
+                "counts": [
+                  0,
+                  20,
+                  30
+                ]
+              }
+            }
+          }
+        },
+        "no": {
+          "f": "next",
+          "v": "ল",
+          "yes": {
+            "f": "length",
+            "v": "6",
+            "yes": {
+              "leaf": 2,
+              "counts": [
+                0,
+                6,
+                16
+              ]
+            },
+            "no": {
+              "f": "length",
+              "v": "4",
+              "yes": {
+                "leaf": 2,
+                "counts": [
+                  0,
+                  7,
+                  16
+                ]
+              },
+              "no": {
+                "leaf": 2,
+                "counts": [
+                  0,
+                  19,
+                  30
+                ]
+              }
+            }
+          },
+          "no": {
+            "f": "length",
+            "v": "3",
+            "yes": {
+              "leaf": 2,
+              "counts": [
+                0,
+                16,
+                41
+              ]
+            },
+            "no": {
+              "f": "next",
+              "v": "জ",
+              "yes": {
+                "leaf": 2,
+                "counts": [
+                  0,
+                  8,
+                  18
+                ]
+              },
+              "no": {
+                "f": "next",
+                "v": "ন",
+                "yes": {
+                  "f": "cons",
+                  "v": "ম",
+                  "yes": {
+                    "leaf": 2,
+                    "counts": [
+                      0,
+                      1,
+                      21
+                    ]
+                  },
+                  "no": {
+                    "leaf": 2,
+                    "counts": [
+                      0,
+                      10,
+                      19
+                    ]
+                  }
+                },
+                "no": {
+                  "f": "next",
+                  "v": "ব",
+                  "yes": {
+                    "f": "cons",
+                    "v": "ছ",
+                    "yes": {
+                      "leaf": 2,
+                      "counts": [
+                        0,
+                        0,
+                        23
+                      ]
+                    },
+                    "no": {
+                      "leaf": 2,
+                      "counts": [
+                        0,
+                        10,
+                        20
+                      ]
+                    }
+                  },
+                  "no": {
+                    "f": "cons",
+                    "v": "স",
+                    "yes": {
+                      "leaf": 2,
+                      "counts": [
+                        0,
+                        5,
+                        26
+                      ]
+                    },
+                    "no": {
+                      "f": "length",
+                      "v": "5",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          0,
+                          7,
+                          69
+                        ]
+                      },
+                      "no": {
+                        "leaf": 2,
+                        "counts": [
+                          0,
+                          10,
+                          399
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "no": {
+        "f": "next2",
+        "v": "ু",
+        "yes": {
+          "f": "length",
+          "v": "4",
+          "yes": {
+            "leaf": 2,
+            "counts": [
+              0,
+              0,
+              50
+            ]
+          },
+          "no": {
+            "f": "cons",
+            "v": "ব",
+            "yes": {
+              "leaf": 2,
+              "counts": [
+                0,
+                0,
+                37
+              ]
+            },
+            "no": {
+              "f": "cons",
+              "v": "ম",
+              "yes": {
+                "leaf": 2,
+                "counts": [
+                  0,
+                  0,
+                  37
+                ]
+              },
+              "no": {
+                "f": "length",
+                "v": "6",
+                "yes": {
+                  "leaf": 2,
+                  "counts": [
+                    0,
+                    5,
+                    28
+                  ]
+                },
+                "no": {
+                  "f": "length",
+                  "v": "5",
+                  "yes": {
+                    "leaf": 2,
+                    "counts": [
+                      0,
+                      3,
+                      22
+                    ]
+                  },
+                  "no": {
+                    "leaf": 2,
+                    "counts": [
+                      0,
+                      4,
+                      55
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "no": {
+          "f": "next2",
+          "v": "ী",
+          "yes": {
+            "f": "cons",
+            "v": "স",
+            "yes": {
+              "leaf": 2,
+              "counts": [
+                0,
+                6,
+                19
+              ]
+            },
+            "no": {
+              "f": "cons",
+              "v": "শ",
+              "yes": {
+                "leaf": 2,
+                "counts": [
+                  0,
+                  4,
+                  28
+                ]
+              },
+              "no": {
+                "f": "length",
+                "v": "6",
+                "yes": {
+                  "leaf": 2,
+                  "counts": [
+                    0,
+                    0,
+                    30
+                  ]
+                },
+                "no": {
+                  "f": "cons",
+                  "v": "ন",
+                  "yes": {
+                    "leaf": 2,
+                    "counts": [
+                      0,
+                      0,
+                      21
+                    ]
+                  },
+                  "no": {
+                    "leaf": 2,
+                    "counts": [
+                      0,
+                      1,
+                      41
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "no": {
+            "f": "next2",
+            "v": "ছ",
+            "yes": {
+              "f": "next",
+              "v": "র",
+              "yes": {
+                "leaf": 2,
+                "counts": [
+                  0,
+                  0,
+                  20
+                ]
+              },
+              "no": {
+                "leaf": 2,
+                "counts": [
+                  0,
+                  7,
+                  28
+                ]
+              }
+            },
+            "no": {
+              "f": "next2",
+              "v": "ত",
+              "yes": {
+                "f": "length",
+                "v": "4",
+                "yes": {
+                  "leaf": 2,
+                  "counts": [
+                    0,
+                    15,
+                    27
+                  ]
+                },
+                "no": {
+                  "f": "next",
+                  "v": "র",
+                  "yes": {
+                    "leaf": 1,
+                    "counts": [
+                      0,
+                      18,
+                      18
+                    ]
+                  },
+                  "no": {
+                    "f": "length",
+                    "v": "5",
+                    "yes": {
+                      "leaf": 1,
+                      "counts": [
+                        0,
+                        20,
+                        8
+                      ]
+                    },
+                    "no": {
+                      "leaf": 1,
+                      "counts": [
+                        0,
+                        23,
+                        6
+                      ]
+                    }
+                  }
+                }
+              },
+              "no": {
+                "f": "next2",
+                "v": "ল",
+                "yes": {
+                  "f": "cons",
+                  "v": "স",
+                  "yes": {
+                    "leaf": 1,
+                    "counts": [
+                      0,
+                      26,
+                      0
+                    ]
+                  },
+                  "no": {
+                    "f": "next",
+                    "v": "র",
+                    "yes": {
+                      "leaf": 2,
+                      "counts": [
+                        0,
+                        7,
+                        18
+                      ]
+                    },
+                    "no": {
+                      "f": "cons",
+                      "v": "ব",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          0,
+                          18,
+                          24
+                        ]
+                      },
+                      "no": {
+                        "leaf": 1,
+                        "counts": [
+                          0,
+                          85,
+                          28
+                        ]
+                      }
+                    }
+                  }
+                },
+                "no": {
+                  "f": "next2",
+                  "v": "ে",
+                  "yes": {
+                    "f": "cons",
+                    "v": "হ",
+                    "yes": {
+                      "leaf": 2,
+                      "counts": [
+                        0,
+                        8,
+                        13
+                      ]
+                    },
+                    "no": {
+                      "f": "next",
+                      "v": "র",
+                      "yes": {
+                        "leaf": 1,
+                        "counts": [
+                          0,
+                          41,
+                          30
+                        ]
+                      },
+                      "no": {
+                        "leaf": 1,
+                        "counts": [
+                          1,
+                          267,
+                          55
+                        ]
+                      }
+                    }
+                  },
+                  "no": {
+                    "f": "next2",
+                    "v": "ব",
+                    "yes": {
+                      "f": "length",
+                      "v": "4",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          0,
+                          17,
+                          20
+                        ]
+                      },
+                      "no": {
+                        "leaf": 1,
+                        "counts": [
+                          0,
+                          104,
+                          19
+                        ]
+                      }
+                    },
+                    "no": {
+                      "f": "cons",
+                      "v": "ম",
+                      "yes": {
+                        "leaf": 1,
+                        "counts": [
+                          0,
+                          211,
+                          50
+                        ]
+                      },
+                      "no": {
+                        "leaf": 1,
+                        "counts": [
+                          1,
+                          2141,
+                          128
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "no": {
+      "f": "last",
+      "v": "0",
+      "yes": {
+        "f": "next2",
+        "v": "$",
+        "yes": {
+          "f": "next",
+          "v": "হ",
+          "yes": {
+            "f": "prev",
+            "v": "ি",
+            "yes": {
+              "leaf": 1,
+              "counts": [
+                1,
+                30,
+                0
+              ]
+            },
+            "no": {
+              "f": "length",
+              "v": "7",
+              "yes": {
+                "leaf": 1,
+                "counts": [
+                  0,
+                  69,
+                  0
+                ]
+              },
+              "no": {
+                "f": "position",
+                "v": "6",
+                "yes": {
+                  "leaf": 1,
+                  "counts": [
+                    0,
+                    64,
+                    0
+                  ]
+                },
+                "no": {
+                  "f": "length",
+                  "v": "5",
+                  "yes": {
+                    "leaf": 1,
+                    "counts": [
+                      0,
+                      55,
+                      0
+                    ]
+                  },
+                  "no": {
+                    "f": "prev",
+                    "v": "া",
+                    "yes": {
+                      "leaf": 1,
+                      "counts": [
+                        0,
+                        22,
+                        0
+                      ]
+                    },
+                    "no": {
+                      "leaf": 1,
+                      "counts": [
+                        0,
+                        41,
+                        1
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "no": {
+            "f": "next",
+            "v": "স",
+            "yes": {
+              "f": "cons",
+              "v": "ল",
+              "yes": {
+                "leaf": 0,
+                "counts": [
+                  28,
+                  1,
+                  3
+                ]
+              },
+              "no": {
+                "f": "prev",
+                "v": "ি",
+                "yes": {
+                  "leaf": 0,
+                  "counts": [
+                    19,
+                    3,
+                    0
+                  ]
+                },
+                "no": {
+                  "f": "length",
+                  "v": "4",
+                  "yes": {
+                    "leaf": 0,
+                    "counts": [
+                      20,
+                      5,
+                      4
+                    ]
+                  },
+                  "no": {
+                    "leaf": 0,
+                    "counts": [
+                      33,
+                      5,
+                      4
+                    ]
+                  }
+                }
+              }
+            },
+            "no": {
+              "f": "length",
+              "v": "3",
+              "yes": {
+                "f": "next",
+                "v": "ত",
+                "yes": {
+                  "leaf": 0,
+                  "counts": [
+                    12,
+                    4,
+                    6
+                  ]
+                },
+                "no": {
+                  "f": "first",
+                  "v": "0",
+                  "yes": {
+                    "f": "next",
+                    "v": "ল",
+                    "yes": {
+                      "leaf": 2,
+                      "counts": [
+                        8,
+                        3,
+                        20
+                      ]
+                    },
+                    "no": {
+                      "f": "cons",
+                      "v": "র",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          4,
+                          4,
+                          26
+                        ]
+                      },
+                      "no": {
+                        "leaf": 2,
+                        "counts": [
+                          6,
+                          2,
+                          96
+                        ]
+                      }
+                    }
+                  },
+                  "no": {
+                    "f": "prev",
+                    "v": "আ",
+                    "yes": {
+                      "leaf": 2,
+                      "counts": [
+                        3,
+                        4,
+                        22
+                      ]
+                    },
+                    "no": {
+                      "leaf": 2,
+                      "counts": [
+                        6,
+                        12,
+                        26
+                      ]
+                    }
+                  }
+                }
+              },
+              "no": {
+                "f": "prev",
+                "v": "ি",
+                "yes": {
+                  "f": "length",
+                  "v": "4",
+                  "yes": {
+                    "f": "next",
+                    "v": "ন",
+                    "yes": {
+                      "leaf": 1,
+                      "counts": [
+                        0,
+                        11,
+                        9
+                      ]
+                    },
+                    "no": {
+                      "leaf": 1,
+                      "counts": [
+                        21,
+                        33,
+                        6
+                      ]
+                    }
+                  },
+                  "no": {
+                    "f": "next",
+                    "v": "র",
+                    "yes": {
+                      "leaf": 1,
+                      "counts": [
+                        0,
+                        21,
+                        2
+                      ]
+                    },
+                    "no": {
+                      "f": "length",
+                      "v": "6",
+                      "yes": {
+                        "leaf": 1,
+                        "counts": [
+                          1,
+                          19,
+                          3
+                        ]
+                      },
+                      "no": {
+                        "leaf": 1,
+                        "counts": [
+                          0,
+                          41,
+                          5
+                        ]
+                      }
+                    }
+                  }
+                },
+                "no": {
+                  "f": "next",
+                  "v": "ক",
+                  "yes": {
+                    "f": "length",
+                    "v": "4",
+                    "yes": {
+                      "f": "prev",
+                      "v": "া",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          0,
+                          1,
+                          19
+                        ]
+                      },
+                      "no": {
+                        "leaf": 2,
+                        "counts": [
+                          0,
+                          12,
+                          14
+                        ]
+                      }
+                    },
+                    "no": {
+                      "f": "cons",
+                      "v": "ল",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          0,
+                          3,
+                          30
+                        ]
+                      },
+                      "no": {
+                        "leaf": 2,
+                        "counts": [
+                          0,
+                          11,
+                          38
+                        ]
+                      }
+                    }
+                  },
+                  "no": {
+                    "f": "prev",
+                    "v": "ো",
+                    "yes": {
+                      "f": "length",
+                      "v": "4",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          1,
+                          3,
+                          46
+                        ]
+                      },
+                      "no": {
+                        "leaf": 2,
+                        "counts": [
+                          0,
+                          15,
+                          20
+                        ]
+                      }
+                    },
+                    "no": {
+                      "f": "prev",
+                      "v": "া",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          53,
+                          89,
+                          135
+                        ]
+                      },
+                      "no": {
+                        "leaf": 1,
+                        "counts": [
+                          47,
+                          409,
+                          249
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "no": {
+          "f": "next",
+          "v": "ন",
+          "yes": {
+            "f": "next2",
+            "v": "ি",
+            "yes": {
+              "f": "cons",
+              "v": "ন",
+              "yes": {
+                "leaf": 0,
+                "counts": [
+                  44,
+                  0,
+                  0
+                ]
+              },
+              "no": {
+                "f": "position",
+                "v": "2",
+                "yes": {
+                  "leaf": 0,
+                  "counts": [
+                    36,
+                    1,
+                    3
+                  ]
+                },
+                "no": {
+                  "f": "position",
+                  "v": "1",
+                  "yes": {
+                    "leaf": 0,
+                    "counts": [
+                      12,
+                      0,
+                      12
+                    ]
+                  },
+                  "no": {
+                    "leaf": 2,
+                    "counts": [
+                      9,
+                      1,
+                      24
+                    ]
+                  }
+                }
+              }
+            },
+            "no": {
+              "f": "cons",
+              "v": "জ",
+              "yes": {
+                "f": "next2",
+                "v": "ী",
+                "yes": {
+                  "leaf": 0,
+                  "counts": [
+                    29,
+                    0,
+                    3
+                  ]
+                },
+                "no": {
+                  "f": "position",
+                  "v": "2",
+                  "yes": {
+                    "leaf": 2,
+                    "counts": [
+                      9,
+                      12,
+                      15
+                    ]
+                  },
+                  "no": {
+                    "f": "next2",
+                    "v": "ক",
+                    "yes": {
+                      "leaf": 1,
+                      "counts": [
+                        0,
+                        21,
+                        2
+                      ]
+                    },
+                    "no": {
+                      "f": "position",
+                      "v": "3",
+                      "yes": {
+                        "leaf": 1,
+                        "counts": [
+                          0,
+                          19,
+                          4
+                        ]
+                      },
+                      "no": {
+                        "leaf": 1,
+                        "counts": [
+                          3,
+                          13,
+                          9
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "no": {
+                "f": "cons",
+                "v": "ক",
+                "yes": {
+                  "leaf": 0,
+                  "counts": [
+                    26,
+                    7,
+                    5
+                  ]
+                },
+                "no": {
+                  "f": "position",
+                  "v": "1",
+                  "yes": {
+                    "f": "prev",
+                    "v": "আ",
+                    "yes": {
+                      "leaf": 0,
+                      "counts": [
+                        15,
+                        2,
+                        14
+                      ]
+                    },
+                    "no": {
+                      "f": "next2",
+                      "v": "া",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          9,
+                          0,
+                          36
+                        ]
+                      },
+                      "no": {
+                        "leaf": 2,
+                        "counts": [
+                          7,
+                          1,
+                          123
+                        ]
+                      }
+                    }
+                  },
+                  "no": {
+                    "f": "next2",
+                    "v": "ে",
+                    "yes": {
+                      "f": "position",
+                      "v": "3",
+                      "yes": {
+                        "leaf": 1,
+                        "counts": [
+                          1,
+                          31,
+                          17
+                        ]
+                      },
+                      "no": {
+                        "leaf": 2,
+                        "counts": [
+                          15,
+                          65,
+                          135
+                        ]
+                      }
+                    },
+                    "no": {
+                      "f": "next2",
+                      "v": "গ",
+                      "yes": {
+                        "leaf": 0,
+                        "counts": [
+                          14,
+                          2,
+                          4
+                        ]
+                      },
+                      "no": {
+                        "leaf": 2,
+                        "counts": [
+                          91,
+                          52,
+                          234
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "no": {
+            "f": "next",
+            "v": "ণ",
+            "yes": {
+              "f": "next2",
+              "v": "ি",
+              "yes": {
+                "leaf": 2,
+                "counts": [
+                  0,
+                  0,
+                  25
+                ]
+              },
+              "no": {
+                "f": "prev",
+                "v": "ক",
+                "yes": {
+                  "leaf": 2,
+                  "counts": [
+                    0,
+                    0,
+                    20
+                  ]
+                },
+                "no": {
+                  "f": "position",
+                  "v": "1",
+                  "yes": {
+                    "leaf": 2,
+                    "counts": [
+                      1,
+                      1,
+                      23
+                    ]
+                  },
+                  "no": {
+                    "f": "prev",
+                    "v": "া",
+                    "yes": {
+                      "f": "position",
+                      "v": "2",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          0,
+                          0,
+                          31
+                        ]
+                      },
+                      "no": {
+                        "leaf": 2,
+                        "counts": [
+                          0,
+                          6,
+                          14
+                        ]
+                      }
+                    },
+                    "no": {
+                      "f": "position",
+                      "v": "2",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          0,
+                          19,
+                          28
+                        ]
+                      },
+                      "no": {
+                        "leaf": 2,
+                        "counts": [
+                          0,
+                          10,
+                          50
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "no": {
+              "f": "next",
+              "v": "র",
+              "yes": {
+                "f": "next2",
+                "v": "া",
+                "yes": {
+                  "f": "cons",
+                  "v": "প",
+                  "yes": {
+                    "leaf": 2,
+                    "counts": [
+                      4,
+                      6,
+                      13
+                    ]
+                  },
+                  "no": {
+                    "f": "prev",
+                    "v": "া",
+                    "yes": {
+                      "f": "position",
+                      "v": "4",
+                      "yes": {
+                        "leaf": 0,
+                        "counts": [
+                          20,
+                          1,
+                          0
+                        ]
+                      },
+                      "no": {
+                        "leaf": 0,
+                        "counts": [
+                          65,
+                          0,
+                          0
+                        ]
+                      }
+                    },
+                    "no": {
+                      "f": "first",
+                      "v": "0",
+                      "yes": {
+                        "leaf": 0,
+                        "counts": [
+                          142,
+                          24,
+                          29
+                        ]
+                      },
+                      "no": {
+                        "leaf": 0,
+                        "counts": [
+                          51,
+                          1,
+                          2
+                        ]
+                      }
+                    }
+                  }
+                },
+                "no": {
+                  "f": "next2",
+                  "v": "ু",
+                  "yes": {
+                    "f": "position",
+                    "v": "1",
+                    "yes": {
+                      "leaf": 0,
+                      "counts": [
+                        25,
+                        0,
+                        0
+                      ]
+                    },
+                    "no": {
+                      "leaf": 0,
+                      "counts": [
+                        26,
+                        0,
+                        2
+                      ]
+                    }
+                  },
+                  "no": {
+                    "f": "position",
+                    "v": "1",
+                    "yes": {
+                      "f": "next2",
+                      "v": "ো",
+                      "yes": {
+                        "leaf": 0,
+                        "counts": [
+                          11,
+                          0,
+                          10
+                        ]
+                      },
+                      "no": {
+                        "leaf": 2,
+                        "counts": [
+                          21,
+                          10,
+                          186
+                        ]
+                      }
+                    },
+                    "no": {
+                      "f": "next2",
+                      "v": "ি",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          52,
+                          1,
+                          55
+                        ]
+                      },
+                      "no": {
+                        "leaf": 1,
+                        "counts": [
+                          64,
+                          206,
+                          162
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "no": {
+                "f": "position",
+                "v": "1",
+                "yes": {
+                  "f": "cons",
+                  "v": "ত",
+                  "yes": {
+                    "f": "next2",
+                    "v": "া",
+                    "yes": {
+                      "leaf": 2,
+                      "counts": [
+                        1,
+                        1,
+                        38
+                      ]
+                    },
+                    "no": {
+                      "leaf": 2,
+                      "counts": [
+                        7,
+                        1,
+                        47
+                      ]
+                    }
+                  },
+                  "no": {
+                    "f": "cons",
+                    "v": "প",
+                    "yes": {
+                      "f": "prev",
+                      "v": "উ",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          1,
+                          1,
+                          69
+                        ]
+                      },
+                      "no": {
+                        "leaf": 2,
+                        "counts": [
+                          19,
+                          3,
+                          28
+                        ]
+                      }
+                    },
+                    "no": {
+                      "f": "prev",
+                      "v": "অ",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          24,
+                          16,
+                          71
+                        ]
+                      },
+                      "no": {
+                        "leaf": 0,
+                        "counts": [
+                          1605,
+                          26,
+                          575
+                        ]
+                      }
+                    }
+                  }
+                },
+                "no": {
+                  "f": "next",
+                  "v": "ত",
+                  "yes": {
+                    "f": "position",
+                    "v": "2",
+                    "yes": {
+                      "f": "next2",
+                      "v": "ি",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          11,
+                          0,
+                          20
+                        ]
+                      },
+                      "no": {
+                        "leaf": 0,
+                        "counts": [
+                          258,
+                          22,
+                          56
+                        ]
+                      }
+                    },
+                    "no": {
+                      "f": "next2",
+                      "v": "ি",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          5,
+                          0,
+                          51
+                        ]
+                      },
+                      "no": {
+                        "leaf": 1,
+                        "counts": [
+                          37,
+                          118,
+                          37
+                        ]
+                      }
+                    }
+                  },
+                  "no": {
+                    "f": "next",
+                    "v": "ল",
+                    "yes": {
+                      "f": "position",
+                      "v": "2",
+                      "yes": {
+                        "leaf": 0,
+                        "counts": [
+                          379,
+                          36,
+                          70
+                        ]
+                      },
+                      "no": {
+                        "leaf": 1,
+                        "counts": [
+                          23,
+                          90,
+                          75
+                        ]
+                      }
+                    },
+                    "no": {
+                      "f": "next",
+                      "v": "থ",
+                      "yes": {
+                        "leaf": 1,
+                        "counts": [
+                          4,
+                          35,
+                          5
+                        ]
+                      },
+                      "no": {
+                        "leaf": 0,
+                        "counts": [
+                          4947,
+                          427,
+                          584
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "no": {
+        "f": "cons",
+        "v": "হ",
+        "yes": {
+          "f": "prev",
+          "v": "া",
+          "yes": {
+            "leaf": 0,
+            "counts": [
+              28,
+              0,
+              6
+            ]
+          },
+          "no": {
+            "f": "prev",
+            "v": "স",
+            "yes": {
+              "f": "position",
+              "v": "6",
+              "yes": {
+                "leaf": 2,
+                "counts": [
+                  0,
+                  0,
+                  146
+                ]
+              },
+              "no": {
+                "f": "length",
+                "v": "6",
+                "yes": {
+                  "leaf": 2,
+                  "counts": [
+                    0,
+                    0,
+                    60
+                  ]
+                },
+                "no": {
+                  "leaf": 2,
+                  "counts": [
+                    1,
+                    0,
+                    67
+                  ]
+                }
+              }
+            },
+            "no": {
+              "leaf": 2,
+              "counts": [
+                11,
+                1,
+                29
+              ]
+            }
+          }
+        },
+        "no": {
+          "f": "cons",
+          "v": "ত",
+          "yes": {
+            "f": "prev",
+            "v": "া",
+            "yes": {
+              "f": "length",
+              "v": "5",
+              "yes": {
+                "leaf": 0,
+                "counts": [
+                  33,
+                  0,
+                  12
+                ]
+              },
+              "no": {
+                "f": "position",
+                "v": "6",
+                "yes": {
+                  "leaf": 0,
+                  "counts": [
+                    26,
+                    0,
+                    1
+                  ]
+                },
+                "no": {
+                  "leaf": 0,
+                  "counts": [
+                    39,
+                    0,
+                    3
+                  ]
+                }
+              }
+            },
+            "no": {
+              "f": "prev",
+              "v": "ি",
+              "yes": {
+                "f": "position",
+                "v": "6",
+                "yes": {
+                  "f": "length",
+                  "v": "7",
+                  "yes": {
+                    "leaf": 2,
+                    "counts": [
+                      2,
+                      0,
+                      24
+                    ]
+                  },
+                  "no": {
+                    "leaf": 2,
+                    "counts": [
+                      0,
+                      0,
+                      29
+                    ]
+                  }
+                },
+                "no": {
+                  "f": "length",
+                  "v": "4",
+                  "yes": {
+                    "leaf": 2,
+                    "counts": [
+                      8,
+                      0,
+                      14
+                    ]
+                  },
+                  "no": {
+                    "f": "length",
+                    "v": "5",
+                    "yes": {
+                      "leaf": 2,
+                      "counts": [
+                        7,
+                        0,
+                        37
+                      ]
+                    },
+                    "no": {
+                      "leaf": 2,
+                      "counts": [
+                        9,
+                        0,
+                        35
+                      ]
+                    }
+                  }
+                }
+              },
+              "no": {
+                "f": "prev",
+                "v": "গ",
+                "yes": {
+                  "leaf": 2,
+                  "counts": [
+                    1,
+                    0,
+                    29
+                  ]
+                },
+                "no": {
+                  "f": "length",
+                  "v": "5",
+                  "yes": {
+                    "leaf": 0,
+                    "counts": [
+                      31,
+                      0,
+                      18
+                    ]
+                  },
+                  "no": {
+                    "f": "length",
+                    "v": "6",
+                    "yes": {
+                      "leaf": 0,
+                      "counts": [
+                        22,
+                        0,
+                        17
+                      ]
+                    },
+                    "no": {
+                      "f": "length",
+                      "v": "4",
+                      "yes": {
+                        "leaf": 2,
+                        "counts": [
+                          28,
+                          0,
+                          40
+                        ]
+                      },
+                      "no": {
+                        "leaf": 2,
+                        "counts": [
+                          19,
+                          0,
+                          38
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "no": {
+            "f": "cons",
+            "v": "ল",
+            "yes": {
+              "f": "prev",
+              "v": "ি",
+              "yes": {
+                "f": "length",
+                "v": "7",
+                "yes": {
+                  "leaf": 2,
+                  "counts": [
+                    3,
+                    0,
+                    33
+                  ]
+                },
+                "no": {
+                  "f": "length",
+                  "v": "6",
+                  "yes": {
+                    "leaf": 2,
+                    "counts": [
+                      20,
+                      0,
+                      33
+                    ]
+                  },
+                  "no": {
+                    "f": "length",
+                    "v": "4",
+                    "yes": {
+                      "leaf": 0,
+                      "counts": [
+                        16,
+                        0,
+                        9
+                      ]
+                    },
+                    "no": {
+                      "leaf": 0,
+                      "counts": [
+                        56,
+                        0,
+                        14
+                      ]
+                    }
+                  }
+                }
+              },
+              "no": {
+                "f": "length",
+                "v": "4",
+                "yes": {
+                  "leaf": 0,
+                  "counts": [
+                    118,
+                    0,
+                    44
+                  ]
+                },
+                "no": {
+                  "f": "length",
+                  "v": "3",
+                  "yes": {
+                    "leaf": 0,
+                    "counts": [
+                      94,
+                      0,
+                      14
+                    ]
+                  },
+                  "no": {
+                    "f": "prev",
+                    "v": "া",
+                    "yes": {
+                      "f": "length",
+                      "v": "5",
+                      "yes": {
+                        "leaf": 0,
+                        "counts": [
+                          68,
+                          0,
+                          15
+                        ]
+                      },
+                      "no": {
+                        "leaf": 0,
+                        "counts": [
+                          71,
+                          0,
+                          0
+                        ]
+                      }
+                    },
+                    "no": {
+                      "f": "length",
+                      "v": "5",
+                      "yes": {
+                        "leaf": 0,
+                        "counts": [
+                          125,
+                          0,
+                          1
+                        ]
+                      },
+                      "no": {
+                        "leaf": 0,
+                        "counts": [
+                          320,
+                          0,
+                          0
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "no": {
+              "f": "cons",
+              "v": "ব",
+              "yes": {
+                "f": "length",
+                "v": "4",
+                "yes": {
+                  "leaf": 2,
+                  "counts": [
+                    28,
+                    0,
+                    32
+                  ]
+                },
+                "no": {
+                  "f": "length",
+                  "v": "6",
+                  "yes": {
+                    "leaf": 0,
+                    "counts": [
+                      22,
+                      0,
+                      0
+                    ]
+                  },
+                  "no": {
+                    "f": "length",
+                    "v": "3",
+                    "yes": {
+                      "leaf": 0,
+                      "counts": [
+                        26,
+                        0,
+                        13
+                      ]
+                    },
+                    "no": {
+                      "f": "prev",
+                      "v": "া",
+                      "yes": {
+                        "leaf": 0,
+                        "counts": [
+                          25,
+                          0,
+                          10
+                        ]
+                      },
+                      "no": {
+                        "leaf": 0,
+                        "counts": [
+                          30,
+                          0,
+                          7
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "no": {
+                "f": "prev",
+                "v": "ত",
+                "yes": {
+                  "f": "cons",
+                  "v": "র",
+                  "yes": {
+                    "leaf": 0,
+                    "counts": [
+                      13,
+                      0,
+                      10
+                    ]
+                  },
+                  "no": {
+                    "leaf": 0,
+                    "counts": [
+                      28,
+                      0,
+                      17
+                    ]
+                  }
+                },
+                "no": {
+                  "f": "cons",
+                  "v": "ছ",
+                  "yes": {
+                    "leaf": 2,
+                    "counts": [
+                      15,
+                      1,
+                      18
+                    ]
+                  },
+                  "no": {
+                    "f": "position",
+                    "v": "1",
+                    "yes": {
+                      "f": "cons",
+                      "v": "র",
+                      "yes": {
+                        "leaf": 0,
+                        "counts": [
+                          20,
+                          0,
+                          1
+                        ]
+                      },
+                      "no": {
+                        "leaf": 0,
+                        "counts": [
+                          122,
+                          1,
+                          14
+                        ]
+                      }
+                    },
+                    "no": {
+                      "f": "length",
+                      "v": "3",
+                      "yes": {
+                        "leaf": 0,
+                        "counts": [
+                          770,
+                          0,
+                          19
+                        ]
+                      },
+                      "no": {
+                        "leaf": 0,
+                        "counts": [
+                          10094,
+                          0,
+                          28
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

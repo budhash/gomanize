@@ -1,0 +1,4967 @@
+[
+  {
+    "word": "কমল",
+    "index": 0,
+    "features": {
+      "cons": "ক",
+      "prev": "^",
+      "next": "ম",
+      "next2": "ল",
+      "first": "1",
+      "last": "0",
+      "length": "3",
+      "position": "0"
+    },
+    "label": 1
+  },
+  {
+    "word": "কমল",
+    "index": 1,
+    "features": {
+      "cons": "ম",
+      "prev": "ক",
+      "next": "ল",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "3",
+      "position": "1"
+    },
+    "label": 2
+  },
+  {
+    "word": "কমল",
+    "index": 2,
+    "features": {
+      "cons": "ল",
+      "prev": "ম",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "3",
+      "position": "2"
+    },
+    "label": 0
+  },
+  {
+    "word": "কাম",
+    "index": 2,
+    "features": {
+      "cons": "ম",
+      "prev": "া",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "3",
+      "position": "2"
+    },
+    "label": 0
+  },
+  {
+    "word": "ফল",
+    "index": 0,
+    "features": {
+      "cons": "ফ",
+      "prev": "^",
+      "next": "ল",
+      "next2": "$",
+      "first": "1",
+      "last": "0",
+      "length": "2",
+      "position": "0"
+    },
+    "label": 1
+  },
+  {
+    "word": "ফল",
+    "index": 1,
+    "features": {
+      "cons": "ল",
+      "prev": "ফ",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "মন",
+    "index": 0,
+    "features": {
+      "cons": "ম",
+      "prev": "^",
+      "next": "ন",
+      "next2": "$",
+      "first": "1",
+      "last": "0",
+      "length": "2",
+      "position": "0"
+    },
+    "label": 1
+  },
+  {
+    "word": "মন",
+    "index": 1,
+    "features": {
+      "cons": "ন",
+      "prev": "ম",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ড়ক",
+    "index": 0,
+    "features": {
+      "cons": "ড়",
+      "prev": "^",
+      "next": "়",
+      "next2": "ক",
+      "first": "1",
+      "last": "0",
+      "length": "3",
+      "position": "0"
+    },
+    "label": 1
+  },
+  {
+    "word": "ড়ক",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "়",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "3",
+      "position": "2"
+    },
+    "label": 0
+  },
+  {
+    "word": "কড়",
+    "index": 0,
+    "features": {
+      "cons": "ক",
+      "prev": "^",
+      "next": "ড",
+      "next2": "়",
+      "first": "1",
+      "last": "0",
+      "length": "3",
+      "position": "0"
+    },
+    "label": 1
+  },
+  {
+    "word": "কড়",
+    "index": 1,
+    "features": {
+      "cons": "ড়",
+      "prev": "ক",
+      "next": "়",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "3",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "কোড়",
+    "index": 2,
+    "features": {
+      "cons": "ড়",
+      "prev": "ো",
+      "next": "়",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 0
+  },
+  {
+    "word": "কামালমালকামাল",
+    "index": 4,
+    "features": {
+      "cons": "ল",
+      "prev": "া",
+      "next": "ম",
+      "next2": "া",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "4"
+    },
+    "label": 0
+  },
+  {
+    "word": "কামালমালকামাল",
+    "index": 7,
+    "features": {
+      "cons": "ল",
+      "prev": "া",
+      "next": "ক",
+      "next2": "া",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "কামালমালকামাল",
+    "index": 12,
+    "features": {
+      "cons": "ল",
+      "prev": "া",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "কমলকমলকমলকমলকমল",
+    "index": 0,
+    "features": {
+      "cons": "ক",
+      "prev": "^",
+      "next": "ম",
+      "next2": "ল",
+      "first": "1",
+      "last": "0",
+      "length": "12",
+      "position": "0"
+    },
+    "label": 1
+  },
+  {
+    "word": "কমলকমলকমলকমলকমল",
+    "index": 1,
+    "features": {
+      "cons": "ম",
+      "prev": "ক",
+      "next": "ল",
+      "next2": "ক",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "কমলকমলকমলকমলকমল",
+    "index": 2,
+    "features": {
+      "cons": "ল",
+      "prev": "ম",
+      "next": "ক",
+      "next2": "ম",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "2"
+    },
+    "label": 0
+  },
+  {
+    "word": "কমলকমলকমলকমলকমল",
+    "index": 3,
+    "features": {
+      "cons": "ক",
+      "prev": "ল",
+      "next": "ম",
+      "next2": "ল",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "কমলকমলকমলকমলকমল",
+    "index": 4,
+    "features": {
+      "cons": "ম",
+      "prev": "ক",
+      "next": "ল",
+      "next2": "ক",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "4"
+    },
+    "label": 1
+  },
+  {
+    "word": "কমলকমলকমলকমলকমল",
+    "index": 5,
+    "features": {
+      "cons": "ল",
+      "prev": "ম",
+      "next": "ক",
+      "next2": "ম",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "5"
+    },
+    "label": 0
+  },
+  {
+    "word": "কমলকমলকমলকমলকমল",
+    "index": 6,
+    "features": {
+      "cons": "ক",
+      "prev": "ল",
+      "next": "ম",
+      "next2": "ল",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "কমলকমলকমলকমলকমল",
+    "index": 7,
+    "features": {
+      "cons": "ম",
+      "prev": "ক",
+      "next": "ল",
+      "next2": "ক",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 1
+  },
+  {
+    "word": "কমলকমলকমলকমলকমল",
+    "index": 8,
+    "features": {
+      "cons": "ল",
+      "prev": "ম",
+      "next": "ক",
+      "next2": "ম",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "কমলকমলকমলকমলকমল",
+    "index": 9,
+    "features": {
+      "cons": "ক",
+      "prev": "ল",
+      "next": "ম",
+      "next2": "ল",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "কমলকমলকমলকমলকমল",
+    "index": 10,
+    "features": {
+      "cons": "ম",
+      "prev": "ক",
+      "next": "ল",
+      "next2": "ক",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 1
+  },
+  {
+    "word": "কমলকমলকমলকমলকমল",
+    "index": 11,
+    "features": {
+      "cons": "ল",
+      "prev": "ম",
+      "next": "ক",
+      "next2": "ম",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "কমলকমলকমলকমলকমল",
+    "index": 12,
+    "features": {
+      "cons": "ক",
+      "prev": "ল",
+      "next": "ম",
+      "next2": "ল",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "কমলকমলকমলকমলকমল",
+    "index": 13,
+    "features": {
+      "cons": "ম",
+      "prev": "ক",
+      "next": "ল",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 1
+  },
+  {
+    "word": "কমলকমলকমলকমলকমল",
+    "index": 14,
+    "features": {
+      "cons": "ল",
+      "prev": "ম",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "মনমনমনমনমনমনমন",
+    "index": 0,
+    "features": {
+      "cons": "ম",
+      "prev": "^",
+      "next": "ন",
+      "next2": "ম",
+      "first": "1",
+      "last": "0",
+      "length": "12",
+      "position": "0"
+    },
+    "label": 1
+  },
+  {
+    "word": "মনমনমনমনমনমনমন",
+    "index": 1,
+    "features": {
+      "cons": "ন",
+      "prev": "ম",
+      "next": "ম",
+      "next2": "ন",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "মনমনমনমনমনমনমন",
+    "index": 2,
+    "features": {
+      "cons": "ম",
+      "prev": "ন",
+      "next": "ন",
+      "next2": "ম",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "মনমনমনমনমনমনমন",
+    "index": 3,
+    "features": {
+      "cons": "ন",
+      "prev": "ম",
+      "next": "ম",
+      "next2": "ন",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "মনমনমনমনমনমনমন",
+    "index": 4,
+    "features": {
+      "cons": "ম",
+      "prev": "ন",
+      "next": "ন",
+      "next2": "ম",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "4"
+    },
+    "label": 2
+  },
+  {
+    "word": "মনমনমনমনমনমনমন",
+    "index": 5,
+    "features": {
+      "cons": "ন",
+      "prev": "ম",
+      "next": "ম",
+      "next2": "ন",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "5"
+    },
+    "label": 0
+  },
+  {
+    "word": "মনমনমনমনমনমনমন",
+    "index": 6,
+    "features": {
+      "cons": "ম",
+      "prev": "ন",
+      "next": "ন",
+      "next2": "ম",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 2
+  },
+  {
+    "word": "মনমনমনমনমনমনমন",
+    "index": 7,
+    "features": {
+      "cons": "ন",
+      "prev": "ম",
+      "next": "ম",
+      "next2": "ন",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "মনমনমনমনমনমনমন",
+    "index": 8,
+    "features": {
+      "cons": "ম",
+      "prev": "ন",
+      "next": "ন",
+      "next2": "ম",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 2
+  },
+  {
+    "word": "মনমনমনমনমনমনমন",
+    "index": 9,
+    "features": {
+      "cons": "ন",
+      "prev": "ম",
+      "next": "ম",
+      "next2": "ন",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "মনমনমনমনমনমনমন",
+    "index": 10,
+    "features": {
+      "cons": "ম",
+      "prev": "ন",
+      "next": "ন",
+      "next2": "ম",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 2
+  },
+  {
+    "word": "মনমনমনমনমনমনমন",
+    "index": 11,
+    "features": {
+      "cons": "ন",
+      "prev": "ম",
+      "next": "ম",
+      "next2": "ন",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "মনমনমনমনমনমনমন",
+    "index": 12,
+    "features": {
+      "cons": "ম",
+      "prev": "ন",
+      "next": "ন",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 1
+  },
+  {
+    "word": "মনমনমনমনমনমনমন",
+    "index": 13,
+    "features": {
+      "cons": "ন",
+      "prev": "ম",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "কামালমালকামালমালকামাল",
+    "index": 4,
+    "features": {
+      "cons": "ল",
+      "prev": "া",
+      "next": "ম",
+      "next2": "া",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "4"
+    },
+    "label": 0
+  },
+  {
+    "word": "কামালমালকামালমালকামাল",
+    "index": 7,
+    "features": {
+      "cons": "ল",
+      "prev": "া",
+      "next": "ক",
+      "next2": "া",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "কামালমালকামালমালকামাল",
+    "index": 12,
+    "features": {
+      "cons": "ল",
+      "prev": "া",
+      "next": "ম",
+      "next2": "া",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "কামালমালকামালমালকামাল",
+    "index": 15,
+    "features": {
+      "cons": "ল",
+      "prev": "া",
+      "next": "ক",
+      "next2": "া",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "কামালমালকামালমালকামাল",
+    "index": 20,
+    "features": {
+      "cons": "ল",
+      "prev": "া",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "ড়কমলকমলকমলকমল",
+    "index": 0,
+    "features": {
+      "cons": "ড়",
+      "prev": "^",
+      "next": "়",
+      "next2": "ক",
+      "first": "1",
+      "last": "0",
+      "length": "12",
+      "position": "0"
+    },
+    "label": 1
+  },
+  {
+    "word": "ড়কমলকমলকমলকমল",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "়",
+      "next": "ম",
+      "next2": "ল",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "2"
+    },
+    "label": 0
+  },
+  {
+    "word": "ড়কমলকমলকমলকমল",
+    "index": 3,
+    "features": {
+      "cons": "ম",
+      "prev": "ক",
+      "next": "ল",
+      "next2": "ক",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "3"
+    },
+    "label": 1
+  },
+  {
+    "word": "ড়কমলকমলকমলকমল",
+    "index": 4,
+    "features": {
+      "cons": "ল",
+      "prev": "ম",
+      "next": "ক",
+      "next2": "ম",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "4"
+    },
+    "label": 0
+  },
+  {
+    "word": "ড়কমলকমলকমলকমল",
+    "index": 5,
+    "features": {
+      "cons": "ক",
+      "prev": "ল",
+      "next": "ম",
+      "next2": "ল",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "5"
+    },
+    "label": 0
+  },
+  {
+    "word": "ড়কমলকমলকমলকমল",
+    "index": 6,
+    "features": {
+      "cons": "ম",
+      "prev": "ক",
+      "next": "ল",
+      "next2": "ক",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 1
+  },
+  {
+    "word": "ড়কমলকমলকমলকমল",
+    "index": 7,
+    "features": {
+      "cons": "ল",
+      "prev": "ম",
+      "next": "ক",
+      "next2": "ম",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "ড়কমলকমলকমলকমল",
+    "index": 8,
+    "features": {
+      "cons": "ক",
+      "prev": "ল",
+      "next": "ম",
+      "next2": "ল",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "ড়কমলকমলকমলকমল",
+    "index": 9,
+    "features": {
+      "cons": "ম",
+      "prev": "ক",
+      "next": "ল",
+      "next2": "ক",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 1
+  },
+  {
+    "word": "ড়কমলকমলকমলকমল",
+    "index": 10,
+    "features": {
+      "cons": "ল",
+      "prev": "ম",
+      "next": "ক",
+      "next2": "ম",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "ড়কমলকমলকমলকমল",
+    "index": 11,
+    "features": {
+      "cons": "ক",
+      "prev": "ল",
+      "next": "ম",
+      "next2": "ল",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "ড়কমলকমলকমলকমল",
+    "index": 12,
+    "features": {
+      "cons": "ম",
+      "prev": "ক",
+      "next": "ল",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 1
+  },
+  {
+    "word": "ড়কমলকমলকমলকমল",
+    "index": 13,
+    "features": {
+      "cons": "ল",
+      "prev": "ম",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "কোকমলকমলকমলক",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ো",
+      "next": "ম",
+      "next2": "ল",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "2"
+    },
+    "label": 0
+  },
+  {
+    "word": "কোকমলকমলকমলক",
+    "index": 3,
+    "features": {
+      "cons": "ম",
+      "prev": "ক",
+      "next": "ল",
+      "next2": "ক",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "3"
+    },
+    "label": 1
+  },
+  {
+    "word": "কোকমলকমলকমলক",
+    "index": 4,
+    "features": {
+      "cons": "ল",
+      "prev": "ম",
+      "next": "ক",
+      "next2": "ম",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "4"
+    },
+    "label": 0
+  },
+  {
+    "word": "কোকমলকমলকমলক",
+    "index": 5,
+    "features": {
+      "cons": "ক",
+      "prev": "ল",
+      "next": "ম",
+      "next2": "ল",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "5"
+    },
+    "label": 0
+  },
+  {
+    "word": "কোকমলকমলকমলক",
+    "index": 6,
+    "features": {
+      "cons": "ম",
+      "prev": "ক",
+      "next": "ল",
+      "next2": "ক",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 1
+  },
+  {
+    "word": "কোকমলকমলকমলক",
+    "index": 7,
+    "features": {
+      "cons": "ল",
+      "prev": "ম",
+      "next": "ক",
+      "next2": "ম",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "কোকমলকমলকমলক",
+    "index": 8,
+    "features": {
+      "cons": "ক",
+      "prev": "ল",
+      "next": "ম",
+      "next2": "ল",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "কোকমলকমলকমলক",
+    "index": 9,
+    "features": {
+      "cons": "ম",
+      "prev": "ক",
+      "next": "ল",
+      "next2": "ক",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 1
+  },
+  {
+    "word": "কোকমলকমলকমলক",
+    "index": 10,
+    "features": {
+      "cons": "ল",
+      "prev": "ম",
+      "next": "ক",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 2
+  },
+  {
+    "word": "কোকমলকমলকমলক",
+    "index": 11,
+    "features": {
+      "cons": "ক",
+      "prev": "ল",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "12",
+      "position": "6"
+    },
+    "label": 0
+  },
+  {
+    "word": "আণ",
+    "index": 1,
+    "features": {
+      "cons": "ণ",
+      "prev": "আ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "মাকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "া",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "মাকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ওক",
+    "index": 1,
+    "features": {
+      "cons": "ক",
+      "prev": "ও",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "বোকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ো",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "বোকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ভোকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ো",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "ভোকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ইয",
+    "index": 1,
+    "features": {
+      "cons": "য",
+      "prev": "ই",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঢেকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ে",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ঢেকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "অথ",
+    "index": 1,
+    "features": {
+      "cons": "থ",
+      "prev": "অ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ওঘ",
+    "index": 1,
+    "features": {
+      "cons": "ঘ",
+      "prev": "ও",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ইণ",
+    "index": 1,
+    "features": {
+      "cons": "ণ",
+      "prev": "ই",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঊন",
+    "index": 1,
+    "features": {
+      "cons": "ন",
+      "prev": "ঊ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "নেকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ে",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "নেকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "এহ",
+    "index": 1,
+    "features": {
+      "cons": "হ",
+      "prev": "এ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 2
+  },
+  {
+    "word": "অড়",
+    "index": 1,
+    "features": {
+      "cons": "ড়",
+      "prev": "অ",
+      "next": "়",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "3",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "অছ",
+    "index": 1,
+    "features": {
+      "cons": "ছ",
+      "prev": "অ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 2
+  },
+  {
+    "word": "ওফ",
+    "index": 1,
+    "features": {
+      "cons": "ফ",
+      "prev": "ও",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "আড়",
+    "index": 1,
+    "features": {
+      "cons": "ড়",
+      "prev": "আ",
+      "next": "়",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "3",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "এছ",
+    "index": 1,
+    "features": {
+      "cons": "ছ",
+      "prev": "এ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 2
+  },
+  {
+    "word": "ছূকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ূ",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ছূকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "টূকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ূ",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "টূকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "এঢ",
+    "index": 1,
+    "features": {
+      "cons": "ঢ",
+      "prev": "এ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "অত",
+    "index": 1,
+    "features": {
+      "cons": "ত",
+      "prev": "অ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 2
+  },
+  {
+    "word": "ইন",
+    "index": 1,
+    "features": {
+      "cons": "ন",
+      "prev": "ই",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "উব",
+    "index": 1,
+    "features": {
+      "cons": "ব",
+      "prev": "উ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "সূকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ূ",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "সূকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "এখ",
+    "index": 1,
+    "features": {
+      "cons": "খ",
+      "prev": "এ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ইফ",
+    "index": 1,
+    "features": {
+      "cons": "ফ",
+      "prev": "ই",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ওর",
+    "index": 1,
+    "features": {
+      "cons": "র",
+      "prev": "ও",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঊস",
+    "index": 1,
+    "features": {
+      "cons": "স",
+      "prev": "ঊ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "নুকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ু",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "নুকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "অয",
+    "index": 1,
+    "features": {
+      "cons": "য",
+      "prev": "অ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ওগ",
+    "index": 1,
+    "features": {
+      "cons": "গ",
+      "prev": "ও",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ওদ",
+    "index": 1,
+    "features": {
+      "cons": "দ",
+      "prev": "ও",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঊঠ",
+    "index": 1,
+    "features": {
+      "cons": "ঠ",
+      "prev": "ঊ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঈঝ",
+    "index": 1,
+    "features": {
+      "cons": "ঝ",
+      "prev": "ঈ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঘেকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ে",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ঘেকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "এষ",
+    "index": 1,
+    "features": {
+      "cons": "ষ",
+      "prev": "এ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঊঘ",
+    "index": 1,
+    "features": {
+      "cons": "ঘ",
+      "prev": "ঊ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "উথ",
+    "index": 1,
+    "features": {
+      "cons": "থ",
+      "prev": "উ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঘীকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ী",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ঘীকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঈল",
+    "index": 1,
+    "features": {
+      "cons": "ল",
+      "prev": "ঈ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ইপ",
+    "index": 1,
+    "features": {
+      "cons": "প",
+      "prev": "ই",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "উস",
+    "index": 1,
+    "features": {
+      "cons": "স",
+      "prev": "উ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "উঘ",
+    "index": 1,
+    "features": {
+      "cons": "ঘ",
+      "prev": "উ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঈধ",
+    "index": 1,
+    "features": {
+      "cons": "ধ",
+      "prev": "ঈ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "রীকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ী",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "রীকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "উধ",
+    "index": 1,
+    "features": {
+      "cons": "ধ",
+      "prev": "উ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঈশ",
+    "index": 1,
+    "features": {
+      "cons": "শ",
+      "prev": "ঈ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "দাকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "া",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "দাকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "এট",
+    "index": 1,
+    "features": {
+      "cons": "ট",
+      "prev": "এ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ধুকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ু",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ধুকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "আথ",
+    "index": 1,
+    "features": {
+      "cons": "থ",
+      "prev": "আ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "চীকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ী",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "চীকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "আচ",
+    "index": 1,
+    "features": {
+      "cons": "চ",
+      "prev": "আ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "পেকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ে",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "পেকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "এত",
+    "index": 1,
+    "features": {
+      "cons": "ত",
+      "prev": "এ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 2
+  },
+  {
+    "word": "ইক",
+    "index": 1,
+    "features": {
+      "cons": "ক",
+      "prev": "ই",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ওড়",
+    "index": 1,
+    "features": {
+      "cons": "ড়",
+      "prev": "ও",
+      "next": "়",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "3",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঠিকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ি",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ঠিকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঙিকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ি",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ঙিকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঈর",
+    "index": 1,
+    "features": {
+      "cons": "র",
+      "prev": "ঈ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "রাকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "া",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "রাকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ইঝ",
+    "index": 1,
+    "features": {
+      "cons": "ঝ",
+      "prev": "ই",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "অঠ",
+    "index": 1,
+    "features": {
+      "cons": "ঠ",
+      "prev": "অ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "উফ",
+    "index": 1,
+    "features": {
+      "cons": "ফ",
+      "prev": "উ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ছাকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "া",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "ছাকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "চুকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ু",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "চুকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঈভ",
+    "index": 1,
+    "features": {
+      "cons": "ভ",
+      "prev": "ঈ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঠাকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "া",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "ঠাকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "আত",
+    "index": 1,
+    "features": {
+      "cons": "ত",
+      "prev": "আ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 2
+  },
+  {
+    "word": "ছিকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ি",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ছিকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "খীকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ী",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "খীকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "আগ",
+    "index": 1,
+    "features": {
+      "cons": "গ",
+      "prev": "আ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "জোকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ো",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "জোকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঈট",
+    "index": 1,
+    "features": {
+      "cons": "ট",
+      "prev": "ঈ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "যীকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ী",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "যীকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "এশ",
+    "index": 1,
+    "features": {
+      "cons": "শ",
+      "prev": "এ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "গেকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ে",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "গেকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "চাকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "া",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "চাকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ণূকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ূ",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ণূকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঙেকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ে",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ঙেকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঙুকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ু",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ঙুকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "আপ",
+    "index": 1,
+    "features": {
+      "cons": "প",
+      "prev": "আ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঊত",
+    "index": 1,
+    "features": {
+      "cons": "ত",
+      "prev": "ঊ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 2
+  },
+  {
+    "word": "রুকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ু",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "রুকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঈড",
+    "index": 1,
+    "features": {
+      "cons": "ড",
+      "prev": "ঈ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "এধ",
+    "index": 1,
+    "features": {
+      "cons": "ধ",
+      "prev": "এ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঊয",
+    "index": 1,
+    "features": {
+      "cons": "য",
+      "prev": "ঊ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ষাকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "া",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "ষাকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "নাকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "া",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "নাকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঢোকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ো",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "ঢোকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ষেকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ে",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ষেকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "টিকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ি",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "টিকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঊছ",
+    "index": 1,
+    "features": {
+      "cons": "ছ",
+      "prev": "ঊ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 2
+  },
+  {
+    "word": "অঝ",
+    "index": 1,
+    "features": {
+      "cons": "ঝ",
+      "prev": "অ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঝুকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ু",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ঝুকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ওয",
+    "index": 1,
+    "features": {
+      "cons": "য",
+      "prev": "ও",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঈজ",
+    "index": 1,
+    "features": {
+      "cons": "জ",
+      "prev": "ঈ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ওম",
+    "index": 1,
+    "features": {
+      "cons": "ম",
+      "prev": "ও",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "অঘ",
+    "index": 1,
+    "features": {
+      "cons": "ঘ",
+      "prev": "অ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঊখ",
+    "index": 1,
+    "features": {
+      "cons": "খ",
+      "prev": "ঊ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ছীকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ী",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ছীকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "আব",
+    "index": 1,
+    "features": {
+      "cons": "ব",
+      "prev": "আ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঈব",
+    "index": 1,
+    "features": {
+      "cons": "ব",
+      "prev": "ঈ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "জুকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ু",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "জুকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ড়েকর",
+    "index": 3,
+    "features": {
+      "cons": "ক",
+      "prev": "ে",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "5",
+      "position": "3"
+    },
+    "label": 1
+  },
+  {
+    "word": "ড়েকর",
+    "index": 4,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "5",
+      "position": "4"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঙাকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "া",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "ঙাকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঈণ",
+    "index": 1,
+    "features": {
+      "cons": "ণ",
+      "prev": "ঈ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঈঢ",
+    "index": 1,
+    "features": {
+      "cons": "ঢ",
+      "prev": "ঈ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "শোকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ো",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "শোকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "কুকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ু",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "কুকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঠূকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ূ",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ঠূকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঈস",
+    "index": 1,
+    "features": {
+      "cons": "স",
+      "prev": "ঈ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "অন",
+    "index": 1,
+    "features": {
+      "cons": "ন",
+      "prev": "অ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "অশ",
+    "index": 1,
+    "features": {
+      "cons": "শ",
+      "prev": "অ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "লূকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ূ",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "লূকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ইজ",
+    "index": 1,
+    "features": {
+      "cons": "জ",
+      "prev": "ই",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ওপ",
+    "index": 1,
+    "features": {
+      "cons": "প",
+      "prev": "ও",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঈদ",
+    "index": 1,
+    "features": {
+      "cons": "দ",
+      "prev": "ঈ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "গূকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ূ",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "গূকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঊচ",
+    "index": 1,
+    "features": {
+      "cons": "চ",
+      "prev": "ঊ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঊপ",
+    "index": 1,
+    "features": {
+      "cons": "প",
+      "prev": "ঊ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ডাকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "া",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "ডাকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "লীকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ী",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "লীকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঘূকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ূ",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ঘূকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঊভ",
+    "index": 1,
+    "features": {
+      "cons": "ভ",
+      "prev": "ঊ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঝিকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ি",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ঝিকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঢীকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ী",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ঢীকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ণুকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ু",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ণুকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ড়ীকর",
+    "index": 3,
+    "features": {
+      "cons": "ক",
+      "prev": "ী",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "5",
+      "position": "3"
+    },
+    "label": 1
+  },
+  {
+    "word": "ড়ীকর",
+    "index": 4,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "5",
+      "position": "4"
+    },
+    "label": 0
+  },
+  {
+    "word": "অগ",
+    "index": 1,
+    "features": {
+      "cons": "গ",
+      "prev": "অ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ইথ",
+    "index": 1,
+    "features": {
+      "cons": "থ",
+      "prev": "ই",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "যাকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "া",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "যাকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "অড",
+    "index": 1,
+    "features": {
+      "cons": "ড",
+      "prev": "অ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "আহ",
+    "index": 1,
+    "features": {
+      "cons": "হ",
+      "prev": "আ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 2
+  },
+  {
+    "word": "ঊঙ",
+    "index": 1,
+    "features": {
+      "cons": "ঙ",
+      "prev": "ঊ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "কেকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ে",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "কেকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "উশ",
+    "index": 1,
+    "features": {
+      "cons": "শ",
+      "prev": "উ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "অট",
+    "index": 1,
+    "features": {
+      "cons": "ট",
+      "prev": "অ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "চূকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ূ",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "চূকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "আয",
+    "index": 1,
+    "features": {
+      "cons": "য",
+      "prev": "আ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "আশ",
+    "index": 1,
+    "features": {
+      "cons": "শ",
+      "prev": "আ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ড়ূকর",
+    "index": 3,
+    "features": {
+      "cons": "ক",
+      "prev": "ূ",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "5",
+      "position": "3"
+    },
+    "label": 1
+  },
+  {
+    "word": "ড়ূকর",
+    "index": 4,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "5",
+      "position": "4"
+    },
+    "label": 0
+  },
+  {
+    "word": "হেকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ে",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "হেকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঢূকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ূ",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ঢূকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ডুকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ু",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ডুকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ওশ",
+    "index": 1,
+    "features": {
+      "cons": "শ",
+      "prev": "ও",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঝাকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "া",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "ঝাকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "এভ",
+    "index": 1,
+    "features": {
+      "cons": "ভ",
+      "prev": "এ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "পূকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ূ",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "পূকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "টেকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ে",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "টেকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ইত",
+    "index": 1,
+    "features": {
+      "cons": "ত",
+      "prev": "ই",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 2
+  },
+  {
+    "word": "ডেকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ে",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ডেকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "থিকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ি",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "থিকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ধিকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ি",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ধিকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "উঢ",
+    "index": 1,
+    "features": {
+      "cons": "ঢ",
+      "prev": "উ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঊশ",
+    "index": 1,
+    "features": {
+      "cons": "শ",
+      "prev": "ঊ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "টাকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "া",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "টাকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ওঠ",
+    "index": 1,
+    "features": {
+      "cons": "ঠ",
+      "prev": "ও",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঙীকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ী",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "ঙীকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "হীকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ী",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "হীকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "যুকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ু",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "যুকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ণাকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "া",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "ণাকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ছোকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ো",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "ছোকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঊণ",
+    "index": 1,
+    "features": {
+      "cons": "ণ",
+      "prev": "ঊ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঊল",
+    "index": 1,
+    "features": {
+      "cons": "ল",
+      "prev": "ঊ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "টোকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ো",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "টোকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঊষ",
+    "index": 1,
+    "features": {
+      "cons": "ষ",
+      "prev": "ঊ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "উল",
+    "index": 1,
+    "features": {
+      "cons": "ল",
+      "prev": "উ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ইল",
+    "index": 1,
+    "features": {
+      "cons": "ল",
+      "prev": "ই",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ওচ",
+    "index": 1,
+    "features": {
+      "cons": "চ",
+      "prev": "ও",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "আজ",
+    "index": 1,
+    "features": {
+      "cons": "জ",
+      "prev": "আ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "থূকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ূ",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 1
+  },
+  {
+    "word": "থূকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঢাকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "া",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "ঢাকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঈড়",
+    "index": 1,
+    "features": {
+      "cons": "ড়",
+      "prev": "ঈ",
+      "next": "়",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "3",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "কাকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "া",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "কাকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  },
+  {
+    "word": "আন",
+    "index": 1,
+    "features": {
+      "cons": "ন",
+      "prev": "আ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "এক",
+    "index": 1,
+    "features": {
+      "cons": "ক",
+      "prev": "এ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "আঠ",
+    "index": 1,
+    "features": {
+      "cons": "ঠ",
+      "prev": "আ",
+      "next": "$",
+      "next2": "$",
+      "first": "1",
+      "last": "1",
+      "length": "2",
+      "position": "1"
+    },
+    "label": 0
+  },
+  {
+    "word": "ঘোকর",
+    "index": 2,
+    "features": {
+      "cons": "ক",
+      "prev": "ো",
+      "next": "র",
+      "next2": "$",
+      "first": "0",
+      "last": "0",
+      "length": "4",
+      "position": "2"
+    },
+    "label": 2
+  },
+  {
+    "word": "ঘোকর",
+    "index": 3,
+    "features": {
+      "cons": "র",
+      "prev": "ক",
+      "next": "$",
+      "next2": "$",
+      "first": "0",
+      "last": "1",
+      "length": "4",
+      "position": "3"
+    },
+    "label": 0
+  }
+]
