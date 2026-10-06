@@ -1,6 +1,7 @@
 import csv
 import io
 import json
+import math
 from pathlib import Path
 import shutil
 import sys
@@ -9,6 +10,19 @@ import unittest
 sys.path.insert(0, str(Path(__file__).parent/'bengali'))
 from bengali_lyrics import ROOT, DATA, extract, verify, sha
 from evaluate_lyrics import score, evaluate
+
+
+def assert_close(case, got, want, path=''):
+    """Exact match except floats, which may differ in the last ulp across
+    Python versions (3.12 sum() uses compensated summation)."""
+    if isinstance(want, dict):
+        case.assertEqual(set(got), set(want), path)
+        for key in want:
+            assert_close(case, got[key], want[key], path+'.'+key)
+    elif isinstance(want, float):
+        case.assertTrue(math.isclose(got, want, rel_tol=1e-12, abs_tol=1e-15), f'{path}: {got} != {want}')
+    else:
+        case.assertEqual(got, want, path)
 
 
 class BengaliLyricsTest(unittest.TestCase):
@@ -27,7 +41,7 @@ class BengaliLyricsTest(unittest.TestCase):
                          [(p['id'], p['native'], p['reference']) for p in predictions])
         from evaluate_runtime import PROFILES
         values = [[p['profiles'][name] for name in PROFILES] for p in predictions]
-        self.assertEqual(score(rows, values), report['scores']['all_lines'])
+        assert_close(self, score(rows, values), report['scores']['all_lines'])
 
     def test_extraction_boundaries(self):
         html = '<p>ignore</p><div class="poem"><p>ক&nbsp; খ<br/><span>গ\u200b</span></p></div>ignore<div class="poem"><p>ঘ</p></div>'
