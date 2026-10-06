@@ -72,6 +72,7 @@ wasm: ## Build the WebAssembly demo into web/ (gomanize.wasm + wasm_exec.js + ve
 	@cp "$$($(GOCMD) env GOROOT)/lib/wasm/wasm_exec.js" $(WASM_DIR)/wasm_exec.js 2>/dev/null \
 		|| cp "$$($(GOCMD) env GOROOT)/misc/wasm/wasm_exec.js" $(WASM_DIR)/wasm_exec.js
 	@cp $(NPM_DIR)/index.mjs $(WASM_DIR)/gomanize.mjs
+	@cp $(NPM_DIR)/NOTICE.md $(WASM_DIR)/NOTICE.md
 	@echo "✓ WASM demo built. Serve locally with: make wasm-serve"
 
 wasm-serve: wasm ## Build and serve the WASM demo at http://localhost:8080
@@ -87,9 +88,9 @@ npm: wasm ## Assemble the @budhash/gomanize npm package (copies wasm + wasm_exec
 	@cp $(WASM_DIR)/wasm_exec.js $(NPM_DIR)/dist/wasm_exec.js
 	@echo "✓ npm package ready in $(NPM_DIR)/"
 
-npm-test: npm ## Build + smoke-test the npm package under Node
+npm-test: build npm ## Build + smoke-test the npm package under Node
 	@echo "Smoke-testing npm package..."
-	@node $(NPM_DIR)/smoke.test.mjs
+	@GOMANIZE_CLI="$(CURDIR)/$(BINARY)" node $(NPM_DIR)/smoke.test.mjs
 
 install: build ## Install gomanize to GOPATH/bin
 	@echo "Installing $(BINARY)..."

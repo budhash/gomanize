@@ -6,6 +6,7 @@
 /** Package version (kept in sync with package.json on release). */
 export const version = "1.2.1";
 
+const FLAGS = ["longVowels", "simpleNasals", "keepMedialSchwa", "schwaModel", "lexicon", "rerank"];
 let _instance;
 
 const isNode = () =>
@@ -53,7 +54,23 @@ export async function load(opts = {}) {
   if (typeof fn !== "function") throw new Error("gomanize: wasm did not initialize");
   _instance = {
     translit(text, options) {
-      return fn(text == null ? "" : String(text), options || {});
+      // Reject unsupported JS types before crossing syscall/js: a BigInt flag
+      // panics inside the Go runtime and kills the instance for every later call.
+      if (options != null) {
+        if (typeof options !== "object") throw new TypeError("gomanize: options must be an object");
+        if (options.language !== undefined && typeof options.language !== "string") {
+          throw new TypeError("gomanize: language must be hindi or bengali");
+        }
+        for (const flag of FLAGS) {
+          const value = options[flag];
+          if (value != null && typeof value !== "boolean") {
+            throw new TypeError(`gomanize: option ${flag} must be a boolean`);
+          }
+        }
+      }
+      const result = fn(text == null ? "" : String(text), options || {});
+      if (result instanceof Error) throw result;
+      return result;
     },
   };
   return _instance;

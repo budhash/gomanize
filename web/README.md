@@ -13,6 +13,7 @@ server, no backend, and no text ever leaves the machine. The embedded models
 | `README.md` | this file | yes |
 | `gomanize.wasm` | `make wasm` (from `cmd/gomanize-wasm`) | no — gitignored, built |
 | `wasm_exec.js` | copied from the Go toolchain by `make wasm` | no — gitignored, built |
+| `NOTICE.md` | copied from `npm/NOTICE.md` by `make wasm` | no — gitignored, built |
 | `gomanize.mjs` | vendored from `npm/index.mjs` by `make wasm` | no — gitignored, built |
 
 `wasm_exec.js` must match the Go version that built the `.wasm`, which is why it
@@ -30,6 +31,21 @@ make wasm-serve   # build, then serve web/ at http://localhost:8080
 Opening `index.html` via `file://` will not work — browsers block `fetch()` of
 the `.wasm` from the filesystem. Use `make wasm-serve` (or any static server).
 
+## Language selection
+
+The page starts in Hindi with its existing Long vowels checkbox selected.
+Bengali starts with all flags off; toggles are remembered separately per language
+for the current page session. Switching languages preserves entered text,
+updates the input label/placeholder, and immediately rerenders it. Sample text
+uses the selected language. The Hindi-only style group is hidden for Bengali;
+Bengali re-ranking needs the vowel model enabled. Bengali remains experimental.
+The same ESM loader forwards `language` to WASM; no network request carries input.
+
+`make npm-test` builds the CLI and WASM and checks ESM/CJS parity for both
+languages across baseline, learned and style profiles, missing-language defaults,
+invalid-language recovery and option reset. Browser interaction is checked
+locally before a PR; no deployment occurs until the stack is reviewed and merged.
+
 ## Deployment
 
 `.github/workflows/pages.yml` rebuilds the `.wasm` and publishes this directory
@@ -42,7 +58,7 @@ of the Pages artifact, so `index.html` fetches `gomanize.wasm` and
 
 ## Size
 
-The `.wasm` is ~5.2 MB raw, ~1.4 MB gzipped (GitHub Pages gzips automatically),
-downloaded once and then cached. If that ever needs trimming, the levers are
+The `.wasm` embeds both language implementations and their learned data,
+downloaded once and then cached. Measure the built artifact for current size. If that ever needs trimming, the levers are
 lazy-loading the embedded models as separate fetched assets, or building with
 TinyGo — see `docs/ROADMAP.md` (F-0006).

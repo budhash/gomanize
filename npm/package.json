@@ -1,7 +1,7 @@
 {
   "name": "@budhash/gomanize",
   "version": "1.2.1",
-  "description": "Romanize Hindi (Devanagari) into readable, diacritic-free Latin script — the gomanize engine compiled to WebAssembly.",
+  "description": "Romanize Hindi or experimental Bengali into readable, diacritic-free Latin script — the gomanize engine compiled to WebAssembly.",
   "type": "module",
   "exports": {
     ".": {
@@ -17,12 +17,15 @@
     "index.d.ts",
     "dist/gomanize.wasm",
     "dist/wasm_exec.js",
-    "README.md"
+    "README.md",
+    "NOTICE.md"
   ],
   "engines": { "node": ">=18" },
   "sideEffects": false,
   "keywords": [
     "hindi",
+    "bengali",
+    "bangla",
     "devanagari",
     "romanization",
     "transliteration",
@@ -33,7 +36,7 @@
     "nlp",
     "indic"
   ],
-  "license": "MIT",
+  "license": "MIT AND CC-BY-SA-4.0 AND CC-BY-4.0",
   "author": "budhash",
   "homepage": "https://budhash.com/gomanize",
   "repository": { "type": "git", "url": "git+https://github.com/budhash/gomanize.git" },
