@@ -19,6 +19,8 @@ tagged release also has auto-generated notes on the
 
 - CLI accepts `--language=bengali` or `--language bengali` for every input mode;
   omitted language remains Hindi. Bengali learned components stay opt-in.
+  Unsupported names fail with the supported list; Bengali `--rerank` without
+  `--schwa-model` prints a warning instead of being silently ignored.
 
 - Debug rule traces now retain metadata-only changes in all phases and fallback
   passes; metadata extraction remains disabled outside debug execution.

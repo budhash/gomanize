@@ -175,7 +175,7 @@ func TestBengaliDevGate(t *testing.T) {
 		t.Logf("%s words=%d baseline strict=%d any=%d CER=%.10f current strict=%d any=%d CER=%.10f wins=%d losses=%d", label, b.words, b.strict, b.any, b.minCER/float64(b.words), c.strict, c.any, c.minCER/float64(c.words), wins[i], losses[i])
 		f := bnGateFailures(b, c)
 		if len(f) > 0 {
-			if os.Getenv("BENGALI_REQUIRE_B1") == "1" {
+			if os.Getenv("BENGALI_REQUIRE_B1") != "" {
 				t.Errorf("B1 gate %s: %s", label, strings.Join(f, "; "))
 			} else {
 				t.Logf("B1 NOT READY (%s): %s; enforce with make test-bengali-b1-gate", label, strings.Join(f, "; "))

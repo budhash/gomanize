@@ -5,8 +5,9 @@ sys.path.insert(0, str(Path(__file__).parent/'bengali'))
 from train_crossfit_selector import (fold, fold_examples, grouped_training, variants,
                                      decisions, pair_examples, choose, FOLDS, MAX_EDITS)
 from bengali_training_data import verify, training_rows, sha
-from train_crossfit_selector import dumps
+from train_crossfit_selector import dumps, evaluate, ROOT
 from evaluate_crossfit import frozen_selection, verify_sources
+import json
 
 
 class BengaliCrossfitTest(unittest.TestCase):
@@ -86,6 +87,21 @@ class BengaliCrossfitTest(unittest.TestCase):
             pair_examples(rows, [])
         with self.assertRaises(ValueError):
             choose(tree, 'কম', [], .5)
+
+    def test_committed_records_reproduce(self):
+        # Re-evaluate the committed selector against the current engine; the
+        # committed dev and held-out records must match. This only asserts the
+        # frozen outcome; it never re-selects. Provenance hashes are excluded
+        # (they drift with any engine edit); a full retrain needs the raw
+        # Google lexicon and stays an offline reproduction step.
+        reviews = ROOT/'docs/reviews'
+        artifact = json.loads((reviews/'2026-10-04-bengali-b2-crossfit-selector.json').read_text())
+        report = json.loads((reviews/'2026-10-04-bengali-b2-crossfit.json').read_text())
+        heldout = json.loads((reviews/'2026-10-04-bengali-b2-crossfit-heldout.json').read_text())
+        threshold = frozen_selection(artifact, report)
+        self.assertEqual(json.loads(json.dumps(evaluate(artifact, 'dev'))), report['dev'])
+        self.assertEqual(heldout['frozen_threshold'], threshold)
+        self.assertEqual(json.loads(json.dumps(evaluate(artifact, 'test', threshold))), heldout['test'])
 
 
 if __name__ == '__main__':
