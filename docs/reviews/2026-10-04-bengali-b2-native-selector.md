@@ -82,3 +82,24 @@ candidate cardinality and rejection of partial gains/no-ops. Negative controls
 remove Google-training exclusion and allow no-op selection; the corresponding
 tests must fail. Full local CI covers the existing Bengali gates and unchanged
 Hindi regression snapshot. No runtime accuracy improvement is claimed.
+
+## Review notes (2026-10-05)
+
+Independent stack review. The table above records the experiment as submitted.
+
+- **Rerun after the B1 review fixes.** Rule-composed candidates moved by one dev
+  word (canonical nukta letters; explicit final hasant). The regenerated record has
+  baseline and every threshold at 895 strict / 1,545 match-any / CER 0.07839302,
+  `changed` 0 throughout. The tree and training counts are byte-identical.
+  **The rejection holds**: the largest B1 leaf fraction is 19/39 = 0.487, below every
+  threshold, so the selector cannot choose B1 at any grid value.
+- **The record is now asserted.** `test_committed_record_reproduces` rebuilds the
+  tree and dev grid and requires them to match the committed record (provenance
+  hashes are not compared); the stale record failed it.
+- **Protocol timing.** Thresholds, depth and leaf size landed in the same commit as
+  the results, so git cannot show they came first; given the structural no-op above,
+  no grid value could have changed the outcome.
+- **Feature invariance for reuse.** Native features normalize canonical aliases via
+  `native_key`, but not the disclosed khanda-ta variant (উৎসাহ vs উত্সাহ differ on
+  `length`, `first2`, `has_halant`). No effect here (B1 equals the model on every
+  disclosed collision word); relevant if these features are reused at runtime.

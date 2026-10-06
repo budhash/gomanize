@@ -228,8 +228,9 @@ The experimental Bengali baseline and split-specific metrics are recorded in
 [the B0 report](reviews/2026-10-04-bengali-b0-baseline.md). Bengali Dakshina v1.0
 fixtures retain all references/votes under CC BY-SA 4.0 with member and fixture
 hashes in `benchmark/data/bengali/manifest.json`. Train/dev support exploratory
-style/attestation histograms; test remains evaluation-only. No Bengali learned
-artifacts exist yet, and the Hindi training policy above remains unchanged.
+style/attestation histograms; test remains evaluation-only. At B0 no Bengali
+learned artifacts existed; later B2 components are described below. The Hindi
+training policy above remains unchanged.
 
 ### Bengali B1 evaluation contract (2026-10-04)
 

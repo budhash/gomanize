@@ -114,3 +114,42 @@ match-any 1,236/1,330 (92.9%), and held-out 126/129 (97.7%). After the external
 fixture/test addition, format/lint, focused Bengali tests, fixture-builder tests,
 and Bengali benchmark race tests also passed. T-0052 and T-0060 are complete;
 B2 and the reverse feature remain open. Nothing in the stack has been merged.
+
+## Review fixes and notes (2026-10-05)
+
+Independent stack review. The gate table above records the candidate as
+submitted; two correctness fixes followed, neither tuned on dev or test:
+
+- **Canonical equivalence for nukta letters.** Phala and gemination checks
+  required a one-rune unit, so a decomposed nukta letter (base + U+09BC) behaved
+  as a cluster while its precomposed form did not (রয়্যালটি: `royjaloti` vs
+  `royyaloti`; five Dakshina types diverged, all new in B1). The parser now marks
+  base + nukta letters and `brahmic.IsSingleLetter` treats them as one letter.
+- **Explicit final hasant.** The parser consumed a trailing U+09CD without a
+  trace, so B1 keep rules re-added a vowel (আল্লাহ্ → `allaho`). The parser now
+  records `TrailingHalant` and the Bengali keep rules respect it.
+
+Effect (default-o, rules only): dev strict 774 → 775, match-any 1,370 → 1,371,
+macro minCER 0.09150 → 0.09138; train strict 8,015 → 8,016, match-any 13,902 →
+13,903; curated dev 595 → 596. Test is unchanged (strict 800, match-any 1,413).
+BanglaTLit B1 macro CER 0.33149376 → 0.33148921 (exact unchanged at 8). Hindi
+frozen outputs are unchanged. The preregistered gate still passes.
+
+Further review notes (tracked, not changed here):
+
+- **Train evidence for the post-miss rules.** Only the ফ→`f` evidence is recorded
+  above. Reviewer ablations on the final catalog: ফ→`f` train match-any +186/−26
+  (dev +30); loan-coda train +54/−2 (dev +6/−0); h-nasal train +16/−1 (dev 0).
+  These account for the 1,333 → 1,370 step and every rule is net positive on
+  train, so the disclosure holds; a committed train-only ablation would make it
+  reproducible.
+- **Paired losses.** Full-dev losses vs B0: 7 strict, 20 match-any (final-h on
+  Arabic loans, s-cluster changes, medial ba-phala gemination, loan codas outside
+  র্ট/র্ড/স্ট). Train: strict +1,105/−134, match-any +2,082/−260.
+- **Gemination after a coda.** সংখ্যা renders `shongkkha` (B0 `shongkhja` was also
+  wrong, so the gate does not register it).
+- **BanglaTLit scoring is case-sensitive.** 1,344/2,500 references contain
+  uppercase while the engine emits lowercase; exact and CER figures include that
+  penalty.
+- **T-0052 scope.** Anusvara is unchanged (`ng`) and visarga covers the দুঃখ
+  family only; the task title overstates the delivered scope.

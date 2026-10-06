@@ -7,9 +7,9 @@
     "vowel_model_sha256": "016a05588b21f121c7799a91e668120a3a1ad5cdd1cf35d3bfb38c2dae2fdc87",
     "scripts_sha256": {
       "tools/bengali/train_native_selector.py": "68d83e6a41f25427c13a724e5db79bfe88371300382c5cab6a1d54c44412d37c",
-      "tools/bengali/train_reranker.py": "ebab53cda79dc1c075900220872a1989aad9a5ffafd0aa159a7379840bbae840",
+      "tools/bengali/train_reranker.py": "b8c6e25a4f0787b65575825cca9236d3789639324c5c52da82ae674fa0be40f8",
       "tools/bengali/evaluate_external.py": "806fb46b3b691d3151d375c2a104a564c6abef905a787b7854933489ac173642",
-      "tools/bengali_training_data.py": "c7b27909d44aa31346c301c811049dd54164609eb4b898daff4604a6a2be1aa7"
+      "tools/bengali_training_data.py": "819594ba0d54cc1ec6d868088f1a3c061e6ea7a1f1b25a96b6c52c01a900b02a"
     },
     "candidate_sources_sha256": {
       "core/catalog.go": "aec4d090c152da993d70f4e9280a4836e969e7f3b656e156b5d7cf90235b18cf",
@@ -20,18 +20,18 @@
       "core/types.go": "927025e03ad063b31730d572d9f19cd1ce5f3046ce2e018cf88bf431f9ba74dd",
       "gomanize.go": "00c1da5d0d35ad4e7f4c67ca5da57ea02dc82b914c8707a4f4a7ee00836ee8af",
       "lang/bengali/lexicon.go": "8275a824fff98cd2b5d68315fbe12fda24431e79a9ff8cd6ecb581ec1ce9dd68",
-      "lang/bengali/rules.go": "ae9e301c23df41e15cb5b4c682d2fd87872795060392b153b9ed379295d40f1c",
+      "lang/bengali/rules.go": "57c91ddd79aa87e4a7288510b99e5a404dc9e2fae3c2b02522afa8801b25756f",
       "lang/bengali/symbols.go": "6629829d23d0b136d8dfce8d4c770101882bdd1044bb04cb63ccba362d82bff8",
       "lang/bengali/vowel_model.go": "112b33ec83b05faecb389f93a0156423a29c713345e90855091e12b5f58ea86e",
       "scheme/colloquial/colloquial.go": "74f13f297210d886d9450c3d5264057efac6a7f6fd0ddac2b8086bf09f6d6a07",
       "script/brahmic/brahmic.go": "675ba122ff54f082f836a0e0abe545930652ea2131e68ab377e5cac141cb722d",
       "script/brahmic/categories.go": "d848e919f2ea2e6782d0f5923c375c72fb17f5e90faff03ad1e082dd368d7f51",
-      "script/brahmic/parser.go": "1f47c42f580a2ab1395ac38cb52b4dc56e76d2a2c0b146c7ceeb578187b95800",
+      "script/brahmic/parser.go": "f1873744500eb0b4bab3d814bfdf85daaf438e9559c5c3c4d331548ae9d474a2",
       "script/brahmic/profile.go": "3a790875847b462b7a685c45763936a1f92e43b0e477f4740a1ac29c88aadceb",
-      "script/brahmic/renderer.go": "eea50b4ba7b62cf54e834aa763b2fe859c424d55129a337f7a4820445a72350d",
+      "script/brahmic/renderer.go": "967191702ba3e2ad635bff4057621c58c927648c498787d81e3e501e39001594",
       "script/brahmic/runs.go": "027bb02f2313ee0c976c24a213e00459abd9e53573ad3299070f71a1719aa0b7",
       "script/brahmic/schwa_rules.go": "00d87de66393a140f8409b601d94edfc99fa65e0bbf2b9c3e9dcd4ced6fa6bf0",
-      "script/brahmic/types.go": "da6db993e1c258159fb0ddc940b8244d77b0e874ba8996cfd158c3c6fd92d840",
+      "script/brahmic/types.go": "022379c164126f32ccabde7bbf0ed6b402d035f4efea5dc14d7258a1bd6f40f5",
       "tools/bengali/evaluate/main.go": "b05d6f91ead3749d13421ffb35419fe284e91b639934e903e5f6d3910ede9134"
     }
   },
@@ -59,56 +59,56 @@
   },
   "dev_model": {
     "words": 2500,
-    "strict": 894,
-    "any": 1544,
-    "CER": 0.07851746175393225
+    "strict": 895,
+    "any": 1545,
+    "CER": 0.0783930173094878
   },
   "dev_trials": [
     {
       "words": 2500,
-      "strict": 894,
-      "any": 1544,
-      "CER": 0.07851746175393225,
+      "strict": 895,
+      "any": 1545,
+      "CER": 0.0783930173094878,
       "threshold": 0.5,
       "changed": 0
     },
     {
       "words": 2500,
-      "strict": 894,
-      "any": 1544,
-      "CER": 0.07851746175393225,
+      "strict": 895,
+      "any": 1545,
+      "CER": 0.0783930173094878,
       "threshold": 0.6,
       "changed": 0
     },
     {
       "words": 2500,
-      "strict": 894,
-      "any": 1544,
-      "CER": 0.07851746175393225,
+      "strict": 895,
+      "any": 1545,
+      "CER": 0.0783930173094878,
       "threshold": 0.7,
       "changed": 0
     },
     {
       "words": 2500,
-      "strict": 894,
-      "any": 1544,
-      "CER": 0.07851746175393225,
+      "strict": 895,
+      "any": 1545,
+      "CER": 0.0783930173094878,
       "threshold": 0.8,
       "changed": 0
     },
     {
       "words": 2500,
-      "strict": 894,
-      "any": 1544,
-      "CER": 0.07851746175393225,
+      "strict": 895,
+      "any": 1545,
+      "CER": 0.0783930173094878,
       "threshold": 0.9,
       "changed": 0
     },
     {
       "words": 2500,
-      "strict": 894,
-      "any": 1544,
-      "CER": 0.07851746175393225,
+      "strict": 895,
+      "any": 1545,
+      "CER": 0.0783930173094878,
       "threshold": 0.95,
       "changed": 0
     }
