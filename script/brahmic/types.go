@@ -110,6 +110,14 @@ type BrahmicData struct {
 	// This structural property takes precedence over rules and vowel quality.
 	NoInherentVowel bool
 
+	// Nukta marks a letter parsed from base + nukta (decomposed form). It is
+	// canonically one letter, equivalent to a precomposed nukta letter.
+	Nukta bool
+
+	// TrailingHalant marks the last unit of a word spelled with an explicit
+	// final halant, which the parser otherwise consumes without a unit.
+	TrailingHalant bool
+
 	// Run membership (nil for vowels)
 	Run      *ConsonantRun
 	RunIndex int // Position within the run
