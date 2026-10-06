@@ -2,35 +2,35 @@
   "Aksharantar": {
     "full_types": {
       "B1": {
-        "accuracy": 0.27572189514998596,
-        "macro_minCER": 0.2269146503202099,
-        "match_any": 1967
+        "accuracy": 0.27586206896551724,
+        "macro_minCER": 0.22668549437196236,
+        "match_any": 1968
       },
       "items": 7134,
       "lexicon": {
-        "accuracy": 0.2902999719652369,
-        "macro_minCER": 0.22127213339720528,
-        "match_any": 2071
+        "accuracy": 0.29044014578076816,
+        "macro_minCER": 0.22104297744895773,
+        "match_any": 2072
       },
       "model": {
-        "accuracy": 0.3083823941687693,
-        "macro_minCER": 0.21640004921222142,
-        "match_any": 2200
+        "accuracy": 0.30852256798430056,
+        "macro_minCER": 0.21617089326397382,
+        "match_any": 2201
       },
       "model_lexicon": {
-        "accuracy": 0.3218390804597701,
-        "macro_minCER": 0.21117048879973413,
-        "match_any": 2296
+        "accuracy": 0.3219792542753014,
+        "macro_minCER": 0.2109413328514865,
+        "match_any": 2297
       },
       "rerank": {
-        "accuracy": 0.30908326324642554,
-        "macro_minCER": 0.21603411760154628,
-        "match_any": 2205
+        "accuracy": 0.3092234370619568,
+        "macro_minCER": 0.2158049616532987,
+        "match_any": 2206
       },
       "rerank_lexicon": {
-        "accuracy": 0.32268012335295765,
-        "macro_minCER": 0.2107765224259527,
-        "match_any": 2302
+        "accuracy": 0.3228202971684889,
+        "macro_minCER": 0.21054736647770517,
+        "match_any": 2303
       },
       "rerank_lexicon_vs_model_lexicon": {
         "changed": 40,
@@ -45,35 +45,35 @@
     },
     "unseen_types": {
       "B1": {
-        "accuracy": 0.3040092776673294,
-        "macro_minCER": 0.21595809815532904,
-        "match_any": 1835
+        "accuracy": 0.30417495029821073,
+        "macro_minCER": 0.21568725678110803,
+        "match_any": 1836
       },
       "items": 6036,
       "lexicon": {
-        "accuracy": 0.3040092776673294,
-        "macro_minCER": 0.21595809815532904,
-        "match_any": 1835
+        "accuracy": 0.30417495029821073,
+        "macro_minCER": 0.21568725678110803,
+        "match_any": 1836
       },
       "model": {
-        "accuracy": 0.3399602385685885,
-        "macro_minCER": 0.20464678486763915,
-        "match_any": 2052
+        "accuracy": 0.34012591119946983,
+        "macro_minCER": 0.20437594349341806,
+        "match_any": 2053
       },
       "model_lexicon": {
-        "accuracy": 0.3399602385685885,
-        "macro_minCER": 0.20464678486763915,
-        "match_any": 2052
+        "accuracy": 0.34012591119946983,
+        "macro_minCER": 0.20437594349341806,
+        "match_any": 2053
       },
       "rerank": {
-        "accuracy": 0.34095427435387676,
-        "macro_minCER": 0.2042902204578938,
-        "match_any": 2058
+        "accuracy": 0.3411199469847581,
+        "macro_minCER": 0.2040193790836727,
+        "match_any": 2059
       },
       "rerank_lexicon": {
-        "accuracy": 0.34095427435387676,
-        "macro_minCER": 0.2042902204578938,
-        "match_any": 2058
+        "accuracy": 0.3411199469847581,
+        "macro_minCER": 0.2040193790836727,
+        "match_any": 2059
       },
       "rerank_lexicon_vs_model_lexicon": {
         "changed": 33,
@@ -134,33 +134,33 @@
     "full_sentences": {
       "B1": {
         "accuracy": 0.0032,
-        "macro_minCER": 0.33149375595752184,
+        "macro_minCER": 0.3314892105029764,
         "match_any": 8
       },
       "items": 2500,
       "lexicon": {
         "accuracy": 0.0052,
-        "macro_minCER": 0.2940174167947232,
+        "macro_minCER": 0.29401287134017773,
         "match_any": 13
       },
       "model": {
         "accuracy": 0.0048,
-        "macro_minCER": 0.31286250291213874,
+        "macro_minCER": 0.31285795745759326,
         "match_any": 12
       },
       "model_lexicon": {
         "accuracy": 0.0068,
-        "macro_minCER": 0.28142890167501466,
+        "macro_minCER": 0.2814243562204692,
         "match_any": 17
       },
       "rerank": {
         "accuracy": 0.0048,
-        "macro_minCER": 0.31286312369844593,
+        "macro_minCER": 0.31285857824390045,
         "match_any": 12
       },
       "rerank_lexicon": {
         "accuracy": 0.0068,
-        "macro_minCER": 0.28144658327213246,
+        "macro_minCER": 0.28144203781758703,
         "match_any": 17
       },
       "rerank_lexicon_vs_model_lexicon": {
@@ -178,36 +178,36 @@
   "Dakshina": {
     "dev": {
       "B1": {
-        "accuracy": 0.548,
-        "macro_minCER": 0.0914997633412337,
-        "match_any": 1370
+        "accuracy": 0.5484,
+        "macro_minCER": 0.09137531889678925,
+        "match_any": 1371
       },
       "items": 2500,
       "lexicon": {
-        "accuracy": 0.548,
-        "macro_minCER": 0.0914997633412337,
-        "match_any": 1370
+        "accuracy": 0.5484,
+        "macro_minCER": 0.09137531889678925,
+        "match_any": 1371
       },
       "model": {
-        "accuracy": 0.6176,
-        "macro_minCER": 0.07851746175393225,
-        "match_any": 1544
+        "accuracy": 0.618,
+        "macro_minCER": 0.0783930173094878,
+        "match_any": 1545
       },
       "model_lexicon": {
-        "accuracy": 0.6176,
-        "macro_minCER": 0.07851746175393225,
-        "match_any": 1544
+        "accuracy": 0.618,
+        "macro_minCER": 0.0783930173094878,
+        "match_any": 1545
       },
       "offline_wordwise_mismatches": 0,
       "rerank": {
-        "accuracy": 0.6208,
-        "macro_minCER": 0.07820236795883845,
-        "match_any": 1552
+        "accuracy": 0.6212,
+        "macro_minCER": 0.07807792351439401,
+        "match_any": 1553
       },
       "rerank_lexicon": {
-        "accuracy": 0.6208,
-        "macro_minCER": 0.07820236795883845,
-        "match_any": 1552
+        "accuracy": 0.6212,
+        "macro_minCER": 0.07807792351439401,
+        "match_any": 1553
       },
       "rerank_lexicon_vs_model_lexicon": {
         "changed": 21,
@@ -221,39 +221,39 @@
       },
       "strict_profiles": {
         "B1": {
-          "CER": 0.0914997633412337,
-          "any": 1370,
-          "strict": 774,
+          "CER": 0.09137531889678925,
+          "any": 1371,
+          "strict": 775,
           "words": 2500
         },
         "lexicon": {
-          "CER": 0.0914997633412337,
-          "any": 1370,
-          "strict": 774,
+          "CER": 0.09137531889678925,
+          "any": 1371,
+          "strict": 775,
           "words": 2500
         },
         "model": {
-          "CER": 0.07851746175393225,
-          "any": 1544,
-          "strict": 894,
+          "CER": 0.0783930173094878,
+          "any": 1545,
+          "strict": 895,
           "words": 2500
         },
         "model_lexicon": {
-          "CER": 0.07851746175393225,
-          "any": 1544,
-          "strict": 894,
+          "CER": 0.0783930173094878,
+          "any": 1545,
+          "strict": 895,
           "words": 2500
         },
         "rerank": {
-          "CER": 0.07820236795883845,
-          "any": 1552,
-          "strict": 897,
+          "CER": 0.07807792351439401,
+          "any": 1553,
+          "strict": 898,
           "words": 2500
         },
         "rerank_lexicon": {
-          "CER": 0.07820236795883845,
-          "any": 1552,
-          "strict": 897,
+          "CER": 0.07807792351439401,
+          "any": 1553,
+          "strict": 898,
           "words": 2500
         }
       }
@@ -361,19 +361,19 @@
     "gomanize.go": "00c1da5d0d35ad4e7f4c67ca5da57ea02dc82b914c8707a4f4a7ee00836ee8af",
     "lang/bengali/lexicon.go": "8275a824fff98cd2b5d68315fbe12fda24431e79a9ff8cd6ecb581ec1ce9dd68",
     "lang/bengali/reranker.go": "38e8002da02df991ebcdf04f450dbd6eec833d092b653845ecf05f46516118fa",
-    "lang/bengali/rules.go": "ae9e301c23df41e15cb5b4c682d2fd87872795060392b153b9ed379295d40f1c",
+    "lang/bengali/rules.go": "57c91ddd79aa87e4a7288510b99e5a404dc9e2fae3c2b02522afa8801b25756f",
     "lang/bengali/symbols.go": "6629829d23d0b136d8dfce8d4c770101882bdd1044bb04cb63ccba362d82bff8",
     "lang/bengali/vowel_model.go": "112b33ec83b05faecb389f93a0156423a29c713345e90855091e12b5f58ea86e",
     "scheme/colloquial/colloquial.go": "74f13f297210d886d9450c3d5264057efac6a7f6fd0ddac2b8086bf09f6d6a07",
     "script/brahmic/brahmic.go": "675ba122ff54f082f836a0e0abe545930652ea2131e68ab377e5cac141cb722d",
     "script/brahmic/categories.go": "d848e919f2ea2e6782d0f5923c375c72fb17f5e90faff03ad1e082dd368d7f51",
-    "script/brahmic/parser.go": "1f47c42f580a2ab1395ac38cb52b4dc56e76d2a2c0b146c7ceeb578187b95800",
+    "script/brahmic/parser.go": "f1873744500eb0b4bab3d814bfdf85daaf438e9559c5c3c4d331548ae9d474a2",
     "script/brahmic/profile.go": "3a790875847b462b7a685c45763936a1f92e43b0e477f4740a1ac29c88aadceb",
-    "script/brahmic/renderer.go": "eea50b4ba7b62cf54e834aa763b2fe859c424d55129a337f7a4820445a72350d",
+    "script/brahmic/renderer.go": "967191702ba3e2ad635bff4057621c58c927648c498787d81e3e501e39001594",
     "script/brahmic/runs.go": "027bb02f2313ee0c976c24a213e00459abd9e53573ad3299070f71a1719aa0b7",
     "script/brahmic/schwa_rules.go": "00d87de66393a140f8409b601d94edfc99fa65e0bbf2b9c3e9dcd4ced6fa6bf0",
-    "script/brahmic/types.go": "da6db993e1c258159fb0ddc940b8244d77b0e874ba8996cfd158c3c6fd92d840",
-    "tools/bengali/evaluate_runtime.py": "f8c15a55bf4493a8c392243000a5e97582f0bce137471e255a0f8f5af862b15d",
+    "script/brahmic/types.go": "022379c164126f32ccabde7bbf0ed6b402d035f4efea5dc14d7258a1bd6f40f5",
+    "tools/bengali/evaluate_runtime.py": "048477daaa9016734af81fdc24ddf5e7a4c07a145b91e31f7c21a992505f8582",
     "tools/bengali/evaluate_runtime/main.go": "f9e0ef83bfdc696be837eb788fcd47cf491578dc3a977935cecfc1a24811b577"
   },
   "threshold": 0.6,
