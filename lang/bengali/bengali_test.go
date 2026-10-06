@@ -38,6 +38,40 @@ func TestCanonicalEquivalence(t *testing.T) {
 	}
 }
 
+// The production catalog must preserve canonical equivalence too: phala and
+// gemination rules once treated decomposed nukta letters (base + U+09BC) as
+// clusters, so রয়্যালটি rendered royjaloti decomposed but royyaloti precomposed.
+func TestProductionCanonicalEquivalence(t *testing.T) {
+	e := core.NewEngine(Bengali{}, colloquial.Colloquial{})
+	for _, tt := range []struct{ decomposed, precomposed, want string }{
+		{"র\u09af\u09bc্যালটি", "র\u09df্যালটি", "royyaloti"},
+		{"সফটও\u09af\u09bc্যার", "সফটও\u09df্যার", "shofotooyyar"},
+		{"আ\u09a1\u09bc্য", "আ\u09dc্য", "arro"},
+		{"ক\u09a1\u09bc্ব", "ক\u09dc্ব", "korro"},
+		{"বড়", "বড়", ""},
+		{"হ\u09af\u09bcা", "হ\u09dfা", ""},
+	} {
+		a, b := e.Transliterate(tt.decomposed), e.Transliterate(tt.precomposed)
+		if a != b || (tt.want != "" && a != tt.want) {
+			t.Errorf("%q/%q: %q / %q, want %q", tt.decomposed, tt.precomposed, a, b, tt.want)
+		}
+	}
+}
+
+// An explicit word-final hasant spells "no vowel"; B1 keep rules must not
+// add one back. Without the hasant the keep rules still apply.
+func TestExplicitFinalHasant(t *testing.T) {
+	e := core.NewEngine(Bengali{}, colloquial.Colloquial{})
+	for input, want := range map[string]string{
+		"আল্লাহ্": "allah", "শাহ্": "shah", "দুঃখ্": "dukkh", "কর্ম্": "korm", "অন্ত্": "ont",
+		"আল্লাহ": "allaho", "দুঃখ": "dukkho", "কর্ম": "kormo",
+	} {
+		if got := e.Transliterate(input); got != want {
+			t.Errorf("%s: got %q, want %q", input, got, want)
+		}
+	}
+}
+
 func TestKhandaTaStructuralVowellessness(t *testing.T) {
 	e := core.NewEngine(Bengali{}, colloquial.Colloquial{}, core.WithDisabledRules("*"))
 	for input, want := range map[string]string{"ৎ": "t", "ৎই": "ti", "উৎস": "utsho", "হঠাৎ": "hothat"} {
