@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Synthetic native-selector features and candidate parity; no corpus references."""
 import gzip
+import io
 import json
 from pathlib import Path
 from train_crossfit_selector import ROOT, render, choose
@@ -22,7 +23,12 @@ def build():
     cases = [{'word': word, 'candidates': options, 'output': choose(tree, word, options, .6),
               'features': [features(word, alt, options[0]) for alt in options[1:]]}
              for (word, _), options in zip(rows, candidates)]
-    return gzip.compress((json.dumps(cases, ensure_ascii=False, separators=(',', ':'))+'\n').encode(), mtime=0)
+    # GzipFile writes the same header on every Python version; gzip.compress
+    # switched to zlib in 3.11 and emits a different OS byte.
+    buffer = io.BytesIO()
+    with gzip.GzipFile(fileobj=buffer, mode='wb', mtime=0) as out:
+        out.write((json.dumps(cases, ensure_ascii=False, separators=(',', ':'))+'\n').encode())
+    return buffer.getvalue()
 
 
 if __name__ == '__main__':

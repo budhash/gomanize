@@ -1,11 +1,26 @@
 import json
+import math
 from pathlib import Path
 import sys
 import unittest
 sys.path.insert(0, str(Path(__file__).parent/'bengali'))
 from build_selector_parity import build
 from bengali_training_data import ROOT, sha
-from evaluate_runtime import score
+from evaluate_runtime import score, dakshina_section, banglatlit_rows, banglatlit_section, predict
+from bengali_training_data import verify
+
+
+def assert_close(case, got, want, path=''):
+    """Exact match except floats, which may differ in the last ulp across
+    Python versions (3.12 sum() uses compensated summation)."""
+    if isinstance(want, dict):
+        case.assertEqual(set(got), set(want), path)
+        for key in want:
+            assert_close(case, got[key], want[key], path+'.'+key)
+    elif isinstance(want, float):
+        case.assertTrue(math.isclose(got, want, rel_tol=1e-12, abs_tol=1e-15), f'{path}: {got} != {want}')
+    else:
+        case.assertEqual(got, want, path)
 
 
 class BengaliRuntimeTest(unittest.TestCase):
@@ -16,6 +31,17 @@ class BengaliRuntimeTest(unittest.TestCase):
         self.assertEqual(sha(frozen), old['artifact_sha256'])
         self.assertEqual(old['selected']['threshold'], .6)
         self.assertEqual(build(), (ROOT/'lang/bengali/testdata/selector_parity.json.gz').read_bytes())
+
+    def test_committed_record_reproduces(self):
+        # Recompute the sections that need no external archive and require the
+        # committed runtime record to match (Aksharantar needs the pinned zip
+        # and remains an offline reproduction step).
+        record = json.loads((ROOT/'docs/reviews/2026-10-05-bengali-b2-runtime.json').read_text())
+        assert_close(self, json.loads(json.dumps(dakshina_section())), record['Dakshina'])
+        groups = verify()
+        _, bangla = banglatlit_rows()
+        section = banglatlit_section(bangla, predict(bangla), groups['google-train'] | groups['dakshina-train'])
+        assert_close(self, json.loads(json.dumps(section)), record['BanglaTLit'])
 
     def test_external_pair_denominators_and_losses(self):
         rows = [('ক', ['a']), ('খ', ['ab'])]

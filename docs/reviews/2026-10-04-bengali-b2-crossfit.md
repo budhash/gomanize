@@ -116,7 +116,8 @@ make ci
 Training writes frozen artifacts before dev evaluation. The held-out evaluator
 requires a passing, unchanged dev selection and validates artifact/source hashes;
 it exposes no test-time threshold parameter. A separate reconstruction reproduced
-the selector, five fold trees and dev report byte for byte.
+the selector, five fold trees and dev report byte for byte at the time (see the
+2026-10-05 review notes for the regenerated dev report).
 
 Five Python tests cover fold/source isolation, bounded one-slot expansion,
 training preferences, stable candidate selection and the frozen held-out gate.
@@ -125,3 +126,30 @@ higher-priority final-h retention and malformed requests. Negative controls
 remove fold exclusion, bypass the artifact gate, and elevate injection above the
 final-h rule: all three intended guards must fail. Full local CI includes the
 Hindi frozen snapshot and prior Bengali gates.
+
+## Review notes (2026-10-05)
+
+Independent stack review. The tables above record the experiment as submitted.
+
+- **Rebuilt on the current engine.** After the B1 review fixes (canonical nukta
+  letters; explicit final hasant) the selector, all five fold trees, training
+  counts and alignment are **byte-identical** (SHA-256 `37215f8f…d5d2`, the
+  artifact #123 ships). Dev rows each move by one word: model 895 / 1,545 / CER
+  0.07839302; selected 0.6 898 / 1,553 / 0.07807792 (21 changed); 0.5 897 / 1,546
+  (still fails on CER); 0.7 896 / 1,550; 0.8 897 / 1,549; 0.9 and 0.95 unchanged
+  from the model. Oracle coverage on dev 1,637 (65.48%). **0.6 is still selected and
+  the held-out result is unchanged** (916 strict / 1,576 match-any / 0.07572118,
+  21 changed, 8 wins / 1 loss). The dev report and held-out record were regenerated.
+- **Records are now asserted in CI.** `test_committed_records_reproduce` re-evaluates
+  the committed selector on dev and held-out and requires both committed records to
+  match (assert only; it never re-selects); the stale dev record failed it. A full
+  retrain needs the raw Google lexicon and remains an offline reproduction step.
+- **Protocol timing.** Protocol, code, selector, dev and held-out records landed in
+  one commit, so git cannot show the grid, edit cap and held-out-once rule came
+  first. The evaluator exposes no threshold parameter and requires the frozen dev
+  choice and artifact hash.
+- **Variant spellings.** Folds use `native_key`, so 37 train words share a fold
+  model with a khanda-ta/অা variant from Google train; rerunning with folds keyed
+  by `collision_key` gives an identical selector and results. Selector features
+  are not invariant to ৎ vs ত্, with no observed choice divergence. None of the 21
+  changed dev or test outputs is a disclosed collision word.

@@ -33,6 +33,17 @@ class BengaliLexiconTest(unittest.TestCase):
         self.assertEqual(manifest, (ROOT/'lang/bengali/lexicon_manifest.json').read_bytes())
         external = json.loads((ROOT/'docs/reviews/2026-10-04-bengali-b2-lexicon-external.json').read_text())
         self.assertEqual(external['lexicon_sha256'], sha(payload))
+        # Shared columns must agree with the vowel-model report, so a stale
+        # rerun of either report cannot go unnoticed.
+        vowels = json.loads((ROOT/'docs/reviews/2026-10-04-bengali-b2-vowels-external.json').read_text())
+        self.assertEqual(external['model_sha256'], vowels['model_sha256'])
+        for corpus in ('Aksharantar', 'BanglaTLit'):
+            for subset, columns in vowels[corpus].items():
+                if not isinstance(columns, dict):
+                    continue
+                for column in ('B1', 'model'):
+                    if column in columns:
+                        self.assertEqual(external[corpus][subset][column], columns[column], (corpus, subset, column))
         keys = {line.split('\t')[0] for line in payload.decode().splitlines()}
         groups = verify()
         for name, heldout in groups.items():

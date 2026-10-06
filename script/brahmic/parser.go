@@ -95,6 +95,9 @@ func (p *Parser) Parse(input string, symbols core.SymbolMap) *core.Word {
 			combined := char + p.nukta
 			if info, ok := symbols[combined]; ok {
 				unit := p.createUnitWithInfo([]rune{runes[pos], runes[pos+1]}, runeIdx, afterHalant, info)
+				if bd := GetBrahmicData(unit); bd != nil {
+					bd.Nukta = true
+				}
 				word.AddUnit(unit)
 				pos += 2
 				runeIdx += 2
@@ -138,6 +141,11 @@ func (p *Parser) Parse(input string, symbols core.SymbolMap) *core.Word {
 		runeIdx++
 	}
 
+	if afterHalant && len(word.Units) > 0 {
+		if bd := GetBrahmicData(word.Units[len(word.Units)-1]); bd != nil {
+			bd.TrailingHalant = true
+		}
+	}
 	SetWordBrahmicData(word, &WordBrahmicData{Profile: p.profile})
 	return word
 }

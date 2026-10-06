@@ -104,3 +104,27 @@ compares every Dakshina output against the independent offline renderer/selector
 and separately reports full/unseen external slices. The historical frozen
 experiment's source-hash guard intentionally identifies its original source
 revision; this runtime validation has its own source provenance.
+
+## Review notes (2026-10-05)
+
+Independent stack review. Tables above record the runtime as submitted.
+
+- **Regenerated after the B1 review fixes** (canonical nukta letters; explicit
+  final hasant). The selector is unchanged and word-for-word runtime/offline parity
+  still holds on all 5,000 dev and test words. Dakshina dev: model 895 / 1,545 /
+  0.07839302 → rerank 898 / 1,553 / 0.07807792 (B1 775 / 1,371); **test unchanged**
+  (914 → 916 strict, 1,569 → 1,576 match-any, 0.07572118). Aksharantar full
+  2,201 → 2,206 (minCER 0.21617089 → 0.21580496), unseen 2,053 → 2,059, with lexicon
+  2,297 → 2,303. BanglaTLit pure minCER 0.31285796 → 0.31285858 (still a slight
+  regression, +6.2e-7), with lexicon 0.28142436 → 0.28144204. Paired win/loss and
+  exact-match counts are unchanged.
+- **Records are now asserted in CI.** `test_committed_record_reproduces` recomputes
+  the Dakshina and BanglaTLit sections (no external archive needed) and requires the
+  committed record to match; the stale record failed it. Aksharantar needs the pinned
+  archive and remains an offline step. The Go test now also pins the embedded
+  selector's SHA-256.
+- **Licensing.** `selector.json` (CC BY-SA 4.0) and `vowel_tree.json` (CC BY 4.0)
+  are embedded in every build; the README License section now names both.
+- Tracked: threshold and tie behaviour are protected by the aggregate dev/test pins
+  rather than unit fixtures; enabling Rerank costs about 6× time per word (a fresh
+  engine per candidate).

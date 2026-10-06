@@ -8,27 +8,27 @@
     "full_types": {
       "items": 7134,
       "B1": {
-        "match_any": 1967,
-        "accuracy": 0.27572189514998596,
-        "macro_minCER": 0.2269146503202099
+        "match_any": 1968,
+        "accuracy": 0.27586206896551724,
+        "macro_minCER": 0.22668549437196236
       },
       "model": {
-        "match_any": 2200,
-        "accuracy": 0.3083823941687693,
-        "macro_minCER": 0.21640004921222142
+        "match_any": 2201,
+        "accuracy": 0.30852256798430056,
+        "macro_minCER": 0.21617089326397382
       }
     },
     "unseen_types": {
       "items": 6036,
       "B1": {
-        "match_any": 1835,
-        "accuracy": 0.3040092776673294,
-        "macro_minCER": 0.21595809815532904
+        "match_any": 1836,
+        "accuracy": 0.30417495029821073,
+        "macro_minCER": 0.21568725678110803
       },
       "model": {
-        "match_any": 2052,
-        "accuracy": 0.3399602385685885,
-        "macro_minCER": 0.20464678486763915
+        "match_any": 2053,
+        "accuracy": 0.34012591119946983,
+        "macro_minCER": 0.20437594349341806
       }
     }
   },
@@ -38,12 +38,12 @@
       "B1": {
         "match_any": 8,
         "accuracy": 0.0032,
-        "macro_minCER": 0.33149375595752184
+        "macro_minCER": 0.3314892105029764
       },
       "model": {
         "match_any": 12,
         "accuracy": 0.0048,
-        "macro_minCER": 0.31286250291213874
+        "macro_minCER": 0.31285795745759326
       }
     },
     "all_tokens_unseen_sentences": {

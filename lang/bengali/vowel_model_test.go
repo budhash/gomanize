@@ -34,7 +34,8 @@ func TestBengaliVowelFeatureParity(t *testing.T) {
 	}
 	labels := map[int]bool{}
 	for _, tc := range cases {
-		got, ok := vowelFeatures(tc.Word, tc.Index)
+		// Runtime normalizes through vowelWordView first; the fixture includes non-NFC words.
+		got, ok := vowelFeatures(vowelWordView(tc.Word), tc.Index)
 		if !ok || !reflect.DeepEqual(got, tc.Features) {
 			t.Fatalf("%s@%d: %v != %v", tc.Word, tc.Index, got, tc.Features)
 		}
