@@ -111,7 +111,7 @@ make ci
 
 `--report-test` is final reporting only. It cannot change tree fitting, which
 always receives the isolated Google train rows. CI verifies alignment rejection,
-variant conflicts, model/source provenance, 261 synthetic Go/Python feature and
+variant conflicts, model/source provenance, 331 synthetic Go/Python feature and
 prediction cases, three classes, canonical rune offsets, fallback, style,
 metadata traces, and rule-disable controls. Malformed models fail back to B1.
 A temporary Go overlay that disables the model makes both the output/style
@@ -131,3 +131,30 @@ strict remains 1,147/1,330 (86.2%) before and after this change.
 Full `make ci` passed, including the frozen Hindi corpus replay, accuracy
 benchmarks, B1 gate, source-isolation tests and model checks. Hindi curated
 match-any remains 1,236/1,330 (92.9%). Repository commit hooks pass.
+
+## Review notes (2026-10-05)
+
+Independent stack review. The tables above record the model as submitted.
+
+- **Rules changed underneath.** Two B1 correctness fixes landed during review
+  (canonical nukta letters in phalas; explicit final hasant). The model artifact
+  is unchanged, but rule-composed outputs move by one dev word: dev B1 775 strict /
+  1,371 match-any / CER 0.09137532, model 895 / 1,545 / 0.07839302 (408 changed).
+  Test is unchanged. The external results JSON was regenerated: Aksharantar full
+  B1/model match-any 1,968/2,201 (was 1,967/2,200), unseen 1,836/2,053; BanglaTLit
+  CER moves in the sixth decimal.
+- **Model outputs are now pinned.** The dev guard is relative, so a degraded model
+  that still beat B1 would pass. `bnPinnedModel` pins train and dev strict,
+  match-any, words changed, and a digest of every model output; a mutation that
+  disables the model on longer words now fails (dev 895/1,545 → 831/1,450).
+- **Parity covers the feature caps.** The fixture previously truncated the
+  hand-picked edge words away, so `length` (cap 12) and `position` (cap 6) were
+  never exercised; changing either cap in Go passed every test. Edge words are now
+  always included, with non-NFC inputs routed through `vowelWordView` as at runtime;
+  both cap mutations fail. 331 parity cases.
+- **Latin-script Google rows** (4,419 train rows / 4,416 types) are rejected by the
+  aligner as unsupported and are included in the 29,444 unsupported train rows
+  above; none reach the tree.
+- Tracked: `training_scripts_sha256` covers `vowels.py` and `train_vowels.py` but
+  not the shared key/loader modules; the runtime evaluates the model twice per
+  pending consonant when enabled.

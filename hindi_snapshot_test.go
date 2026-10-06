@@ -51,26 +51,32 @@ type hindiSnapshotRow struct {
 	Outputs []string `json:"outputs"`
 }
 
+// The manifest pins the frozen input set itself, not the benchmark files it
+// was collected from: a gold/notes-only CSV edit must not force a regeneration.
 type hindiSnapshotManifest struct {
-	Profiles []string          `json:"profiles"`
-	Sources  map[string]string `json:"source_sha256"`
-	Inputs   int               `json:"inputs"`
+	Profiles    []string `json:"profiles"`
+	InputSHA256 string   `json:"input_sha256"`
+	Inputs      int      `json:"inputs"`
 }
 
-func hindiSnapshotInputs(t *testing.T) ([]string, map[string]string) {
+// hindiSnapshotInputHash hashes length-prefixed inputs in order, so inputs
+// containing newlines or tabs cannot collide.
+func hindiSnapshotInputHash(inputs []string) string {
+	h := sha256.New()
+	for _, s := range inputs {
+		fmt.Fprintf(h, "%d:%s", len(s), s)
+	}
+	return fmt.Sprintf("%x", h.Sum(nil))
+}
+
+func hindiSnapshotInputs(t *testing.T) []string {
 	t.Helper()
 	paths, err := filepath.Glob("benchmark/data/*_hi.csv")
 	if err != nil || len(paths) == 0 {
 		t.Fatalf("snapshot sources: %v (%d files)", err, len(paths))
 	}
 	seen := map[string]bool{}
-	hashes := map[string]string{}
 	for _, path := range paths {
-		data, err := os.ReadFile(path)
-		if err != nil {
-			t.Fatal(err)
-		}
-		hashes[path] = fmt.Sprintf("%x", sha256.Sum256(data))
 		f, err := os.Open(path)
 		if err != nil {
 			t.Fatal(err)
@@ -118,11 +124,11 @@ func hindiSnapshotInputs(t *testing.T) ([]string, map[string]string) {
 		inputs = append(inputs, s)
 	}
 	sort.Strings(inputs)
-	return inputs, hashes
+	return inputs
 }
 
 func TestHindiFrozenSnapshot(t *testing.T) {
-	inputs, hashes := hindiSnapshotInputs(t)
+	inputs := hindiSnapshotInputs(t)
 	profiles := hindiSnapshotProfiles()
 	names := make([]string, len(profiles))
 	engines := make([]*Gomanize, len(profiles))
@@ -134,8 +140,8 @@ func TestHindiFrozenSnapshot(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	manifest := hindiSnapshotManifest{Profiles: names, Sources: hashes, Inputs: len(inputs)}
 	if *updateHindiSnapshot {
+		manifest := hindiSnapshotManifest{Profiles: names, InputSHA256: hindiSnapshotInputHash(inputs), Inputs: len(inputs)}
 		writeHindiSnapshot(t, inputs, engines, manifest)
 		return
 	}
@@ -147,14 +153,16 @@ func TestHindiFrozenSnapshot(t *testing.T) {
 	if err = json.Unmarshal(data, &frozen); err != nil {
 		t.Fatal(err)
 	}
-	if !reflect.DeepEqual(frozen, manifest) {
-		t.Fatal("snapshot inputs/profiles changed; review the corpus/profile delta before deliberately regenerating")
+	if !reflect.DeepEqual(frozen.Profiles, names) {
+		t.Fatalf("snapshot profiles changed: frozen %v, current %v; review before deliberately regenerating", frozen.Profiles, names)
 	}
 	paths, err := filepath.Glob(filepath.Join(hindiSnapshotDir, "*.jsonl.gz"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	count := 0
+	// Replay the frozen rows themselves; the current corpus only feeds the
+	// coverage note below, so benchmark edits never invalidate the snapshot.
+	frozenInputs := make([]string, 0, frozen.Inputs)
 	for _, path := range paths {
 		f, err := os.Open(path)
 		if err != nil {
@@ -171,7 +179,8 @@ func TestHindiFrozenSnapshot(t *testing.T) {
 			if err = json.Unmarshal(scanner.Bytes(), &row); err != nil {
 				t.Fatal(err)
 			}
-			if count >= len(inputs) || row.Input != inputs[count] || len(row.Outputs) != len(profiles) {
+			count := len(frozenInputs)
+			if len(row.Outputs) != len(profiles) || (count > 0 && row.Input <= frozenInputs[count-1]) {
 				t.Fatalf("invalid snapshot row %d in %s", count, path)
 			}
 			for i, g := range engines {
@@ -179,7 +188,7 @@ func TestHindiFrozenSnapshot(t *testing.T) {
 					t.Fatalf("%s: %q: got %q, frozen %q", names[i], row.Input, got, row.Outputs[i])
 				}
 			}
-			count++
+			frozenInputs = append(frozenInputs, row.Input)
 		}
 		if err = scanner.Err(); err != nil {
 			t.Fatal(err)
@@ -191,10 +200,23 @@ func TestHindiFrozenSnapshot(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	if count != len(inputs) {
-		t.Fatalf("snapshot has %d inputs, want %d", count, len(inputs))
+	if len(frozenInputs) != frozen.Inputs || hindiSnapshotInputHash(frozenInputs) != frozen.InputSHA256 {
+		t.Fatalf("snapshot rows (%d) do not match manifest (%d inputs, sha256 %s)", len(frozenInputs), frozen.Inputs, frozen.InputSHA256)
 	}
-	t.Logf("verified %d inputs across %d profiles (%d exact outputs)", count, len(profiles), count*len(profiles))
+	frozenSet := make(map[string]bool, len(frozenInputs))
+	for _, s := range frozenInputs {
+		frozenSet[s] = true
+	}
+	uncovered := 0
+	for _, s := range inputs {
+		if !frozenSet[s] {
+			uncovered++
+		}
+	}
+	if uncovered > 0 {
+		t.Logf("note: %d current corpus inputs are not in the frozen snapshot (not a failure)", uncovered)
+	}
+	t.Logf("verified %d inputs across %d profiles (%d exact outputs)", len(frozenInputs), len(profiles), len(frozenInputs)*len(profiles))
 }
 
 func writeHindiSnapshot(t *testing.T, inputs []string, engines []*Gomanize, manifest hindiSnapshotManifest) {

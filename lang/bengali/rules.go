@@ -43,11 +43,15 @@ func RuleCatalog() core.RuleCatalog {
 	})
 	c.Schwa[len(c.Schwa)-1].Conditional = "SchwaModel"
 	keep := func(u *core.Unit, w *core.Word) { brahmic.SetSchwa(u, brahmic.SchwaKeep) }
+	// An explicit final hasant spells "no vowel"; keep rules must not override it.
+	spelledDead := func(u *core.Unit) bool { return brahmic.GetBrahmicData(u).TrailingHalant }
 	add("schwa.bengali.final-cluster", core.PhaseSchwa, 80, func(u *core.Unit, w *core.Word) bool {
-		return consonant(u) && u.IsWordFinal() && brahmic.IsAfterHalant(u) && !brahmic.GetBrahmicData(u).NoInherentVowel && !loanCoda(u)
+		return consonant(u) && u.IsWordFinal() && brahmic.IsAfterHalant(u) && !brahmic.GetBrahmicData(u).NoInherentVowel && !loanCoda(u) && !spelledDead(u)
 	}, keep)
-	add("schwa.bengali.final-h", core.PhaseSchwa, 79, func(u *core.Unit, w *core.Word) bool { return source(u, "হ") && u.Prev != nil && u.IsWordFinal() }, keep)
-	add("schwa.bengali.post-visarga", core.PhaseSchwa, 78, func(u *core.Unit, w *core.Word) bool { return visargaTarget(u) }, keep)
+	add("schwa.bengali.final-h", core.PhaseSchwa, 79, func(u *core.Unit, w *core.Word) bool {
+		return source(u, "হ") && u.Prev != nil && u.IsWordFinal() && !spelledDead(u)
+	}, keep)
+	add("schwa.bengali.post-visarga", core.PhaseSchwa, 78, func(u *core.Unit, w *core.Word) bool { return visargaTarget(u) && !spelledDead(u) }, keep)
 	add("consonant.bengali.f-spelling", core.PhaseConsonant, 95, func(u *core.Unit, w *core.Word) bool { return source(u, "ফ") }, func(u *core.Unit, w *core.Word) { u.BaseRom = "f" })
 	add("consonant.bengali.h-nasal", core.PhaseConsonant, 94, func(u *core.Unit, w *core.Word) bool { return pairLeft(u, "হ", "ম") || pairLeft(u, "হ", "ন") }, func(u *core.Unit, w *core.Word) {
 		if source(u.Next, "ম") {
@@ -107,7 +111,7 @@ func oneOf(u *core.Unit, s string) bool {
 	return u != nil && len(u.Runes) == 1 && strings.ContainsRune(s, u.Runes[0])
 }
 func simpleClusterRight(u *core.Unit) bool {
-	return consonant(u) && len(u.Runes) == 1 && brahmic.GetBrahmicData(u).AfterHalant && consonant(u.Prev) && len(u.Prev.Runes) == 1 && !brahmic.IsAfterHalant(u.Prev) && !brahmic.GetBrahmicData(u.Prev).NoInherentVowel && (u.Next == nil || !brahmic.IsAfterHalant(u.Next))
+	return consonant(u) && brahmic.IsSingleLetter(u) && brahmic.GetBrahmicData(u).AfterHalant && consonant(u.Prev) && brahmic.IsSingleLetter(u.Prev) && !brahmic.IsAfterHalant(u.Prev) && !brahmic.GetBrahmicData(u.Prev).NoInherentVowel && (u.Next == nil || !brahmic.IsAfterHalant(u.Next))
 }
 func pairRight(u *core.Unit, left, right string) bool {
 	return simpleClusterRight(u) && source(u.Prev, left) && source(u, right)
