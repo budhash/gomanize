@@ -201,3 +201,14 @@ fixtures retain all references/votes under CC BY-SA 4.0 with member and fixture
 hashes in `benchmark/data/bengali/manifest.json`. Train/dev support exploratory
 style/attestation histograms; test remains evaluation-only. No Bengali learned
 artifacts exist yet, and the Hindi training policy above remains unchanged.
+
+### Bengali B1 evaluation contract (2026-10-04)
+
+Before production B1 tuning, train/dev exact-anchor slot measurements support
+retaining o as the operational consonant-vowel default, while independent অ
+remains a convention with mixed evidence. Full dev stays primary; a secondary
+subset uses max-reference-votes ≥3 and retains all references (992 dev words).
+Frozen B0 outputs define a gate requiring 10% fewer word misses, 5% lower minCER,
+and no strict top-1 loss on both sets. These are preregistered engineering targets,
+not an estimated rule ceiling. See the [evidence, exclusions, and enforcement
+contract](reviews/2026-10-04-bengali-evaluation-gate.md).

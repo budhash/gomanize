@@ -6,7 +6,10 @@ branch, 2026-10-04. Experimental Bengali B0 is implemented in its dependent
 branch. The [B1 structural prototype](2026-10-04-bengali-b1-prototype.md) is
 implemented separately with test-only rules; the production B1 catalog, B2/B3,
 and A.2' remain unimplemented. B0 measurements and remaining
-T-0055 decisions are in [the B0 report](2026-10-04-bengali-b0-baseline.md).
+T-0055 decisions are in [the B0 report](2026-10-04-bengali-b0-baseline.md) and
+the [evaluation contract](2026-10-04-bengali-evaluation-gate.md). T-0055 is now
+resolved: operational o default, max-reference-votes ≥3 secondary curation,
+and explicit full/curated dev gates before production B1 tuning.
 Sections 1.5 and 1.6 record the earlier Fable/Codex reviews; §1.7 records the
 latest Codex review and accepted resolutions. Part A is independent of Bengali
 implementation; Bengali behavior must pass the B1 prototype gate. Tracked as F-0011.
@@ -705,12 +708,13 @@ not copy 85%. The Hindi gate and suites are untouched.
   Hindi by design** — not matching Hindi's 92.9%. Match-any / minCER is the
   headline; the pure gate is set empirically from `bn`.
 
-**Still open (resolve against `bn` data):**
+**Original open questions (resolution status, 2026-10-04):**
 1. æ romanization for ya-phala-initial (`a` / `e` / `ya`).
-2. Curated-set attestation threshold for `bn` (Hindi's ≥4 likely yields too few
-   given 3.8 variants/type — inspect the histogram alongside the o/a split).
-3. The exact `o` vs `a` default, pending the T-0055 measurement (the mechanism is
-   decided; the default *value* is data-gated).
+2. Resolved by T-0055: max-reference-votes ≥3 for the secondary subset; full
+   dev remains primary. See the evaluation contract above.
+3. Resolved by T-0055: keep o as the operational default, with explicit a style
+   available. Conditional slot evidence and independent অ limitations are
+   documented in the evaluation contract.
 
 ## 6. References
 
