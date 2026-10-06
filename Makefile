@@ -222,7 +222,7 @@ dev: check test ## Full development workflow (format, vet, test)
 dev-quick: fmt test-quick ## Quick development workflow
 	@echo "✓ Quick development workflow complete"
 
-ci: fmt-check lint build test-cover benchmark ## Full CI pipeline (format, lint, build, test, benchmark)
+ci: fmt-check lint build test-cover benchmark test-bengali ## Full CI pipeline (format, lint, build, test, benchmark)
 	@echo "✓ CI pipeline complete"
 
 # ============================================================================
