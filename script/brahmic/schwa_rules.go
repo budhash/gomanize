@@ -8,8 +8,8 @@ import "github.com/budhash/gomanize/core"
 // packages compose these with their own language-specific schwa rules.
 //
 // These were previously defined inside lang/hindi; they contain no Hindi-only
-// logic (only Devanagari-general character checks), so they live here to be
-// reused by Marathi, Nepali, etc.
+// character constants: those come from the resolved ScriptProfile. Languages
+// must still choose which deletion heuristics apply to their phonology.
 func SchwaRules() []core.Rule {
 	return []core.Rule{
 		// schwa.keep.sonorous-final (Script:70)
@@ -25,7 +25,7 @@ func SchwaRules() []core.Rule {
 					GetSchwa(u) == SchwaPending &&
 					u.IsWordFinal() &&
 					IsAfterHalant(u) &&
-					isSonorousRune(u)
+					isSonorousRune(u, w)
 			},
 			Action: func(u *core.Unit, w *core.Word) {
 				SetSchwa(u, SchwaKeep)
@@ -168,8 +168,8 @@ func SchwaRules() []core.Rule {
 				if u.Prev == nil || u.Prev.Type != core.UnitVowel {
 					return false
 				}
-				// Don't delete after ा (aa-matra): often Sanskrit words retaining schwa.
-				if len(u.Prev.Runes) == 1 && u.Prev.Runes[0] == 'ा' {
+				// Do not delete after the configured aa-matra (Hindi ा).
+				if len(u.Prev.Runes) == 1 && u.Prev.Runes[0] == profileFor(w).AaMatra {
 					return false
 				}
 				run := GetRun(u)
@@ -237,14 +237,14 @@ func SchwaRules() []core.Rule {
 	}
 }
 
-// isSonorousRune reports whether the unit's source character is र, य, or व — the
-// sonorous consonants that retain a word-final schwa in Sanskrit-derived words.
-func isSonorousRune(u *core.Unit) bool {
+// isSonorousRune checks configured source identities (Hindi र, य, व),
+// which retain a word-final schwa in Sanskrit-derived words.
+func isSonorousRune(u *core.Unit, w *core.Word) bool {
 	if len(u.Runes) == 0 {
 		return false
 	}
 	r := u.Runes[0]
-	return r == 'र' || r == 'य' || r == 'व'
+	return containsRune(profileFor(w).SonorousRunes, r)
 }
 
 // isWordInitialConjunct reports whether the unit is part of a word-initial
@@ -273,7 +273,8 @@ func isWordInitialConjunct(u *core.Unit, w *core.Word) bool {
 			if firstUnit.Type == core.UnitVowel && secondUnit.Type == core.UnitConsonant {
 				if len(firstUnit.Runes) == 1 {
 					r := firstUnit.Runes[0]
-					if r >= 0x0905 && r <= 0x0914 {
+					vowels := profileFor(w).IndependentVowelRange
+					if r >= vowels[0] && r <= vowels[1] {
 						return true
 					}
 				}

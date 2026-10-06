@@ -195,10 +195,12 @@ func (h Hindi) Symbols() core.SymbolMap {
 
 // ScriptConfig returns Brahmic-specific configuration.
 func (h Hindi) ScriptConfig() interface{} {
+	profile := brahmic.DevanagariProfile()
 	return brahmic.Config{
 		Halant:    Halant,
 		Nukta:     Nukta,
 		MultiChar: MultiChar,
+		Profile:   &profile,
 	}
 }
 

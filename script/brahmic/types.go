@@ -31,6 +31,16 @@ func (s SchwaState) String() string {
 	}
 }
 
+// SchwaQuality separates the pronunciation of a retained inherent vowel from
+// the keep/delete decision. Default preserves the configured script spelling.
+type SchwaQuality int
+
+const (
+	SchwaDefault SchwaQuality = iota
+	SchwaRaised
+	SchwaOpen
+)
+
 // ConsonantRun represents consecutive consonants between vowels.
 // Used for coordinating schwa deletion decisions.
 type ConsonantRun struct {
@@ -66,6 +76,9 @@ type BrahmicData struct {
 
 	// Schwa state for consonants/conjuncts
 	Schwa SchwaState
+
+	// Quality of a retained inherent vowel; zero preserves existing behavior.
+	SchwaQuality SchwaQuality
 
 	// Run membership (nil for vowels)
 	Run      *ConsonantRun
@@ -112,6 +125,9 @@ type Config struct {
 	Halant    string   // Halant/virama character (e.g., "्" for Devanagari)
 	Nukta     string   // Nukta character (e.g., "़" for Devanagari)
 	MultiChar []string // Multi-character sequences to match first (e.g., "ज्ञ")
+	// Profile supplies script-specific rendering and shared-rule parameters.
+	// Nil preserves the historical Devanagari defaults.
+	Profile *ScriptProfile
 }
 
 // Helper functions for working with BrahmicData through core.Unit
@@ -165,7 +181,10 @@ func IsConsonantOrConjunct(u *core.Unit) bool {
 // WordBrahmicData holds Brahmic-specific data for a core.Word.
 // Stored in the first unit's BrahmicData.WordData field.
 type WordBrahmicData struct {
-	Runs []*ConsonantRun
+	// Profile is resolved by the parser and retained by PrepareWord.
+	// Treat it as read-only; a parser may share it between its words.
+	Profile *ScriptProfile
+	Runs    []*ConsonantRun
 }
 
 // GetWordBrahmicData retrieves word-level Brahmic data.

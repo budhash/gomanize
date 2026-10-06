@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -1084,4 +1085,30 @@ func TestEnabledRulesAreApplied(t *testing.T) {
 	if !ruleRan {
 		t.Error("Enabled rule should have run")
 	}
+}
+
+func TestConstructorPriorityConflicts(t *testing.T) {
+	base := Rule{Name: "first", Phase: PhaseSchwa, Scope: ScopeScript, Priority: 10,
+		Condition: func(*Unit, *Word) bool { return true }, Action: func(*Unit, *Word) {}}
+	for _, disabled := range []bool{false, true} {
+		t.Run(fmt.Sprintf("disabled=%v", disabled), func(t *testing.T) {
+			other := base
+			other.Name = "second"
+			other.DisabledDefault = disabled
+			defer func() {
+				if r := recover(); r == nil {
+					t.Fatal("constructor accepted same-phase priority tie")
+				}
+			}()
+			NewRuleEngine([]Rule{base, other})
+		})
+	}
+	other := base
+	other.Name = "different-phase"
+	other.Phase = PhaseRender
+	NewRuleEngine([]Rule{base, other})
+	other = base
+	other.Name = "different-scope"
+	other.Scope = ScopeLanguage
+	NewRuleEngine([]Rule{base, other})
 }

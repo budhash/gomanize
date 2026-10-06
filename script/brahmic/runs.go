@@ -49,7 +49,10 @@ func IdentifyRuns(word *core.Word) {
 	// Note: word-final runs have NextVowel = nil (handled correctly)
 
 	// Store runs in word-level data
-	if len(runs) > 0 {
+	wd := GetWordBrahmicData(word)
+	if wd != nil {
+		wd.Runs = runs
+	} else if len(runs) > 0 {
 		SetWordBrahmicData(word, &WordBrahmicData{Runs: runs})
 	}
 }

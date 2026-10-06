@@ -29,14 +29,28 @@ Parse → Prepare → Rules → Render
    symbol map; combines nukta; **consumes halant without emitting a unit**,
    flagging the following consonant as after-halant (conjunct). Output: a
    `Word` of doubly-linked `Unit`s, each seeded with a base romanization and
-   script-specific state in `Unit.ScriptData`.
+   script-specific state in `Unit.ScriptData`. The parser resolves `Config.Profile`
+   and stores it in `WordBrahmicData`; run preparation preserves this profile.
 2. **Prepare** (`script/brahmic/runs.go`) — groups consecutive consonants
    between vowels into `ConsonantRun`s so schwa decisions can be coordinated.
 3. **Rules** (`core/rule.go`) — four phases in fixed order: **Schwa →
    Consonant → Vowel → Render**, mutating `Unit.BaseRom` and schwa state.
 4. **Render** (`script/brahmic/renderer.go`) — concatenates base romanizations,
-   emitting the inherent `a` after a consonant unless a vowel follows, the unit
-   is part of a conjunct, or a schwa rule decided `Delete`.
+   spelling retained inherent vowels from the script profile and per-unit
+   `SchwaQuality`. Matras and configured bare independent vowels suppress the
+   preceding inherent vowel; other independent vowels retain it regardless of
+   the schwa decision. Halant-linked clusters suppress the preceding vowel,
+   and otherwise `Delete` suppresses it while `Pending` behaves like `Keep`.
+
+`brahmic.ScriptProfile` holds inherent/raised spellings, bare-vowel identities,
+the aa-matra, sonorants, and the independent-vowel range. Hindi supplies
+`DevanagariProfile()` explicitly. Legacy `Config` values and words without a
+profile retain Devanagari defaults. Parsers copy supplied profile slices; parsed
+profiles are read-only. Nil membership slices default, while explicit empty
+slices disable membership. `Options.InherentVowelA` selects `a` for Default
+quality; Raised uses the profile's raised spelling and Open uses `a`. This is a
+renderer option, not a complete academic scheme or a rewrite of lexicon hits.
+It does not change Hindi output and is not exposed as a CLI/WASM flag yet.
 
 Two optional capabilities hook in *before* the pipeline, via interfaces a
 language may implement (`core/engine.go`):
@@ -63,6 +77,9 @@ Rules are declarative structs (`core/rule.go`) with:
 | `Mode` | **Exclusive** (first match wins per unit) / **Always** / **Fallback** (only for untouched units) |
 | `Conditional` | Option gate (e.g. `"SchwaModel"`, `"!KeepMedialSchwa"`) |
 | `Condition` / `Action` | Predicates and mutations over `(Unit, Word)` |
+
+Both `NewRuleEngine` and `AddRule` reject duplicate effective priorities within
+a phase, including disabled rules; equal priorities in different phases are valid.
 
 Rules identify characters by **source runes** where practical; a few conditions
 still test intermediate `BaseRom` strings (the व→w converter's state guard, the
@@ -186,15 +203,14 @@ Design constraints that shaped them:
   [`reviews/2026-09-30-bengali-support-design.md`](reviews/2026-09-30-bengali-support-design.md)
   (v4, tracked as F-0011; B1 prototype and B2 training-isolation gates are
   T-0056/T-0057). It splits into a behavior-preserving generalization of the
-  Brahmic layer (lifting the Devanagari literals below into config, and separating
-  "keep vs delete" from "what a kept schwa spells") and the `lang/bengali`
-  package. Bengali's inherent vowel (ɔ/o, not `a`) and weaker word-final deletion
+  Brahmic layer (implemented on the feature branch with script profiles and
+  separate vowel quality) and the future `lang/bengali` package. Bengali's
+  inherent vowel (ɔ/o, not `a`) and weaker word-final deletion
   make it the stress test of the shared-layer abstraction.
 - **Marathi / Nepali** — implement `core.Language` (symbol map + config + rule
   catalog composing `brahmic.SchwaRules()`); parser/renderer/runs are reused.
-  Caveats: renderer's inherent-vowel is hardcoded `"a"`; a few Hindi rules
-  carry Devanagari literals worth auditing per language. The F-0011 Part A
-  generalization removes these caveats for all future Brahmic languages.
+  Supply a `Config.Profile` and audit which shared schwa rules fit the language;
+  configurable literals do not make Hindi deletion heuristics universal.
 - **Lexicon growth** past the 78.2% train-gold coverage ceiling — human review
   of mined candidates, or new attested sources (Xlit-Crowd is CC-BY-NC-SA).
 - **Lyrics gold expansion** — more public-domain verse in-repo; Giitaayan

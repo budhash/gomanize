@@ -1,0 +1,19 @@
+{
+  "profiles": [
+    "default",
+    "schwa-model",
+    "lexicon",
+    "rerank",
+    "keep-medial",
+    "long-vowels",
+    "simple-nasals",
+    "combined-style",
+    "learned-style",
+    "lexicon-rerank",
+    "no-schwa-rules",
+    "no-final-delete",
+    "no-rules"
+  ],
+  "input_sha256": "0ac3b886ce9a5d20bec39a044261dd6aa21efc78a96ce391925d4c2ae55cfa41",
+  "inputs": 264064
+}
