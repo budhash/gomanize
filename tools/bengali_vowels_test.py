@@ -52,7 +52,7 @@ class BengaliVowelsTest(unittest.TestCase):
         self.assertEqual(provenance['google_sha256'], GOOGLE_SHA)
         self.assertEqual(provenance['split_manifest_sha256'], hashlib.sha256((DEFAULT/'manifest.json').read_bytes()).hexdigest())
         for name, expected in provenance['training_scripts_sha256'].items():
-            self.assertEqual(hashlib.sha256((ROOT/'tools/bengali'/name).read_bytes()).hexdigest(), expected)
+            self.assertEqual(hashlib.sha256((ROOT/'tools'/name).read_bytes()).hexdigest(), expected)
         external = json.loads((ROOT/'docs/reviews/2026-10-04-bengali-b2-vowels-external.json').read_text())
         self.assertEqual(external['model_sha256'], hashlib.sha256((ROOT/'lang/bengali/vowel_tree.json').read_bytes()).hexdigest())
         fixtures = json.loads((ROOT/'lang/bengali/testdata/vowel_features.json').read_text())

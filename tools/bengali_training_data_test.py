@@ -27,17 +27,27 @@ class TrainingIsolationTest(unittest.TestCase):
         for left, right in [('ড়', 'ড়'), ('ক\u09c7\u09be', 'কো'), ('ক্\u200dষ', 'ক্ষ')]:
             self.assertEqual(data.native_key(left), data.native_key(right))
 
-    def test_variant_spelling_collisions_are_pinned(self):
-        # Khanda-ta and ta + hasant are not canonically equivalent but render alike.
+    def test_variant_spellings_are_excluded_from_training(self):
+        # Khanda-ta and ta + hasant are not canonically equivalent but spell one word.
         self.assertNotEqual(data.native_key('উত্সাহ'), data.native_key('উৎসাহ'))
         self.assertEqual(data.collision_key('উত্সাহ'), data.collision_key('উৎসাহ'))
         self.assertEqual(data.collision_key('অাবার'), data.collision_key('আবার'))
         groups = data.verify()
-        self.assertEqual(data.variant_collisions(groups), data.KNOWN_VARIANT_COLLISIONS)
-        self.assertEqual(len({c[3] for c in data.KNOWN_VARIANT_COLLISIONS}), 15)
+        self.assertEqual(data.variant_collisions(groups), set())
+        # The schema-1 pairs are gone from training; held-out sides stay put.
+        for train_key, held_key, held in (('উত্সাহ', 'উৎসাহ', 'dakshina-dev'), ('অকস্মাত্', 'অকস্মাৎ', 'google-test'),
+                                          ('আবার', 'অাবার', 'dakshina-test')):
+            self.assertNotIn(train_key, groups['google-train'] | groups['dakshina-train'])
+            self.assertIn(held_key, groups[held])
         leaked = copy.deepcopy(groups)
         leaked['dakshina-train'].add('অর্থাত্')  # variant of dakshina-dev অর্থাৎ
         self.assertIn(('dakshina-train', 'অর্থাত্', 'dakshina-dev', 'অর্থাৎ'), data.variant_collisions(leaked))
+        with self.assertRaisesRegex(ValueError, 'variant-spelling leakage'):
+            data.validate_groups(leaked)
+        # Exclusion drops the training variant, never the held-out word.
+        google = {'উত্সাহ', 'ক'}
+        dak = {'train': {'চিকিৎসা', 'খ'}, 'dev': {'উৎসাহ'}, 'test': {'চিকিত্সা'}}
+        self.assertEqual(data.exclude_variants({'উত্সাহ', 'চিকিৎসা', 'ক'}, dak['dev'] | dak['test']), {'ক'})
 
     def test_exclusion_precedes_partition(self):
         google = {'ক', 'খ', 'গ', 'ঘ'}
@@ -55,13 +65,9 @@ class TrainingIsolationTest(unittest.TestCase):
         rows = data.training_rows('dakshina')
         keys = {data.native_key(r['native']) for r in rows}
         self.assertEqual(keys, groups['dakshina-train'])
-        # The training pool itself holds the pinned variant collisions, so it is
-        # not a valid lexicon; without them (bar the disclosed one) it is.
-        colliding = {c[1] for c in data.KNOWN_VARIANT_COLLISIONS if c[0] == 'dakshina-train'}
-        with self.assertRaisesRegex(ValueError, 'variant-spelling collision'):
-            data.assert_lexicon_isolation(keys)
-        keys = (keys - colliding) | (data.KNOWN_LEXICON_COLLISIONS & keys)
         data.assert_lexicon_isolation(keys)
+        with self.assertRaises(ValueError):  # excluded variant is no longer authorized
+            data.assert_lexicon_isolation(keys | {'উত্সাহ'})
         for name in ('google-dev', 'google-test', 'dakshina-dev', 'dakshina-test'):
             with self.subTest(name=name), self.assertRaises(ValueError):
                 data.assert_lexicon_isolation(keys | {next(iter(groups[name]))})

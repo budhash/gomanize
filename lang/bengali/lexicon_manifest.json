@@ -6,15 +6,15 @@
   "selection": "at least three attestations for the unique highest-vote spelling; reject ties; Bengali letter/mark keys only",
   "min_attestations": 3,
   "counts": {
-    "below_threshold": 13994,
-    "entries": 8980,
+    "below_threshold": 13985,
+    "entries": 8979,
     "nonword": 4,
-    "source_types": 23117,
+    "source_types": 23107,
     "tied_top": 139
   },
   "normalization": "remove Unicode Cf; NFC Bengali native keys; Roman case/spelling unchanged",
   "source_fixture_sha256": "44b554fa749c717386bd9f68daaf837788d6c5ff10197d7f23d2bcefc28cf378",
-  "split_manifest_sha256": "936d0549138932900bdd51621acb4ef9b037f7ee3263205ec342d00045177a89",
+  "split_manifest_sha256": "9c2d0c37c8815dd9e79cca5435c73bf24d7a4bfa2c94d0d1171232cd12143ad5",
   "builder_sha256": "2464fdbfa33ede4b9e79860ed9ab87ab6630d707254bc3dc1e954fce7f515b04",
-  "lexicon_sha256": "090d99b72464231324fe61ab44107b4c525eb5795273021641492b9223e07e1f"
+  "lexicon_sha256": "65eb77a22dbb878b1466628bcac862a9d2b1d71958ce202d4ecfa7a24d85e77b"
 }

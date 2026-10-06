@@ -18,30 +18,32 @@
   "scope": "simple-whole-words-v1",
   "provenance": {
     "google_sha256": "1bc2edda15da62bd4ef8576114e391c9a89ad8971f1eef3635e8fee0d7c1dd61",
-    "split_manifest_sha256": "936d0549138932900bdd51621acb4ef9b037f7ee3263205ec342d00045177a89",
+    "split_manifest_sha256": "9c2d0c37c8815dd9e79cca5435c73bf24d7a4bfa2c94d0d1171232cd12143ad5",
     "training_scripts_sha256": {
-      "vowels.py": "15704a3a8db23a68686f9e82e320aa55c6f883ce9647268ea82d0e55cf9d1bf9",
-      "train_vowels.py": "3ebcfc27cb19c486a3274bd602326c2c713cf1eaba5cffbeedadadcb634bfe68"
+      "bengali/vowels.py": "15704a3a8db23a68686f9e82e320aa55c6f883ce9647268ea82d0e55cf9d1bf9",
+      "bengali/train_vowels.py": "0b7ebb5a14253a5401076200d3b6f0c76fcbde1724235d2b7cd42663e67596fe",
+      "build_bengali.py": "a9f28f137bb47014c06932b71aedbd3c4aa588ee20fe7f8b2edea9aa53f08d0c",
+      "bengali_training_data.py": "d8ab38d72175ce04530370162333f5e87c91c1fb5fa61c7fbd1bbc6f2ace5fc3"
     },
     "depth": 10,
     "min_leaf": 20
   },
   "alignment": {
     "train": {
-      "accepted_types": 19662,
-      "aligned_rows": 19727,
+      "accepted_types": 19661,
+      "aligned_rows": 19726,
       "ambiguous_rows": 0,
-      "class_0": 20737,
+      "class_0": 20736,
       "class_1": 5464,
       "class_2": 6387,
       "conflicting_variant_types": 29,
-      "instances": 32588,
+      "instances": 32587,
       "no_slots_rows": 5936,
-      "rejected_types": 35430,
-      "source_rows": 55181,
-      "source_types": 55121,
+      "rejected_types": 35418,
+      "source_rows": 55168,
+      "source_types": 55108,
       "unmatched_rows": 74,
-      "unsupported_rows": 29444
+      "unsupported_rows": 29432
     },
     "dev": {
       "accepted_types": 1140,
@@ -78,12 +80,12 @@
   },
   "metrics": {
     "train": {
-      "instances": 32588,
-      "correct": 28124,
-      "accuracy": 0.8630170614950289,
+      "instances": 32587,
+      "correct": 28123,
+      "accuracy": 0.8630128578881149,
       "confusion_actual_rows": [
         [
-          20014,
+          20013,
           204,
           519
         ],
@@ -2069,7 +2071,7 @@
                       "no": {
                         "leaf": 0,
                         "counts": [
-                          10094,
+                          10093,
                           0,
                           28
                         ]
