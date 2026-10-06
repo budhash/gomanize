@@ -151,7 +151,9 @@ suite.
 MIT. Copyright (c) 2023-2026 Budhaditya (budhash@gmail.com).
 
 Benchmark data derives from Dakshina (CC BY-SA 4.0), Aksharantar (CC-BY 4.0),
-COMI-LINGUA (CC-BY 4.0), and Shabd (CC0). Experimental Bengali training data also
+COMI-LINGUA (CC-BY 4.0), and Shabd (CC0). The embedded spelling lexicons
+(`lang/hindi/lexicon.tsv`, `lang/bengali/lexicon.tsv`) are derived from Dakshina
+and are licensed CC BY-SA 4.0, separately from the MIT code. Experimental Bengali training data also
 derives from Google's Bengali pronunciation lexicon (CC BY 4.0); see
 [docs/RESEARCH.md](docs/RESEARCH.md) for full attribution.
 

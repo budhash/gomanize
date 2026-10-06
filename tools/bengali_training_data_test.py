@@ -55,6 +55,12 @@ class TrainingIsolationTest(unittest.TestCase):
         rows = data.training_rows('dakshina')
         keys = {data.native_key(r['native']) for r in rows}
         self.assertEqual(keys, groups['dakshina-train'])
+        # The training pool itself holds the pinned variant collisions, so it is
+        # not a valid lexicon; without them (bar the disclosed one) it is.
+        colliding = {c[1] for c in data.KNOWN_VARIANT_COLLISIONS if c[0] == 'dakshina-train'}
+        with self.assertRaisesRegex(ValueError, 'variant-spelling collision'):
+            data.assert_lexicon_isolation(keys)
+        keys = (keys - colliding) | (data.KNOWN_LEXICON_COLLISIONS & keys)
         data.assert_lexicon_isolation(keys)
         for name in ('google-dev', 'google-test', 'dakshina-dev', 'dakshina-test'):
             with self.subTest(name=name), self.assertRaises(ValueError):

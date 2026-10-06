@@ -26,8 +26,8 @@ DAK_SHA = dict(zip(('train', 'dev', 'test'), (
     '8e83784102a527a88af0ad6dfba0fa41c11f57633a34fe2a9abe12acb54aa51a',
     '9cb15941b0893acdcc2891130ff98ba403645fd9170b955372af62f64bd33ca0')))
 # The canonical key (NFC + Cf removal) does not merge khanda-ta (U+09CE) with
-# ta + hasant, nor a malformed অ + া with আ, though the engine renders each pair
-# identically. These frozen partitions predate that finding (2026-10-05 review),
+# ta + hasant, nor a malformed অ + া with আ, though each pair spells one word
+# (the engine renders the khanda-ta pairs identically). These frozen partitions predate that finding (2026-10-05 review),
 # so the resulting training/held-out variant pairs are pinned and disclosed
 # here rather than silently re-split; a later rebuild drops them from training.
 # Any NEW collision fails verify, and so does removing one without updating.
@@ -237,11 +237,22 @@ def training_rows(source, google_path=None, directory=DEFAULT):
     raise ValueError('training source must be google or dakshina')
 
 
+# Lexicon keys allowed to collide with a held-out type under collision_key: the
+# disclosed KNOWN_VARIANT_COLLISIONS entry that reached the frozen lexicon. The
+# post-stack rebuild excludes it; any other collision fails.
+KNOWN_LEXICON_COLLISIONS = frozenset({'আবার'})
+
+
 def assert_lexicon_isolation(keys, directory=DEFAULT):
     groups = verify(directory)
     allowed = groups['dakshina-train']
-    if {native_key(k) for k in keys} - allowed:
+    canonical = {native_key(k) for k in keys}
+    if canonical - allowed:
         raise ValueError('lexicon contains a held-out or unauthorized source type')
+    heldout = {collision_key(k) for name, ks in groups.items() if not name.endswith('-train') for k in ks}
+    colliding = {k for k in canonical if collision_key(k) in heldout}
+    if colliding != KNOWN_LEXICON_COLLISIONS & canonical:
+        raise ValueError(f'lexicon variant-spelling collision with held-out: {sorted(colliding - KNOWN_LEXICON_COLLISIONS)}')
 
 
 if __name__ == '__main__':
