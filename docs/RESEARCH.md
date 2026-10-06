@@ -86,6 +86,11 @@ match-any while preserving strict accuracy and improving CER. The
 [negative result](reviews/2026-10-04-bengali-b2-rerank.md) is reproducible;
 Bengali runtime behavior and held-out model results remain unchanged.
 
+A subsequent [native-conditioned selector](reviews/2026-10-04-bengali-b2-native-selector.md)
+also failed the dev improvement gate: all six predeclared thresholds retained
+the vowel model. Its training excludes Google training words as well as all
+held-out partitions; neither rejected selector is installed in runtime.
+
 ## 3. Datasets
 
 | Dataset | Size (as used) | License | Role |
