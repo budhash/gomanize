@@ -10,7 +10,7 @@ a candidate awaiting a decision; before any of it ships it must clear two gates:
    committable. Aggregate statistics derived from text (e.g. word-frequency
    counts) are facts and far less sensitive than the text itself, but the
    provenance is still noted.
-2. **Contamination** — learned components (lexicon, schwa model, re-ranker)
+2. **Contamination** — Hindi learned components (lexicon, schwa model, re-ranker)
    train **only** on the Dakshina train split, and benchmarks are never mined
    (RESEARCH §2). A new source may feed a *held-out* set only if it is disjoint
    from Dakshina/Aksharantar/COMI-LINGUA — enforced mechanically by deduping

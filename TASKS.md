@@ -50,6 +50,8 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0055) [P2] [done] Measure o/a split + attestation histogram on Dakshina bn (gates Q1 default + curation threshold) @deps=T-0051 @branch=feature/bengali-evaluation-gate @done=2026-10-04
   - [x] (T-0052) [P2] [done] B1: Bengali rules-only schwa (final-cluster keep, ɔ→o raising, phalas, anusvara/visarga) @deps=T-0055,T-0056 @branch=feature/bengali-b1-rules @done=2026-10-04
   - [x] (T-0060) [P2] [done] Audit user-supplied Bengali repositories and import pinned BanglaTLit test-only evaluation with provenance @done=2026-10-04 @branch=feature/bengali-b1-rules
+  - [x] (T-0057) [P2] [done] Freeze Bengali normalized split manifests and cross-source exclusions before B2 training; assert provenance and report overlap @deps=T-0051 @branch=feature/bengali-b2-data @done=2026-10-04 @pr=117
+
 - [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow
   - [x] (T-0036) [P2] [done] Package the WASM engine as @budhash/gomanize with loader, types, make target, and Node smoke test @done=2026-09-08
 - [ ] (F-0006) [P2] [todo] WASM build + web demo (data flywheel) @shadow
@@ -123,8 +125,6 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
 - [ ] (F-0011) [P2] [todo] Bengali (Bangla) support
   - [ ] (T-0053) [P3] [todo] B2: Bengali learned components (3-way schwa classifier, lexicon, reranker) @deps=T-0052,T-0057
   - [ ] (T-0054) [P3] [todo] B3: Bengali PD lyrics gold set (Tagore Gitabitan via Wikisource) + line-level suite
-  - [ ] (T-0057) [P2] [todo] Freeze Bengali normalized split manifests and cross-source exclusions before B2 training; assert provenance and report overlap @deps=T-0051
-
 - [ ] (F-0012) [P2] [todo] Roman-to-Hindi/Bengali transliteration: ambiguity, candidate ranking, and independent evaluation
   - [ ] (T-0059) [P2] [todo] Define reverse API and candidate-ranking contract; audit bntranslit and Romabangla references before implementation
 ## Skipped
