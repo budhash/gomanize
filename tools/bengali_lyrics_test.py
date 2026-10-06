@@ -43,6 +43,20 @@ class BengaliLyricsTest(unittest.TestCase):
         values = [[p['profiles'][name] for name in PROFILES] for p in predictions]
         assert_close(self, score(rows, values), report['scores']['all_lines'])
 
+    def test_record_matches_current_engine(self):
+        # Re-run the engine on the frozen lines and require the whole committed
+        # record (predictions, every slice, overlap) to match; only provenance
+        # hashes are excluded. Logged-only Go scores would not catch a drift.
+        from evaluate_lyrics import evaluate, predict, training_groups
+        rows, _ = verify()
+        record = json.loads((ROOT/'docs/reviews/2026-10-05-bengali-b3-lyrics.json').read_text())
+        rebuilt = evaluate(rows, predict([(r['native'], [r['roman']]) for r in rows]), training_groups())
+        for key in ('predictions', 'scores', 'equal_weight_song_macro_CER', 'overlap'):
+            if key == 'predictions':
+                self.assertEqual(json.loads(json.dumps(rebuilt[key], ensure_ascii=False)), record[key])
+            else:
+                assert_close(self, json.loads(json.dumps(rebuilt[key])), record[key], key)
+
     def test_extraction_boundaries(self):
         html = '<p>ignore</p><div class="poem"><p>ক&nbsp; খ<br/><span>গ\u200b</span></p></div>ignore<div class="poem"><p>ঘ</p></div>'
         self.assertEqual(extract(html.encode()), ['ক খ', 'গ', 'ঘ'])

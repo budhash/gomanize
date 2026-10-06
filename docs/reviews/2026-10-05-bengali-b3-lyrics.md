@@ -66,8 +66,9 @@ stage; reviewed lyrics quality remains unestablished.
   repetition, unequal reference lengths, unequal song lengths and empty slices.
   Negative controls deliberately corrupt a snapshot/reference and rehash
   tampered native/status rows; all are rejected.
-- The Go public API suite independently reproduces the six macro CER results
-  and exact counts, and verifies multiline rendering preserves per-line output.
+- The Go public API suite recomputes and logs the six macro CER results and
+  exact counts, and verifies multiline rendering preserves per-line output.
+  (As of the 2026-10-05 review, the Python suite asserts the record; see below.)
 - Full local `make ci` passed, including the new pilot verification target and
   the frozen Hindi replay (689.700 seconds under race/coverage). Hindi remains
   1,147/1,330 strict and 1,236/1,330 match-any on curated Dakshina. No runtime
@@ -75,3 +76,20 @@ stage; reviewed lyrics quality remains unestablished.
 - T-0068 requires a Bengali reviewer to correct/attest the source-first worksheet
   before reference promotion. T-0054 remains open for gold and coverage review.
   Do not tune on the pilot while that work is pending.
+
+## Review notes (2026-10-05)
+
+Independent stack review; reference quality is out of scope (T-0068).
+
+- **Record now asserted against the engine.** The Go test only logged its scores
+  and the Python test re-scored the saved predictions, so a changed lexicon entry
+  (সকল → `sokkol`) moved the logged CER with every test green.
+  `test_record_matches_current_engine` re-runs the engine and requires the
+  committed predictions, every slice, song weighting and overlap audit to match
+  (provenance hashes excluded); the mutation now fails.
+- **Regenerated.** After the B1/B2 review fixes every prediction and score is
+  unchanged; only `sources_sha256` was stale and has been refreshed.
+- Tracked: extraction strips every Unicode Cf character, including ZWJ/ZWNJ, which
+  can be meaningful in Bengali (only a BOM occurs in the current captures); about
+  16% of scored reference characters are spaces/punctuation, so a letters-only CER
+  would help T-0068; full-page captures (~17 KB each) will add up if the pilot grows.
