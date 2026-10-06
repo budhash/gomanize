@@ -11,7 +11,7 @@ import (
 // prototypeRules deliberately stays out of RuleCatalog. Exact design examples
 // prove mechanics; they do not establish a general Bengali pronunciation rule.
 func prototypeRules() []core.Rule {
-	rules := RuleCatalog().AllRules()
+	rules := b0Catalog().AllRules()
 	add := func(name string, phase core.RulePhase, priority int, cond func(*core.Unit, *core.Word) bool, action func(*core.Unit, *core.Word)) {
 		rules = append(rules, core.Rule{Name: name, Phase: phase, Scope: core.ScopeLanguage, Priority: priority, Mode: core.ModeAlways, Condition: cond, Action: action})
 	}
@@ -105,6 +105,7 @@ func TestB1GeminationVowelOwnership(t *testing.T) {
 		{"মধ্যা", 2, brahmic.RepeatPrevious, "", "moddha", true},
 		{"মত্য", 2, brahmic.RepeatPrevious, "", "motto", false},
 		{"মধ্য", 2, brahmic.RepeatPrevious, "kh", "mokkho", false},
+		{"মধ্য", 2, brahmic.RepeatPrevious, "f", "moffo", false},
 		{"দুঃখ", 3, brahmic.GeminateSelf, "", "dukkho", false},
 		{"দুঃখ", 3, brahmic.GeminateSelf, "", "dukkh", true},
 		{"দুঃখা", 3, brahmic.GeminateSelf, "", "dukkha", true},

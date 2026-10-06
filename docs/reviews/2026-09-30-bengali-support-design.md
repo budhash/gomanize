@@ -4,8 +4,8 @@
 **Status:** Design v4; Part A config/quality refactor implemented on the feature
 branch, 2026-10-04. Experimental Bengali B0 is implemented in its dependent
 branch. The [B1 structural prototype](2026-10-04-bengali-b1-prototype.md) is
-implemented separately with test-only rules; the production B1 catalog, B2/B3,
-and A.2' remain unimplemented. B0 measurements and remaining
+implemented separately. The [B1 rules catalog](2026-10-04-bengali-b1-results.md)
+now passes the fixed dev gates; B2/B3 and A.2' remain unimplemented. B0 measurements and remaining
 T-0055 decisions are in [the B0 report](2026-10-04-bengali-b0-baseline.md) and
 the [evaluation contract](2026-10-04-bengali-evaluation-gate.md). T-0055 is now
 resolved: operational o default, max-reference-votes ≥3 secondary curation,

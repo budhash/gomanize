@@ -1,6 +1,6 @@
-// Package bengali provides the experimental B0 Bengali romanization baseline.
-// Conjuncts are compositional; positional phalas and Bengali schwa tuning are
-// deferred to B1. Character identities follow the Unicode Bengali block.
+// Package bengali provides experimental rules-only Bengali romanization.
+// Parsing remains compositional; scoped B1 rules handle positional behavior.
+// Character identities follow the Unicode Bengali block.
 package bengali
 
 import (
@@ -94,7 +94,7 @@ func init() {
 	}
 }
 
-// Bengali implements core.Language. Its rules are a B0 baseline, not B1 tuning.
+// Bengali implements core.Language with the measured B1 rule catalog.
 type Bengali struct{}
 
 func (Bengali) Name() string            { return "bengali" }

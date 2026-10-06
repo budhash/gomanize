@@ -130,12 +130,13 @@ test-integration: ## Run integration tests (full Dakshina + Aksharantar datasets
 	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkDakshinaHindi|TestBenchmarkAksharantarHindi"
 	@echo "✓ Integration tests complete"
 
-test-bengali-b1-gate: ## Enforce preregistered B1 dev gate (B0 deliberately fails)
+test-bengali-b1-gate: ## Enforce preregistered B1 dev accuracy gate
 	@BENGALI_REQUIRE_B1=1 $(GOTEST) ./benchmark -run '^TestBengaliDevGate$$' -count=1 -v
 
 test-bengali: ## Bengali fixtures, structural prototypes, and split-aware benchmark
 	@python3 -m unittest discover -s tools -p 'build_bengali_test.py'
-	@$(GOTEST) . ./lang/bengali ./benchmark -run 'Test(B0|B1|Canonical|Khanda|Bengali|BenchmarkBengaliB0)' -count=1 -v
+	@python3 -m unittest discover -s tools -p 'build_banglatlit_test.py'
+	@$(GOTEST) . ./lang/bengali ./benchmark -run 'Test(B0|B1|Canonical|Khanda|Bengali|BenchmarkBengali)' -count=1 -v
 
 test-dakshina: ## Run Dakshina accuracy test (curated high-confidence subset)
 	@echo "Running Dakshina accuracy test..."
@@ -222,7 +223,7 @@ dev: check test ## Full development workflow (format, vet, test)
 dev-quick: fmt test-quick ## Quick development workflow
 	@echo "✓ Quick development workflow complete"
 
-ci: fmt-check lint build test-cover benchmark test-bengali ## Full CI pipeline (format, lint, build, test, benchmark)
+ci: fmt-check lint build test-cover benchmark test-bengali test-bengali-b1-gate ## Full CI pipeline (format, lint, build, test, benchmark)
 	@echo "✓ CI pipeline complete"
 
 # ============================================================================

@@ -75,3 +75,13 @@ of a cross-lingual setup.
   benchmarks, and emits a candidate TSV for human validation. Only validated
   rows (native + human romanization = our own work) graduate into
   `benchmark/data`, with a citation.
+
+## Bengali and reverse-transliteration references (2026-10-04)
+
+The user-supplied bntranslit, bengali-romanizer, BanglaTLit, and Romabangla
+repositories are all retained as viable references. See the [pinned repository
+review](bengali-repositories.md) for architecture, data licenses, measured overlap,
+and reverse-direction use. In particular, bengali-romanizer's plumbing remains
+useful despite its different spelling/fallback policy. BanglaTLit's official
+test pairs are imported only for external evaluation; its large `train` CSV
+contains every dev/test pair and must not be used as an isolated training split.

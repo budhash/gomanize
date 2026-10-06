@@ -166,20 +166,20 @@ func loadBengali(t *testing.T, splits ...string) map[string][]bnWord {
 	return result
 }
 
-// bnPinnedB0 pins the rules-only (no learned components) train/dev outputs.
+// bnPinnedRules pins the rules-only (no learned components) train/dev outputs.
 // Scores alone can hide compensating changes, so a digest over every
 // default-o and alternate-a output is pinned too. A PR that changes Bengali
 // rules output must update these deliberately and report the before/after
 // delta. Test-split scores stay log-only: they never gate or guide changes.
-var bnPinnedB0 = map[string]struct {
+var bnPinnedRules = map[string]struct {
 	strict, any int
 	digest      string
 }{
-	"train": {7044, 12080, "eadbc03efc070d1ab69fdf134e0738e80a21d4a8352bff7d94825fdc12b6e9dd"},
-	"dev":   {698, 1210, "9361f262872291e3ac960837a40246338a367e6287b15948ac0d448586171a49"},
+	"train": {8016, 13903, "bba03052cb0fde6ca8effaff9197a0e046627fc4092141caa28e8641a55ee9d6"},
+	"dev":   {775, 1371, "f0e503ee034edc99c68907e68729cdee8edf164455ccd019f2d26f078cdb1dde"},
 }
 
-func TestBenchmarkBengaliB0(t *testing.T) {
+func TestBenchmarkBengali(t *testing.T) {
 	datasets := loadBengali(t)
 	o, err := gomanize.New("bengali")
 	if err != nil {
@@ -229,8 +229,8 @@ func TestBenchmarkBengaliB0(t *testing.T) {
 			logScore := func(name string, c bnCounts) {
 				t.Logf("%s: words=%d strict=%d (%.2f%%) match-any=%d (%.2f%%) macro-minCER=%.5f", name, c.words, c.strict, 100*float64(c.strict)/float64(c.words), c.any, 100*float64(c.any)/float64(c.words), c.minCER/float64(c.words))
 			}
-			logScore("B0 default-o", defaultScore)
-			logScore("B0 alternate-a", altScore)
+			logScore("Current default-o", defaultScore)
+			logScore("Current alternate-a", altScore)
 			t.Logf("references=%d mean-refs/word=%.4f", refsTotal, float64(refsTotal)/float64(defaultScore.words))
 			for _, bucket := range []string{"1", "2", "3", "4+"} {
 				t.Logf("bucket=%s ref-count-words=%d variant-attestations=%d best-attestation-words=%d", bucket, refHist[bucket], voteHist[bucket], topVoteHist[bucket])
@@ -241,10 +241,10 @@ func TestBenchmarkBengaliB0(t *testing.T) {
 					logScore("best-attestation="+bucket, *c)
 				}
 			}
-			if pin, ok := bnPinnedB0[split]; ok {
+			if pin, ok := bnPinnedRules[split]; ok {
 				got := fmt.Sprintf("%x", digest.Sum(nil))
 				if defaultScore.strict != pin.strict || defaultScore.any != pin.any || got != pin.digest {
-					t.Errorf("%s B0 output changed: strict=%d match-any=%d digest=%s; pinned strict=%d match-any=%d digest=%s (update bnPinnedB0 deliberately and report the delta)", split, defaultScore.strict, defaultScore.any, got, pin.strict, pin.any, pin.digest)
+					t.Errorf("%s rules output changed: strict=%d match-any=%d digest=%s; pinned strict=%d match-any=%d digest=%s (update bnPinnedRules deliberately and report the delta)", split, defaultScore.strict, defaultScore.any, got, pin.strict, pin.any, pin.digest)
 				}
 			}
 			if split != "test" {

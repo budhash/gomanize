@@ -212,3 +212,15 @@ Frozen B0 outputs define a gate requiring 10% fewer word misses, 5% lower minCER
 and no strict top-1 loss on both sets. These are preregistered engineering targets,
 not an estimated rule ceiling. See the [evidence, exclusions, and enforcement
 contract](reviews/2026-10-04-bengali-evaluation-gate.md).
+
+### Bengali B1 and external sentence evaluation (2026-10-04)
+
+B1 passes the fixed full/curated dev gates without learned components. Dakshina
+match-any improves from 48.40% to 54.80% on dev and from 50.08% to 56.52% on
+test; test minCER improves from 0.10548 to 0.08772. The independently imported
+BanglaTLit official test yields macro sentence CER 0.33149 versus B0's 0.34312,
+with only 8/2,500 exact sentence matches. It is evaluation-only, imported after
+rule tuning stopped. Its upstream `train` pool includes all official dev/test
+pairs and is not imported as training data. The MIT license is included with
+the fixture. [Results and caveats](reviews/2026-10-04-bengali-b1-results.md);
+[viable source/architecture references](reference/bengali-repositories.md).

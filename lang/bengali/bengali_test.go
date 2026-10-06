@@ -9,7 +9,7 @@ import (
 )
 
 func TestB0CompositionalOutputs(t *testing.T) {
-	e := core.NewEngine(Bengali{}, colloquial.Colloquial{})
+	e := core.NewEngine(b0Language{}, colloquial.Colloquial{})
 	// These assert B0's mechanical baseline, not attested B1 pronunciation.
 	for input, want := range map[string]string{
 		"আমি": "ami", "বাংলা": "bangla", "মন": "mon", "কর্ম": "korm", "মধ্য": "modhj",
@@ -24,7 +24,7 @@ func TestB0CompositionalOutputs(t *testing.T) {
 }
 
 func TestCanonicalEquivalence(t *testing.T) {
-	e := core.NewEngine(Bengali{}, colloquial.Colloquial{})
+	e := core.NewEngine(b0Language{}, colloquial.Colloquial{})
 	for _, forms := range [][2]string{{"কো", "কো"}, {"কৌ", "কৌ"}, {"বড়", "বড়"}, {"গাঢ়", "গাঢ়"}, {"হয়", "হয়"}, {"ক্ষ", "ক্\u200dষ"}, {"জ্ঞ", "জ্\u200cঞ"}} {
 		if a, b := e.Transliterate(forms[0]), e.Transliterate(forms[1]); a != b {
 			t.Errorf("%q/%q: %q != %q", forms[0], forms[1], a, b)
@@ -34,6 +34,40 @@ func TestCanonicalEquivalence(t *testing.T) {
 		w := brahmic.NewParser(Bengali{}.ScriptConfig()).Parse(input, Symbols)
 		if len(w.Units) != 2 || !brahmic.IsMatraUnit(w.Units[1]) {
 			t.Errorf("%q: split matra not a single dependent vowel", input)
+		}
+	}
+}
+
+// The production catalog must preserve canonical equivalence too: phala and
+// gemination rules once treated decomposed nukta letters (base + U+09BC) as
+// clusters, so রয়্যালটি rendered royjaloti decomposed but royyaloti precomposed.
+func TestProductionCanonicalEquivalence(t *testing.T) {
+	e := core.NewEngine(Bengali{}, colloquial.Colloquial{})
+	for _, tt := range []struct{ decomposed, precomposed, want string }{
+		{"র\u09af\u09bc্যালটি", "র\u09df্যালটি", "royyaloti"},
+		{"সফটও\u09af\u09bc্যার", "সফটও\u09df্যার", "shofotooyyar"},
+		{"আ\u09a1\u09bc্য", "আ\u09dc্য", "arro"},
+		{"ক\u09a1\u09bc্ব", "ক\u09dc্ব", "korro"},
+		{"বড়", "বড়", ""},
+		{"হ\u09af\u09bcা", "হ\u09dfা", ""},
+	} {
+		a, b := e.Transliterate(tt.decomposed), e.Transliterate(tt.precomposed)
+		if a != b || (tt.want != "" && a != tt.want) {
+			t.Errorf("%q/%q: %q / %q, want %q", tt.decomposed, tt.precomposed, a, b, tt.want)
+		}
+	}
+}
+
+// An explicit word-final hasant spells "no vowel"; B1 keep rules must not
+// add one back. Without the hasant the keep rules still apply.
+func TestExplicitFinalHasant(t *testing.T) {
+	e := core.NewEngine(Bengali{}, colloquial.Colloquial{})
+	for input, want := range map[string]string{
+		"আল্লাহ্": "allah", "শাহ্": "shah", "দুঃখ্": "dukkh", "কর্ম্": "korm", "অন্ত্": "ont",
+		"আল্লাহ": "allaho", "দুঃখ": "dukkho", "কর্ম": "kormo",
+	} {
+		if got := e.Transliterate(input); got != want {
+			t.Errorf("%s: got %q, want %q", input, got, want)
 		}
 	}
 }
@@ -59,7 +93,7 @@ func TestKhandaTaStructuralVowellessness(t *testing.T) {
 }
 
 func TestB0OptionsAndCatalog(t *testing.T) {
-	e := core.NewEngine(Bengali{}, colloquial.Colloquial{})
+	e := core.NewEngine(b0Language{}, colloquial.Colloquial{})
 	if got := e.TransliterateWithOptions("অমন", core.Options{InherentVowelA: true}); got != "aman" {
 		t.Fatal(got)
 	}
@@ -68,7 +102,19 @@ func TestB0OptionsAndCatalog(t *testing.T) {
 			t.Fatalf("Hindi-only options changed Bengali: %q", got)
 		}
 	}
-	if len(RuleCatalog().AllRules()) != 3 {
+	if len(b0Catalog().AllRules()) != 3 {
 		t.Fatal("unexpected rules in the B0 baseline")
+	}
+}
+
+// Retain the historical mechanical tests independently of the production catalog.
+type b0Language struct{ Bengali }
+
+func (b0Language) Rules() core.RuleCatalog { return b0Catalog() }
+func b0Catalog() core.RuleCatalog {
+	all := RuleCatalog().AllRules()
+	return core.RuleCatalog{
+		Schwa: core.AppendIfFound(core.AppendIfFound(nil, all, "schwa.delete.word-final"), all, "schwa.keep.default"),
+		Vowel: core.AppendIfFound(nil, all, "vowel.bengali.bare-a-style"),
 	}
 }

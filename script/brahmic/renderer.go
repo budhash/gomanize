@@ -174,7 +174,7 @@ func (r *Renderer) RenderDebug(word *core.Word) string {
 // arbitrary strings are not eligible for automatic doubling.
 func geminatePair(onset string) (string, string, bool) {
 	switch onset {
-	case "k", "g", "ch", "j", "t", "d", "n", "p", "b", "m", "r", "l", "s", "sh", "h", "y":
+	case "f", "k", "g", "ch", "j", "t", "d", "n", "p", "b", "m", "r", "l", "s", "sh", "h", "y":
 		return onset, onset, true
 	case "kh", "gh", "jh", "th", "dh", "ph", "bh":
 		return onset[:1], onset, true
@@ -185,9 +185,19 @@ func geminatePair(onset string) (string, string, bool) {
 	}
 }
 
+// IsSingleLetter reports whether u is one letter: a single rune, or a
+// decomposed base + nukta pair, canonically equal to its precomposed form.
+func IsSingleLetter(u *core.Unit) bool {
+	if u == nil {
+		return false
+	}
+	bd := GetBrahmicData(u)
+	return len(u.Runes) == 1 || (len(u.Runes) == 2 && bd != nil && bd.Nukta)
+}
+
 func simpleGeminationUnit(u *core.Unit) bool {
 	bd := GetBrahmicData(u)
-	return u != nil && u.Type == core.UnitConsonant && len(u.Runes) == 1 && bd != nil && !bd.NoInherentVowel
+	return u != nil && u.Type == core.UnitConsonant && IsSingleLetter(u) && bd != nil && !bd.NoInherentVowel
 }
 
 func repeatEligible(u *core.Unit) bool {

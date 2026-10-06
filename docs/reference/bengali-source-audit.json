@@ -1,0 +1,91 @@
+{
+  "normalization": "Cf removal + NFC; sentence keys also trim outer whitespace",
+  "repos": {
+    "bntranslit": "a109eae4f8cc685616536d8711730d6a3fb6e67a",
+    "bengali-romanizer": "ad6ed11183fa75bc778fb380f5a44cf158dbdeb5",
+    "BanglaTLit": "f780fcdd5176ddfe6364ffe7948acb6a1c2ea58e",
+    "Romabangla": "1411d6df055aac3b08dd628014d69f016ecf29cd"
+  },
+  "google_lexicon": {
+    "sha256": "1bc2edda15da62bd4ef8576114e391c9a89ad8971f1eef3635e8fee0d7c1dd61",
+    "rows": 65037,
+    "normalized_words": 64958,
+    "multi_pronunciation_words": 70,
+    "dakshina_overlap": {
+      "train": 19384,
+      "dev": 1803,
+      "test": 1827
+    },
+    "after_dev_test_exclusion": 61328
+  },
+  "BanglaTLit": {
+    "train": {
+      "source_path": "data/BanglaTLit_train.csv",
+      "sha256": "202fa1848d35956477204b42608eafafc50d027ea4e46df42424f1418c588cce",
+      "columns": [
+        "id",
+        "text_transliterated",
+        "text_bengali"
+      ],
+      "rows": 245727,
+      "with_bengali": 42835,
+      "empty_bengali": 202863,
+      "empty_roman": 1,
+      "unique_ids": 245727,
+      "unique_native": 42570,
+      "unique_roman": 42835,
+      "unique_pairs": 42835
+    },
+    "dev": {
+      "source_path": "data/BanglaTLiT_val.csv",
+      "sha256": "8b7f9711b7516a09008475f2f4b2670c38345710accab32d100458b224c9fb8c",
+      "columns": [
+        "id",
+        "text_transliterated",
+        "text_bengali"
+      ],
+      "rows": 1500,
+      "with_bengali": 1500,
+      "empty_bengali": 0,
+      "empty_roman": 0,
+      "unique_ids": 1500,
+      "unique_native": 1500,
+      "unique_roman": 1500,
+      "unique_pairs": 1500
+    },
+    "test": {
+      "source_path": "data/BanglaTLiT_test.csv",
+      "sha256": "2e6d3d3e3a1eab578011971be14807fdb20ae13384bc749c1d54eb209234c872",
+      "columns": [
+        "id",
+        "text_transliterated",
+        "text_bengali"
+      ],
+      "rows": 2500,
+      "with_bengali": 2500,
+      "empty_bengali": 0,
+      "empty_roman": 0,
+      "unique_ids": 2500,
+      "unique_native": 2498,
+      "unique_roman": 2500,
+      "unique_pairs": 2500
+    }
+  },
+  "BanglaTLit_overlap": {
+    "train-dev": {
+      "native": 1500,
+      "roman": 1500,
+      "pair": 1500
+    },
+    "train-test": {
+      "native": 2498,
+      "roman": 2500,
+      "pair": 2500
+    },
+    "dev-test": {
+      "native": 4,
+      "roman": 0,
+      "pair": 0
+    }
+  }
+}
