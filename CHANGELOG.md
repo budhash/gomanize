@@ -21,6 +21,9 @@ tagged release also has auto-generated notes on the
   omitted language remains Hindi. Bengali learned components stay opt-in.
   Unsupported names fail with the supported list; Bengali `--rerank` without
   `--schwa-model` prints a warning instead of being silently ignored.
+- Bengali training partitions (schema 2) exclude variant spellings of held-out
+  words (khanda-ta ৎ vs ত্, malformed অা vs আ); vowel model, lexicon (8,979
+  entries) and native selector retrained. Reported results are unchanged.
 - npm wrappers reject non-object options and non-boolean flags (a BigInt flag
   previously crashed the WASM runtime). The npm license field and release
   archives now carry the embedded-data licenses (`NOTICE.md`).

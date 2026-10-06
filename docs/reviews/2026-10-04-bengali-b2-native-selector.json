@@ -3,23 +3,24 @@
   "provenance": {
     "train_fixture_sha256": "44b554fa749c717386bd9f68daaf837788d6c5ff10197d7f23d2bcefc28cf378",
     "dev_fixture_sha256": "8e83784102a527a88af0ad6dfba0fa41c11f57633a34fe2a9abe12acb54aa51a",
-    "split_manifest_sha256": "936d0549138932900bdd51621acb4ef9b037f7ee3263205ec342d00045177a89",
-    "vowel_model_sha256": "016a05588b21f121c7799a91e668120a3a1ad5cdd1cf35d3bfb38c2dae2fdc87",
+    "split_manifest_sha256": "9c2d0c37c8815dd9e79cca5435c73bf24d7a4bfa2c94d0d1171232cd12143ad5",
+    "vowel_model_sha256": "bcd0f8cc710887ac066eb9fcf6710cb7a07dc6a243a48c34ad6c21cec9f606b9",
     "scripts_sha256": {
       "tools/bengali/train_native_selector.py": "68d83e6a41f25427c13a724e5db79bfe88371300382c5cab6a1d54c44412d37c",
       "tools/bengali/train_reranker.py": "b8c6e25a4f0787b65575825cca9236d3789639324c5c52da82ae674fa0be40f8",
       "tools/bengali/evaluate_external.py": "806fb46b3b691d3151d375c2a104a564c6abef905a787b7854933489ac173642",
-      "tools/bengali_training_data.py": "819594ba0d54cc1ec6d868088f1a3c061e6ea7a1f1b25a96b6c52c01a900b02a"
+      "tools/bengali_training_data.py": "d8ab38d72175ce04530370162333f5e87c91c1fb5fa61c7fbd1bbc6f2ace5fc3"
     },
     "candidate_sources_sha256": {
       "core/catalog.go": "aec4d090c152da993d70f4e9280a4836e969e7f3b656e156b5d7cf90235b18cf",
       "core/categories.go": "610d78c4d8d75bc7fafdf5fc4b0fbcb565ef7f9fb693fe449090d0b5528ff84e",
-      "core/engine.go": "e7c3b03544c58f385fb09326774c8ef4f001e58c5f3390eea65488023c24cc58",
+      "core/engine.go": "a99041181231726187f6b1e534924e1938ba17f536d8810df5c1903b3f6ae535",
       "core/interfaces.go": "b9515713db58bc5c9c58be94b321677b7b5eba3ea82020eeaded68cdf2eae7d8",
       "core/rule.go": "a88b0429e029ceeb54e3f402e1b4dc079cc5305209c1524d5a0afb1b7e5980aa",
-      "core/types.go": "927025e03ad063b31730d572d9f19cd1ce5f3046ce2e018cf88bf431f9ba74dd",
+      "core/types.go": "dbd5cf42900e46739949f7fad126b67beef76641b64e2dd203cc9fc7ad3f098a",
       "gomanize.go": "00c1da5d0d35ad4e7f4c67ca5da57ea02dc82b914c8707a4f4a7ee00836ee8af",
       "lang/bengali/lexicon.go": "8275a824fff98cd2b5d68315fbe12fda24431e79a9ff8cd6ecb581ec1ce9dd68",
+      "lang/bengali/reranker.go": "38e8002da02df991ebcdf04f450dbd6eec833d092b653845ecf05f46516118fa",
       "lang/bengali/rules.go": "57c91ddd79aa87e4a7288510b99e5a404dc9e2fae3c2b02522afa8801b25756f",
       "lang/bengali/symbols.go": "6629829d23d0b136d8dfce8d4c770101882bdd1044bb04cb63ccba362d82bff8",
       "lang/bengali/vowel_model.go": "112b33ec83b05faecb389f93a0156423a29c713345e90855091e12b5f58ea86e",
@@ -37,9 +38,9 @@
   },
   "artifact_sha256": "7064ba9fb36ea78b16b822fc250ec4e74a993eba5d3505166c988bd290d0ff28",
   "training": {
-    "isolated_dakshina_types": 23117,
-    "excluded_google_training_types": 17501,
-    "eligible_types": 5616,
+    "isolated_dakshina_types": 23107,
+    "excluded_google_training_types": 17493,
+    "eligible_types": 5614,
     "differing_candidates": 701,
     "prefer_b1": 129
   },

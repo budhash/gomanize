@@ -1,6 +1,6 @@
 {
-  "artifact_sha256": "37215f8f26586d831e32d6c2cb84cca80526a8d1ed6edfc23180f6d2b8f7d5d2",
-  "dev_report_sha256": "4e84e55192490b47385735607fbe62cad93e73980327bce21ea5dab9aa30868d",
+  "artifact_sha256": "dfe16670fdd1bad356c635d7a0491b7fd8fd7caca5d82dc91afeec97aa843bc5",
+  "dev_report_sha256": "34998c254e1fbc8ceaff49d0d642bbbdcff559b58a90ad7ad2ce3b8b0c98e92a",
   "evaluator_sha256": "ab54e721536caa00474ef29b25973e0ed7d745a63d9979cd236b4dbb727babd6",
   "frozen_threshold": 0.6,
   "test": {

@@ -9,8 +9,8 @@ training rows, and checks final spelling-lexicon keys. Future trainers must use
 
 | Source | Train types | Dev types | Test types |
 |---|---:|---:|---:|
-| Google pronunciation lexicon | 55,121 | 3,184 | 3,023 |
-| Dakshina spelling references | 23,117 | 2,500 | 2,500 |
+| Google pronunciation lexicon | 55,108 | 3,184 | 3,023 |
+| Dakshina spelling references | 23,107 | 2,500 | 2,500 |
 
 Comparison keys remove Unicode format characters (`Cf`) then normalize to NFC.
 This handles canonical nukta aliases and split matras, without merging words by
@@ -28,27 +28,28 @@ a normalized word follows the same assignment, independent of source row order.
 
 The union of **both sources' dev/test types** is protected from both training
 sources. This also removes 1,883 of Dakshina's 25,000 training types, preventing
-its future spelling lexicon from covering Google model evaluation words.
+its future spelling lexicon from covering Google model evaluation words. Since
+schema 2 (2026-10-06), training types that are a *variant spelling* of any
+held-out type are excluded too (see below): 13 Google and 10 Dakshina training
+types. Held-out sets are never moved.
 Development references may be used for model selection, never training. Test
 references remain final evaluation only. Frozen inventories are checksum-pinned
 in the loader; editing a manifest and recomputing its checksum cannot silently
 remove protected Google words. Training Google rows additionally requires exact
 reconstruction from the pinned raw source. CI checks inventories offline.
 
-### Known limitations (2026-10-05 review)
+### Known limitations (2026-10-05 review; updated 2026-10-06)
 
-- **Variant-spelling collisions.** The comparison key does not merge khanda-ta
-  (U+09CE) with ta + hasant, nor a malformed অ + া with আ. Each pair spells the
-  same word; the engine renders the khanda-ta pairs identically, while the
-  malformed অ + া currently renders literally (অাবার → `oabar`, আবার → `abar`). As a result, **15 held-out types** (in 23
-  training/held-out pairs) have a variant spelling in a training pool, e.g.
-  উত্সাহ (Google and Dakshina train) vs উৎসাহ (Dakshina dev), and অকস্মাত্
-  (Google train) vs অকস্মাৎ (Google test). The partitions are frozen and every
-  downstream artifact was built on them, so the pairs are pinned and disclosed in
-  `KNOWN_VARIANT_COLLISIONS` rather than silently re-split: `verify` fails on any
-  new collision, and on removing one without updating the list. A later rebuild
-  will drop the colliding training types (exclusion via `collision_key`) and
-  retrain dependent artifacts once, reporting old and new numbers.
+- **Variant-spelling collisions (resolved in schema 2).** The canonical key does
+  not merge khanda-ta (U+09CE) with ta + hasant, nor a malformed অ + া with আ,
+  although each pair spells one word (the engine renders the khanda-ta pairs
+  identically; malformed অ + া renders literally, অাবার → `oabar`). Schema 1 left
+  15 held-out types (23 training/held-out pairs) with a variant in training, e.g.
+  উত্সাহ (train) vs উৎসাহ (Dakshina dev); they were pinned and disclosed during the
+  2026-10-05 review. Schema 2 excludes every training type whose `collision_key`
+  matches a held-out type, and `verify` requires zero such collisions. All
+  dependent artifacts were retrained once; see the
+  [retrain record](../../../docs/reviews/2026-10-06-bengali-retrain.md).
 - **Latin-script Google entries.** Google contains lowercase Latin loan spellings
   with no Bengali-block rune (e.g. `abdomen`): 4,416 train / 264 dev / 226 test
   types, included in the counts above. They are pinned in `NON_BENGALI_TYPES`;

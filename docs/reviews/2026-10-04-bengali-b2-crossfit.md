@@ -153,3 +153,5 @@ Independent stack review. The tables above record the experiment as submitted.
   by `collision_key` gives an identical selector and results. Selector features
   are not invariant to ৎ vs ত্, with no observed choice divergence. None of the 21
   changed dev or test outputs is a disclosed collision word.
+
+- **Retrained 2026-10-06** after excluding variant spellings of held-out words from training: new selector SHA-256 `dfe16670…3bc5`; dev selection (0.6) and held-out results unchanged. See the [retrain record](2026-10-06-bengali-retrain.md).

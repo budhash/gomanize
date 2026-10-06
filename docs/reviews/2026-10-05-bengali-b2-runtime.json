@@ -344,13 +344,13 @@
   "aksharantar_archive_sha256": "4ab6edcc6ab556040d8f43ee75eec73cc25af0cf72d09e4650dab26b196d5fe7",
   "aksharantar_test_sha256": "b00ff14b8a9dda6318eb5298a8314930c590607ed17c8a8f90c4a6e66e1bd20a",
   "banglatlit_fixture_sha256": "386721b4221e2d93b16ab73f3761c7c4e4cd295adf1160fe9c95c06cb34c5386",
-  "lexicon_sha256": "090d99b72464231324fe61ab44107b4c525eb5795273021641492b9223e07e1f",
+  "lexicon_sha256": "65eb77a22dbb878b1466628bcac862a9d2b1d71958ce202d4ecfa7a24d85e77b",
   "limitations": [
     "Aksharantar overlaps Dakshina test; not independent",
     "sentence references cannot establish token-level accuracy",
     "lyrics gold remains T-0054"
   ],
-  "selector_sha256": "37215f8f26586d831e32d6c2cb84cca80526a8d1ed6edfc23180f6d2b8f7d5d2",
+  "selector_sha256": "dfe16670fdd1bad356c635d7a0491b7fd8fd7caca5d82dc91afeec97aa843bc5",
   "sources_sha256": {
     "core/catalog.go": "aec4d090c152da993d70f4e9280a4836e969e7f3b656e156b5d7cf90235b18cf",
     "core/categories.go": "610d78c4d8d75bc7fafdf5fc4b0fbcb565ef7f9fb693fe449090d0b5528ff84e",
@@ -378,5 +378,5 @@
   },
   "threshold": 0.6,
   "unseen_definition": "absent from union of frozen Google and Dakshina training vocabularies",
-  "vowel_model_sha256": "016a05588b21f121c7799a91e668120a3a1ad5cdd1cf35d3bfb38c2dae2fdc87"
+  "vowel_model_sha256": "bcd0f8cc710887ac066eb9fcf6710cb7a07dc6a243a48c34ad6c21cec9f606b9"
 }
