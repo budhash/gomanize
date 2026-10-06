@@ -110,3 +110,29 @@ benchmarks, B1 gate, source isolation, vowel-model and lexicon checks. Hindi
 curated pure strict remains 1,147/1,330 (86.2%) and match-any 1,236/1,330
 (92.9%). The prior vowel-only external report also reproduces byte-for-byte.
 Repository commit hooks pass.
+
+## Review notes (2026-10-05)
+
+Independent stack review. Tables above record the lexicon as submitted.
+
+- **Numbers after the B1 review fixes.** Rule-composed outputs moved by one word
+  (canonical nukta letters; explicit final hasant); the lexicon and model artifacts
+  are unchanged. The external JSON was regenerated: Aksharantar full match-any B1
+  1,968, lexicon 2,072, model 2,201, model + lexicon 2,297 (each +1); unseen B1 and
+  lexicon 1,836, model and model + lexicon 2,053 (+1); BanglaTLit CERs move in the
+  sixth decimal. Train (in-sample): model 15,262, model + lexicon 18,114 match-any
+  (each +1). Held-out results are unchanged.
+- **Cross-report consistency is asserted.** The lexicon report's B1 and model
+  columns must equal the vowel-model report's, so a stale rerun of either fails.
+- **Train lexicon outputs are pinned** (`bnPinnedLexiconTrain`: strict, match-any,
+  hits, output digest); dropping eleven entries now fails (hits 8,980 → 8,969).
+- **Variant-spelling collision.** `আবার` collides with held-out অাবার under the
+  stricter collision key; runtime lookup misses it, so held-out outputs are
+  unaffected. Pinned and disclosed in [LEXICON.md](../../lang/bengali/LEXICON.md);
+  `assert_lexicon_isolation` now rejects any other such collision.
+- **Licensing.** The lexicon is embedded in every build (including Hindi-only CLI
+  and WASM). The README License section now states the embedded lexicons are
+  CC BY-SA 4.0; release archives and the npm license field are handled with the
+  frontend NOTICE work.
+- Tracked: the Bengali lexicon style bypass is an allowlist of today's four style
+  options; a malformed embed becomes an empty map (caught by the size test).

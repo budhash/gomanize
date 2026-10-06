@@ -157,3 +157,24 @@ all 3,432,832 frozen Hindi outputs, and accuracy benchmarks. Hindi pure strict
 remains 1,147/1,330 (86.2%), match-any 1,236/1,330 (92.9%), and held-out
 126/129 (97.7%). `make test-bengali` also passed. T-0055 is complete;
 production B1 (T-0052) remains open and does not yet satisfy this contract.
+
+## Review notes (2026-10-05)
+
+Independent stack review; the preregistered thresholds and subset above are
+unchanged.
+
+- **Curation rationale, qualified.** Three votes also has the highest B0 dev
+  match-any rate of the four candidate thresholds (54.9%, versus 48.4% / 51.1% /
+  51.5% for ≥1 / ≥2 / ≥4). This does not ease the gate, whose bar is relative to
+  each subset's own misses, but "not maximizing B0 scores" should be read with it.
+- **Independent অ is not mixed on train.** Train favors `a` (1,257 vs 888, 59%);
+  only dev is close (119 vs 110). Rendering it `o` is a product-style convention
+  that the evidence does not support on train; it remains an open follow-up.
+- **Gate scope.** The gate compares net match-any, net strict, and minCER sum on
+  dev default style. Paired losses are logged but not bounded, and train and the
+  alternate style are not gated. Later stages should report strict losses and
+  consider a loss cap or train non-regression.
+- **Evidence is now pinned.** The evidence harness uses the fixed B0 rule subset
+  (`schwa.delete.word-final`, `schwa.keep.default`), and `TestBengaliVowelEvidence`
+  pins a digest of every logged line per split, so the tables above stay
+  reproducible after B1 rules land. Any non-empty `BENGALI_REQUIRE_B1` enforces.

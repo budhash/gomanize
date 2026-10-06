@@ -14,7 +14,7 @@ func TestB1ProductionOutputs(t *testing.T) {
 	for input, want := range map[string]string{
 		"অন্ত": "onto", "শব্দ": "shobdo", "কর্ম": "kormo", "গ্রহ": "groho", "মন": "mon",
 		"মধ্য": "moddho", "মধ্যা": "moddha", "পদ্য": "poddo", "গদ্য": "goddo", "জন্য": "jonno",
-		"ব্যবহার": "byabohar", "ব্যথা": "byatha", "স্বামী": "shami", "তত্ব": "totto",
+		"ব্যবহার": "byabohar", "ব্যথা": "byatha", "স্বামী": "shami", "ত্যাগ": "tyag", "জ্বর": "jor", "উত্থান": "utthan", "স্বাধীন": "shadhin", "তত্ব": "totto",
 		"পদ্ম": "poddo", "স্মরণ": "shoron", "জন্ম": "jonmo", "গর্ব": "gorbo", "কম্বল": "kombol",
 		"ক্ষতি": "khoti", "ক্ষমা": "khoma", "কক্ষ": "kokkho", "কক্ষে": "kokkhe",
 		"জ্ঞান": "gyan", "জ্ঞাত": "gyat", "বিজ্ঞ": "biggo", "অজ্ঞান": "oggan",

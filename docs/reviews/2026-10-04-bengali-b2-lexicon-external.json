@@ -8,24 +8,24 @@
     "full_types": {
       "items": 7134,
       "B1": {
-        "match_any": 1967,
-        "accuracy": 0.27572189514998596,
-        "macro_minCER": 0.2269146503202099
+        "match_any": 1968,
+        "accuracy": 0.27586206896551724,
+        "macro_minCER": 0.22668549437196236
       },
       "model": {
-        "match_any": 2200,
-        "accuracy": 0.3083823941687693,
-        "macro_minCER": 0.21640004921222142
+        "match_any": 2201,
+        "accuracy": 0.30852256798430056,
+        "macro_minCER": 0.21617089326397382
       },
       "lexicon": {
-        "match_any": 2071,
-        "accuracy": 0.2902999719652369,
-        "macro_minCER": 0.22127213339720528
+        "match_any": 2072,
+        "accuracy": 0.29044014578076816,
+        "macro_minCER": 0.22104297744895773
       },
       "model_lexicon": {
-        "match_any": 2296,
-        "accuracy": 0.3218390804597701,
-        "macro_minCER": 0.21117048879973413
+        "match_any": 2297,
+        "accuracy": 0.3219792542753014,
+        "macro_minCER": 0.2109413328514865
       },
       "lexicon_added_to_model": {
         "wins": 98,
@@ -36,24 +36,24 @@
     "unseen_types": {
       "items": 6036,
       "B1": {
-        "match_any": 1835,
-        "accuracy": 0.3040092776673294,
-        "macro_minCER": 0.21595809815532904
+        "match_any": 1836,
+        "accuracy": 0.30417495029821073,
+        "macro_minCER": 0.21568725678110803
       },
       "model": {
-        "match_any": 2052,
-        "accuracy": 0.3399602385685885,
-        "macro_minCER": 0.20464678486763915
+        "match_any": 2053,
+        "accuracy": 0.34012591119946983,
+        "macro_minCER": 0.20437594349341806
       },
       "lexicon": {
-        "match_any": 1835,
-        "accuracy": 0.3040092776673294,
-        "macro_minCER": 0.21595809815532904
+        "match_any": 1836,
+        "accuracy": 0.30417495029821073,
+        "macro_minCER": 0.21568725678110803
       },
       "model_lexicon": {
-        "match_any": 2052,
-        "accuracy": 0.3399602385685885,
-        "macro_minCER": 0.20464678486763915
+        "match_any": 2053,
+        "accuracy": 0.34012591119946983,
+        "macro_minCER": 0.20437594349341806
       },
       "lexicon_added_to_model": {
         "wins": 0,
@@ -69,22 +69,22 @@
       "B1": {
         "match_any": 8,
         "accuracy": 0.0032,
-        "macro_minCER": 0.33149375595752184
+        "macro_minCER": 0.3314892105029764
       },
       "model": {
         "match_any": 12,
         "accuracy": 0.0048,
-        "macro_minCER": 0.31286250291213874
+        "macro_minCER": 0.31285795745759326
       },
       "lexicon": {
         "match_any": 13,
         "accuracy": 0.0052,
-        "macro_minCER": 0.2940174167947232
+        "macro_minCER": 0.29401287134017773
       },
       "model_lexicon": {
         "match_any": 17,
         "accuracy": 0.0068,
-        "macro_minCER": 0.28142890167501466
+        "macro_minCER": 0.2814243562204692
       },
       "lexicon_added_to_model": {
         "wins": 5,
