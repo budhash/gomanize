@@ -2,7 +2,9 @@
 
 **Date:** 2026-09-30
 **Status:** Design v4; Part A config/quality refactor implemented on the feature
-branch, 2026-10-04. Bengali and A.2' remain unimplemented.
+branch, 2026-10-04. Experimental Bengali B0 is implemented in its dependent
+branch; B1/B2/B3 and A.2' remain unimplemented. B0 measurements and remaining
+T-0055 decisions are in [the B0 report](2026-10-04-bengali-b0-baseline.md).
 Sections 1.5 and 1.6 record the earlier Fable/Codex reviews; §1.7 records the
 latest Codex review and accepted resolutions. Part A is independent of Bengali
 implementation; Bengali behavior must pass the B1 prototype gate. Tracked as F-0011.
@@ -372,6 +374,11 @@ learned-component data files.
 
 Full inventory is in the linguistics research (consonant, vowel/matra, conjunct,
 modifier tables). Notable mappings that differ from Hindi:
+
+*As built in B0 (see [B0 baseline](2026-10-04-bengali-b0-baseline.md)):* conjuncts
+stay compositional (no `ক্ষ`/`জ্ঞ`/`হ্ম`/`হ্ন` MultiChar) and স always maps to `sh`;
+atomic/positional conjunct and phala behavior is B1 rule work. Only the split
+matras are MultiChar.
 
 - **Consonants:** ঙ→`ng`, ঞ→`n`, ফ→`ph` (not Hindi's `f`), ব→`b` (covers b and
   Sanskrit-v), য→`j`, য়→`y`, ড়→`r`, ঢ়→`rh`, স→`sh` by default / `s` in

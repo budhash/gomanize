@@ -80,6 +80,10 @@ type BrahmicData struct {
 	// Quality of a retained inherent vowel; zero preserves existing behavior.
 	SchwaQuality SchwaQuality
 
+	// NoInherentVowel marks an intrinsically dead consonant (e.g. khanda ta).
+	// This structural property takes precedence over rules and vowel quality.
+	NoInherentVowel bool
+
 	// Run membership (nil for vowels)
 	Run      *ConsonantRun
 	RunIndex int // Position within the run
@@ -128,14 +132,27 @@ type Config struct {
 	// Profile supplies script-specific rendering and shared-rule parameters.
 	// Nil preserves the historical Devanagari defaults.
 	Profile *ScriptProfile
+	// VowellessConsonants lists intrinsically dead consonants. Nil preserves
+	// the existing parser behavior. This does not change terminal virama handling.
+	VowellessConsonants []rune
 }
 
 // Helper functions for working with BrahmicData through core.Unit
 
-// IsAfterHalant returns true if the unit followed a halant.
+// IsAfterHalant reports a halant boundary, or an equivalent consonant boundary
+// after a configured intrinsically dead consonant.
 func IsAfterHalant(u *core.Unit) bool {
 	bd := GetBrahmicData(u)
-	return bd != nil && bd.AfterHalant
+	if bd != nil && bd.AfterHalant {
+		return true
+	}
+	// A consonant after an intrinsically dead consonant has the same cluster
+	// boundary as after a halant for shared run lookaheads.
+	if u != nil && IsConsonantOrConjunct(u) {
+		prev := GetBrahmicData(u.Prev)
+		return prev != nil && prev.NoInherentVowel
+	}
+	return false
 }
 
 // GetSchwa returns the schwa state for a unit.

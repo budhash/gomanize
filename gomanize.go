@@ -1,5 +1,5 @@
-// Package gomanize transliterates Devanagari (Hindi) text into readable Latin
-// script, using a rule-based engine with optional embedded learned components
+// Package gomanize transliterates Hindi and experimental Bengali text into
+// readable Latin script, using a rule-based engine with optional Hindi learned components
 // (a schwa classifier, an attested-spelling lexicon, and a character-LM
 // re-ranker). It targets colloquial, diacritic-free romanization of the kind
 // used for song lyrics.
@@ -22,6 +22,7 @@ import (
 	"unicode"
 
 	"github.com/budhash/gomanize/core"
+	"github.com/budhash/gomanize/lang/bengali"
 	hindiLang "github.com/budhash/gomanize/lang/hindi"
 	"github.com/budhash/gomanize/scheme/colloquial"
 )
@@ -89,6 +90,9 @@ func NewWithOptions(language string, opts Options, engineOpts ...EngineOption) (
 	// Create engine with options
 	var romanizer Romanizer
 	switch l {
+	case "bengali":
+		engine := core.NewEngine(bengali.Bengali{}, colloquial.Colloquial{}, engineOpts...)
+		romanizer = &coreEngineAdapter{name: "bengali", engine: engine}
 	case "hindi":
 		engine := core.NewEngine(hindiLang.Hindi{}, colloquial.Colloquial{}, engineOpts...)
 		romanizer = &coreEngineAdapter{name: "hindi", engine: engine}

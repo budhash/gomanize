@@ -27,6 +27,9 @@ func (r *Renderer) Render(word *core.Word) string {
 
 		// Schwa handling for consonants/conjuncts
 		if unit.Type == core.UnitConsonant || unit.Type == core.UnitConjunct {
+			if bd := GetBrahmicData(unit); bd != nil && bd.NoInherentVowel {
+				continue
+			}
 			// A following vowel unit is either a matra (dependent sign) or an
 			// independent vowel (both are core.UnitVowel).
 			if unit.Next != nil && unit.Next.Type == core.UnitVowel {

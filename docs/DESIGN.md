@@ -15,7 +15,7 @@ Devanagari, `script` nothing about Hindi, `lang` nothing about output style:
 ```
 core/     Engine mechanics: pipeline, rule engine, types, optional interfaces
 script/   Script family (brahmic): parsing, rendering, schwa state, shared rules
-lang/     Language (hindi): symbol map, language rules, learned artifacts
+lang/     Languages (hindi, experimental bengali): symbol map, language rules, learned artifacts
 scheme/   Output style (colloquial): selects rules from the language catalog
 ```
 
@@ -204,7 +204,7 @@ Design constraints that shaped them:
   (v4, tracked as F-0011; B1 prototype and B2 training-isolation gates are
   T-0056/T-0057). It splits into a behavior-preserving generalization of the
   Brahmic layer (implemented on the feature branch with script profiles and
-  separate vowel quality) and the future `lang/bengali` package. Bengali's
+  separate vowel quality) and the experimental `lang/bengali` B0 package. Bengali's
   inherent vowel (ɔ/o, not `a`) and weaker word-final deletion
   make it the stress test of the shared-layer abstraction.
 - **Marathi / Nepali** — implement `core.Language` (symbol map + config + rule

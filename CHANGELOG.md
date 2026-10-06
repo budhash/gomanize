@@ -21,6 +21,9 @@ tagged release also has auto-generated notes on the
 
 ### Added
 
+- Experimental Bengali B0 through the Go API: symbols, Unicode aliases,
+  compositional conjuncts, khanda-ta support, and split-aware Dakshina baseline.
+  Bengali pronunciation rules and CLI/npm/web selection are not yet complete.
 - `Options.InherentVowelA` for profile-aware rendering; no Hindi output change.
   This API option is not yet a CLI flag or a complete academic scheme.
 
