@@ -72,3 +72,22 @@ backoff scoring, candidate ties and margins, train-only artifact reconstruction,
 and rejection of no-op or partial metric gains. The negative control removes
 the strict/CER requirements: the rejection tests must fail, including selection
 of the recorded margin 0.8 trial. No runtime accuracy increase is claimed.
+
+## Review notes (2026-10-05)
+
+Independent stack review. The table above records the experiment as submitted.
+
+- **Rerun after the B1 review fixes.** Rule-composed candidates moved by one dev
+  word (canonical nukta letters; explicit final hasant). The regenerated record
+  shifts every row by exactly +1: model baseline 895 strict / 1,545 match-any / CER
+  0.07839302; margin 0 843 / 1,475; margin 0.8 894 / 1,546 / 0.07840095 (still +1
+  match-any for −1 strict and worse CER). `changed_from_model` counts and the
+  n-gram table are unchanged. **The rejection holds**; `selected` stays null.
+- **The record is now asserted.** `tools/bengali_reranker_test.py` reruns the dev
+  grid against the current engine and requires the committed baseline and trials to
+  match (source hashes are provenance and not compared); the stale record failed it.
+- **Protocol timing.** The margin grid and guard landed in the same commit as the
+  results, so git cannot show the protocol came first; the guard is the same
+  relative dev guard the vowel model used, and no trial passed it.
+- The disclosed variant-spelling collisions include four dakshina-train/dev pairs;
+  B1 and the model agree on all four dev words, so the reranker never touched them.
