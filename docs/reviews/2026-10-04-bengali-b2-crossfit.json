@@ -1,0 +1,185 @@
+{
+  "alignment": {
+    "accepted_types": 19662,
+    "aligned_rows": 19727,
+    "ambiguous_rows": 0,
+    "class_0": 20737,
+    "class_1": 5464,
+    "class_2": 6387,
+    "conflicting_variant_types": 29,
+    "instances": 32588,
+    "no_slots_rows": 5936,
+    "rejected_types": 35430,
+    "source_rows": 55181,
+    "source_types": 55121,
+    "unmatched_rows": 74,
+    "unsupported_rows": 29444
+  },
+  "artifact_sha256": "37215f8f26586d831e32d6c2cb84cca80526a8d1ed6edfc23180f6d2b8f7d5d2",
+  "dev": {
+    "baseline": {
+      "CER": 0.0783930173094878,
+      "any": 1545,
+      "strict": 895,
+      "words": 2500
+    },
+    "candidates": {
+      "baseline_any": 1545,
+      "oracle_any": 1637,
+      "pairs": 1741,
+      "words": 2500,
+      "words_with_alternatives": 1017
+    },
+    "fixture_sha256": "8e83784102a527a88af0ad6dfba0fa41c11f57633a34fe2a9abe12acb54aa51a",
+    "trials": [
+      {
+        "CER": 0.07840251225898275,
+        "any": 1546,
+        "changed": 61,
+        "strict": 897,
+        "threshold": 0.5,
+        "words": 2500
+      },
+      {
+        "CER": 0.07807792351439401,
+        "any": 1553,
+        "changed": 21,
+        "strict": 898,
+        "threshold": 0.6,
+        "words": 2500
+      },
+      {
+        "CER": 0.07827792351439403,
+        "any": 1550,
+        "changed": 14,
+        "strict": 896,
+        "threshold": 0.7,
+        "words": 2500
+      },
+      {
+        "CER": 0.07818220922867973,
+        "any": 1549,
+        "changed": 4,
+        "strict": 897,
+        "threshold": 0.8,
+        "words": 2500
+      },
+      {
+        "CER": 0.0783930173094878,
+        "any": 1545,
+        "changed": 0,
+        "strict": 895,
+        "threshold": 0.9,
+        "words": 2500
+      },
+      {
+        "CER": 0.0783930173094878,
+        "any": 1545,
+        "changed": 0,
+        "strict": 895,
+        "threshold": 0.95,
+        "words": 2500
+      }
+    ]
+  },
+  "folds": [
+    {
+      "fit_keys_sha256": "15d31d882806b53d5f1172522245bd361ca5204e8d1b5cbfa6529a9104cae863",
+      "fit_slots": 25977,
+      "fit_types": 15684,
+      "fold": 0,
+      "prediction_keys_sha256": "d93907d9d55f3dfc8d4c174de92d45afe5322e9a8be6fc3ddd4d0f300edf3e60",
+      "prediction_types": 4576,
+      "tree_sha256": "2e8c925dfbc361fc53d93f74f692d2293d4ccac4a01f8f493980d51af56ad883"
+    },
+    {
+      "fit_keys_sha256": "81713aa7bf93ded001e7df53508a47cc26e5a08267b25928dfc9d822831fc291",
+      "fit_slots": 26099,
+      "fit_types": 15688,
+      "fold": 1,
+      "prediction_keys_sha256": "f435c6a83f70d9379c80df92e9e6759b772e486ee9fed047e2f38eb481eb47c2",
+      "prediction_types": 4682,
+      "tree_sha256": "e80a7cf6b58b7a1860afb5fb2e17115492edda76abf962028841f3fb594d9a57"
+    },
+    {
+      "fit_keys_sha256": "f7419f567ae682acede2a1e64ffa2a69a0f8a348acd768bc447c1df4f3ba11c6",
+      "fit_slots": 25964,
+      "fit_types": 15700,
+      "fold": 2,
+      "prediction_keys_sha256": "9b500f22127565ced6d923047572364db1b6cd16b48c285f014383af5692983b",
+      "prediction_types": 4629,
+      "tree_sha256": "807952242bd7021050be1f5592fc54463b55a205d4b7e8987c1bca107d19a834"
+    },
+    {
+      "fit_keys_sha256": "1fd32067d68b704c343f5a32c267fa4acf038fdb36795cab888db3b1f802ca5e",
+      "fit_slots": 26106,
+      "fit_types": 15741,
+      "fold": 3,
+      "prediction_keys_sha256": "b77ec61b27be9c784398e52d1b9e12d60ee402151641385e8b5843d29daed222",
+      "prediction_types": 4658,
+      "tree_sha256": "4fc2bef8ed6638e6009535f9ade113a6e3094dbed2511203025d009ef7ed78ac"
+    },
+    {
+      "fit_keys_sha256": "08a382025ce17e940bfbeeb4fcc76ea4af7232312677f8a61a37f92031da75fc",
+      "fit_slots": 26206,
+      "fit_types": 15835,
+      "fold": 4,
+      "prediction_keys_sha256": "050f93646acb7d6894cd09bf97de52984fb6d718b85014bad626b5bf4f18c476",
+      "prediction_types": 4572,
+      "tree_sha256": "d593da89211baf6131a546c3765a3ebf1d5978f468a77aa1f4e61619d5c9255f"
+    }
+  ],
+  "provenance": {
+    "dakshina_train_sha256": "44b554fa749c717386bd9f68daaf837788d6c5ff10197d7f23d2bcefc28cf378",
+    "google_sha256": "1bc2edda15da62bd4ef8576114e391c9a89ad8971f1eef3635e8fee0d7c1dd61",
+    "sources_sha256": {
+      "core/catalog.go": "aec4d090c152da993d70f4e9280a4836e969e7f3b656e156b5d7cf90235b18cf",
+      "core/categories.go": "610d78c4d8d75bc7fafdf5fc4b0fbcb565ef7f9fb693fe449090d0b5528ff84e",
+      "core/engine.go": "e7c3b03544c58f385fb09326774c8ef4f001e58c5f3390eea65488023c24cc58",
+      "core/interfaces.go": "b9515713db58bc5c9c58be94b321677b7b5eba3ea82020eeaded68cdf2eae7d8",
+      "core/rule.go": "a88b0429e029ceeb54e3f402e1b4dc079cc5305209c1524d5a0afb1b7e5980aa",
+      "core/types.go": "927025e03ad063b31730d572d9f19cd1ce5f3046ce2e018cf88bf431f9ba74dd",
+      "gomanize.go": "00c1da5d0d35ad4e7f4c67ca5da57ea02dc82b914c8707a4f4a7ee00836ee8af",
+      "lang/bengali/lexicon.go": "8275a824fff98cd2b5d68315fbe12fda24431e79a9ff8cd6ecb581ec1ce9dd68",
+      "lang/bengali/rules.go": "57c91ddd79aa87e4a7288510b99e5a404dc9e2fae3c2b02522afa8801b25756f",
+      "lang/bengali/symbols.go": "6629829d23d0b136d8dfce8d4c770101882bdd1044bb04cb63ccba362d82bff8",
+      "lang/bengali/vowel_model.go": "112b33ec83b05faecb389f93a0156423a29c713345e90855091e12b5f58ea86e",
+      "scheme/colloquial/colloquial.go": "74f13f297210d886d9450c3d5264057efac6a7f6fd0ddac2b8086bf09f6d6a07",
+      "script/brahmic/brahmic.go": "675ba122ff54f082f836a0e0abe545930652ea2131e68ab377e5cac141cb722d",
+      "script/brahmic/categories.go": "d848e919f2ea2e6782d0f5923c375c72fb17f5e90faff03ad1e082dd368d7f51",
+      "script/brahmic/parser.go": "f1873744500eb0b4bab3d814bfdf85daaf438e9559c5c3c4d331548ae9d474a2",
+      "script/brahmic/profile.go": "3a790875847b462b7a685c45763936a1f92e43b0e477f4740a1ac29c88aadceb",
+      "script/brahmic/renderer.go": "967191702ba3e2ad635bff4057621c58c927648c498787d81e3e501e39001594",
+      "script/brahmic/runs.go": "027bb02f2313ee0c976c24a213e00459abd9e53573ad3299070f71a1719aa0b7",
+      "script/brahmic/schwa_rules.go": "00d87de66393a140f8409b601d94edfc99fa65e0bbf2b9c3e9dcd4ced6fa6bf0",
+      "script/brahmic/types.go": "022379c164126f32ccabde7bbf0ed6b402d035f4efea5dc14d7258a1bd6f40f5",
+      "tools/bengali/crossfit_render/main.go": "8de21f96b47528c51234a849ba2746b110ebc05342fb8d7eead43e4adf68cf36",
+      "tools/bengali/evaluate_external.py": "806fb46b3b691d3151d375c2a104a564c6abef905a787b7854933489ac173642",
+      "tools/bengali/train_crossfit_selector.py": "8277fbdecfcc2e5bdc4ffd60e586a5c71a7955ab5122f568c6bcf34298f738f0",
+      "tools/bengali/train_native_selector.py": "68d83e6a41f25427c13a724e5db79bfe88371300382c5cab6a1d54c44412d37c",
+      "tools/bengali/train_reranker.py": "b8c6e25a4f0787b65575825cca9236d3789639324c5c52da82ae674fa0be40f8",
+      "tools/bengali/train_vowels.py": "3ebcfc27cb19c486a3274bd602326c2c713cf1eaba5cffbeedadadcb634bfe68",
+      "tools/bengali/vowels.py": "15704a3a8db23a68686f9e82e320aa55c6f883ce9647268ea82d0e55cf9d1bf9",
+      "tools/bengali_training_data.py": "819594ba0d54cc1ec6d868088f1a3c061e6ea7a1f1b25a96b6c52c01a900b02a"
+    },
+    "split_manifest_sha256": "936d0549138932900bdd51621acb4ef9b037f7ee3263205ec342d00045177a89",
+    "vowel_model_sha256": "016a05588b21f121c7799a91e668120a3a1ad5cdd1cf35d3bfb38c2dae2fdc87"
+  },
+  "schema": 1,
+  "selected": {
+    "CER": 0.07807792351439401,
+    "any": 1553,
+    "changed": 21,
+    "strict": 898,
+    "threshold": 0.6,
+    "words": 2500
+  },
+  "training": {
+    "baseline_any": 14013,
+    "oracle_any": 14720,
+    "pairs": 13954,
+    "prefer_alternative_pairs": 1263,
+    "words": 23117,
+    "words_with_alternatives": 8243
+  }
+}

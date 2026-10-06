@@ -1,0 +1,671 @@
+{
+  "license": "CC-BY-SA-4.0",
+  "policy": {
+    "depth": 8,
+    "folds": 5,
+    "max_single_slot_edits": 8,
+    "min_leaf": 30,
+    "seed": "gomanize-bengali-crossfit-v1",
+    "thresholds": [
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      0.95
+    ],
+    "vowel_depth": 10,
+    "vowel_min_leaf": 20
+  },
+  "schema": 1,
+  "tree": {
+    "counts": [
+      12691,
+      1263
+    ],
+    "feature": "after",
+    "no": {
+      "counts": [
+        6828,
+        1081
+      ],
+      "feature": "delta",
+      "no": {
+        "counts": [
+          2772,
+          866
+        ],
+        "feature": "first2",
+        "no": {
+          "counts": [
+            2767,
+            834
+          ],
+          "feature": "before",
+          "no": {
+            "counts": [
+              2657,
+              731
+            ],
+            "feature": "first2",
+            "no": {
+              "counts": [
+                2644,
+                695
+              ],
+              "feature": "last2",
+              "no": {
+                "counts": [
+                  2352,
+                  534
+                ],
+                "feature": "last2",
+                "no": {
+                  "counts": [
+                    2345,
+                    509
+                  ],
+                  "feature": "first2",
+                  "no": {
+                    "counts": [
+                      2330,
+                      493
+                    ]
+                  },
+                  "value": "সহ",
+                  "yes": {
+                    "counts": [
+                      15,
+                      16
+                    ]
+                  }
+                },
+                "value": "তা",
+                "yes": {
+                  "counts": [
+                    7,
+                    25
+                  ]
+                }
+              },
+              "value": "ের",
+              "yes": {
+                "counts": [
+                  292,
+                  161
+                ],
+                "feature": "after",
+                "no": {
+                  "counts": [
+                    184,
+                    145
+                  ],
+                  "feature": "has_u",
+                  "no": {
+                    "counts": [
+                      48,
+                      8
+                    ]
+                  },
+                  "value": "False",
+                  "yes": {
+                    "counts": [
+                      136,
+                      137
+                    ]
+                  }
+                },
+                "value": "d",
+                "yes": {
+                  "counts": [
+                    108,
+                    16
+                  ],
+                  "feature": "length",
+                  "no": {
+                    "counts": [
+                      79,
+                      14
+                    ]
+                  },
+                  "value": "8",
+                  "yes": {
+                    "counts": [
+                      29,
+                      2
+                    ]
+                  }
+                }
+              }
+            },
+            "value": "সম",
+            "yes": {
+              "counts": [
+                13,
+                36
+              ]
+            }
+          },
+          "value": "b",
+          "yes": {
+            "counts": [
+              110,
+              103
+            ],
+            "feature": "first",
+            "no": {
+              "counts": [
+                103,
+                80
+              ],
+              "feature": "first",
+              "no": {
+                "counts": [
+                  76,
+                  72
+                ],
+                "feature": "last",
+                "no": {
+                  "counts": [
+                    54,
+                    42
+                  ],
+                  "feature": "has_i",
+                  "no": {
+                    "counts": [
+                      31,
+                      25
+                    ]
+                  },
+                  "value": "False",
+                  "yes": {
+                    "counts": [
+                      23,
+                      17
+                    ]
+                  }
+                },
+                "value": "র",
+                "yes": {
+                  "counts": [
+                    22,
+                    30
+                  ]
+                }
+              },
+              "value": "স",
+              "yes": {
+                "counts": [
+                  27,
+                  8
+                ]
+              }
+            },
+            "value": "অ",
+            "yes": {
+              "counts": [
+                7,
+                23
+              ]
+            }
+          }
+        },
+        "value": "জন",
+        "yes": {
+          "counts": [
+            5,
+            32
+          ]
+        }
+      },
+      "value": "-1",
+      "yes": {
+        "counts": [
+          4056,
+          215
+        ],
+        "feature": "first",
+        "no": {
+          "counts": [
+            3684,
+            161
+          ],
+          "feature": "last2",
+          "no": {
+            "counts": [
+              3654,
+              151
+            ],
+            "feature": "last2",
+            "no": {
+              "counts": [
+                3625,
+                144
+              ],
+              "feature": "first",
+              "no": {
+                "counts": [
+                  3529,
+                  133
+                ],
+                "feature": "before",
+                "no": {
+                  "counts": [
+                    3409,
+                    120
+                  ],
+                  "feature": "length",
+                  "no": {
+                    "counts": [
+                      3266,
+                      107
+                    ]
+                  },
+                  "value": "9",
+                  "yes": {
+                    "counts": [
+                      143,
+                      13
+                    ]
+                  }
+                },
+                "value": "l",
+                "yes": {
+                  "counts": [
+                    120,
+                    13
+                  ],
+                  "feature": "first",
+                  "no": {
+                    "counts": [
+                      88,
+                      13
+                    ]
+                  },
+                  "value": "ল",
+                  "yes": {
+                    "counts": [
+                      32,
+                      0
+                    ]
+                  }
+                }
+              },
+              "value": "আ",
+              "yes": {
+                "counts": [
+                  96,
+                  11
+                ],
+                "feature": "before",
+                "no": {
+                  "counts": [
+                    67,
+                    10
+                  ],
+                  "feature": "after",
+                  "no": {
+                    "counts": [
+                      39,
+                      4
+                    ]
+                  },
+                  "value": "n",
+                  "yes": {
+                    "counts": [
+                      28,
+                      6
+                    ]
+                  }
+                },
+                "value": "h",
+                "yes": {
+                  "counts": [
+                    29,
+                    1
+                  ]
+                }
+              }
+            },
+            "value": "গর",
+            "yes": {
+              "counts": [
+                29,
+                7
+              ]
+            }
+          },
+          "value": "রত",
+          "yes": {
+            "counts": [
+              30,
+              10
+            ]
+          }
+        },
+        "value": "স",
+        "yes": {
+          "counts": [
+            372,
+            54
+          ],
+          "feature": "after",
+          "no": {
+            "counts": [
+              342,
+              44
+            ],
+            "feature": "first2",
+            "no": {
+              "counts": [
+                295,
+                43
+              ],
+              "feature": "length",
+              "no": {
+                "counts": [
+                  251,
+                  42
+                ],
+                "feature": "has_o",
+                "no": {
+                  "counts": [
+                    21,
+                    9
+                  ]
+                },
+                "value": "False",
+                "yes": {
+                  "counts": [
+                    230,
+                    33
+                  ],
+                  "feature": "has_u",
+                  "no": {
+                    "counts": [
+                      37,
+                      0
+                    ]
+                  },
+                  "value": "False",
+                  "yes": {
+                    "counts": [
+                      193,
+                      33
+                    ]
+                  }
+                }
+              },
+              "value": "7",
+              "yes": {
+                "counts": [
+                  44,
+                  1
+                ]
+              }
+            },
+            "value": "সহ",
+            "yes": {
+              "counts": [
+                47,
+                1
+              ]
+            }
+          },
+          "value": "b",
+          "yes": {
+            "counts": [
+              30,
+              10
+            ]
+          }
+        }
+      }
+    },
+    "value": "",
+    "yes": {
+      "counts": [
+        5863,
+        182
+      ],
+      "feature": "edit_b1",
+      "no": {
+        "counts": [
+          218,
+          85
+        ],
+        "feature": "length",
+        "no": {
+          "counts": [
+            182,
+            48
+          ],
+          "feature": "length",
+          "no": {
+            "counts": [
+              169,
+              29
+            ],
+            "feature": "has_i",
+            "no": {
+              "counts": [
+                130,
+                18
+              ],
+              "feature": "length",
+              "no": {
+                "counts": [
+                  94,
+                  16
+                ],
+                "feature": "length",
+                "no": {
+                  "counts": [
+                    49,
+                    7
+                  ]
+                },
+                "value": "6",
+                "yes": {
+                  "counts": [
+                    45,
+                    9
+                  ]
+                }
+              },
+              "value": "7",
+              "yes": {
+                "counts": [
+                  36,
+                  2
+                ]
+              }
+            },
+            "value": "False",
+            "yes": {
+              "counts": [
+                39,
+                11
+              ]
+            }
+          },
+          "value": "3",
+          "yes": {
+            "counts": [
+              13,
+              19
+            ]
+          }
+        },
+        "value": "4",
+        "yes": {
+          "counts": [
+            36,
+            37
+          ],
+          "feature": "has_i",
+          "no": {
+            "counts": [
+              22,
+              13
+            ]
+          },
+          "value": "False",
+          "yes": {
+            "counts": [
+              14,
+              24
+            ]
+          }
+        }
+      },
+      "value": "o",
+      "yes": {
+        "counts": [
+          5645,
+          97
+        ],
+        "feature": "last",
+        "no": {
+          "counts": [
+            5585,
+            75
+          ],
+          "feature": "before",
+          "no": {
+            "counts": [
+              5518,
+              59
+            ],
+            "feature": "last2",
+            "no": {
+              "counts": [
+                5471,
+                48
+              ],
+              "feature": "before",
+              "no": {
+                "counts": [
+                  5064,
+                  34
+                ],
+                "feature": "before",
+                "no": {
+                  "counts": [
+                    4837,
+                    25
+                  ],
+                  "feature": "before",
+                  "no": {
+                    "counts": [
+                      4429,
+                      14
+                    ]
+                  },
+                  "value": "h",
+                  "yes": {
+                    "counts": [
+                      408,
+                      11
+                    ]
+                  }
+                },
+                "value": "m",
+                "yes": {
+                  "counts": [
+                    227,
+                    9
+                  ],
+                  "feature": "last2",
+                  "no": {
+                    "counts": [
+                      152,
+                      9
+                    ]
+                  },
+                  "value": "াম",
+                  "yes": {
+                    "counts": [
+                      75,
+                      0
+                    ]
+                  }
+                }
+              },
+              "value": "l",
+              "yes": {
+                "counts": [
+                  407,
+                  14
+                ],
+                "feature": "length",
+                "no": {
+                  "counts": [
+                    333,
+                    8
+                  ],
+                  "feature": "has_u",
+                  "no": {
+                    "counts": [
+                      115,
+                      0
+                    ]
+                  },
+                  "value": "False",
+                  "yes": {
+                    "counts": [
+                      218,
+                      8
+                    ]
+                  }
+                },
+                "value": "3",
+                "yes": {
+                  "counts": [
+                    74,
+                    6
+                  ]
+                }
+              }
+            },
+            "value": "িল",
+            "yes": {
+              "counts": [
+                47,
+                11
+              ]
+            }
+          },
+          "value": "b",
+          "yes": {
+            "counts": [
+              67,
+              16
+            ]
+          }
+        },
+        "value": "ত",
+        "yes": {
+          "counts": [
+            60,
+            22
+          ],
+          "feature": "last2",
+          "no": {
+            "counts": [
+              20,
+              14
+            ]
+          },
+          "value": "াত",
+          "yes": {
+            "counts": [
+              40,
+              8
+            ]
+          }
+        }
+      }
+    }
+  }
+}
