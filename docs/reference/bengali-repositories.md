@@ -32,7 +32,8 @@ The bundled lexicon has 65,037 rows and 64,958 normalized native types, includin
 19,384 types, dev by 1,803, and test by 1,827. Removing dev/test types leaves
 61,328 types **before** an external split or any other exclusions. It is not
 safe to treat the entire dictionary as a new held-out benchmark or training
-pool. T-0057 still owns the complete exclusion/split pipeline before B2.
+pool. T-0057 built the exclusion/split pipeline
+([training partitions](../../training/data/bengali/README.md)).
 Compressed SHA-256 matches upstream's declared
 `1bc2edda15da62bd4ef8576114e391c9a89ad8971f1eef3635e8fee0d7c1dd61`.
 

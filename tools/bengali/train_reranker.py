@@ -106,11 +106,8 @@ def serialize(counts):
     return ''.join(f'{g}\t{counts[g]}\n' for g in sorted(counts)).encode()
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', type=Path, required=True)
-    args = parser.parse_args()
-    counts, stats = fit(training_rows('dakshina'))
+def dev_results(counts):
+    """Dev-only trial grid for fitted counts: (baseline, trials, selected)."""
     rows = references('dev')
     choices = candidates(rows)
     # Only differing candidates need LM scores. Compute each string once.
@@ -123,7 +120,15 @@ def main():
         result = metrics(rows, outputs)
         result.update({'margin': margin, 'changed_from_model': sum(out != pair[1] for out, pair in zip(outputs, choices))})
         trials.append(result)
-    selected = select_trial(baseline, trials)
+    return baseline, trials, select_trial(baseline, trials)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', type=Path, required=True)
+    args = parser.parse_args()
+    counts, stats = fit(training_rows('dakshina'))
+    baseline, trials, selected = dev_results(counts)
     payload = serialize(counts)
     report = {'schema': 1, 'license': 'CC-BY-SA-4.0', 'source_fixture_sha256': DAK_SHA['train'],
               'split_manifest_sha256': sha((DEFAULT/'manifest.json').read_bytes()),

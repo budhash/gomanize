@@ -134,12 +134,17 @@ func TestProfileRuleConstants(t *testing.T) {
 				w.Units[index].Start.Rune = 1
 			}
 
+			found := false
 			for _, r := range brahmic.SchwaRules() {
 				if r.Name == tt.name {
+					found = true
 					if got := r.Condition(w.Units[index], w); got != tt.want {
 						t.Fatalf("got %v, want %v", got, tt.want)
 					}
 				}
+			}
+			if !found {
+				t.Fatalf("rule %q not found in SchwaRules()", tt.name)
 			}
 		})
 	}
