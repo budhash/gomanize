@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "license": "CC-BY-SA-4.0",
+  "source_fixture_sha256": "44b554fa749c717386bd9f68daaf837788d6c5ff10197d7f23d2bcefc28cf378",
+  "split_manifest_sha256": "936d0549138932900bdd51621acb4ef9b037f7ee3263205ec342d00045177a89",
+  "dev_fixture_sha256": "8e83784102a527a88af0ad6dfba0fa41c11f57633a34fe2a9abe12acb54aa51a",
+  "metric_source_sha256": "806fb46b3b691d3151d375c2a104a564c6abef905a787b7854933489ac173642",
+  "training_loader_sha256": "819594ba0d54cc1ec6d868088f1a3c061e6ea7a1f1b25a96b6c52c01a900b02a",
+  "vowel_model_sha256": "016a05588b21f121c7799a91e668120a3a1ad5cdd1cf35d3bfb38c2dae2fdc87",
+  "candidate_source_sha256": {
+    "core/catalog.go": "aec4d090c152da993d70f4e9280a4836e969e7f3b656e156b5d7cf90235b18cf",
+    "core/categories.go": "610d78c4d8d75bc7fafdf5fc4b0fbcb565ef7f9fb693fe449090d0b5528ff84e",
+    "core/engine.go": "e7c3b03544c58f385fb09326774c8ef4f001e58c5f3390eea65488023c24cc58",
+    "core/interfaces.go": "b9515713db58bc5c9c58be94b321677b7b5eba3ea82020eeaded68cdf2eae7d8",
+    "core/rule.go": "a88b0429e029ceeb54e3f402e1b4dc079cc5305209c1524d5a0afb1b7e5980aa",
+    "core/types.go": "927025e03ad063b31730d572d9f19cd1ce5f3046ce2e018cf88bf431f9ba74dd",
+    "gomanize.go": "00c1da5d0d35ad4e7f4c67ca5da57ea02dc82b914c8707a4f4a7ee00836ee8af",
+    "lang/bengali/lexicon.go": "8275a824fff98cd2b5d68315fbe12fda24431e79a9ff8cd6ecb581ec1ce9dd68",
+    "lang/bengali/rules.go": "57c91ddd79aa87e4a7288510b99e5a404dc9e2fae3c2b02522afa8801b25756f",
+    "lang/bengali/symbols.go": "6629829d23d0b136d8dfce8d4c770101882bdd1044bb04cb63ccba362d82bff8",
+    "lang/bengali/vowel_model.go": "112b33ec83b05faecb389f93a0156423a29c713345e90855091e12b5f58ea86e",
+    "scheme/colloquial/colloquial.go": "74f13f297210d886d9450c3d5264057efac6a7f6fd0ddac2b8086bf09f6d6a07",
+    "script/brahmic/brahmic.go": "675ba122ff54f082f836a0e0abe545930652ea2131e68ab377e5cac141cb722d",
+    "script/brahmic/categories.go": "d848e919f2ea2e6782d0f5923c375c72fb17f5e90faff03ad1e082dd368d7f51",
+    "script/brahmic/parser.go": "f1873744500eb0b4bab3d814bfdf85daaf438e9559c5c3c4d331548ae9d474a2",
+    "script/brahmic/profile.go": "3a790875847b462b7a685c45763936a1f92e43b0e477f4740a1ac29c88aadceb",
+    "script/brahmic/renderer.go": "967191702ba3e2ad635bff4057621c58c927648c498787d81e3e501e39001594",
+    "script/brahmic/runs.go": "027bb02f2313ee0c976c24a213e00459abd9e53573ad3299070f71a1719aa0b7",
+    "script/brahmic/schwa_rules.go": "00d87de66393a140f8409b601d94edfc99fa65e0bbf2b9c3e9dcd4ced6fa6bf0",
+    "script/brahmic/types.go": "022379c164126f32ccabde7bbf0ed6b402d035f4efea5dc14d7258a1bd6f40f5",
+    "tools/bengali/evaluate/main.go": "b05d6f91ead3749d13421ffb35419fe284e91b639934e903e5f6d3910ede9134"
+  },
+  "selection_policy": "match-any strictly higher; strict nondecreasing; CER strictly lower; ties: any, CER, strict, smallest margin",
+  "evaluation_split": "dev only; no held-out evaluation after rejection",
+  "trainer_sha256": "b8c6e25a4f0787b65575825cca9236d3789639324c5c52da82ae674fa0be40f8",
+  "ngrams_sha256": "92f7e36e2b1d95e0906f05c29cd9cc5192f3083918e91d2f0052efcc25c35206",
+  "training": {
+    "source_rows": 87391,
+    "accepted_rows": 87391,
+    "skipped_non_ascii_letter_rows": 0,
+    "attestation_mass": 122215,
+    "grams_before_pruning": 51437,
+    "grams": 36975
+  },
+  "policy": "weighted 1..4 grams; lowercase ASCII letters; minimum count 3; backoff 0.4; mean log score; model first; B1 requires strict margin improvement",
+  "dev_model": {
+    "words": 2500,
+    "strict": 895,
+    "any": 1545,
+    "CER": 0.0783930173094878
+  },
+  "margin_grid": [
+    0.0,
+    0.05,
+    0.1,
+    0.2,
+    0.4,
+    0.8,
+    1.6
+  ],
+  "dev_trials": [
+    {
+      "words": 2500,
+      "strict": 843,
+      "any": 1475,
+      "CER": 0.08423151492298536,
+      "margin": 0.0,
+      "changed_from_model": 221
+    },
+    {
+      "words": 2500,
+      "strict": 859,
+      "any": 1495,
+      "CER": 0.08298191174838224,
+      "margin": 0.05,
+      "changed_from_model": 190
+    },
+    {
+      "words": 2500,
+      "strict": 864,
+      "any": 1503,
+      "CER": 0.0825663806128511,
+      "margin": 0.1,
+      "changed_from_model": 164
+    },
+    {
+      "words": 2500,
+      "strict": 875,
+      "any": 1519,
+      "CER": 0.08130828537475587,
+      "margin": 0.2,
+      "changed_from_model": 122
+    },
+    {
+      "words": 2500,
+      "strict": 890,
+      "any": 1537,
+      "CER": 0.07953064190711241,
+      "margin": 0.4,
+      "changed_from_model": 61
+    },
+    {
+      "words": 2500,
+      "strict": 894,
+      "any": 1546,
+      "CER": 0.07840095381742432,
+      "margin": 0.8,
+      "changed_from_model": 13
+    },
+    {
+      "words": 2500,
+      "strict": 895,
+      "any": 1545,
+      "CER": 0.0783930173094878,
+      "margin": 1.6,
+      "changed_from_model": 0
+    }
+  ],
+  "selected": null
+}
