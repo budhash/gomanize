@@ -41,6 +41,29 @@ const (
 	SchwaOpen
 )
 
+// GeminationMode controls onset rendering without changing source identity or
+// vowel ownership. None preserves historical rendering.
+type GeminationMode int
+
+const (
+	GeminationNone GeminationMode = iota
+	RepeatPrevious
+	GeminateSelf
+)
+
+func (m GeminationMode) String() string {
+	switch m {
+	case GeminationNone:
+		return "None"
+	case RepeatPrevious:
+		return "RepeatPrevious"
+	case GeminateSelf:
+		return "GeminateSelf"
+	default:
+		return "Unknown"
+	}
+}
+
 // ConsonantRun represents consecutive consonants between vowels.
 // Used for coordinating schwa deletion decisions.
 type ConsonantRun struct {
@@ -79,6 +102,9 @@ type BrahmicData struct {
 
 	// Quality of a retained inherent vowel; zero preserves existing behavior.
 	SchwaQuality SchwaQuality
+
+	// Gemination changes only consonant onsets, never the vowel decision.
+	Gemination GeminationMode
 
 	// NoInherentVowel marks an intrinsically dead consonant (e.g. khanda ta).
 	// This structural property takes precedence over rules and vowel quality.

@@ -46,6 +46,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0050) [P2] [done] Part A: generalize Brahmic layer (ScriptProfile config + SchwaRom); zero Hindi regression + golden snapshot @done=2026-10-04
   - [ ] (T-0058) [P2] [todo] A.2: measure second-unit cccc-final index correction against attested Hindi data; review per-input snapshot deltas separately @deps=T-0050
   - [x] (T-0051) [P2] [done] B0: lang/bengali symbol table + config + compositional conjuncts; wire New(); bn benchmark harness @deps=T-0050 @branch=feature/bengali-b0 @done=2026-10-04
+  - [x] (T-0056) [P2] [done] B1 prototype: phala/self gemination modes, hao/howa contexts, khanda-ta and metadata-only rule traces; gate catalog expansion @deps=T-0051 @branch=feature/bengali-b1-prototype @done=2026-10-04
 - [ ] (F-0009) [P2] [todo] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow
   - [x] (T-0036) [P2] [done] Package the WASM engine as @budhash/gomanize with loader, types, make target, and Node smoke test @done=2026-09-08
 - [ ] (F-0006) [P2] [todo] WASM build + web demo (data flywheel) @shadow
@@ -121,7 +122,6 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [ ] (T-0053) [P3] [todo] B2: Bengali learned components (3-way schwa classifier, lexicon, reranker) @deps=T-0052,T-0057
   - [ ] (T-0054) [P3] [todo] B3: Bengali PD lyrics gold set (Tagore Gitabitan via Wikisource) + line-level suite
   - [ ] (T-0055) [P2] [todo] Measure o/a split + attestation histogram on Dakshina bn (gates Q1 default + curation threshold) @deps=T-0051
-  - [ ] (T-0056) [P2] [todo] B1 prototype: phala/self gemination modes, hao/howa contexts, khanda-ta and metadata-only rule traces; gate catalog expansion @deps=T-0051
   - [ ] (T-0057) [P2] [todo] Freeze Bengali normalized split manifests and cross-source exclusions before B2 training; assert provenance and report overlap @deps=T-0051
 ## Skipped
 

@@ -66,9 +66,21 @@ func (s *Script) DebugMetaExtractor() func(*core.Unit) string {
 			afterHalant = " after-halant"
 		}
 		dead := ""
+		quality, gemination := "", ""
+		if bd := GetBrahmicData(u); bd != nil {
+			switch bd.SchwaQuality {
+			case SchwaRaised:
+				quality = " quality=Raised"
+			case SchwaOpen:
+				quality = " quality=Open"
+			}
+			if bd.Gemination != GeminationNone {
+				gemination = " gemination=" + bd.Gemination.String()
+			}
+		}
 		if bd := GetBrahmicData(u); bd != nil && bd.NoInherentVowel {
 			dead = " no-inherent-vowel"
 		}
-		return schwa.String() + afterHalant + dead
+		return schwa.String() + afterHalant + dead + quality + gemination
 	}
 }
