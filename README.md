@@ -151,9 +151,13 @@ suite.
 MIT. Copyright (c) 2023-2026 Budhaditya (budhash@gmail.com).
 
 Benchmark data derives from Dakshina (CC BY-SA 4.0), Aksharantar (CC-BY 4.0),
-COMI-LINGUA (CC-BY 4.0), and Shabd (CC0). The embedded spelling lexicons
-(`lang/hindi/lexicon.tsv`, `lang/bengali/lexicon.tsv`) are derived from Dakshina
-and are licensed CC BY-SA 4.0, separately from the MIT code. Experimental Bengali training data also
+COMI-LINGUA (CC-BY 4.0), and Shabd (CC0). Embedded data files are licensed
+separately from the MIT code: the spelling lexicons (`lang/hindi/lexicon.tsv`,
+`lang/bengali/lexicon.tsv`) and the Bengali selector (`lang/bengali/selector.json`,
+which also uses Google's Bengali pronunciation data, CC BY 4.0) derive from
+Dakshina and are CC BY-SA 4.0; the Bengali vowel model
+(`lang/bengali/vowel_tree.json`) derives from Google's Bengali pronunciation
+lexicon (CC BY 4.0). Experimental Bengali training data also
 derives from Google's Bengali pronunciation lexicon (CC BY 4.0); see
 [docs/RESEARCH.md](docs/RESEARCH.md) for full attribution.
 
@@ -172,6 +176,12 @@ which raises held-out match-any to 62.76%. `Lexicon: true` adds 8,980 attested
 training spellings; it helps known words and leaves the excluded held-out score
 unchanged. Both are opt-in and can be combined. Alternate-style flags bypass the
 lexicon so the requested style is preserved. See the [lexicon evaluation](docs/reviews/2026-10-04-bengali-b2-lexicon.md).
+
+Add `Rerank: true` alongside `SchwaModel: true` to enable the experimental
+[native selector](docs/reviews/2026-10-05-bengali-b2-runtime.md): held-out match-any
+is 63.04%. It preserves alternate styles by bypassing selection, and lexicon
+hits still win first. External word results improve slightly; sentence character
+error worsens slightly. It remains opt-in, pending independent lyrics validation.
 
 ```go
 g, err := gomanize.New("bengali")

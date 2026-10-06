@@ -118,6 +118,18 @@ type Reranker interface {
 	RerankRomans(candidates []string) string
 }
 
+// CandidateRenderer runs a candidate language with the caller's scheme and rule
+// enable/disable state. Lexicon and recursive reranking are disabled; candidate
+// debug traces are not returned. Providers must use it synchronously.
+type CandidateRenderer func(Language, Options) string
+
+// NativeReranker optionally generates and ranks candidates using the source word.
+// It takes precedence over Reranker, including when it declines. A false result
+// resumes the original pipeline with the original options. Lexicon hits win first.
+type NativeReranker interface {
+	RerankNative(input string, opts Options, render CandidateRenderer) (string, bool)
+}
+
 // transliterateInternal is the core transliteration logic.
 func (e *Engine) transliterateInternal(input string, opts Options) (string, *DebugInfo) {
 	// 0. Lexicon lookup (optional): known words get their attested spelling.
@@ -133,11 +145,27 @@ func (e *Engine) transliterateInternal(input string, opts Options) (string, *Deb
 		}
 	}
 
-	// 0b. Candidate re-ranking (optional): run the pipeline under several rule
-	// configurations and let the language's character LM pick. The default
-	// output is candidate 0, so the LM must strictly beat it to override.
+	// 0b. Optional candidate selection: source-aware providers own generation
+	// and ranking; legacy providers score the engine-generated variants below.
+	// A native decline preserves the caller's original pipeline.
 	if opts.Rerank {
-		if rr, ok := e.lang.(Reranker); ok {
+		if rr, ok := e.lang.(NativeReranker); ok {
+			render := func(lang Language, candidate Options) string {
+				candidate.Rerank, candidate.Lexicon, candidate.Debug = false, false, false
+				var overrides []EngineOption
+				for _, rule := range e.ruleEngine.ListRules("") {
+					if rule.Enabled {
+						overrides = append(overrides, WithEnabledRules(rule.Name))
+					} else {
+						overrides = append(overrides, WithDisabledRules(rule.Name))
+					}
+				}
+				return NewEngine(lang, e.scheme, overrides...).TransliterateWithOptions(input, candidate)
+			}
+			if out, handled := rr.RerankNative(input, opts, render); handled {
+				return out, nil
+			}
+		} else if rr, ok := e.lang.(Reranker); ok {
 			base := opts
 			base.Rerank = false
 			variants := []Options{base}

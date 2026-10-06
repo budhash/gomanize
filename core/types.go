@@ -123,9 +123,9 @@ type Options struct {
 	// to the rule engine. Requires LexiconProvider or OptionsLexiconProvider;
 	// the latter can decline lookup when the requested style is unsupported.
 	Lexicon bool
-	// Rerank generates candidate romanizations under several rule configurations
-	// and picks the one a character language model finds most natural. Requires
-	// the Language to implement Reranker. A lexicon hit (with Lexicon) wins first.
+	// Rerank enables the language's optional candidate selector (NativeReranker
+	// or legacy Reranker). Bengali also requires SchwaModel and default style;
+	// Hindi uses its character LM. A lexicon hit (with Lexicon) wins first.
 	Rerank bool
 	// Debug enables debug output showing rule applications.
 	Debug bool

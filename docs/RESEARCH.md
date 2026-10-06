@@ -94,8 +94,10 @@ held-out partitions; neither rejected selector is installed in runtime.
 A [cross-fitted selector with single-slot vowel alternatives](reviews/2026-10-04-bengali-b2-crossfit.md)
 passes dev and improves held-out match-any from 62.76% to **63.04%** (seven
 additional words out of 2,500), with improved strict accuracy and CER. This is
-an offline research result; runtime integration and external validation remain
-pending, and the existing runtime configuration is unchanged.
+now available as an experimental runtime opt-in using both `SchwaModel` and
+`Rerank`. [Runtime validation](reviews/2026-10-05-bengali-b2-runtime.md) confirms
+wordwise parity and small Aksharantar gains, but a slight BanglaTLit sentence-CER
+regression. Defaults remain unchanged; independent lyrics validation is pending.
 
 ## 3. Datasets
 
