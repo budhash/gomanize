@@ -375,6 +375,11 @@ learned-component data files.
 Full inventory is in the linguistics research (consonant, vowel/matra, conjunct,
 modifier tables). Notable mappings that differ from Hindi:
 
+*As built in B0 (see [B0 baseline](2026-10-04-bengali-b0-baseline.md)):* conjuncts
+stay compositional (no `ক্ষ`/`জ্ঞ`/`হ্ম`/`হ্ন` MultiChar) and স always maps to `sh`;
+atomic/positional conjunct and phala behavior is B1 rule work. Only the split
+matras are MultiChar.
+
 - **Consonants:** ঙ→`ng`, ঞ→`n`, ফ→`ph` (not Hindi's `f`), ব→`b` (covers b and
   Sanskrit-v), য→`j`, য়→`y`, ড়→`r`, ঢ়→`rh`, স→`sh` by default / `s` in
   clusters, ৎ (khanda ta)→`t` (vowel-less), ণ merged to `n`, ষ→`sh`.
