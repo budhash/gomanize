@@ -77,8 +77,43 @@ func TestCLILanguage(t *testing.T) {
 	}
 	for _, args := range [][]string{{"--language"}, {"--language", "--debug"}, {"--language="}, {"--language=unknown", "নমস্কার"}} {
 		out, stderr, err := cli(t, "", args...)
-		if err == nil || out != "" || !strings.Contains(stderr, "Error:") {
+		if err == nil || out != "" || !strings.Contains(stderr, "Error:") || !strings.Contains(stderr, "bengali") {
 			t.Fatalf("invalid language %v: %q %q %v", args, out, stderr, err)
+		}
+	}
+	// Bengali reranking needs the vowel model; say so instead of silently ignoring it.
+	if out, stderr, err := cli(t, "", "--language=bengali", "--rerank", "আমি"); err != nil || out != "ami\n" || !strings.Contains(stderr, "--schwa-model") {
+		t.Fatalf("rerank without schwa model: %q %q %v", out, stderr, err)
+	}
+}
+
+// Each learned flag must reach the engine: the word is chosen so the flag
+// changes the output relative to the baseline options, and the CLI must match
+// the API with the flag. Sentences where every option agrees cannot catch a
+// dropped flag.
+func TestCLILearnedFlagsReachEngine(t *testing.T) {
+	for _, tc := range []struct {
+		language, word string
+		flags          []string
+		opts, baseline gomanize.Options
+	}{
+		{"hindi", "अंतरिक्ष", []string{"--schwa-model"}, gomanize.Options{SchwaModel: true}, gomanize.Options{}},
+		{"hindi", "अक्षांश", []string{"--lexicon"}, gomanize.Options{Lexicon: true}, gomanize.Options{}},
+		{"hindi", "अपमानजनक", []string{"--rerank"}, gomanize.Options{Rerank: true}, gomanize.Options{}},
+		{"bengali", "সমতা", []string{"--schwa-model"}, gomanize.Options{SchwaModel: true}, gomanize.Options{}},
+		{"bengali", "বলল পথ সকল", []string{"--lexicon"}, gomanize.Options{Lexicon: true}, gomanize.Options{}},
+		{"bengali", "সমতা", []string{"--schwa-model", "--rerank"}, gomanize.Options{SchwaModel: true, Rerank: true}, gomanize.Options{SchwaModel: true}},
+	} {
+		with, _ := gomanize.NewWithOptions(tc.language, tc.opts)
+		without, _ := gomanize.NewWithOptions(tc.language, tc.baseline)
+		want := with.Translit(tc.word)
+		if want == without.Translit(tc.word) {
+			t.Fatalf("%s %v: %q does not discriminate the flag", tc.language, tc.flags, tc.word)
+		}
+		args := append(append([]string{"--language=" + tc.language}, tc.flags...), tc.word)
+		got, stderr, err := cli(t, "", args...)
+		if err != nil || got != want+"\n" {
+			t.Fatalf("%v: %q (stderr %q, err %v), want %q", args, got, stderr, err, want)
 		}
 	}
 }
