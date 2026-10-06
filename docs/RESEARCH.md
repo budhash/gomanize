@@ -256,3 +256,16 @@ rule tuning stopped. Its upstream `train` pool includes all official dev/test
 pairs and is not imported as training data. The MIT license is included with
 the fixture. [Results and caveats](reviews/2026-10-04-bengali-b1-results.md);
 [viable source/architecture references](reference/bengali-repositories.md).
+
+### Bengali B3 lyrics pilot (2026-10-05)
+
+A source-pinned pilot now covers 82 lines (71 unique) from the first four songs
+of Tagore's 1913 *Gitanjali*. Its Roman references were drafted by the assistant
+before prediction and are **unreviewed, not gold**. The pure model plus reranker
+has 52 exact draft agreements and macro line CER 0.017013; these are provisional
+reference-agreement measurements, not a validated accuracy claim. The lexicon
+reduces agreement on this sample. Training overlap is substantial: 142/213
+native word types; only seven lines are entirely unseen by the training word
+vocabularies. [Full results and limitations](reviews/2026-10-05-bengali-b3-lyrics.md);
+[dataset and independent-review handoff](../benchmark/data/bengali_lyrics/README.md).
+T-0068 and the B3 gold task T-0054 remain open. No runtime behavior changes.

@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "reference_status": "assistant_draft_unreviewed",
+  "reference_origin": "Assistant authored directly from captured native text before any pilot engine predictions; no human attestation.",
+  "selection": "First four complete songs in the 1913 Gitanjali edition, in source order, including repeated refrains.",
+  "capture_date": "2026-10-05",
+  "author": "Rabindranath Tagore",
+  "edition": "Gitanjali, third edition, Indian Press, Allahabad, 1913",
+  "edition_url": "https://bn.wikisource.org/wiki/গীতাঞ্জলি_(১৯১৩)",
+  "source_license": "Original poems public domain; Wikisource transcription and this adapted dataset CC-BY-SA-4.0.",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "normalization": "Extract poem divs; br/p/div line boundaries; NFC; remove Cf; collapse and trim whitespace; discard blank lines; retain punctuation and source spelling.",
+  "snapshot_note": "Old revisions can transclude changing pages/templates. Committed captured HTML and hashes are the reproducibility anchor.",
+  "fixture_sha256": "44b33280eb0cdd342d12a58e083f008953b83a1379a9e5c724d39a7fedf424ae",
+  "lines": 82,
+  "unique_native_lines": 71,
+  "songs": [
+    {
+      "song": 1,
+      "title": "আমার মাথা নত করে দাও হে তোমার",
+      "revision": 1936474,
+      "url": "https://bn.wikisource.org/w/index.php?oldid=1936474",
+      "snapshot": "song-1.html.gz",
+      "snapshot_sha256": "fc8c9a974533c36ed7173f1b57a56524425e7ed2ff0ad842f6c60e854a9cc17d",
+      "html_sha256": "2259eb3aece7bff12a19336a119c623c644533ea39052fb124eaa5e071e3fb06",
+      "lines": 20
+    },
+    {
+      "song": 2,
+      "title": "আমি বহু বাসনায় প্রাণপণে চাই",
+      "revision": 1936544,
+      "url": "https://bn.wikisource.org/w/index.php?oldid=1936544",
+      "snapshot": "song-2.html.gz",
+      "snapshot_sha256": "721bc8fcc5f2cfc4cdd69387331bd134e8f45475d67e061e472e91b197a72b0d",
+      "html_sha256": "3bfad4a9ed6a5e7507cf973fca4184745d6c3a23c246a65f4ba04bc4343020ed",
+      "lines": 20
+    },
+    {
+      "song": 3,
+      "title": "কত অজানারে জানাইলে তুমি,",
+      "revision": 1936555,
+      "url": "https://bn.wikisource.org/w/index.php?oldid=1936555",
+      "snapshot": "song-3.html.gz",
+      "snapshot_sha256": "b9baf0ea4cc3848498cc8f29f50d5f78a3b837665559042346549ea49c65a94f",
+      "html_sha256": "ae06356f1d13a4a5564a201695dda7b5b315b1abb18f2ac0a15d689291a9117e",
+      "lines": 20
+    },
+    {
+      "song": 4,
+      "title": "বিপদে মোরে রক্ষা কর,",
+      "revision": 1936566,
+      "url": "https://bn.wikisource.org/w/index.php?oldid=1936566",
+      "snapshot": "song-4.html.gz",
+      "snapshot_sha256": "4349b2cac8329070cec2d5a8bfea5140386085fcf0a241faad7b22f09a35d5ef",
+      "html_sha256": "defea19b53df3d174cbd20efb339762868b621255b1894d4c86ac220c143919a",
+      "lines": 22
+    }
+  ]
+}
