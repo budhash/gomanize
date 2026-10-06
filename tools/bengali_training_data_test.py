@@ -27,6 +27,18 @@ class TrainingIsolationTest(unittest.TestCase):
         for left, right in [('ড়', 'ড়'), ('ক\u09c7\u09be', 'কো'), ('ক্\u200dষ', 'ক্ষ')]:
             self.assertEqual(data.native_key(left), data.native_key(right))
 
+    def test_variant_spelling_collisions_are_pinned(self):
+        # Khanda-ta and ta + hasant are not canonically equivalent but render alike.
+        self.assertNotEqual(data.native_key('উত্সাহ'), data.native_key('উৎসাহ'))
+        self.assertEqual(data.collision_key('উত্সাহ'), data.collision_key('উৎসাহ'))
+        self.assertEqual(data.collision_key('অাবার'), data.collision_key('আবার'))
+        groups = data.verify()
+        self.assertEqual(data.variant_collisions(groups), data.KNOWN_VARIANT_COLLISIONS)
+        self.assertEqual(len({c[3] for c in data.KNOWN_VARIANT_COLLISIONS}), 15)
+        leaked = copy.deepcopy(groups)
+        leaked['dakshina-train'].add('অর্থাত্')  # variant of dakshina-dev অর্থাৎ
+        self.assertIn(('dakshina-train', 'অর্থাত্', 'dakshina-dev', 'অর্থাৎ'), data.variant_collisions(leaked))
+
     def test_exclusion_precedes_partition(self):
         google = {'ক', 'খ', 'গ', 'ঘ'}
         dak = {'train': {'ক', 'খ'}, 'dev': {'গ'}, 'test': {'ঘ'}}
