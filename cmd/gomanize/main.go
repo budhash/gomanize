@@ -27,6 +27,7 @@ func main() {
 	var listRulesPattern string
 	var inputFile string
 	var testFile string
+	language := "hindi"
 	debug := false
 	listRules := false
 	diffMode := false
@@ -41,6 +42,15 @@ func main() {
 		case arg == "-h" || arg == "--help" || arg == "help":
 			printUsage()
 			os.Exit(0)
+		case arg == "--language":
+			if i+1 >= len(args) || strings.HasPrefix(args[i+1], "-") {
+				fmt.Fprintln(os.Stderr, "Error: --language requires hindi or bengali")
+				os.Exit(1)
+			}
+			i++
+			language = args[i]
+		case strings.HasPrefix(arg, "--language="):
+			language = strings.TrimPrefix(arg, "--language=")
 		case arg == "--long-vowels":
 			opts.LongVowels = true
 		case arg == "--simple-nasals":
@@ -90,10 +100,13 @@ func main() {
 		engineOpts = append(engineOpts, gomanize.WithEnabledRules(enableRules...))
 	}
 
-	g, err := gomanize.NewWithOptions("hindi", opts, engineOpts...)
+	g, err := gomanize.NewWithOptions(language, opts, engineOpts...)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error:", err)
+		fmt.Fprintf(os.Stderr, "Error: %v (supported: hindi, bengali)\n", err)
 		os.Exit(1)
+	}
+	if strings.EqualFold(language, "bengali") && opts.Rerank && !opts.SchwaModel {
+		fmt.Fprintln(os.Stderr, "Warning: --rerank has no effect for bengali without --schwa-model")
 	}
 
 	// Warn on rule patterns that matched nothing (typo protection).
@@ -268,12 +281,13 @@ func printUsage() {
 	fmt.Fprintln(os.Stderr, "       gomanize --test=FILE [options]")
 	fmt.Fprintln(os.Stderr, "")
 	fmt.Fprintln(os.Stderr, "Options:")
+	fmt.Fprintln(os.Stderr, "  --language=NAME          hindi (default) or bengali (experimental); --language NAME also accepted")
 	fmt.Fprintln(os.Stderr, "  --long-vowels            Use 'aa' for all ा positions (e.g., गाना→gaana)")
 	fmt.Fprintln(os.Stderr, "  --simple-nasals          Simplified nasal endings (करें→karen instead of karein)")
 	fmt.Fprintln(os.Stderr, "  --keep-medial-schwa      Retain schwa in more positions (जनता→janata not janta)")
 	fmt.Fprintln(os.Stderr, "  --schwa-model            Use the learned schwa classifier instead of heuristic rules")
 	fmt.Fprintln(os.Stderr, "  --lexicon                Use the high-confidence lexicon for known words (rules for OOV)")
-	fmt.Fprintln(os.Stderr, "  --rerank                 Pick best of rules/schwa-model candidates via char LM")
+	fmt.Fprintln(os.Stderr, "  --rerank                 Pick best candidate: Hindi via char LM; Bengali via native selector (needs --schwa-model)")
 	fmt.Fprintln(os.Stderr, "  --debug                  Show debug info (parsed units, rule applications)")
 	fmt.Fprintln(os.Stderr, "  --input=FILE             Read input lines from file (one per line)")
 	fmt.Fprintln(os.Stderr, "  --test=FILE              Test against expected values (TSV format)")
