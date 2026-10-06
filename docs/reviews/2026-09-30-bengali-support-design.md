@@ -641,7 +641,7 @@ train/dev for exploratory histograms; test results must not guide rule tuning.
 | **A** | Generalized Brahmic layer + Hindi golden snapshot | 2–3 days | Hindi byte-identical (3 nets, A.4) |
 | **B0** | `lang/bengali` symbol table, config, compositional conjuncts, `bengali` wired into `New()`; naive output; `bn` benchmark harness that **emits the o/a-split and attestation histograms** (gates the Q1 default and the curation threshold) | 3–5 days | builds; Hindi untouched; baseline + histograms measured |
 | **B1 (light)** | Non-schwa rules in full; cheap schwa wins (final-cluster keep) + phala (explicit gemination modes) + anusvara/visarga + the `C+ও` rule + behavioral flags (B.6); priority-tie test on the composed catalog. ɔ→o raising deferred (no-op under `o`). Deliberately **not** exhaustive schwa tuning | 1 week | B.3.1–3 prototype examples and traces pass before catalog expansion; match-any on Dakshina `bn` clears a bar **pre-registered from the B0 histograms** (not merely "beats B0"); bn-specific gate set empirically |
-| **B2** | Bengali learned components (3-way schwa classifier, lexicon, reranker) | 1–2 weeks | each selected on Dakshina **dev** against pre-recorded bars; held-out test reported once after selection, never used to accept/reject; lexicon judged on in-sample/external coverage with no held-out regression; normalized exclusions and artifact provenance asserted (B.4.1) — *amended 2026-10-05* |
+| **B2** | Bengali learned components (3-way schwa classifier, lexicon, reranker) | 1–2 weeks | each selected on Dakshina **dev** under a recorded protocol; held-out test reported once after selection, never used to accept/reject; lexicon judged on in-sample/external coverage with no held-out regression; normalized exclusions and artifact provenance asserted (B.4.1) — *amended 2026-10-05* |
 | **B3** | Bengali PD lyrics gold set + line-level suite | 2–4 days | line-CER reported |
 
 A usable, honestly-measured rules-only Bengali exists after **A + B0 + B1**
@@ -652,7 +652,10 @@ inherent-vowel irregularity.
 **Amendment (2026-10-05, stack review):** the v4 B2 gate read "each improves
 held-out `bn` match-any". That contradicted B.4 (test is for final reporting only)
 and B.4.1 (zero held-out lexicon coverage, so the lexicon cannot move a held-out
-score). The gate as amended above is the one the B2 work actually applied.
+score). As applied, B2 selected on dev: the vowel model used a *relative* dev
+acceptance guard (match-any gain, no strict regression, lower CER) rather than
+pre-recorded numeric bars; later selector work fixed its dev protocol before
+held-out validation. Test was reported once after selection in each case.
 
 **Metrics discipline for Bengali:** match-any / minCER is the headline (2×
 variance, bimodal target), but report it **alongside** strict top-1, macro minCER,
