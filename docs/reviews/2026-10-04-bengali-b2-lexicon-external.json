@@ -1,0 +1,128 @@
+{
+  "model_sha256": "016a05588b21f121c7799a91e668120a3a1ad5cdd1cf35d3bfb38c2dae2fdc87",
+  "aksharantar_archive_sha256": "4ab6edcc6ab556040d8f43ee75eec73cc25af0cf72d09e4650dab26b196d5fe7",
+  "aksharantar_test_sha256": "b00ff14b8a9dda6318eb5298a8314930c590607ed17c8a8f90c4a6e66e1bd20a",
+  "banglatlit_fixture_sha256": "386721b4221e2d93b16ab73f3761c7c4e4cd295adf1160fe9c95c06cb34c5386",
+  "unseen_definition": "absent from union of frozen Google and Dakshina training vocabularies (conservative; not just successfully aligned Google types)",
+  "Aksharantar": {
+    "full_types": {
+      "items": 7134,
+      "B1": {
+        "match_any": 1968,
+        "accuracy": 0.27586206896551724,
+        "macro_minCER": 0.22668549437196236
+      },
+      "model": {
+        "match_any": 2201,
+        "accuracy": 0.30852256798430056,
+        "macro_minCER": 0.21617089326397382
+      },
+      "lexicon": {
+        "match_any": 2072,
+        "accuracy": 0.29044014578076816,
+        "macro_minCER": 0.22104297744895773
+      },
+      "model_lexicon": {
+        "match_any": 2297,
+        "accuracy": 0.3219792542753014,
+        "macro_minCER": 0.2109413328514865
+      },
+      "lexicon_added_to_model": {
+        "wins": 98,
+        "losses": 2,
+        "changed": 112
+      }
+    },
+    "unseen_types": {
+      "items": 6036,
+      "B1": {
+        "match_any": 1836,
+        "accuracy": 0.30417495029821073,
+        "macro_minCER": 0.21568725678110803
+      },
+      "model": {
+        "match_any": 2053,
+        "accuracy": 0.34012591119946983,
+        "macro_minCER": 0.20437594349341806
+      },
+      "lexicon": {
+        "match_any": 1836,
+        "accuracy": 0.30417495029821073,
+        "macro_minCER": 0.21568725678110803
+      },
+      "model_lexicon": {
+        "match_any": 2053,
+        "accuracy": 0.34012591119946983,
+        "macro_minCER": 0.20437594349341806
+      },
+      "lexicon_added_to_model": {
+        "wins": 0,
+        "losses": 0,
+        "changed": 0
+      }
+    },
+    "lexicon_hit_types": 210
+  },
+  "BanglaTLit": {
+    "full_sentences": {
+      "items": 2500,
+      "B1": {
+        "match_any": 8,
+        "accuracy": 0.0032,
+        "macro_minCER": 0.3314892105029764
+      },
+      "model": {
+        "match_any": 12,
+        "accuracy": 0.0048,
+        "macro_minCER": 0.31285795745759326
+      },
+      "lexicon": {
+        "match_any": 13,
+        "accuracy": 0.0052,
+        "macro_minCER": 0.29401287134017773
+      },
+      "model_lexicon": {
+        "match_any": 17,
+        "accuracy": 0.0068,
+        "macro_minCER": 0.2814243562204692
+      },
+      "lexicon_added_to_model": {
+        "wins": 5,
+        "losses": 0,
+        "changed": 1477
+      }
+    },
+    "all_tokens_unseen_sentences": {
+      "items": 38,
+      "B1": {
+        "match_any": 1,
+        "accuracy": 0.02631578947368421,
+        "macro_minCER": 0.5318006872679402
+      },
+      "model": {
+        "match_any": 2,
+        "accuracy": 0.05263157894736842,
+        "macro_minCER": 0.5209574734642001
+      },
+      "lexicon": {
+        "match_any": 1,
+        "accuracy": 0.02631578947368421,
+        "macro_minCER": 0.5318006872679402
+      },
+      "model_lexicon": {
+        "match_any": 2,
+        "accuracy": 0.05263157894736842,
+        "macro_minCER": 0.5209574734642001
+      },
+      "lexicon_added_to_model": {
+        "wins": 0,
+        "losses": 0,
+        "changed": 0
+      }
+    },
+    "limitation": "sentence-level Roman references do not support isolated unseen-token accuracy"
+  },
+  "lyrics_gold": "not yet built (T-0054)",
+  "lexicon_sha256": "090d99b72464231324fe61ab44107b4c525eb5795273021641492b9223e07e1f",
+  "lexicon_policy": "fixed >=3 attestations and unique winner; no external tuning"
+}

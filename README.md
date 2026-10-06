@@ -151,7 +151,9 @@ suite.
 MIT. Copyright (c) 2023-2026 Budhaditya (budhash@gmail.com).
 
 Benchmark data derives from Dakshina (CC BY-SA 4.0), Aksharantar (CC-BY 4.0),
-COMI-LINGUA (CC-BY 4.0), and Shabd (CC0). Experimental Bengali training data also
+COMI-LINGUA (CC-BY 4.0), and Shabd (CC0). The embedded spelling lexicons
+(`lang/hindi/lexicon.tsv`, `lang/bengali/lexicon.tsv`) are derived from Dakshina
+and are licensed CC BY-SA 4.0, separately from the MIT code. Experimental Bengali training data also
 derives from Google's Bengali pronunciation lexicon (CC BY 4.0); see
 [docs/RESEARCH.md](docs/RESEARCH.md) for full attribution.
 
@@ -164,6 +166,12 @@ Dakshina word set; pronunciation ambiguities remain. CLI, npm, and web-demo
 language selection is still Hindi-only. See the [B1 results and
 limitations](docs/reviews/2026-10-04-bengali-b1-results.md).
 
+
+`SchwaModel: true` enables the [vowel model](docs/reviews/2026-10-04-bengali-b2-vowels.md),
+which raises held-out match-any to 62.76%. `Lexicon: true` adds 8,980 attested
+training spellings; it helps known words and leaves the excluded held-out score
+unchanged. Both are opt-in and can be combined. Alternate-style flags bypass the
+lexicon so the requested style is preserved. See the [lexicon evaluation](docs/reviews/2026-10-04-bengali-b2-lexicon.md).
 
 ```go
 g, err := gomanize.New("bengali")

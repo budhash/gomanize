@@ -110,6 +110,10 @@ func TestB0OptionsAndCatalog(t *testing.T) {
 // Retain the historical mechanical tests independently of the production catalog.
 type b0Language struct{ Bengali }
 
+// The historical B0 control must not inherit production learned lookups.
+func (b0Language) LexiconLookupWithOptions(string, core.Options) (string, bool) {
+	return "", false
+}
 func (b0Language) Rules() core.RuleCatalog { return b0Catalog() }
 func b0Catalog() core.RuleCatalog {
 	all := RuleCatalog().AllRules()

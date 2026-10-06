@@ -103,6 +103,14 @@ type LexiconProvider interface {
 	LexiconLookup(word string) (string, bool)
 }
 
+// OptionsLexiconProvider is an optional, style-aware lexicon interface. It takes
+// precedence over LexiconProvider, including on a miss: a provider may decline
+// lookup for the requested style without falling through to a legacy lookup.
+// Languages implementing only LexiconProvider retain their existing behavior.
+type OptionsLexiconProvider interface {
+	LexiconLookupWithOptions(word string, opts Options) (string, bool)
+}
+
 // Reranker is an optional interface a Language may implement to choose the most
 // natural romanization among candidates produced under different rule
 // configurations. Used when Options.Rerank is set.
@@ -114,7 +122,11 @@ type Reranker interface {
 func (e *Engine) transliterateInternal(input string, opts Options) (string, *DebugInfo) {
 	// 0. Lexicon lookup (optional): known words get their attested spelling.
 	if opts.Lexicon {
-		if lp, ok := e.lang.(LexiconProvider); ok {
+		if lp, ok := e.lang.(OptionsLexiconProvider); ok {
+			if roman, found := lp.LexiconLookupWithOptions(input, opts); found {
+				return roman, nil
+			}
+		} else if lp, ok := e.lang.(LexiconProvider); ok {
 			if roman, found := lp.LexiconLookup(input); found {
 				return roman, nil
 			}

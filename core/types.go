@@ -120,7 +120,8 @@ type Options struct {
 	SchwaModel bool
 	// Lexicon consults the language's high-confidence romanization lexicon first;
 	// known words return the attested human spelling, unknown words fall through
-	// to the rule engine. Requires the Language to implement LexiconProvider.
+	// to the rule engine. Requires LexiconProvider or OptionsLexiconProvider;
+	// the latter can decline lookup when the requested style is unsupported.
 	Lexicon bool
 	// Rerank generates candidate romanizations under several rule configurations
 	// and picks the one a character language model finds most natural. Requires

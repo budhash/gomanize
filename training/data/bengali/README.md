@@ -38,8 +38,9 @@ reconstruction from the pinned raw source. CI checks inventories offline.
 ### Known limitations (2026-10-05 review)
 
 - **Variant-spelling collisions.** The comparison key does not merge khanda-ta
-  (U+09CE) with ta + hasant, nor a malformed অ + া with আ, although the engine
-  renders each pair identically. As a result, **15 held-out types** (in 23
+  (U+09CE) with ta + hasant, nor a malformed অ + া with আ. Each pair spells the
+  same word; the engine renders the khanda-ta pairs identically, while the
+  malformed অ + া currently renders literally (অাবার → `oabar`, আবার → `abar`). As a result, **15 held-out types** (in 23
   training/held-out pairs) have a variant spelling in a training pool, e.g.
   উত্সাহ (Google and Dakshina train) vs উৎসাহ (Dakshina dev), and অকস্মাত্
   (Google train) vs অকস্মাৎ (Google test). The partitions are frozen and every
