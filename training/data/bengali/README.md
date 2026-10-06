@@ -35,6 +35,28 @@ in the loader; editing a manifest and recomputing its checksum cannot silently
 remove protected Google words. Training Google rows additionally requires exact
 reconstruction from the pinned raw source. CI checks inventories offline.
 
+### Known limitations (2026-10-05 review)
+
+- **Variant-spelling collisions.** The comparison key does not merge khanda-ta
+  (U+09CE) with ta + hasant, nor a malformed অ + া with আ. Each pair spells the
+  same word; the engine renders the khanda-ta pairs identically, while the
+  malformed অ + া currently renders literally (অাবার → `oabar`, আবার → `abar`). As a result, **15 held-out types** (in 23
+  training/held-out pairs) have a variant spelling in a training pool, e.g.
+  উত্সাহ (Google and Dakshina train) vs উৎসাহ (Dakshina dev), and অকস্মাত্
+  (Google train) vs অকস্মাৎ (Google test). The partitions are frozen and every
+  downstream artifact was built on them, so the pairs are pinned and disclosed in
+  `KNOWN_VARIANT_COLLISIONS` rather than silently re-split: `verify` fails on any
+  new collision, and on removing one without updating the list. A later rebuild
+  will drop the colliding training types (exclusion via `collision_key`) and
+  retrain dependent artifacts once, reporting old and new numbers.
+- **Latin-script Google entries.** Google contains lowercase Latin loan spellings
+  with no Bengali-block rune (e.g. `abdomen`): 4,416 train / 264 dev / 226 test
+  types, included in the counts above. They are pinned in `NON_BENGALI_TYPES`;
+  aligners must filter them explicitly.
+- **Manifest counts.** `verify` recomputes the Dakshina counts; the Google counts
+  and `unicode_version` require the raw source or record the build environment and
+  are informational.
+
 ## Sources and attribution
 
 - Google Bengali pronunciation lexicon: Copyright Google 2015/2016,

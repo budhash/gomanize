@@ -7,6 +7,7 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import re
 import unicodedata
 
 from build_bengali import native_key
@@ -24,6 +25,59 @@ DAK_SHA = dict(zip(('train', 'dev', 'test'), (
     '44b554fa749c717386bd9f68daaf837788d6c5ff10197d7f23d2bcefc28cf378',
     '8e83784102a527a88af0ad6dfba0fa41c11f57633a34fe2a9abe12acb54aa51a',
     '9cb15941b0893acdcc2891130ff98ba403645fd9170b955372af62f64bd33ca0')))
+# The canonical key (NFC + Cf removal) does not merge khanda-ta (U+09CE) with
+# ta + hasant, nor a malformed অ + া with আ, though each pair spells one word
+# (the engine renders the khanda-ta pairs identically). These frozen partitions predate that finding (2026-10-05 review),
+# so the resulting training/held-out variant pairs are pinned and disclosed
+# here rather than silently re-split; a later rebuild drops them from training.
+# Any NEW collision fails verify, and so does removing one without updating.
+KNOWN_VARIANT_COLLISIONS = frozenset({
+    ('dakshina-train', 'আবার', 'dakshina-test', 'অাবার'),
+    ('dakshina-train', 'উত্সবের', 'google-dev', 'উৎসবের'),
+    ('dakshina-train', 'উত্সাহ', 'dakshina-dev', 'উৎসাহ'),
+    ('dakshina-train', 'উত্সাহী', 'dakshina-dev', 'উৎসাহী'),
+    ('dakshina-train', 'উত্সাহের', 'dakshina-test', 'উৎসাহের'),
+    ('dakshina-train', 'চিকিৎসা', 'dakshina-test', 'চিকিত্সা'),
+    ('dakshina-train', 'চিকিৎসার', 'dakshina-dev', 'চিকিত্সার'),
+    ('dakshina-train', 'নাৎসি', 'dakshina-dev', 'নাত্সি'),
+    ('dakshina-train', 'সাক্ষাৎকার', 'dakshina-test', 'সাক্ষাত্কার'),
+    ('dakshina-train', 'সাক্ষাৎকারে', 'dakshina-test', 'সাক্ষাত্কারে'),
+    ('google-train', 'অকস্মাত্', 'google-test', 'অকস্মাৎ'),
+    ('google-train', 'অর্থাত্', 'dakshina-dev', 'অর্থাৎ'),
+    ('google-train', 'আবার', 'dakshina-test', 'অাবার'),
+    ('google-train', 'উত্কণ্ঠা', 'dakshina-test', 'উৎকণ্ঠা'),
+    ('google-train', 'উত্সবের', 'google-dev', 'উৎসবের'),
+    ('google-train', 'উত্সাহ', 'dakshina-dev', 'উৎসাহ'),
+    ('google-train', 'উত্সাহিত', 'dakshina-test', 'উৎসাহিত'),
+    ('google-train', 'চিকিৎসা', 'dakshina-test', 'চিকিত্সা'),
+    ('google-train', 'চিকিৎসার', 'dakshina-dev', 'চিকিত্সার'),
+    ('google-train', 'নাৎসি', 'dakshina-dev', 'নাত্সি'),
+    ('google-train', 'সাক্ষাত্', 'dakshina-test', 'সাক্ষাৎ'),
+    ('google-train', 'সাক্ষাৎকার', 'dakshina-test', 'সাক্ষাত্কার'),
+    ('google-train', 'সাক্ষাৎকারে', 'dakshina-test', 'সাক্ষাত্কারে'),
+})
+# Google entries with no Bengali-block rune (Latin loan spellings such as
+# "abdomen"); counted so aligners can filter them explicitly.
+NON_BENGALI_TYPES = {'google-train': 4416, 'google-dev': 264, 'google-test': 226,
+                     'dakshina-train': 0, 'dakshina-dev': 0, 'dakshina-test': 0}
+BENGALI_RUNE = re.compile('[\u0980-\u09ff]')
+
+
+def collision_key(key):
+    """Stricter comparison key for exclusion: folds variant spellings the
+    canonical key keeps distinct but the engine treats as one word."""
+    return native_key(key).replace('\u09ce', '\u09a4\u09cd').replace('\u0985\u09be', '\u0986')
+
+
+def variant_collisions(groups):
+    heldout = {}
+    for name, keys in groups.items():
+        if not name.endswith('-train'):
+            for key in keys:
+                heldout.setdefault(collision_key(key), []).append((name, key))
+    return {(name, key, held_name, held_key)
+            for name in ('google-train', 'dakshina-train') for key in groups[name]
+            for held_name, held_key in heldout.get(collision_key(key), ())}
 
 
 def sha(data):
@@ -155,6 +209,16 @@ def verify(directory=DEFAULT):
     for split, expected in GOOGLE_KEYS_SHA.items():
         if sha(key_bytes(groups['google-' + split])) != expected:
             raise ValueError('frozen Google word inventory changed')
+    counts = manifest['counts']
+    if (counts['dakshina_original_types'] != {s: len(dak[s]) for s in DAK_SHA} or
+            counts['dakshina_train_excluded_types'] != len(dak['train'] - groups['dakshina-train'])):
+        raise ValueError('manifest Dakshina counts do not match partitions')
+    if {n: sum(not BENGALI_RUNE.search(k) for k in keys) for n, keys in groups.items()} != NON_BENGALI_TYPES:
+        raise ValueError('non-Bengali entry counts changed')
+    found = variant_collisions(groups)
+    if found != KNOWN_VARIANT_COLLISIONS:
+        raise ValueError(f'variant-spelling collisions changed: new {sorted(found - KNOWN_VARIANT_COLLISIONS)}, '
+                         f'gone {sorted(KNOWN_VARIANT_COLLISIONS - found)}')
     return groups
 
 
@@ -173,11 +237,22 @@ def training_rows(source, google_path=None, directory=DEFAULT):
     raise ValueError('training source must be google or dakshina')
 
 
+# Lexicon keys allowed to collide with a held-out type under collision_key: the
+# disclosed KNOWN_VARIANT_COLLISIONS entry that reached the frozen lexicon. The
+# post-stack rebuild excludes it; any other collision fails.
+KNOWN_LEXICON_COLLISIONS = frozenset({'আবার'})
+
+
 def assert_lexicon_isolation(keys, directory=DEFAULT):
     groups = verify(directory)
     allowed = groups['dakshina-train']
-    if {native_key(k) for k in keys} - allowed:
+    canonical = {native_key(k) for k in keys}
+    if canonical - allowed:
         raise ValueError('lexicon contains a held-out or unauthorized source type')
+    heldout = {collision_key(k) for name, ks in groups.items() if not name.endswith('-train') for k in ks}
+    colliding = {k for k in canonical if collision_key(k) in heldout}
+    if colliding != KNOWN_LEXICON_COLLISIONS & canonical:
+        raise ValueError(f'lexicon variant-spelling collision with held-out: {sorted(colliding - KNOWN_LEXICON_COLLISIONS)}')
 
 
 if __name__ == '__main__':

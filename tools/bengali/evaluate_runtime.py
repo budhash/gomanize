@@ -43,16 +43,16 @@ def score(rows, predictions):
     return result
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('aksharantar_zip', type=Path)
-    parser.add_argument('--output', type=Path, required=True)
-    args = parser.parse_args()
-    frozen = ROOT/'docs/reviews/2026-10-04-bengali-b2-crossfit-selector.json'
-    embedded = ROOT/'lang/bengali/selector.json'
-    if embedded.read_bytes() != frozen.read_bytes():
+FROZEN = ROOT/'docs/reviews/2026-10-04-bengali-b2-crossfit-selector.json'
+EMBEDDED = ROOT/'lang/bengali/selector.json'
+BANGLATLIT_SHA = '386721b4221e2d93b16ab73f3761c7c4e4cd295adf1160fe9c95c06cb34c5386'
+
+
+def dakshina_section():
+    """Dakshina dev/test with word-for-word offline parity; no external data."""
+    if EMBEDDED.read_bytes() != FROZEN.read_bytes():
         raise ValueError('runtime selector differs from frozen experiment')
-    tree = json.loads(frozen.read_text())['tree']
+    tree = json.loads(FROZEN.read_text())['tree']
     dak = {}
     for split in ('dev', 'test'):
         rows = references(split)
@@ -66,6 +66,28 @@ def main():
             raise ValueError('lexicon changed held-out output')
         dak[split] = dict(score(rows, values), strict_profiles={name: metrics(rows, [p[i] for p in values]) for i, name in enumerate(PROFILES)},
                           offline_wordwise_mismatches=0)
+    return dak
+
+
+def banglatlit_rows():
+    blob = pinned(ROOT/'benchmark/data/banglatlit/test.csv.gz', BANGLATLIT_SHA)
+    return blob, [(r['native'], [r['roman']]) for r in csv.DictReader(io.StringIO(gzip.decompress(blob).decode()))]
+
+
+def banglatlit_section(bangla, values, training):
+    unseen = [(r, p) for r, p in zip(bangla, values)
+              if (tokens := set(bengali_tokens(r[0]))) and not tokens & training]
+    return {'full_sentences': score(bangla, values),
+            'all_tokens_unseen_sentences': score([r for r, _ in unseen], [p for _, p in unseen])}
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('aksharantar_zip', type=Path)
+    parser.add_argument('--output', type=Path, required=True)
+    args = parser.parse_args()
+    embedded = EMBEDDED
+    dak = dakshina_section()
     raw = pinned(args.aksharantar_zip, '4ab6edcc6ab556040d8f43ee75eec73cc25af0cf72d09e4650dab26b196d5fe7')
     with zipfile.ZipFile(io.BytesIO(raw)) as archive:
         member = archive.read('ben_test.json')
@@ -74,14 +96,11 @@ def main():
         row = json.loads(line)
         words.setdefault(native_key(row['native word']), set()).add(row['english word'])
     ak = [(word, sorted(refs)) for word, refs in sorted(words.items())]
-    blob = pinned(ROOT/'benchmark/data/banglatlit/test.csv.gz', '386721b4221e2d93b16ab73f3761c7c4e4cd295adf1160fe9c95c06cb34c5386')
-    bangla = [(r['native'], [r['roman']]) for r in csv.DictReader(io.StringIO(gzip.decompress(blob).decode()))]
+    blob, bangla = banglatlit_rows()
     values = predict(ak+bangla)
     groups = verify()
     training = groups['google-train'] | groups['dakshina-train']
     unseen_ak = [(r, p) for r, p in zip(ak, values[:len(ak)]) if r[0] not in training]
-    unseen_bangla = [(r, p) for r, p in zip(bangla, values[len(ak):])
-                    if (tokens := set(bengali_tokens(r[0]))) and not tokens & training]
     if any(p[1] != p[3] or p[4] != p[5] for _, p in unseen_ak):
         raise ValueError('lexicon changed unseen external word')
     sources = [ROOT/'gomanize.go', ROOT/'tools/bengali/evaluate_runtime.py'] + [p for folder in (
@@ -95,8 +114,7 @@ def main():
               'banglatlit_fixture_sha256': sha(blob), 'Dakshina': dak,
               'Aksharantar': {'full_types': score(ak, values[:len(ak)]),
                               'unseen_types': score([r for r, _ in unseen_ak], [p for _, p in unseen_ak])},
-              'BanglaTLit': {'full_sentences': score(bangla, values[len(ak):]),
-                            'all_tokens_unseen_sentences': score([r for r, _ in unseen_bangla], [p for _, p in unseen_bangla])},
+              'BanglaTLit': banglatlit_section(bangla, values[len(ak):], training),
               'unseen_definition': 'absent from union of frozen Google and Dakshina training vocabularies',
               'limitations': ['Aksharantar overlaps Dakshina test; not independent',
                              'sentence references cannot establish token-level accuracy', 'lyrics gold remains T-0054']}

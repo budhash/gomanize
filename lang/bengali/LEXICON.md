@@ -49,6 +49,16 @@ python3 tools/bengali/build_lexicon_keys.py /tmp/lexicon_keys.json.gz
 make test-bengali-lexicon
 ```
 
+**Disclosed collision (2026-10-05 review).** Lookup does not fold variant
+spellings that are not canonically equivalent (khanda-ta ৎ vs ত্, malformed অ + া
+vs আ), so no held-out word is reachable through them. One entry, `আবার → abar`,
+nevertheless shares a variant-spelling key with the held-out Dakshina test type
+অাবার (one of the pinned collisions in the
+[training data record](../../training/data/bengali/README.md)). It is pinned in
+`KNOWN_LEXICON_COLLISIONS`; `assert_lexicon_isolation` now also rejects any other
+lexicon key that collides with a held-out type under `collision_key`. The
+post-stack rebuild drops it.
+
 The word lexicon cannot improve excluded held-out words. Train-set gains measure
 memorization/coverage, not generalization. External transfer and unseen-word
 results are separated in the [evaluation report](../../docs/reviews/2026-10-04-bengali-b2-lexicon.md).
