@@ -166,6 +166,19 @@ func loadBengali(t *testing.T, splits ...string) map[string][]bnWord {
 	return result
 }
 
+// bnPinnedRules pins the rules-only (no learned components) train/dev outputs.
+// Scores alone can hide compensating changes, so a digest over every
+// default-o and alternate-a output is pinned too. A PR that changes Bengali
+// rules output must update these deliberately and report the before/after
+// delta. Test-split scores stay log-only: they never gate or guide changes.
+var bnPinnedRules = map[string]struct {
+	strict, any int
+	digest      string
+}{
+	"train": {7044, 12080, "eadbc03efc070d1ab69fdf134e0738e80a21d4a8352bff7d94825fdc12b6e9dd"},
+	"dev":   {698, 1210, "9361f262872291e3ac960837a40246338a367e6287b15948ac0d448586171a49"},
+}
+
 func TestBenchmarkBengali(t *testing.T) {
 	datasets := loadBengali(t)
 	o, err := gomanize.New("bengali")
@@ -182,11 +195,13 @@ func TestBenchmarkBengali(t *testing.T) {
 			refHist, voteHist, topVoteHist, styles := map[string]int{}, map[string]int{}, map[string]int{}, map[string]int{}
 			byRefs, byVotes := map[string]*bnCounts{}, map[string]*bnCounts{}
 			refsTotal := 0
+			digest := sha256.New()
 			for _, w := range datasets[split] {
 				out, alt := o.Translit(w.native), a.Translit(w.native)
 				if out == "" {
 					t.Fatalf("empty output for %q", w.native)
 				}
+				fmt.Fprintf(digest, "%s\t%s\t%s\n", w.native, out, alt)
 				defaultScore.add(out, w.refs)
 				altScore.add(alt, w.refs)
 				styles[bnStyleSupport(out, alt, w.refs)]++
@@ -224,6 +239,12 @@ func TestBenchmarkBengali(t *testing.T) {
 				}
 				if c := byVotes[bucket]; c != nil {
 					logScore("best-attestation="+bucket, *c)
+				}
+			}
+			if pin, ok := bnPinnedRules[split]; ok {
+				got := fmt.Sprintf("%x", digest.Sum(nil))
+				if defaultScore.strict != pin.strict || defaultScore.any != pin.any || got != pin.digest {
+					t.Errorf("%s rules output changed: strict=%d match-any=%d digest=%s; pinned strict=%d match-any=%d digest=%s (update bnPinnedRules deliberately and report the delta)", split, defaultScore.strict, defaultScore.any, got, pin.strict, pin.any, pin.digest)
 				}
 			}
 			if split != "test" {

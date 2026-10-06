@@ -1,6 +1,7 @@
 package benchmark
 
 import (
+	"crypto/sha256"
 	"fmt"
 	"strings"
 	"testing"
@@ -120,6 +121,15 @@ func TestBengaliAlignmentDefinitions(t *testing.T) {
 	}
 }
 
+// bnEvidenceDigest pins the B0 decision evidence recorded in
+// docs/reviews/2026-10-04-bengali-evaluation-gate.md (every logged line, per
+// split). The harness uses the fixed B0 rule subset, so later rule work must
+// not move it; a change means the recorded evidence no longer reproduces.
+var bnEvidenceDigest = map[string]string{
+	"train": "e63a5323384390b43f5d2573c64f6119fd5b02a430623993d018d8af1c36cb10",
+	"dev":   "2a8d073d9900b5efae3e034e46f2cb83470c3fe17ed1b0d839300d9140b7fcee",
+}
+
 func TestBengaliVowelEvidence(t *testing.T) {
 	// Test is deliberately neither opened nor enumerated here.
 	datasets := loadBengali(t, "train", "dev")
@@ -195,12 +205,20 @@ func TestBengaliVowelEvidence(t *testing.T) {
 				}
 			}
 		}
-		t.Logf("%s words=%d with-slots=%d slots=%d covered-words=%d refs=%d aligned-refs=%d", split, len(datasets[split]), withSlots, slots, coveredWords, refs, alignedRefs)
-		t.Logf("%s vote-weighted slot masks [0,o,a,o|a,empty,o|empty,a|empty,all]: inherent=%v independent=%v", split, inherent, independent)
-		t.Logf("%s equal-word preference o=%d a=%d tie=%d no-unambiguous-oa=%d", split, preferO, preferA, ties, noOA)
+		lines := []string{
+			fmt.Sprintf("%s words=%d with-slots=%d slots=%d covered-words=%d refs=%d aligned-refs=%d", split, len(datasets[split]), withSlots, slots, coveredWords, refs, alignedRefs),
+			fmt.Sprintf("%s vote-weighted slot masks [0,o,a,o|a,empty,o|empty,a|empty,all]: inherent=%v independent=%v", split, inherent, independent),
+			fmt.Sprintf("%s equal-word preference o=%d a=%d tie=%d no-unambiguous-oa=%d", split, preferO, preferA, ties, noOA),
+		}
 		for _, threshold := range []int{1, 2, 3, 4} {
 			s := curatedStyles[threshold]
-			t.Logf("%s threshold=%d words=%d default strict=%d any=%d CER=%.8f alternate strict=%d any=%d CER=%.8f", split, threshold, thresholds[threshold], s[0].strict, s[0].any, s[0].minCER/float64(s[0].words), s[1].strict, s[1].any, s[1].minCER/float64(s[1].words))
+			lines = append(lines, fmt.Sprintf("%s threshold=%d words=%d default strict=%d any=%d CER=%.8f alternate strict=%d any=%d CER=%.8f", split, threshold, thresholds[threshold], s[0].strict, s[0].any, s[0].minCER/float64(s[0].words), s[1].strict, s[1].any, s[1].minCER/float64(s[1].words)))
+		}
+		for _, line := range lines {
+			t.Log(line)
+		}
+		if got := fmt.Sprintf("%x", sha256.Sum256([]byte(strings.Join(lines, "\n")))); got != bnEvidenceDigest[split] {
+			t.Errorf("%s B0 evidence changed: digest %s, pinned %s", split, got, bnEvidenceDigest[split])
 		}
 	}
 }
