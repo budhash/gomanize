@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 import unittest
 sys.path.insert(0, str(Path(__file__).parent/'bengali'))
-from train_reranker import fit, score, choose, select_trial, serialize, metrics
+from train_reranker import fit, score, choose, select_trial, serialize, metrics, dev_results
 from bengali_training_data import ROOT, training_rows, sha
 
 
@@ -61,6 +61,12 @@ class BengaliRerankerTest(unittest.TestCase):
         self.assertEqual(stats, report['training'])
         self.assertIsNone(select_trial(report['dev_model'], report['dev_trials']))
         self.assertIsNone(report['selected'])
+        # Rerun the dev grid against the current engine: the committed outcome
+        # must still reproduce (source hashes are provenance, not compared).
+        baseline, trials, selected = dev_results(counts)
+        self.assertEqual(baseline, report['dev_model'])
+        self.assertEqual(trials, report['dev_trials'])
+        self.assertIsNone(selected)
 
 
 if __name__ == '__main__':
