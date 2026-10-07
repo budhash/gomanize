@@ -136,3 +136,7 @@ Independent stack review. Tables above record the lexicon as submitted.
   frontend NOTICE work.
 - Tracked: the Bengali lexicon style bypass is an allowlist of today's four style
   options; a malformed embed becomes an empty map (caught by the size test).
+
+**Superseded figures (2026-10-06).** Training partitions were rebuilt (schema 2) and this
+experiment's committed record regenerated; see the
+[retrain record](2026-10-06-bengali-retrain.md) for current counts.

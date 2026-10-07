@@ -10,7 +10,7 @@
   "tree": {
     "counts": [
       572,
-      129
+      128
     ],
     "feature": "has_u",
     "no": {
@@ -65,19 +65,19 @@
     "yes": {
       "counts": [
         405,
-        112
+        111
       ],
       "feature": "last2",
       "no": {
         "counts": [
           362,
-          84
+          83
         ],
         "feature": "last2",
         "no": {
           "counts": [
             316,
-            84
+            83
           ],
           "feature": "after",
           "no": {
@@ -104,7 +104,7 @@
           "yes": {
             "counts": [
               19,
-              12
+              11
             ]
           }
         },

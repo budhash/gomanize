@@ -91,3 +91,7 @@ Independent stack review. The table above records the experiment as submitted.
   relative dev guard the vowel model used, and no trial passed it.
 - The disclosed variant-spelling collisions include four dakshina-train/dev pairs;
   B1 and the model agree on all four dev words, so the reranker never touched them.
+
+**Superseded figures (2026-10-06).** Training partitions were rebuilt (schema 2) and this
+experiment's committed record regenerated; see the
+[retrain record](2026-10-06-bengali-retrain.md) for current counts.

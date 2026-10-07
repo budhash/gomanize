@@ -103,3 +103,7 @@ Independent stack review. The table above records the experiment as submitted.
   `native_key`, but not the disclosed khanda-ta variant (উৎসাহ vs উত্সাহ differ on
   `length`, `first2`, `has_halant`). No effect here (B1 equals the model on every
   disclosed collision word); relevant if these features are reused at runtime.
+
+**Superseded figures (2026-10-06).** Training partitions were rebuilt (schema 2) and this
+experiment's committed record regenerated; see the
+[retrain record](2026-10-06-bengali-retrain.md) for current counts.

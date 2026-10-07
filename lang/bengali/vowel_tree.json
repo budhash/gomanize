@@ -18,30 +18,32 @@
   "scope": "simple-whole-words-v1",
   "provenance": {
     "google_sha256": "1bc2edda15da62bd4ef8576114e391c9a89ad8971f1eef3635e8fee0d7c1dd61",
-    "split_manifest_sha256": "936d0549138932900bdd51621acb4ef9b037f7ee3263205ec342d00045177a89",
+    "split_manifest_sha256": "29d1ac4406cd9b915ef14208179aab28a58ba2fb4e66072ebea011e9b01eae17",
     "training_scripts_sha256": {
-      "vowels.py": "15704a3a8db23a68686f9e82e320aa55c6f883ce9647268ea82d0e55cf9d1bf9",
-      "train_vowels.py": "3ebcfc27cb19c486a3274bd602326c2c713cf1eaba5cffbeedadadcb634bfe68"
+      "bengali/vowels.py": "15704a3a8db23a68686f9e82e320aa55c6f883ce9647268ea82d0e55cf9d1bf9",
+      "bengali/train_vowels.py": "0b7ebb5a14253a5401076200d3b6f0c76fcbde1724235d2b7cd42663e67596fe",
+      "build_bengali.py": "a9f28f137bb47014c06932b71aedbd3c4aa588ee20fe7f8b2edea9aa53f08d0c",
+      "bengali_training_data.py": "900803ae899abe44cd166070c68f93b5bb9890559392b7aa5f7d268d01b8d94e"
     },
     "depth": 10,
     "min_leaf": 20
   },
   "alignment": {
     "train": {
-      "accepted_types": 19662,
-      "aligned_rows": 19727,
+      "accepted_types": 19658,
+      "aligned_rows": 19723,
       "ambiguous_rows": 0,
-      "class_0": 20737,
-      "class_1": 5464,
-      "class_2": 6387,
+      "class_0": 20733,
+      "class_1": 5462,
+      "class_2": 6385,
       "conflicting_variant_types": 29,
-      "instances": 32588,
+      "instances": 32580,
       "no_slots_rows": 5936,
-      "rejected_types": 35430,
-      "source_rows": 55181,
-      "source_types": 55121,
+      "rejected_types": 35410,
+      "source_rows": 55157,
+      "source_types": 55097,
       "unmatched_rows": 74,
-      "unsupported_rows": 29444
+      "unsupported_rows": 29424
     },
     "dev": {
       "accepted_types": 1140,
@@ -78,68 +80,68 @@
   },
   "metrics": {
     "train": {
-      "instances": 32588,
-      "correct": 28124,
-      "accuracy": 0.8630170614950289,
+      "instances": 32580,
+      "correct": 28117,
+      "accuracy": 0.8630141190914672,
       "confusion_actual_rows": [
         [
-          20014,
-          204,
-          519
+          20012,
+          257,
+          464
         ],
         [
           568,
-          4312,
-          584
+          4380,
+          514
         ],
         [
-          1659,
-          930,
-          3798
+          1658,
+          1002,
+          3725
         ]
       ]
     },
     "dev": {
       "instances": 1852,
-      "correct": 1593,
-      "accuracy": 0.8601511879049676,
+      "correct": 1585,
+      "accuracy": 0.8558315334773218,
       "confusion_actual_rows": [
         [
           1168,
-          12,
-          37
+          13,
+          36
         ],
         [
           30,
-          229,
-          33
+          230,
+          32
         ],
         [
           92,
-          55,
-          196
+          64,
+          187
         ]
       ]
     },
     "test": {
       "instances": 1793,
-      "correct": 1532,
-      "accuracy": 0.8544339096486335,
+      "correct": 1531,
+      "accuracy": 0.8538761851645287,
       "confusion_actual_rows": [
         [
           1115,
-          8,
-          28
+          9,
+          27
         ],
         [
           32,
-          236,
-          35
+          240,
+          31
         ],
         [
           92,
-          66,
-          181
+          71,
+          176
         ]
       ]
     }
@@ -658,7 +660,7 @@
                         "leaf": 1,
                         "counts": [
                           1,
-                          2141,
+                          2139,
                           128
                         ]
                       }
@@ -996,22 +998,22 @@
                       }
                     },
                     "no": {
-                      "f": "prev",
-                      "v": "া",
+                      "f": "next",
+                      "v": "ণ",
                       "yes": {
                         "leaf": 2,
                         "counts": [
-                          53,
-                          89,
-                          135
+                          0,
+                          19,
+                          62
                         ]
                       },
                       "no": {
                         "leaf": 1,
                         "counts": [
-                          47,
-                          409,
-                          249
+                          100,
+                          479,
+                          321
                         ]
                       }
                     }
@@ -1503,7 +1505,7 @@
                         "counts": [
                           1605,
                           26,
-                          575
+                          574
                         ]
                       }
                     }
@@ -1696,7 +1698,7 @@
                 "no": {
                   "leaf": 0,
                   "counts": [
-                    39,
+                    38,
                     0,
                     3
                   ]
@@ -1707,38 +1709,38 @@
               "f": "prev",
               "v": "ি",
               "yes": {
-                "f": "position",
-                "v": "6",
+                "f": "length",
+                "v": "4",
                 "yes": {
-                  "f": "length",
-                  "v": "7",
-                  "yes": {
-                    "leaf": 2,
-                    "counts": [
-                      2,
-                      0,
-                      24
-                    ]
-                  },
-                  "no": {
-                    "leaf": 2,
-                    "counts": [
-                      0,
-                      0,
-                      29
-                    ]
-                  }
+                  "leaf": 2,
+                  "counts": [
+                    8,
+                    0,
+                    14
+                  ]
                 },
                 "no": {
-                  "f": "length",
-                  "v": "4",
+                  "f": "position",
+                  "v": "6",
                   "yes": {
-                    "leaf": 2,
-                    "counts": [
-                      8,
-                      0,
-                      14
-                    ]
+                    "f": "length",
+                    "v": "7",
+                    "yes": {
+                      "leaf": 2,
+                      "counts": [
+                        2,
+                        0,
+                        24
+                      ]
+                    },
+                    "no": {
+                      "leaf": 2,
+                      "counts": [
+                        0,
+                        0,
+                        29
+                      ]
+                    }
                   },
                   "no": {
                     "f": "length",
@@ -1746,7 +1748,7 @@
                     "yes": {
                       "leaf": 2,
                       "counts": [
-                        7,
+                        6,
                         0,
                         37
                       ]
@@ -1801,7 +1803,7 @@
                       "yes": {
                         "leaf": 2,
                         "counts": [
-                          28,
+                          27,
                           0,
                           40
                         ]
@@ -2069,7 +2071,7 @@
                       "no": {
                         "leaf": 0,
                         "counts": [
-                          10094,
+                          10093,
                           0,
                           28
                         ]

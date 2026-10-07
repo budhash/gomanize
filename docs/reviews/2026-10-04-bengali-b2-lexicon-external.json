@@ -1,5 +1,5 @@
 {
-  "model_sha256": "016a05588b21f121c7799a91e668120a3a1ad5cdd1cf35d3bfb38c2dae2fdc87",
+  "model_sha256": "aae73bcc1c4a8c0303fbcec194e06a353260c0bbc4478a320f832deba4cc966e",
   "aksharantar_archive_sha256": "4ab6edcc6ab556040d8f43ee75eec73cc25af0cf72d09e4650dab26b196d5fe7",
   "aksharantar_test_sha256": "b00ff14b8a9dda6318eb5298a8314930c590607ed17c8a8f90c4a6e66e1bd20a",
   "banglatlit_fixture_sha256": "386721b4221e2d93b16ab73f3761c7c4e4cd295adf1160fe9c95c06cb34c5386",
@@ -79,17 +79,17 @@
       "lexicon": {
         "match_any": 13,
         "accuracy": 0.0052,
-        "macro_minCER": 0.29401287134017773
+        "macro_minCER": 0.29402398245128886
       },
       "model_lexicon": {
         "match_any": 17,
         "accuracy": 0.0068,
-        "macro_minCER": 0.2814243562204692
+        "macro_minCER": 0.28143546733158026
       },
       "lexicon_added_to_model": {
         "wins": 5,
         "losses": 0,
-        "changed": 1477
+        "changed": 1476
       }
     },
     "all_tokens_unseen_sentences": {
@@ -123,6 +123,6 @@
     "limitation": "sentence-level Roman references do not support isolated unseen-token accuracy"
   },
   "lyrics_gold": "not yet built (T-0054)",
-  "lexicon_sha256": "090d99b72464231324fe61ab44107b4c525eb5795273021641492b9223e07e1f",
+  "lexicon_sha256": "f7219dd805c7fd977af9ec64bb590134a9bf1aef11d3f3580062a03b4588a1ea",
   "lexicon_policy": "fixed >=3 attestations and unique winner; no external tuning"
 }

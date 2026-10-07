@@ -80,8 +80,10 @@ def main():
                 'scope': 'simple-whole-words-v1',
                 'provenance': {'google_sha256': GOOGLE_SHA,
                                'split_manifest_sha256': hashlib.sha256((DEFAULT/'manifest.json').read_bytes()).hexdigest(),
-                               'training_scripts_sha256': {name: hashlib.sha256((Path(__file__).parent/name).read_bytes()).hexdigest()
-                                                           for name in ('vowels.py', 'train_vowels.py')},
+                               # Paths relative to tools/; includes the shared key and loader modules.
+                               'training_scripts_sha256': {name: hashlib.sha256((Path(__file__).parents[1]/name).read_bytes()).hexdigest()
+                                                           for name in ('bengali/vowels.py', 'bengali/train_vowels.py',
+                                                                        'build_bengali.py', 'bengali_training_data.py')},
                                'depth': args.depth, 'min_leaf': args.min_leaf},
                 'alignment': {'train': train_stats, 'dev': dev_stats},
                 'metrics': {'train': score(learned, train), 'dev': score(learned, dev)}, 'tree': learned}

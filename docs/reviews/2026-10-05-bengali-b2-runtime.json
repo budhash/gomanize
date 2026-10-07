@@ -140,7 +140,7 @@
       "items": 2500,
       "lexicon": {
         "accuracy": 0.0052,
-        "macro_minCER": 0.29401287134017773,
+        "macro_minCER": 0.29402398245128886,
         "match_any": 13
       },
       "model": {
@@ -150,7 +150,7 @@
       },
       "model_lexicon": {
         "accuracy": 0.0068,
-        "macro_minCER": 0.2814243562204692,
+        "macro_minCER": 0.28143546733158026,
         "match_any": 17
       },
       "rerank": {
@@ -160,7 +160,7 @@
       },
       "rerank_lexicon": {
         "accuracy": 0.0068,
-        "macro_minCER": 0.28144203781758703,
+        "macro_minCER": 0.28145314892869816,
         "match_any": 17
       },
       "rerank_lexicon_vs_model_lexicon": {
@@ -344,13 +344,13 @@
   "aksharantar_archive_sha256": "4ab6edcc6ab556040d8f43ee75eec73cc25af0cf72d09e4650dab26b196d5fe7",
   "aksharantar_test_sha256": "b00ff14b8a9dda6318eb5298a8314930c590607ed17c8a8f90c4a6e66e1bd20a",
   "banglatlit_fixture_sha256": "386721b4221e2d93b16ab73f3761c7c4e4cd295adf1160fe9c95c06cb34c5386",
-  "lexicon_sha256": "090d99b72464231324fe61ab44107b4c525eb5795273021641492b9223e07e1f",
+  "lexicon_sha256": "f7219dd805c7fd977af9ec64bb590134a9bf1aef11d3f3580062a03b4588a1ea",
   "limitations": [
     "Aksharantar overlaps Dakshina test; not independent",
     "sentence references cannot establish token-level accuracy",
     "lyrics gold remains T-0054"
   ],
-  "selector_sha256": "37215f8f26586d831e32d6c2cb84cca80526a8d1ed6edfc23180f6d2b8f7d5d2",
+  "selector_sha256": "252781600c834993beaa303dd0a918a8c0cd51cf40428851919c47c363f40961",
   "sources_sha256": {
     "core/catalog.go": "aec4d090c152da993d70f4e9280a4836e969e7f3b656e156b5d7cf90235b18cf",
     "core/categories.go": "610d78c4d8d75bc7fafdf5fc4b0fbcb565ef7f9fb693fe449090d0b5528ff84e",
@@ -378,5 +378,5 @@
   },
   "threshold": 0.6,
   "unseen_definition": "absent from union of frozen Google and Dakshina training vocabularies",
-  "vowel_model_sha256": "016a05588b21f121c7799a91e668120a3a1ad5cdd1cf35d3bfb38c2dae2fdc87"
+  "vowel_model_sha256": "aae73bcc1c4a8c0303fbcec194e06a353260c0bbc4478a320f832deba4cc966e"
 }

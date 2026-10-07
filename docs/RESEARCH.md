@@ -77,7 +77,7 @@ opt-in held-out Dakshina match-any is 62.76% versus B1's 56.52%, without lexicon
 or overrides. [B2 report](reviews/2026-10-04-bengali-b2-vowels.md) records strict
 accuracy, CER, alignment coverage, and full/unseen external results.
 
-The optional Bengali spelling lexicon adds 8,980 isolated training spellings.
+The optional Bengali spelling lexicon adds 8,976 isolated training spellings.
 It leaves dev/test output unchanged (zero coverage); external improvements and
 in-sample coverage are reported separately in the [lexicon record](reviews/2026-10-04-bengali-b2-lexicon.md).
 

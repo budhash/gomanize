@@ -24,3 +24,7 @@ There are no engine, rule, learned-model, or runtime-output changes in this PR.
 
 Full `make ci` passed, including the frozen Hindi replay, accuracy benchmarks,
 Bengali B1 gate and eight isolation tests. Repository pre-commit hooks also pass.
+
+**Superseded figures (2026-10-06).** Training partitions were rebuilt (schema 2) and this
+experiment's committed record regenerated; see the
+[retrain record](2026-10-06-bengali-retrain.md) for current counts.

@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 2,
   "seed": "gomanize-bengali-b2-v1",
   "assignment": "SHA256(seed + NUL + NFC/Cf-free native); first 8 bytes big-endian modulo 10000; train <9000, dev <9500, else test",
   "unicode_version": "13.0.0",
@@ -26,8 +26,12 @@
       "dev": 2500,
       "test": 2500
     },
-    "google_excluded_types": 3630,
-    "dakshina_train_excluded_types": 1883
+    "google_excluded_types": 3654,
+    "dakshina_train_excluded_types": 1901,
+    "variant_excluded_types": {
+      "google": 24,
+      "dakshina": 18
+    }
   },
   "alignment": "not run; ambiguous alignment counts belong to B2 model artifacts",
   "partitions": {
@@ -40,8 +44,8 @@
       "sha256": "b8362265c841f891619f2016ba02bdad23774036aab0ccae1e4c69f70feb723d"
     },
     "dakshina-train": {
-      "words": 23117,
-      "sha256": "7c5edf075c2dcd1154e2d721051608d7a1d4e0cc79d3612ffcc5bde33a4f4598"
+      "words": 23099,
+      "sha256": "658cca86dd59b3d273a24ce7977d155346495609f43a13f34cb86f6b091948a3"
     },
     "google-dev": {
       "words": 3184,
@@ -52,8 +56,8 @@
       "sha256": "035678309bcb0668e575a8a0d83dd826d7b51278ccb005be6b97181ec7fe985f"
     },
     "google-train": {
-      "words": 55121,
-      "sha256": "c14efe6f8597256a951052607273d35cc5e9f66b943caced62da8eab6d70f414"
+      "words": 55097,
+      "sha256": "45d1dbc35c0a60fbe5f34b1d5ae5aa70df2f96b0a28f574e897ee4f3fd621665"
     }
   }
 }

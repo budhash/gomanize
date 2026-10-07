@@ -26,13 +26,13 @@
     "by_partition": {
       "dakshina-dev": 135,
       "dakshina-test": 124,
-      "dakshina-train": 1492,
+      "dakshina-train": 1490,
       "google-dev": 126,
       "google-test": 101,
-      "google-train": 2123
+      "google-train": 2121
     },
-    "training_union": 2219,
-    "unseen_training_types": 1981
+    "training_union": 2217,
+    "unseen_training_types": 1983
   },
   "lyrics_gold": {
     "status": "not yet built (T-0054); overlap unknown, not zero"
