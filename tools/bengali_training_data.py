@@ -17,7 +17,7 @@ DEFAULT = ROOT / 'training/data/bengali'
 SEED = 'gomanize-bengali-b2-v1'
 GOOGLE_SHA = '1bc2edda15da62bd4ef8576114e391c9a89ad8971f1eef3635e8fee0d7c1dd61'
 GOOGLE_KEYS_SHA = {
-    'train': '58d082e5e6e5cf59c6e2aa4344a1b47b81cd00d9afc439a3ba194406cc3c9fd1',
+    'train': '45d1dbc35c0a60fbe5f34b1d5ae5aa70df2f96b0a28f574e897ee4f3fd621665',
     'dev': '892f87edb11483b313bc637d06d1cb98bcb807fd7f5755cb38257055daa06fe6',
     'test': '035678309bcb0668e575a8a0d83dd826d7b51278ccb005be6b97181ec7fe985f',
 }
@@ -38,9 +38,12 @@ BENGALI_RUNE = re.compile('[\u0980-\u09ff]')
 
 
 def collision_key(key):
-    """Stricter comparison key for exclusion: folds variant spellings the
-    canonical key keeps distinct but the engine treats as one word."""
-    return native_key(key).replace('\u09ce', '\u09a4\u09cd').replace('\u0985\u09be', '\u0986')
+    """Stricter comparison key for training exclusion. Folds only khanda-ta
+    spellings (ৎ, ত + hasant, word-final bare ত) and a malformed অ + া for আ;
+    other orthographic variants (ি/ী, ন/ণ, শ/ষ/স, ...) are distinct spellings and
+    are not merged (design B.4.1)."""
+    key = native_key(key).replace('\u09ce', '\u09a4\u09cd').replace('\u0985\u09be', '\u0986')
+    return key + '\u09cd' if key.endswith('\u09a4') else key
 
 
 def variant_collisions(groups):

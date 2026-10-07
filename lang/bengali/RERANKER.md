@@ -9,7 +9,7 @@ URLs, attribution, license links and pinned hashes are in the
 [training data record](../../training/data/bengali/README.md).
 
 Artifact SHA-256:
-`dfe16670fdd1bad356c635d7a0491b7fd8fd7caca5d82dc91afeec97aa843bc5` (retrained 2026-10-06 after excluding variant spellings
+`252781600c834993beaa303dd0a918a8c0cd51cf40428851919c47c363f40961` (retrained 2026-10-06 after excluding variant spellings
 of held-out words from training; dev selection and held-out results unchanged —
 see the [retrain record](../../docs/reviews/2026-10-06-bengali-retrain.md)).
 Threshold **0.6** and maximum **eight** single-slot flips are frozen from dev

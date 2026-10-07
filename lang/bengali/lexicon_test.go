@@ -43,7 +43,7 @@ func TestBengaliLexiconCanonicalKeys(t *testing.T) {
 
 func TestBengaliLexiconEntriesAndStyles(t *testing.T) {
 	entries := loadLexicon()
-	if LexiconSize() != 8979 {
+	if LexiconSize() != 8976 {
 		t.Fatalf("unexpected lexicon size %d", LexiconSize())
 	}
 	e := core.NewEngine(Bengali{}, colloquial.Colloquial{})

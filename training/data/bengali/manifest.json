@@ -26,11 +26,11 @@
       "dev": 2500,
       "test": 2500
     },
-    "google_excluded_types": 3643,
-    "dakshina_train_excluded_types": 1893,
+    "google_excluded_types": 3654,
+    "dakshina_train_excluded_types": 1901,
     "variant_excluded_types": {
-      "google": 13,
-      "dakshina": 10
+      "google": 24,
+      "dakshina": 18
     }
   },
   "alignment": "not run; ambiguous alignment counts belong to B2 model artifacts",
@@ -44,8 +44,8 @@
       "sha256": "b8362265c841f891619f2016ba02bdad23774036aab0ccae1e4c69f70feb723d"
     },
     "dakshina-train": {
-      "words": 23107,
-      "sha256": "56f4d9e1dfd141e0daa48853728ca3e4a393368f627bb336a6e00f119c281413"
+      "words": 23099,
+      "sha256": "658cca86dd59b3d273a24ce7977d155346495609f43a13f34cb86f6b091948a3"
     },
     "google-dev": {
       "words": 3184,
@@ -56,8 +56,8 @@
       "sha256": "035678309bcb0668e575a8a0d83dd826d7b51278ccb005be6b97181ec7fe985f"
     },
     "google-train": {
-      "words": 55108,
-      "sha256": "58d082e5e6e5cf59c6e2aa4344a1b47b81cd00d9afc439a3ba194406cc3c9fd1"
+      "words": 55097,
+      "sha256": "45d1dbc35c0a60fbe5f34b1d5ae5aa70df2f96b0a28f574e897ee4f3fd621665"
     }
   }
 }

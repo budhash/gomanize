@@ -1,21 +1,21 @@
 {
   "alignment": {
-    "accepted_types": 19661,
-    "aligned_rows": 19726,
+    "accepted_types": 19658,
+    "aligned_rows": 19723,
     "ambiguous_rows": 0,
-    "class_0": 20736,
-    "class_1": 5464,
-    "class_2": 6387,
+    "class_0": 20733,
+    "class_1": 5462,
+    "class_2": 6385,
     "conflicting_variant_types": 29,
-    "instances": 32587,
+    "instances": 32580,
     "no_slots_rows": 5936,
-    "rejected_types": 35418,
-    "source_rows": 55168,
-    "source_types": 55108,
+    "rejected_types": 35410,
+    "source_rows": 55157,
+    "source_types": 55097,
     "unmatched_rows": 74,
-    "unsupported_rows": 29432
+    "unsupported_rows": 29424
   },
-  "artifact_sha256": "dfe16670fdd1bad356c635d7a0491b7fd8fd7caca5d82dc91afeec97aa843bc5",
+  "artifact_sha256": "252781600c834993beaa303dd0a918a8c0cd51cf40428851919c47c363f40961",
   "dev": {
     "baseline": {
       "CER": 0.0783930173094878,
@@ -84,49 +84,49 @@
   },
   "folds": [
     {
-      "fit_keys_sha256": "fc0b3a8aba0bc29b2c612a8949b1a414b1a746725b2c7b7e3109170727752406",
-      "fit_slots": 25976,
-      "fit_types": 15683,
+      "fit_keys_sha256": "efb935880508ef70253255b4ae1ac24c37a21274a77dffff94278b4a520c0ca9",
+      "fit_slots": 25972,
+      "fit_types": 15681,
       "fold": 0,
       "prediction_keys_sha256": "d93907d9d55f3dfc8d4c174de92d45afe5322e9a8be6fc3ddd4d0f300edf3e60",
       "prediction_types": 4576,
-      "tree_sha256": "30b5c78b327fabaff3f08217d9e11b68363082b06e4210a69c65457e8005585e"
+      "tree_sha256": "6bff725e071c5ffa5d71a6e861abd9470e7758ff77e31b846a4c1f70dc123341"
     },
     {
-      "fit_keys_sha256": "3e646e7563667adf226dc8fd17753b0ba166a50d9a19d14622ba4466223a03f2",
-      "fit_slots": 26098,
-      "fit_types": 15687,
+      "fit_keys_sha256": "bb49e61ed475f7bd340c5a2601deafd9998e4c4dc8170465614b390a8a40188f",
+      "fit_slots": 26093,
+      "fit_types": 15685,
       "fold": 1,
-      "prediction_keys_sha256": "3e9449a980f57b3e0f76c91d7ec7ef5c40f7f887dc647e384eec26434fca0499",
-      "prediction_types": 4680,
-      "tree_sha256": "3d51ac3d2ecc7fa216c93c732cc8478453368080824bca51467ba0f533b6c7c7"
+      "prediction_keys_sha256": "a950623e8502ed9872dfd0a18e5ef6ac77d5a04ff55c55bbaf49d08de9629dcb",
+      "prediction_types": 4678,
+      "tree_sha256": "e4aa3a23a3ab0bef6fc2338e7a47fc3f0950f72af32af358c293cbc1bb5cff14"
     },
     {
-      "fit_keys_sha256": "f7419f567ae682acede2a1e64ffa2a69a0f8a348acd768bc447c1df4f3ba11c6",
-      "fit_slots": 25964,
-      "fit_types": 15700,
+      "fit_keys_sha256": "08251c1548cc6d121f610ed1fa5a4d5b9bf7c7923be4d5c4d1a29a558615b0e6",
+      "fit_slots": 25957,
+      "fit_types": 15697,
       "fold": 2,
-      "prediction_keys_sha256": "590f513b4830964d4511c66af75cde3387c996c093327691f9548e7641e30209",
-      "prediction_types": 4625,
-      "tree_sha256": "807952242bd7021050be1f5592fc54463b55a205d4b7e8987c1bca107d19a834"
+      "prediction_keys_sha256": "1f8a4824f93608fb0138b5f85d6e8d64685e25a0e1f73f33152ac3fb64538028",
+      "prediction_types": 4623,
+      "tree_sha256": "618f970f2ace3b27b0804162904ecf0b07419fa64d1b9ae23363e6e2a7d7e1ac"
     },
     {
-      "fit_keys_sha256": "3308b98a0e4d4d5e5baabb16aac045472e48ad667f646dfa59230ae231c3605c",
-      "fit_slots": 26105,
-      "fit_types": 15740,
+      "fit_keys_sha256": "b3308c0ca47965aa2590092a896cc84f5aad36762f726b452a618f562d5794e7",
+      "fit_slots": 26100,
+      "fit_types": 15738,
       "fold": 3,
-      "prediction_keys_sha256": "dcf91bda7d316b3cff3d09eb7e0fb9d880a50d1b881c1cd207ca3929c70f85cf",
-      "prediction_types": 4655,
-      "tree_sha256": "d95ab019c4ee41b032b032de5834108f75b540754278bae0ee10d52fa987aef2"
+      "prediction_keys_sha256": "667d29e0d250c9981204f286e0d0f25fc504112990c8f85f12c4fef3521156cc",
+      "prediction_types": 4653,
+      "tree_sha256": "ca2a603e0712248f9e308e6c72ab427f7a2461c5ee831de2f1eca91e0a120a63"
     },
     {
-      "fit_keys_sha256": "25435e97150767b27d43e946bb62e7a5794c16ec0a7258b1e122bff3a41919c2",
-      "fit_slots": 26205,
-      "fit_types": 15834,
+      "fit_keys_sha256": "713c84be233233454e3a5d3cba79136ddb2b572798273fdec99ea4bceb42ebef",
+      "fit_slots": 26198,
+      "fit_types": 15831,
       "fold": 4,
-      "prediction_keys_sha256": "3f37982c85eb27d96abb68ea2b52b0d6ee8c664343d61f5aa83f44278335a07b",
-      "prediction_types": 4571,
-      "tree_sha256": "83064de1a607b055ef4b54b68f4cb166348d6b7f749988a2f5b3c7204992b6f8"
+      "prediction_keys_sha256": "6039bea58c51939ede21dd77945887ff8e1871b4c34b31911b5210f113ba4b82",
+      "prediction_types": 4569,
+      "tree_sha256": "bc29f471a53079f4f5ce620face6a91d746f3f440db48ad456548508208cd0d1"
     }
   ],
   "provenance": {
@@ -161,10 +161,10 @@
       "tools/bengali/train_reranker.py": "b8c6e25a4f0787b65575825cca9236d3789639324c5c52da82ae674fa0be40f8",
       "tools/bengali/train_vowels.py": "0b7ebb5a14253a5401076200d3b6f0c76fcbde1724235d2b7cd42663e67596fe",
       "tools/bengali/vowels.py": "15704a3a8db23a68686f9e82e320aa55c6f883ce9647268ea82d0e55cf9d1bf9",
-      "tools/bengali_training_data.py": "d8ab38d72175ce04530370162333f5e87c91c1fb5fa61c7fbd1bbc6f2ace5fc3"
+      "tools/bengali_training_data.py": "900803ae899abe44cd166070c68f93b5bb9890559392b7aa5f7d268d01b8d94e"
     },
-    "split_manifest_sha256": "9c2d0c37c8815dd9e79cca5435c73bf24d7a4bfa2c94d0d1171232cd12143ad5",
-    "vowel_model_sha256": "bcd0f8cc710887ac066eb9fcf6710cb7a07dc6a243a48c34ad6c21cec9f606b9"
+    "split_manifest_sha256": "29d1ac4406cd9b915ef14208179aab28a58ba2fb4e66072ebea011e9b01eae17",
+    "vowel_model_sha256": "aae73bcc1c4a8c0303fbcec194e06a353260c0bbc4478a320f832deba4cc966e"
   },
   "schema": 1,
   "selected": {
@@ -176,11 +176,11 @@
     "words": 2500
   },
   "training": {
-    "baseline_any": 14006,
-    "oracle_any": 14713,
-    "pairs": 13953,
-    "prefer_alternative_pairs": 1263,
-    "words": 23107,
-    "words_with_alternatives": 8242
+    "baseline_any": 14003,
+    "oracle_any": 14708,
+    "pairs": 13946,
+    "prefer_alternative_pairs": 1259,
+    "words": 23099,
+    "words_with_alternatives": 8240
   }
 }

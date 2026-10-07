@@ -1,6 +1,6 @@
 # Bengali spelling lexicon
 
-`lexicon.tsv` contains 8,979 normalized native keys and attested Roman spellings.
+`lexicon.tsv` contains 8,976 normalized native keys and attested Roman spellings.
 It is generated from the isolated Dakshina Bengali v1.0 training subset by
 `tools/bengali/build_lexicon.py`. A spelling needs at least three attestations
 and must be the unique highest-vote spelling for its word. Ties are excluded;
@@ -49,12 +49,15 @@ python3 tools/bengali/build_lexicon_keys.py /tmp/lexicon_keys.json.gz
 make test-bengali-lexicon
 ```
 
-**Variant spellings (2026-10-06).** Lookup does not fold variant spellings that
-are not canonically equivalent (khanda-ta ৎ vs ত্, malformed অ + া vs আ). The
-schema-2 training partitions exclude every training type that is such a variant of
-a held-out type, so the rebuilt lexicon has no entry colliding with held-out words
-(the schema-1 entry `আবার → abar`, variant of held-out অাবার, is gone);
-`assert_lexicon_isolation` rejects any key that collides under `collision_key`.
+**Variant spellings (2026-10-06).** Lookup does not fold spellings that are not
+canonically equivalent. The schema-2 training partitions exclude every training
+type that is a khanda-ta spelling (ৎ, ত + hasant, word-final ত) or malformed-আ
+variant of a held-out type, so the rebuilt lexicon drops `আবার`, `অর্থাত`,
+`যাবত` and `বিদ্যুৎ`; `assert_lexicon_isolation` rejects any key that collides
+under `collision_key`. Other orthographic variants (ি/ী, ন/ণ, শ/ষ/স, ...) are
+distinct spellings and are not merged (see the
+[training data record](../../training/data/bengali/README.md)); exact-key lookup
+gives them no held-out hits.
 
 The word lexicon cannot improve excluded held-out words. Train-set gains measure
 memorization/coverage, not generalization. External transfer and unseen-word

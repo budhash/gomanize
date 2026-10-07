@@ -1980,14 +1980,14 @@
     "tools/bengali/evaluate_runtime/main.go": "f9e0ef83bfdc696be837eb788fcd47cf491578dc3a977935cecfc1a24811b577",
     "tools/bengali/evaluate_runtime.py": "048477daaa9016734af81fdc24ddf5e7a4c07a145b91e31f7c21a992505f8582",
     "tools/bengali_lyrics.py": "ff8688b0a5697963e4824aefb45b2f8e593cadc696c4e3fb2caa2b6583a378be",
-    "tools/bengali_training_data.py": "d8ab38d72175ce04530370162333f5e87c91c1fb5fa61c7fbd1bbc6f2ace5fc3",
+    "tools/bengali_training_data.py": "900803ae899abe44cd166070c68f93b5bb9890559392b7aa5f7d268d01b8d94e",
     "tools/build_bengali.py": "a9f28f137bb47014c06932b71aedbd3c4aa588ee20fe7f8b2edea9aa53f08d0c",
-    "training/data/bengali/manifest.json": "9c2d0c37c8815dd9e79cca5435c73bf24d7a4bfa2c94d0d1171232cd12143ad5"
+    "training/data/bengali/manifest.json": "29d1ac4406cd9b915ef14208179aab28a58ba2fb4e66072ebea011e9b01eae17"
   },
   "artifacts_sha256": {
-    "vowel_tree.json": "bcd0f8cc710887ac066eb9fcf6710cb7a07dc6a243a48c34ad6c21cec9f606b9",
-    "selector.json": "dfe16670fdd1bad356c635d7a0491b7fd8fd7caca5d82dc91afeec97aa843bc5",
-    "lexicon.tsv": "65eb77a22dbb878b1466628bcac862a9d2b1d71958ce202d4ecfa7a24d85e77b"
+    "vowel_tree.json": "aae73bcc1c4a8c0303fbcec194e06a353260c0bbc4478a320f832deba4cc966e",
+    "selector.json": "252781600c834993beaa303dd0a918a8c0cd51cf40428851919c47c363f40961",
+    "lexicon.tsv": "f7219dd805c7fd977af9ec64bb590134a9bf1aef11d3f3580062a03b4588a1ea"
   },
   "limitations": [
     "Assistant-authored single references, not human-attested gold or an accuracy gate.",

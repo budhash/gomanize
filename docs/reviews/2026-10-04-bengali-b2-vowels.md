@@ -158,3 +158,7 @@ Independent stack review. The tables above record the model as submitted.
 - Tracked: `training_scripts_sha256` covers `vowels.py` and `train_vowels.py` but
   not the shared key/loader modules; the runtime evaluates the model twice per
   pending consonant when enabled.
+
+**Superseded figures (2026-10-06).** Training partitions were rebuilt (schema 2) and this
+experiment's committed record regenerated; see the
+[retrain record](2026-10-06-bengali-retrain.md) for current counts.

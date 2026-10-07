@@ -107,7 +107,7 @@ func TestBengaliRerankerArtifactAndRuleControls(t *testing.T) {
 		t.Fatal("embedded selector invalid")
 	}
 	// The embedded selector must be the frozen dev-selected artifact.
-	if got := fmt.Sprintf("%x", sha256.Sum256(selectorJSON)); got != "dfe16670fdd1bad356c635d7a0491b7fd8fd7caca5d82dc91afeec97aa843bc5" {
+	if got := fmt.Sprintf("%x", sha256.Sum256(selectorJSON)); got != "252781600c834993beaa303dd0a918a8c0cd51cf40428851919c47c363f40961" {
 		t.Fatalf("embedded selector changed: sha256 %s", got)
 	}
 	for _, bad := range []string{`{}`, `{"schema":1,"tree":{"counts":[0,0]}}`, `{"schema":1,"tree":{"counts":[-1,3]}}`, `{"schema":1,"tree":{"counts":[1,2],"feature":"unknown"}}`, `{"schema":1,"tree":{"counts":[1,2],"yes":{"counts":[1,2]}}}`} {

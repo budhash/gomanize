@@ -9,8 +9,8 @@ training rows, and checks final spelling-lexicon keys. Future trainers must use
 
 | Source | Train types | Dev types | Test types |
 |---|---:|---:|---:|
-| Google pronunciation lexicon | 55,108 | 3,184 | 3,023 |
-| Dakshina spelling references | 23,107 | 2,500 | 2,500 |
+| Google pronunciation lexicon | 55,097 | 3,184 | 3,023 |
+| Dakshina spelling references | 23,099 | 2,500 | 2,500 |
 
 Comparison keys remove Unicode format characters (`Cf`) then normalize to NFC.
 This handles canonical nukta aliases and split matras, without merging words by
@@ -29,9 +29,9 @@ a normalized word follows the same assignment, independent of source row order.
 The union of **both sources' dev/test types** is protected from both training
 sources. This also removes 1,883 of Dakshina's 25,000 training types, preventing
 its future spelling lexicon from covering Google model evaluation words. Since
-schema 2 (2026-10-06), training types that are a *variant spelling* of any
-held-out type are excluded too (see below): 13 Google and 10 Dakshina training
-types. Held-out sets are never moved.
+schema 2 (2026-10-06), training types that are a khanda-ta or malformed-আ
+spelling variant of any held-out type are excluded too (see below): 24 Google
+and 18 Dakshina training types. Held-out sets are never moved.
 Development references may be used for model selection, never training. Test
 references remain final evaluation only. Frozen inventories are checksum-pinned
 in the loader; editing a manifest and recomputing its checksum cannot silently
@@ -40,16 +40,22 @@ reconstruction from the pinned raw source. CI checks inventories offline.
 
 ### Known limitations (2026-10-05 review; updated 2026-10-06)
 
-- **Variant-spelling collisions (resolved in schema 2).** The canonical key does
-  not merge khanda-ta (U+09CE) with ta + hasant, nor a malformed অ + া with আ,
-  although each pair spells one word (the engine renders the khanda-ta pairs
-  identically; malformed অ + া renders literally, অাবার → `oabar`). Schema 1 left
-  15 held-out types (23 training/held-out pairs) with a variant in training, e.g.
-  উত্সাহ (train) vs উৎসাহ (Dakshina dev); they were pinned and disclosed during the
-  2026-10-05 review. Schema 2 excludes every training type whose `collision_key`
-  matches a held-out type, and `verify` requires zero such collisions. All
-  dependent artifacts were retrained once; see the
-  [retrain record](../../../docs/reviews/2026-10-06-bengali-retrain.md).
+- **Khanda-ta and malformed-আ variants (resolved in schema 2).** The canonical
+  key does not merge khanda-ta spellings (ৎ, ত + hasant, word-final bare ত) or a
+  malformed অ + া with আ, although each set spells one word. Schema 1 left 15
+  held-out types (23 training/held-out pairs) with an encoding variant in
+  training, e.g. উত্সাহ (train) vs উৎসাহ (Dakshina dev), plus further word-final ত
+  forms such as অর্থাত (train) vs অর্থাৎ (Dakshina dev). Schema 2 excludes every
+  training type whose `collision_key` matches a held-out type, and `verify`
+  requires zero such collisions. All dependent artifacts were retrained once; see
+  the [retrain record](../../../docs/reviews/2026-10-06-bengali-retrain.md).
+- **Other orthographic variants are not merged.** Distinct but interchangeable
+  spellings (ি/ী and ু/ূ, ন/ণ, জ/য, শ/ষ/স, ং/ঙ্, ৃ/্রি) are separate spellings
+  under design B.4.1, which forbids merging spellings by romanized output. The
+  2026-10-06 review measured roughly 430 (ি/ী, ু/ূ), 130 (ন/ণ), 145 (শ/ষ/স),
+  27 (জ/য), 16 (ং/ঙ্) and 2 (ৃ/্রি) training/held-out pairs of this kind, most
+  rendered identically. Exact-key lookup means these do not give the lexicon
+  held-out hits, but learned models may have seen a sibling spelling.
 - **Latin-script Google entries.** Google contains lowercase Latin loan spellings
   with no Bengali-block rune (e.g. `abdomen`): 4,416 train / 264 dev / 226 test
   types, included in the counts above. They are pinned in `NON_BENGALI_TYPES`;
@@ -100,7 +106,7 @@ combined training vocabulary and 6,036 are unseen. It contains **all 2,500
 Dakshina test words**, so these corpora are not independent benchmarks.
 
 BanglaTLit's 2,500 test sentences contain 4,200 distinct Bengali letter/mark-run
-tokens: 2,219 intersect training and 1,981 are unseen. This is a descriptive
+tokens: 2,217 intersect training and 1,983 are unseen (schema 2). This is a descriptive
 word-overlap audit, not a claim about sentence accuracy or the engine tokenizer.
 Neither external corpus supplies training answers. B2 evaluations must report
 full-corpus and unseen-type performance separately. Bengali lyrics gold does
