@@ -578,7 +578,7 @@ func TestBenchmarkSchwaModelHeldout(t *testing.T) {
 
 // TestBenchmarkLexiconCoverage reports the lexicon's coverage HONESTLY. Because
 // Dakshina's train/test native words are disjoint, a train-built lexicon covers
-// ~0% of the held-out test split — so it cannot (and must not) inflate the
+// none of the held-out test split (asserted below) — so it cannot (and must not) inflate the
 // held-out accuracy number. Its real value is production token coverage of common
 // vocabulary, which a type-disjoint benchmark structurally cannot credit. This
 // test asserts that truth rather than a misleading accuracy jump.

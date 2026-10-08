@@ -121,7 +121,7 @@ func (v vowelVariant) Rules() core.RuleCatalog {
 		}
 		r.Action = func(u *core.Unit, w *core.Word) {
 			label, _ := vowelModelDecision(w, u)
-			raw := []rune(w.Original)
+			raw := w.Runes()
 			index := len([]rune(vowelWordView(string(raw[:u.Start.Rune]))))
 			if index == v.flip {
 				if label == 0 {

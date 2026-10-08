@@ -70,7 +70,7 @@ func (p *ScriptProfile) missingFields() []string {
 	if p.SonorousRunes == nil {
 		missing = append(missing, "SonorousRunes")
 	}
-	if p.IndependentVowelRange == [2]rune{} {
+	if p.IndependentVowelRange[0] == 0 || p.IndependentVowelRange[1] == 0 {
 		missing = append(missing, "IndependentVowelRange")
 	}
 	return missing

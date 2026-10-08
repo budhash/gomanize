@@ -90,7 +90,8 @@ type Word struct {
 const MaxLearnedWordRunes = 64
 
 // Runes returns Original decoded as runes, computed once per word. Callers must
-// not modify the returned slice.
+// not modify the returned slice, and Original must not change after the first
+// call (only NewWord sets it).
 func (w *Word) Runes() []rune {
 	if w.runes == nil {
 		w.runes = []rune(w.Original)

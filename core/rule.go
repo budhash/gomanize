@@ -220,7 +220,7 @@ func (e *RuleEngine) Apply(word *Word) {
 	}
 	e.apply(word, t)
 	if t != nil {
-		e.traces = t.traces
+		e.traces = append(e.traces, t.traces...) // accumulate until EnableDebug resets
 	}
 }
 
