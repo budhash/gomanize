@@ -51,8 +51,11 @@ func main() {
 				}
 				language = strings.ToLower(value.String())
 			}
+			// Only booleans count; any other type is ignored rather than
+			// coerced (Truthy panics on BigInt values).
 			for _, name := range webdemo.FlagNames() {
-				flags[name] = args[1].Get(name).Truthy()
+				v := args[1].Get(name)
+				flags[name] = v.Type() == js.TypeBoolean && v.Bool()
 			}
 		}
 

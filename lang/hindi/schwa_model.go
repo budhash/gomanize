@@ -48,7 +48,10 @@ func isConsonantRune(r rune) bool { return consonantBaseRunes[r] }
 // that schwa should be deleted. Features are computed from the raw input runes
 // exactly as tools/schwa/features.py does.
 func schwaModelDecision(w *core.Word, u *core.Unit) (delete bool, applies bool) {
-	runes := []rune(w.Original)
+	runes := w.Runes()
+	if len(runes) > core.MaxLearnedWordRunes {
+		return false, false
+	}
 	i := u.Start.Rune
 	if i < 0 || i >= len(runes) || !isConsonantRune(runes[i]) {
 		return false, false

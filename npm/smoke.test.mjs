@@ -51,6 +51,15 @@ for (const [name, engine] of [["ESM", g], ["CJS", g2]]) {
     assert.equal(engine.translit("गाना"), "gana", `${name}: runtime survives bad flag`);
   }
   assert.throws(() => engine.translit("গান", "bengali"), /options must be an object/, name);
+  // A getter or Proxy that answers differently on a second read must not reach
+  // Go with an unvalidated value (it used to panic and later kill the host).
+  let reads = 0;
+  const flaky = { get longVowels() { return reads++ === 0 ? true : 7n; } };
+  assert.equal(engine.translit("गाना", flaky), "gaanaa", `${name}: getter read once`);
+  let proxyReads = 0;
+  const proxy = new Proxy({}, { get: (_, key) => (key === "longVowels" ? (proxyReads++ === 0 ? true : 1n) : undefined) });
+  assert.equal(engine.translit("गाना", proxy), "gaanaa", `${name}: Proxy read once`);
+  assert.equal(engine.translit("गाना"), "gana", `${name}: runtime survives getter/Proxy options`);
   assert.equal(engine.translit("गाना", { longVowels: false, schwaModel: null }), "gana", name);
   // make npm-test supplies the freshly built CLI for cross-interface parity.
   if (process.env.GOMANIZE_CLI) {

@@ -179,8 +179,8 @@ func vowelModelDecision(w *core.Word, u *core.Unit) (int, bool) {
 	if learnedVowels == nil {
 		return 0, false
 	}
-	raw := []rune(w.Original)
-	if u.Start.Rune < 0 || u.Start.Rune >= len(raw) {
+	raw := w.Runes()
+	if len(raw) > core.MaxLearnedWordRunes || u.Start.Rune < 0 || u.Start.Rune >= len(raw) {
 		return 0, false
 	}
 	word := vowelWordView(w.Original)

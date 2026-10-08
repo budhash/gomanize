@@ -52,9 +52,19 @@ func (p *Parser) Parse(input string, symbols core.SymbolMap) *core.Word {
 	// Stripping first also lets multi-char sequences match across them
 	// (ज्&#8205;ञ still parses as the ज्ञ conjunct). Word.Original is the
 	// stripped form so unit indices always align with it.
+	// Text with no character of this script (emoji sequences, other scripts)
+	// keeps its format characters: they are meaningful there (ZWJ in emoji,
+	// RTL marks, soft hyphens) and each rune passes through as a symbol unit.
+	strip := false
+	for _, r := range input {
+		if _, ok := symbols[string(r)]; ok {
+			strip = true
+			break
+		}
+	}
 	runes := make([]rune, 0, len(input))
 	for _, r := range input {
-		if !unicode.Is(unicode.Cf, r) {
+		if !strip || !unicode.Is(unicode.Cf, r) {
 			runes = append(runes, r)
 		}
 	}

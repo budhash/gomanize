@@ -79,6 +79,23 @@ type Word struct {
 	Units    []*Unit // All parsed units in order
 	Original string  // Original input string
 	Options  Options // Transliteration options
+
+	runes []rune // decoded Original, cached by Runes
+}
+
+// MaxLearnedWordRunes bounds the word length that learned per-word components
+// (vowel/schwa models, candidate selectors) process; longer tokens fall back to
+// the rules. Real words are far shorter (dataset maximum 53); the bound keeps
+// pathological input from costing quadratic time.
+const MaxLearnedWordRunes = 64
+
+// Runes returns Original decoded as runes, computed once per word. Callers must
+// not modify the returned slice.
+func (w *Word) Runes() []rune {
+	if w.runes == nil {
+		w.runes = []rune(w.Original)
+	}
+	return w.runes
 }
 
 // NewWord creates a new empty Word.
@@ -129,6 +146,16 @@ type Options struct {
 	Rerank bool
 	// Debug enables debug output showing rule applications.
 	Debug bool
+}
+
+// DefaultStyle reports whether opts requests the default rendering style:
+// every option other than the component switches (SchwaModel, Lexicon, Rerank)
+// and Debug is unset. Components evaluated only for the default style (e.g.
+// Bengali's lexicon and native selector) must decline otherwise. Any style
+// option added later is non-default automatically.
+func (o Options) DefaultStyle() bool {
+	o.SchwaModel, o.Lexicon, o.Rerank, o.Debug = false, false, false, false
+	return o == Options{}
 }
 
 // DefaultOptions returns the default transliteration options.

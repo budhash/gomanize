@@ -11,6 +11,24 @@ tagged release also has auto-generated notes on the
 
 ## [Unreleased]
 
+### Fixed (keel review, 2026-10-07)
+
+- Text without any character of the selected script (emoji ZWJ sequences, flag
+  tags, RTL marks, soft hyphens) now passes through unchanged instead of losing
+  its format characters.
+- Learned per-word components (schwa/vowel models, Bengali selector) skip tokens
+  longer than 64 runes; very long unspaced input no longer costs quadratic time
+  (a 2,000-character Bengali word took ~30 s in the web demo).
+- Debug tracing is collected per call: `Translit`/`TranslitDebug` with
+  `Options.Debug` are now safe for concurrent use on a shared instance.
+- npm wrappers snapshot options into validated primitives before calling WASM, so
+  a getter or Proxy cannot pass a BigInt through and crash the runtime.
+- A non-nil `brahmic.ScriptProfile` must set every field; partial profiles now
+  panic instead of silently inheriting Devanagari values.
+- New `core.Options.DefaultStyle()` centralizes the default-style check used by
+  Bengali's lexicon and selector, covering any style option added later.
+- The Hindi lexicon coverage test now asserts zero held-out coverage.
+
 ### Changed
 
 - npm/WASM accepts per-call `language: "bengali"`; omitted language remains Hindi.

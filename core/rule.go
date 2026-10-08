@@ -205,17 +205,41 @@ func (e *RuleEngine) rebuildActive() {
 	}
 }
 
-// Apply executes all rules on the word in phase order.
-func (e *RuleEngine) Apply(word *Word) {
-	phases := []RulePhase{PhaseSchwa, PhaseConsonant, PhaseVowel, PhaseRender}
+// tracer collects debug traces for one Apply call.
+type tracer struct {
+	meta   func(*Unit) string
+	traces []RuleTrace
+}
 
-	for _, phase := range phases {
-		e.applyPhase(phase, word)
+// Apply executes all rules on the word in phase order. Traces are recorded only
+// when the legacy EnableDebug state is on (not safe for concurrent use).
+func (e *RuleEngine) Apply(word *Word) {
+	var t *tracer
+	if e.debugEnabled {
+		t = &tracer{meta: e.debugMeta}
+	}
+	e.apply(word, t)
+	if t != nil {
+		e.traces = t.traces
+	}
+}
+
+// ApplyTraced executes all rules and returns their traces without touching
+// shared engine state, so concurrent traced and untraced calls are safe.
+func (e *RuleEngine) ApplyTraced(word *Word, meta func(*Unit) string) []RuleTrace {
+	t := &tracer{meta: meta}
+	e.apply(word, t)
+	return t.traces
+}
+
+func (e *RuleEngine) apply(word *Word, t *tracer) {
+	for _, phase := range []RulePhase{PhaseSchwa, PhaseConsonant, PhaseVowel, PhaseRender} {
+		e.applyPhase(phase, word, t)
 	}
 }
 
 // applyPhase executes rules for a single phase.
-func (e *RuleEngine) applyPhase(phase RulePhase, word *Word) {
+func (e *RuleEngine) applyPhase(phase RulePhase, word *Word, t *tracer) {
 	rules := e.active[phase]
 	if len(rules) == 0 {
 		return
@@ -237,10 +261,10 @@ func (e *RuleEngine) applyPhase(phase RulePhase, word *Word) {
 			}
 			if rule.Condition(unit, word) {
 				before := unit.BaseRom
-				beforeMeta := e.unitMetadata(unit)
+				beforeMeta := t.unitMetadata(unit)
 				rule.Action(unit, word)
 				acted[unit] = true
-				e.traceRule(phase, rule, unit, idx, before, beforeMeta)
+				t.traceRule(phase, rule, unit, idx, before, beforeMeta)
 			}
 		}
 	}
@@ -257,10 +281,10 @@ func (e *RuleEngine) applyPhase(phase RulePhase, word *Word) {
 			}
 			if rule.Condition(unit, word) {
 				before := unit.BaseRom
-				beforeMeta := e.unitMetadata(unit)
+				beforeMeta := t.unitMetadata(unit)
 				rule.Action(unit, word)
 				acted[unit] = true
-				e.traceRule(phase, rule, unit, idx, before, beforeMeta)
+				t.traceRule(phase, rule, unit, idx, before, beforeMeta)
 			}
 		}
 	}
@@ -359,7 +383,9 @@ func (e *RuleEngine) SetDebugMetaExtractor(fn func(*Unit) string) {
 	e.debugMeta = fn
 }
 
-// EnableDebug enables debug trace collection.
+// EnableDebug enables debug trace collection for later Apply calls; read them
+// with Traces. This shared state is not safe for concurrent use; prefer
+// ApplyTraced, which keeps traces per call.
 func (e *RuleEngine) EnableDebug(enabled bool) {
 	e.debugEnabled = enabled
 	if enabled {
@@ -372,12 +398,12 @@ func (e *RuleEngine) Traces() []RuleTrace {
 	return e.traces
 }
 
-// traceRule records a rule application if debugging is enabled.
-func (e *RuleEngine) traceRule(phase RulePhase, rule *Rule, unit *Unit, unitIdx int, before, beforeMeta string) {
-	if !e.debugEnabled {
+// traceRule records a rule application; a nil tracer records nothing.
+func (t *tracer) traceRule(phase RulePhase, rule *Rule, unit *Unit, unitIdx int, before, beforeMeta string) {
+	if t == nil {
 		return
 	}
-	meta := e.unitMetadata(unit)
+	meta := t.unitMetadata(unit)
 	trace := RuleTrace{
 		Phase:    phase.String(),
 		Rule:     rule.Name,
@@ -389,14 +415,14 @@ func (e *RuleEngine) traceRule(phase RulePhase, rule *Rule, unit *Unit, unitIdx 
 	}
 	// Only record if something changed or it's a schwa rule
 	if before != unit.BaseRom || beforeMeta != meta || phase == PhaseSchwa {
-		e.traces = append(e.traces, trace)
+		t.traces = append(t.traces, trace)
 	}
 }
 
 // unitMetadata never invokes the script extractor outside debug execution.
-func (e *RuleEngine) unitMetadata(unit *Unit) string {
-	if e.debugEnabled && e.debugMeta != nil {
-		return e.debugMeta(unit)
+func (t *tracer) unitMetadata(unit *Unit) string {
+	if t != nil && t.meta != nil {
+		return t.meta(unit)
 	}
 	return ""
 }

@@ -194,17 +194,14 @@ func (e *Engine) transliterateInternal(input string, opts Options) (string, *Deb
 	// 2. Prepare (Script-specific processing, e.g., IdentifyRuns)
 	e.script.PrepareWord(word)
 
-	// Enable debug if requested
+	// 3. Apply rules (selected by Scheme from Language catalog). Debug traces
+	// are collected per call, so shared engines stay safe for concurrent use.
+	var traces []RuleTrace
 	if opts.Debug {
-		e.ruleEngine.EnableDebug(true)
-		// Set metadata extractor from script
-		if metaFn := e.script.DebugMetaExtractor(); metaFn != nil {
-			e.ruleEngine.SetDebugMetaExtractor(metaFn)
-		}
+		traces = e.ruleEngine.ApplyTraced(word, e.script.DebugMetaExtractor())
+	} else {
+		e.ruleEngine.Apply(word)
 	}
-
-	// 3. Apply rules (selected by Scheme from Language catalog)
-	e.ruleEngine.Apply(word)
 
 	// 4. Render (Script handles script-specific rendering)
 	result := e.renderer.Render(word)
@@ -212,19 +209,18 @@ func (e *Engine) transliterateInternal(input string, opts Options) (string, *Deb
 	// Collect debug info if enabled
 	var debug *DebugInfo
 	if opts.Debug {
-		debug = e.collectDebugInfo(word, input, result)
-		e.ruleEngine.EnableDebug(false) // Reset for next call
+		debug = e.collectDebugInfo(word, input, result, traces)
 	}
 
 	return result, debug
 }
 
 // collectDebugInfo gathers debugging information after transliteration.
-func (e *Engine) collectDebugInfo(word *Word, input, output string) *DebugInfo {
+func (e *Engine) collectDebugInfo(word *Word, input, output string, traces []RuleTrace) *DebugInfo {
 	info := &DebugInfo{
 		Input:  input,
 		Output: output,
-		Traces: e.ruleEngine.Traces(),
+		Traces: traces,
 	}
 
 	// Collect unit info

@@ -3,6 +3,7 @@ package gomanize
 import (
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestTranslitWhitespace(t *testing.T) {
@@ -132,5 +133,87 @@ func TestBengaliPublicAPI(t *testing.T) {
 	}
 	if got, info := g.TranslitDebug("ৎ"); got != "t" || info == nil || !strings.Contains(info.Units[0].Metadata, "no-inherent-vowel") {
 		t.Fatalf("Bengali debug: %q, %+v", got, info)
+	}
+}
+
+// Text without any character of the selected script must pass through
+// byte-for-byte; parsing strips format characters such as the ZWJ in emoji
+// sequences, flag tag characters, soft hyphens and RTL marks.
+func TestNonScriptTextPassesThrough(t *testing.T) {
+	for _, language := range []string{"hindi", "bengali"} {
+		g, err := New(language)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, input := range []string{
+			"👨‍👩‍👧", "🏴\U000e0067\U000e0062\U000e0065\U000e006e\U000e0067\U000e007f",
+			"abc­xyz", "‏שלום", "x‌y", "Latin 123",
+		} {
+			if got := g.Translit(input); got != input {
+				t.Errorf("%s: %q -> %q", language, input, got)
+			}
+		}
+	}
+}
+
+// Debug tracing must not mutate shared engine state: concurrent Translit with
+// Options.Debug, TranslitDebug and plain Translit on one instance must be
+// race-free and match serial output (run with -race).
+func TestConcurrentDebugCalls(t *testing.T) {
+	for _, tc := range []struct{ language, word string }{{"hindi", "नमस्ते"}, {"bengali", "সোনার"}} {
+		debug, err := NewWithOptions(tc.language, Options{Debug: true, SchwaModel: true})
+		if err != nil {
+			t.Fatal(err)
+		}
+		plain, _ := NewWithOptions(tc.language, Options{SchwaModel: true})
+		want := plain.Translit(tc.word)
+		wantTraces := 0
+		if _, info := plain.TranslitDebug(tc.word); info != nil {
+			wantTraces = len(info.Traces)
+		}
+		done := make(chan string, 48)
+		for i := 0; i < 16; i++ {
+			go func() { done <- debug.Translit(tc.word) }()
+			go func() { done <- plain.Translit(tc.word) }()
+			go func() {
+				out, info := plain.TranslitDebug(tc.word)
+				if info != nil && len(info.Traces) != wantTraces {
+					out = "trace count changed"
+				}
+				done <- out
+			}()
+		}
+		for i := 0; i < 48; i++ {
+			if got := <-done; got != want {
+				t.Fatalf("%s: concurrent output %q, want %q", tc.language, got, want)
+			}
+		}
+	}
+}
+
+// Learned per-word components are bounded (core.MaxLearnedWordRunes), so a
+// pathological unspaced token cannot cost quadratic time. Before the bound, a
+// 2,000-rune Bengali word with the vowel model and selector took ~30 s in WASM.
+func TestLongTokenCostIsBounded(t *testing.T) {
+	for _, tc := range []struct {
+		language, unit string
+		opts           Options
+	}{
+		{"bengali", "কলকাতা", Options{SchwaModel: true, Rerank: true, Lexicon: true}},
+		{"hindi", "नमस्ते", Options{SchwaModel: true, Rerank: true, Lexicon: true}},
+	} {
+		g, err := NewWithOptions(tc.language, tc.opts)
+		if err != nil {
+			t.Fatal(err)
+		}
+		word := strings.Repeat(tc.unit, 2000) // ~12,000 runes, no spaces
+		start := time.Now()
+		out := g.Translit(word)
+		if elapsed := time.Since(start); elapsed > 2*time.Second {
+			t.Errorf("%s: %d-rune token took %v", tc.language, len([]rune(word)), elapsed)
+		}
+		if out == "" {
+			t.Errorf("%s: empty output", tc.language)
+		}
 	}
 }

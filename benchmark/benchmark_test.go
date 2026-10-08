@@ -609,13 +609,16 @@ func TestBenchmarkLexiconCoverage(t *testing.T) {
 
 	t.Logf("=== Lexicon coverage — Dakshina TEST split (held-out) ===")
 	t.Logf("Lexicon size: %d entries (built from TRAIN)", hindi.LexiconSize())
-	t.Logf("Test words covered by lexicon: %d / %d (%.1f%%) — near-zero is EXPECTED (disjoint splits)",
+	t.Logf("Test words covered by lexicon: %d / %d (%.1f%%) — zero is REQUIRED (disjoint splits)",
 		covered, total, float64(covered)*100/float64(total))
 	t.Logf("Match-any: rules %.1f%%  |  rules+lexicon %.1f%%", float64(rulesAny)*100/float64(total), float64(lexAny)*100/float64(total))
 	t.Logf("Takeaway: the lexicon does not change held-out TYPE accuracy (by construction);")
 	t.Logf("its value is production TOKEN coverage of common words, not measurable here.")
 
-	// The lexicon must never hurt: rules+lexicon >= rules on any set.
+	// A train-built lexicon must not cover any held-out word, and must never hurt.
+	if covered != 0 {
+		t.Errorf("lexicon covers %d held-out test words; it must be built from TRAIN only", covered)
+	}
 	if lexAny < rulesAny {
 		t.Errorf("lexicon regressed held-out match-any: rules=%d lexicon=%d", rulesAny, lexAny)
 	}

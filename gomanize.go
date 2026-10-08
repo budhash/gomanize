@@ -9,11 +9,12 @@
 //	g, err := gomanize.New("hindi")
 //	out := g.Translit("नमस्ते दुनिया") // "namaste duniya"
 //
-// A Gomanize instance is safe for concurrent Translit calls. TranslitDebug and
-// runtime rule toggling (DisableRule/EnableRule) mutate engine state and must
-// not run concurrently with other calls on the same instance. TranslitDebug
-// returns nil debug info when the Lexicon or Rerank options short-circuit the
-// rule pipeline.
+// A Gomanize instance is safe for concurrent Translit and TranslitDebug calls,
+// including with Options.Debug set (debug traces are collected per call).
+// SetOptions and runtime rule toggling (DisableRule/EnableRule) mutate instance
+// state and must not run concurrently with other calls on the same instance.
+// TranslitDebug returns nil debug info when the Lexicon or Rerank options
+// short-circuit the rule pipeline.
 package gomanize
 
 import (
