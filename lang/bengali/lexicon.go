@@ -99,7 +99,7 @@ func loadLexicon() map[string]string {
 // LexiconLookupWithOptions returns an attested spelling only for the default
 // rendering style. SchwaModel changes fallback decisions, not lexicon spellings.
 func (Bengali) LexiconLookupWithOptions(word string, opts core.Options) (string, bool) {
-	if opts.InherentVowelA || opts.LongVowels || opts.SimpleNasals || opts.KeepMedialSchwa {
+	if !opts.DefaultStyle() {
 		return "", false
 	}
 	key, ok := bengaliLexiconKey(word)

@@ -53,8 +53,9 @@ used by the Bengali B1 catalog and independently checked by prototype tests.
 the aa-matra, sonorants, and the independent-vowel range. Hindi supplies
 `DevanagariProfile()` explicitly. Legacy `Config` values and words without a
 profile retain Devanagari defaults. Parsers copy supplied profile slices; parsed
-profiles are read-only. Nil membership slices default, while explicit empty
-slices disable membership. `Options.InherentVowelA` selects `a` for Default
+profiles are read-only. A non-nil profile must set every field (`NewParser`
+panics, naming the missing ones); explicit empty membership slices disable that
+check; a nil `Profile` keeps Devanagari defaults. `Options.InherentVowelA` selects `a` for Default
 quality; Raised uses the profile's raised spelling and Open uses `a`. This is a
 renderer option, not a complete academic scheme or a rewrite of lexicon hits.
 It does not change Hindi output and is not exposed as a CLI/WASM flag yet.

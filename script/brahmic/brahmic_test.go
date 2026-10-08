@@ -161,9 +161,10 @@ func TestFormatCharsStrippedBeforeParsing(t *testing.T) {
 			len(w2.Units), w2.Units[0].BaseRom)
 	}
 
-	// A word of only format characters parses to zero units without panicking.
-	w3 := parse(t, "‌‍")
-	if len(w3.Units) != 0 {
-		t.Errorf("Cf-only input produced %d units, want 0", len(w3.Units))
+	// Text with no script character keeps its format characters (ZWJ in emoji,
+	// RTL marks): a Cf-only word passes through as symbol units, no panic.
+	w3 := parse(t, "\u200c\u200d")
+	if w3.Original != "\u200c\u200d" || len(w3.Units) != 2 {
+		t.Errorf("Cf-only input: Original %q with %d units, want kept as 2 units", w3.Original, len(w3.Units))
 	}
 }

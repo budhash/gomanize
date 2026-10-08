@@ -1,9 +1,15 @@
 package brahmic
 
-import "github.com/budhash/gomanize/core"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/budhash/gomanize/core"
+)
 
 // ScriptProfile supplies the script-specific constants used by the shared
-// renderer and schwa rules. A nil Config.Profile retains Devanagari behavior.
+// renderer and schwa rules. A nil Config.Profile retains Devanagari behavior;
+// a non-nil profile must set every field (NewParser panics otherwise).
 // NewParser copies the profile and its slices; treat a parsed word's profile
 // as read-only. An explicitly empty rune slice disables that membership check.
 type ScriptProfile struct {
@@ -32,28 +38,42 @@ var defaultProfile = DevanagariProfile()
 func (c Config) normalize() Config {
 	p := DevanagariProfile()
 	if c.Profile != nil {
-		supplied := c.Profile
-		if supplied.InherentVowel != "" {
-			p.InherentVowel = supplied.InherentVowel
+		// A supplied profile must be complete: silently filling gaps with
+		// Devanagari values would turn a new script's checks into no-ops.
+		if missing := c.Profile.missingFields(); len(missing) > 0 {
+			panic(fmt.Sprintf("brahmic: incomplete ScriptProfile, unset fields: %s", strings.Join(missing, ", ")))
 		}
-		if supplied.RaisedVowel != "" {
-			p.RaisedVowel = supplied.RaisedVowel
-		}
-		if supplied.BareVowelRunes != nil {
-			p.BareVowelRunes = append([]rune{}, supplied.BareVowelRunes...)
-		}
-		if supplied.AaMatra != 0 {
-			p.AaMatra = supplied.AaMatra
-		}
-		if supplied.SonorousRunes != nil {
-			p.SonorousRunes = append([]rune{}, supplied.SonorousRunes...)
-		}
-		if supplied.IndependentVowelRange != [2]rune{} {
-			p.IndependentVowelRange = supplied.IndependentVowelRange
-		}
+		p = *c.Profile
+		p.BareVowelRunes = append([]rune{}, c.Profile.BareVowelRunes...)
+		p.SonorousRunes = append([]rune{}, c.Profile.SonorousRunes...)
 	}
 	c.Profile = &p
 	return c
+}
+
+// missingFields lists unset profile fields. Nil rune slices are unset; an
+// explicitly empty slice disables that membership check.
+func (p *ScriptProfile) missingFields() []string {
+	var missing []string
+	if p.InherentVowel == "" {
+		missing = append(missing, "InherentVowel")
+	}
+	if p.RaisedVowel == "" {
+		missing = append(missing, "RaisedVowel")
+	}
+	if p.BareVowelRunes == nil {
+		missing = append(missing, "BareVowelRunes")
+	}
+	if p.AaMatra == 0 {
+		missing = append(missing, "AaMatra")
+	}
+	if p.SonorousRunes == nil {
+		missing = append(missing, "SonorousRunes")
+	}
+	if p.IndependentVowelRange[0] == 0 || p.IndependentVowelRange[1] == 0 {
+		missing = append(missing, "IndependentVowelRange")
+	}
+	return missing
 }
 
 func profileFor(w *core.Word) *ScriptProfile {

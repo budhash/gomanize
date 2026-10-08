@@ -54,21 +54,27 @@ export async function load(opts = {}) {
   if (typeof fn !== "function") throw new Error("gomanize: wasm did not initialize");
   _instance = {
     translit(text, options) {
-      // Reject unsupported JS types before crossing syscall/js: a BigInt flag
-      // panics inside the Go runtime and kills the instance for every later call.
+      // Read each option exactly once into a fresh plain object of validated
+      // primitives; only that crosses syscall/js. Reading the caller's object
+      // again (a getter or Proxy can change its answer) let a BigInt reach Go,
+      // whose panic killed the instance and later the host process.
+      const clean = {};
       if (options != null) {
         if (typeof options !== "object") throw new TypeError("gomanize: options must be an object");
-        if (options.language !== undefined && typeof options.language !== "string") {
-          throw new TypeError("gomanize: language must be hindi or bengali");
+        const language = options.language;
+        if (language !== undefined) {
+          if (typeof language !== "string") throw new TypeError("gomanize: language must be hindi or bengali");
+          clean.language = language;
         }
         for (const flag of FLAGS) {
           const value = options[flag];
           if (value != null && typeof value !== "boolean") {
             throw new TypeError(`gomanize: option ${flag} must be a boolean`);
           }
+          clean[flag] = value === true;
         }
       }
-      const result = fn(text == null ? "" : String(text), options || {});
+      const result = fn(text == null ? "" : String(text), clean);
       if (result instanceof Error) throw result;
       return result;
     },

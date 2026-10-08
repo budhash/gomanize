@@ -1148,3 +1148,22 @@ func TestMetadataOnlyTraces(t *testing.T) {
 		}
 	}
 }
+
+// The legacy EnableDebug/Traces API accumulates traces across Apply calls until
+// EnableDebug(true) resets them.
+func TestLegacyDebugTracesAccumulate(t *testing.T) {
+	e := NewRuleEngine([]Rule{{Name: "t.a", Phase: PhaseConsonant, Priority: 50,
+		Condition: func(*Unit, *Word) bool { return true },
+		Action:    func(u *Unit, _ *Word) { u.BaseRom += "!" }}})
+	word := func() *Word { w := NewWord("x"); w.AddUnit(&Unit{Runes: []rune("x"), BaseRom: "x"}); return w }
+	e.EnableDebug(true)
+	e.Apply(word())
+	e.Apply(word())
+	if got := len(e.Traces()); got != 2 {
+		t.Fatalf("traces after two applies = %d, want 2", got)
+	}
+	e.EnableDebug(true)
+	if got := len(e.Traces()); got != 0 {
+		t.Fatalf("EnableDebug(true) must reset traces, got %d", got)
+	}
+}

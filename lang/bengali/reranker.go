@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"unicode/utf8"
 
 	"github.com/budhash/gomanize/core"
 	"github.com/budhash/gomanize/script/brahmic"
@@ -120,7 +121,7 @@ func (v vowelVariant) Rules() core.RuleCatalog {
 		}
 		r.Action = func(u *core.Unit, w *core.Word) {
 			label, _ := vowelModelDecision(w, u)
-			raw := []rune(w.Original)
+			raw := w.Runes()
 			index := len([]rune(vowelWordView(string(raw[:u.Start.Rune]))))
 			if index == v.flip {
 				if label == 0 {
@@ -145,7 +146,7 @@ func (v vowelVariant) Rules() core.RuleCatalog {
 // RerankNative is opt-in through both SchwaModel and Rerank, and limited to the
 // evaluated default style. Unsupported words/options retain the caller's output.
 func (Bengali) RerankNative(input string, opts core.Options, render core.CandidateRenderer) (string, bool) {
-	if !opts.Rerank || !opts.SchwaModel || opts.InherentVowelA || opts.LongVowels || opts.SimpleNasals || opts.KeepMedialSchwa {
+	if !opts.Rerank || !opts.SchwaModel || !opts.DefaultStyle() || utf8.RuneCountInString(input) > core.MaxLearnedWordRunes {
 		return "", false
 	}
 	word, ok := bengaliLexiconKey(input)

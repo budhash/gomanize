@@ -1,7 +1,9 @@
 package brahmic_test
 
 import (
+	"fmt"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/budhash/gomanize/core"
@@ -153,7 +155,7 @@ func TestProfileRuleConstants(t *testing.T) {
 // Legacy exported Config literals and manually built words must remain usable.
 func TestLegacyProfileDefaults(t *testing.T) {
 	renderer := brahmic.NewRenderer()
-	for _, cfg := range []brahmic.Config{{}, {Halant: hindi.Halant, Nukta: hindi.Nukta}, {Profile: &brahmic.ScriptProfile{}}} {
+	for _, cfg := range []brahmic.Config{{}, {Halant: hindi.Halant, Nukta: hindi.Nukta}} {
 		for input, want := range map[string]string{"क": "ka", "कऋ": "kari", "कअ": "ka", "कऄ": "ka", "का": "ka"} {
 			w := brahmic.NewParser(cfg).Parse(input, hindi.Symbols)
 			brahmic.IdentifyRuns(w)
@@ -185,15 +187,24 @@ func TestLegacyProfileDefaults(t *testing.T) {
 	}
 }
 
-func TestEmptyMembershipAndPartialDefaults(t *testing.T) {
-	p := &brahmic.ScriptProfile{InherentVowel: "o", BareVowelRunes: []rune{}, SonorousRunes: []rune{}}
-	w := brahmic.NewParser(brahmic.Config{Profile: p}).Parse("कअ", hindi.Symbols)
+func TestEmptyMembershipAndIncompleteProfiles(t *testing.T) {
+	// A complete profile may disable membership checks with empty slices.
+	p := brahmic.DevanagariProfile()
+	p.InherentVowel, p.BareVowelRunes, p.SonorousRunes = "o", []rune{}, []rune{}
+	w := brahmic.NewParser(brahmic.Config{Profile: &p}).Parse("कअ", hindi.Symbols)
 	if got := brahmic.NewRenderer().Render(w); got != "koa" {
 		t.Fatalf("empty bare set: %q", got)
 	}
-	wd := brahmic.GetWordBrahmicData(w)
-	if wd.Profile.AaMatra != 'ा' || wd.Profile.RaisedVowel != "o" || len(wd.Profile.SonorousRunes) != 0 {
-		t.Fatalf("partial defaults: %+v", wd.Profile)
+	// A partial profile must fail loudly instead of inheriting Devanagari values.
+	for _, partial := range []brahmic.ScriptProfile{{}, {InherentVowel: "o", BareVowelRunes: []rune{}, SonorousRunes: []rune{}}} {
+		func() {
+			defer func() {
+				if r := recover(); r == nil || !strings.Contains(fmt.Sprint(r), "AaMatra") {
+					t.Fatalf("incomplete profile %+v: recovered %v, want panic naming AaMatra", partial, r)
+				}
+			}()
+			brahmic.NewParser(brahmic.Config{Profile: &partial})
+		}()
 	}
 }
 
