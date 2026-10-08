@@ -209,7 +209,9 @@ func TestLongTokenCostIsBounded(t *testing.T) {
 		word := strings.Repeat(tc.unit, 2000) // ~12,000 runes, no spaces
 		start := time.Now()
 		out := g.Translit(word)
-		if elapsed := time.Since(start); elapsed > 2*time.Second {
+		// Generous ceiling for race/coverage CI runners (~5 s there, 0.1 s
+		// locally); the unbounded quadratic path took over 5 minutes.
+		if elapsed := time.Since(start); elapsed > 30*time.Second {
 			t.Errorf("%s: %d-rune token took %v", tc.language, len([]rune(word)), elapsed)
 		}
 		if out == "" {
