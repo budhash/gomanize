@@ -1,6 +1,7 @@
 package brahmic
 
 import (
+	"sort"
 	"unicode"
 
 	"github.com/budhash/gomanize/core"
@@ -35,26 +36,28 @@ func Canonicalize(input string, cfg Config, symbols core.SymbolMap) string {
 		return ok
 	}
 	// Nearest non-format neighbors decide whether a format character sits in
-	// script text.
+	// script text. Two linear passes record them, so long runs of format
+	// characters cost O(n), not O(n^2).
+	prevScript := make([]bool, len(in))
+	nextScript := make([]bool, len(in))
+	last := false
+	for i, r := range in {
+		prevScript[i] = last
+		if !unicode.Is(unicode.Cf, r) {
+			last = isScript(r)
+		}
+	}
+	last = false
+	for i := len(in) - 1; i >= 0; i-- {
+		nextScript[i] = last
+		if !unicode.Is(unicode.Cf, in[i]) {
+			last = isScript(in[i])
+		}
+	}
 	out := make([]rune, 0, len(in))
 	for i, r := range in {
-		if unicode.Is(unicode.Cf, r) {
-			prev, next := rune(0), rune(0)
-			for j := i - 1; j >= 0; j-- {
-				if !unicode.Is(unicode.Cf, in[j]) {
-					prev = in[j]
-					break
-				}
-			}
-			for j := i + 1; j < len(in); j++ {
-				if !unicode.Is(unicode.Cf, in[j]) {
-					next = in[j]
-					break
-				}
-			}
-			if isScript(prev) || isScript(next) {
-				continue
-			}
+		if unicode.Is(unicode.Cf, r) && (prevScript[i] || nextScript[i]) {
+			continue
 		}
 		out = append(out, r)
 	}
@@ -73,14 +76,20 @@ func Canonicalize(input string, cfg Config, symbols core.SymbolMap) string {
 		}
 		out = expanded
 	}
-	// Stable insertion sort of each run of nonzero-class marks.
-	for i := 1; i < len(out); i++ {
+	// Canonical ordering: stable sort of each maximal run of nonzero-class
+	// marks (O(k log k) per run, so long mark runs cannot cost O(k^2)).
+	for i := 0; i < len(out); {
 		if forms.Class[out[i]] == 0 {
+			i++
 			continue
 		}
-		for j := i; j > 0 && forms.Class[out[j-1]] > forms.Class[out[j]]; j-- {
-			out[j], out[j-1] = out[j-1], out[j]
+		j := i
+		for j < len(out) && forms.Class[out[j]] != 0 {
+			j++
 		}
+		run := out[i:j]
+		sort.SliceStable(run, func(a, b int) bool { return forms.Class[run[a]] < forms.Class[run[b]] })
+		i = j
 	}
 	if len(forms.Compose) > 0 {
 		composed := out[:0:0]

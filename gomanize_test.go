@@ -256,3 +256,24 @@ func TestCanonicalEquivalenceAllProfiles(t *testing.T) {
 		t.Errorf("mixed token: %q", got)
 	}
 }
+
+// Canonicalization must stay near-linear on adversarial input: long runs of
+// format characters and of combining marks (security review of keel K1).
+func TestCanonicalizationAdversarialInputIsFast(t *testing.T) {
+	inputs := map[string]string{
+		"hindi":   "क" + strings.Repeat("‍", 50000) + "क" + strings.Repeat("़्", 25000),
+		"bengali": "ক" + strings.Repeat("‌", 50000) + "ক" + strings.Repeat("়্", 25000),
+	}
+	for language, input := range inputs {
+		g, err := NewWithOptions(language, Options{SchwaModel: true, Lexicon: true, Rerank: true})
+		if err != nil {
+			t.Fatal(err)
+		}
+		start := time.Now()
+		g.Translit(input)
+		// ~0.1 s total locally; the quadratic version took ~20 s per language.
+		if elapsed := time.Since(start); elapsed > 10*time.Second {
+			t.Errorf("%s: %d-rune adversarial input took %v", language, len([]rune(input)), elapsed)
+		}
+	}
+}
