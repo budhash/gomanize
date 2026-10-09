@@ -4,6 +4,8 @@ import (
 	_ "embed"
 	"strings"
 	"sync"
+
+	"github.com/budhash/gomanize/script/brahmic"
 )
 
 // High-confidence romanization lexicon: native word -> attested human spelling,
@@ -37,7 +39,7 @@ func loadLexicon() map[string]string {
 			if tab <= 0 || tab >= len(line)-1 {
 				continue
 			}
-			m[line[:tab]] = line[tab+1:]
+			m[canonicalKey(line[:tab])] = line[tab+1:]
 		}
 		lexiconMap = m
 	})
@@ -46,9 +48,15 @@ func loadLexicon() map[string]string {
 
 // LexiconLookup implements core.LexiconProvider. It returns the attested spelling
 // for a known native word, or ("", false) for out-of-vocabulary words.
+// Keys and lookups use the canonical spelling, so precomposed nukta letters,
+// format characters and mark order do not cause misses.
 func (h Hindi) LexiconLookup(word string) (string, bool) {
-	roman, ok := loadLexicon()[word]
+	roman, ok := loadLexicon()[canonicalKey(word)]
 	return roman, ok
+}
+
+func canonicalKey(word string) string {
+	return brahmic.Canonicalize(word, brahmic.Config{Canonical: canonicalForms}, Symbols)
 }
 
 // LexiconSize reports the number of entries (useful for coverage reporting/tests).

@@ -132,6 +132,12 @@ type NativeReranker interface {
 
 // transliterateInternal is the core transliteration logic.
 func (e *Engine) transliterateInternal(input string, opts Options) (string, *DebugInfo) {
+	// Canonical spelling first, so lexicon keys, learned models and the parser
+	// agree on canonically equivalent input.
+	if c, ok := e.script.(Canonicalizer); ok {
+		input = c.Canonicalize(input, e.config, e.symbols)
+	}
+
 	// 0. Lexicon lookup (optional): known words get their attested spelling.
 	if opts.Lexicon {
 		if lp, ok := e.lang.(OptionsLexiconProvider); ok {

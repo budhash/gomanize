@@ -104,6 +104,7 @@ func (Bengali) ScriptConfig() interface{} {
 	return brahmic.Config{
 		Halant: "্", Nukta: "়", MultiChar: []string{"ো", "ৌ"},
 		VowellessConsonants: []rune{'ৎ'},
+		Canonical:           canonicalForms,
 		Profile: &brahmic.ScriptProfile{
 			InherentVowel: "o", RaisedVowel: "o", BareVowelRunes: []rune{'অ'},
 			AaMatra: 'া', SonorousRunes: []rune{'র', 'য', 'ব'}, IndependentVowelRange: [2]rune{0x0985, 0x0994},
@@ -111,3 +112,17 @@ func (Bengali) ScriptConfig() interface{} {
 	}
 }
 func (Bengali) Rules() core.RuleCatalog { return RuleCatalog() }
+
+// canonicalForms is Bengali's NFC subset: ড় ঢ় য় are composition-excluded and
+// decompose; split ো/ৌ compose; nukta precedes virama.
+var canonicalForms = &brahmic.CanonicalForms{
+	Decompose: map[rune][]rune{0x09DC: {0x09A1, 0x09BC}, 0x09DD: {0x09A2, 0x09BC}, 0x09DF: {0x09AF, 0x09BC}},
+	Compose:   map[[2]rune]rune{{0x09C7, 0x09BE}: 0x09CB, {0x09C7, 0x09D7}: 0x09CC},
+	// Canonical combining classes (Unicode data) for Bengali and Vedic marks.
+	Class: map[rune]int{
+		0x09BC: 7, 0x09CD: 9, 0x09FE: 230, 0x1CD0: 230, 0x1CD1: 230, 0x1CD2: 230, 0x1CD4: 1, 0x1CD5: 220,
+		0x1CD6: 220, 0x1CD7: 220, 0x1CD8: 220, 0x1CD9: 220, 0x1CDA: 230, 0x1CDB: 230, 0x1CDC: 220, 0x1CDD: 220,
+		0x1CDE: 220, 0x1CDF: 220, 0x1CE0: 230, 0x1CE2: 1, 0x1CE3: 1, 0x1CE4: 1, 0x1CE5: 1, 0x1CE6: 1,
+		0x1CE7: 1, 0x1CE8: 1, 0x1CED: 220, 0x1CF4: 230, 0x1CF8: 230, 0x1CF9: 230,
+	},
+}

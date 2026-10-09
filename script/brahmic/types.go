@@ -169,6 +169,9 @@ type Config struct {
 	// VowellessConsonants lists intrinsically dead consonants. Nil preserves
 	// the existing parser behavior. This does not change terminal virama handling.
 	VowellessConsonants []rune
+	// Canonical describes the script's canonical equivalences (see
+	// Canonicalize). Nil only removes format characters within script text.
+	Canonical *CanonicalForms
 }
 
 // Helper functions for working with BrahmicData through core.Unit

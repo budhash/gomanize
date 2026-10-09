@@ -68,3 +68,11 @@ type Scheme interface {
 	// Returns the rules to apply for this scheme.
 	SelectRules(catalog RuleCatalog) []Rule
 }
+
+// Canonicalizer is an optional Script capability: it returns the canonical
+// spelling of a word (Unicode canonical equivalents and format characters
+// resolved). The engine applies it once, before lexicon lookup, candidate
+// ranking and parsing, so every component sees one spelling per word.
+type Canonicalizer interface {
+	Canonicalize(input string, config interface{}, symbols SymbolMap) string
+}
