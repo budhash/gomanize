@@ -77,7 +77,7 @@ func (u *Unit) String() string {
 // Word is the complete parsed representation of an input word.
 type Word struct {
 	Units    []*Unit // All parsed units in order
-	Original string  // Original input string
+	Original string  // Input word in canonical form (see Canonicalizer)
 	Options  Options // Transliteration options
 
 	runes []rune // decoded Original, cached by Runes
@@ -177,7 +177,7 @@ type RuleTrace struct {
 
 // DebugInfo contains debugging information from transliteration.
 type DebugInfo struct {
-	Input  string      // Original input
+	Input  string      // Input in canonical form; unit RunePos indexes it
 	Output string      // Final output
 	Units  []UnitDebug // Parsed units
 	Traces []RuleTrace // Rule applications

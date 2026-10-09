@@ -30,6 +30,9 @@ type CanonicalForms struct {
 // canonical pairs are composed. Format characters not touching script text
 // (e.g. the ZWJs inside an emoji sequence) are kept. Idempotent.
 func Canonicalize(input string, cfg Config, symbols core.SymbolMap) string {
+	if alreadyCanonical(input, cfg.Canonical) {
+		return input // common case: no allocation
+	}
 	in := []rune(input)
 	isScript := func(r rune) bool {
 		_, ok := symbols[string(r)]
@@ -114,4 +117,31 @@ func (s *Script) Canonicalize(input string, config interface{}, symbols core.Sym
 		return input
 	}
 	return Canonicalize(input, cfg, symbols)
+}
+
+// alreadyCanonical reports, without allocating, that no rune could change:
+// no format character or decomposable letter, no adjacent composable pair, and
+// combining marks already in canonical order.
+func alreadyCanonical(input string, forms *CanonicalForms) bool {
+	prev, prevClass := rune(-1), 0
+	for _, r := range input {
+		if unicode.Is(unicode.Cf, r) {
+			return false
+		}
+		if forms != nil {
+			if _, ok := forms.Decompose[r]; ok {
+				return false
+			}
+			if _, ok := forms.Compose[[2]rune{prev, r}]; ok {
+				return false
+			}
+			class := forms.Class[r]
+			if class != 0 && prevClass > class {
+				return false
+			}
+			prevClass = class
+		}
+		prev = r
+	}
+	return true
 }

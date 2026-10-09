@@ -19,11 +19,23 @@ this only through three language-local normalizers.
   combining marks are put in canonical order (nukta before virama). Format
   characters (ZWJ, ZWNJ, BOM, soft hyphen) are removed only next to script
   characters, so emoji sequences keep their ZWJs even inside a mixed token.
-- The engine applies it once (`core.Canonicalizer`), before lexicon lookup,
-  candidate ranking and parsing; the parser uses the same function. Hindi lexicon
-  keys are canonicalized at load (all 8,367 were already canonical).
+- The engine applies it (`core.Canonicalizer`) before lexicon lookup, candidate
+  ranking and parsing; the parser and the Hindi lexicon key use the same function
+  (idempotent, with an allocation-free fast path for already canonical input).
+  Hindi lexicon keys are canonicalized at load (all 8,367 were already
+  canonical). Combining classes come from the Unicode data for each script's
+  marks, including Vedic marks.
+- Residue (tracked): Bengali's local `bengaliLexiconKey` and `vowelWordView`
+  still exist; they now only ever see canonical input and can be retired in a
+  follow-up.
 - `TestCanonicalEquivalenceAllProfiles` checks equivalent spellings across six
   option profiles in both languages; with K1 reverted it reports 25 failures.
+  `TestEngineCanonicalizesBeforeEveryComponent` checks that lexicon, reranker
+  and parser all receive the canonical spelling (fails with the hook disabled).
+- An independent review compared `Canonicalize` with Python NFC (after Cf
+  removal) over every dataset word and ~700k synthetic strings: no disagreements
+  once Vedic-mark classes were added. Long format-character or mark runs are
+  linear (security review).
 
 ## Effect on output
 
