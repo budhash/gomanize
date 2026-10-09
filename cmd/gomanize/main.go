@@ -282,7 +282,7 @@ func printUsage() {
 	fmt.Fprintln(os.Stderr, "")
 	fmt.Fprintln(os.Stderr, "Options:")
 	fmt.Fprintln(os.Stderr, "  --language=NAME          hindi (default) or bengali (experimental); --language NAME also accepted")
-	fmt.Fprintln(os.Stderr, "  --long-vowels            Use 'aa' for all ा positions (e.g., गाना→gaana)")
+	fmt.Fprintln(os.Stderr, "  --long-vowels            Use 'aa' for all ा positions (e.g., गाना→gaanaa)")
 	fmt.Fprintln(os.Stderr, "  --simple-nasals          Simplified nasal endings (करें→karen instead of karein)")
 	fmt.Fprintln(os.Stderr, "  --keep-medial-schwa      Retain schwa in more positions (जनता→janata not janta)")
 	fmt.Fprintln(os.Stderr, "  --schwa-model            Use the learned schwa classifier instead of heuristic rules")

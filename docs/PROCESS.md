@@ -7,8 +7,10 @@ How work is planned, tracked, and shipped in gomanize. Absorbed from the
 
 - **Feature branches only.** Never commit directly to `main` — pre-commit hooks
   (`no-commit-to-branch`) enforce this. One PR per logical change.
-- **`make ci` before every PR.** It runs fmt-check, lint, build, coverage tests,
-  and the accuracy benchmark. A green gate is the *floor*, not the review.
+- **`make ci` before every PR.** It runs fmt-check, lint, build, coverage tests
+  (including the frozen Hindi snapshot), the accuracy benchmark, and the Bengali
+  gate, pins and record assertions; hosted CI also runs `make npm-test`. Run
+  Python suites under Python 3.12, the hosted runner's default today. A green gate is the *floor*, not the review.
 - **Zero tech debt forward.** A shortcut is either fixed in the same PR or tracked
   as an explicit task via `./tools/tasks new` with a rationale. "I'll clean it up
   later" without a tracked task is a process violation.
@@ -70,3 +72,13 @@ independently, try to break the change, and flag what the boxes don't name.
 - Any accuracy-affecting change must show before/after on `make test-dakshina`
   (curated) in the PR's Verification section.
 - A regression guard needs a sanity-revert: prove the test fails without the fix.
+- Every headline number in README/RESEARCH must come from an asserting test or a
+  committed record that a test recomputes; logged-only numbers drift silently.
+  (Bengali numbers meet this; pinning the Hindi headlines is tracked as T-0116.)
+- Learned components: train on train partitions only, select on dev under a
+  protocol committed before results (record the number of attempts after a missed
+  gate), and report held-out test once after selection. Label provisional
+  references (e.g. unreviewed lyrics drafts) wherever their numbers appear.
+- Deferrals named in review notes must carry a TASKS.md ID ("Tracked:" alone is
+  not tracking). Do not copy reviewer environment variables or temp paths into
+  committed reproduction commands.

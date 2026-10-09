@@ -61,7 +61,7 @@ reranker test. Hindi remains unchanged, including its frozen output snapshot.
 ## Reproduction and checks
 
 ```sh
-GOCACHE=/tmp/gomanize-review-go-cache python3 tools/bengali/train_reranker.py --output /tmp/bengali-rerank
+python3 tools/bengali/train_reranker.py --output /tmp/bengali-rerank
 cmp /tmp/bengali-rerank/reranker_manifest.json docs/reviews/2026-10-04-bengali-b2-rerank.json
 make test-bengali-rerank
 make ci

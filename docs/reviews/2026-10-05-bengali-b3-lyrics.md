@@ -89,7 +89,7 @@ Independent stack review; reference quality is out of scope (T-0068).
   (provenance hashes excluded); the mutation now fails.
 - **Regenerated.** After the B1/B2 review fixes every prediction and score is
   unchanged; only `sources_sha256` was stale and has been refreshed.
-- Tracked: extraction strips every Unicode Cf character, including ZWJ/ZWNJ, which
+- Tracked (T-0103): extraction strips every Unicode Cf character, including ZWJ/ZWNJ, which
   can be meaningful in Bengali (only a BOM occurs in the current captures); about
   16% of scored reference characters are spaces/punctuation, so a letters-only CER
   would help T-0068; full-page captures (~17 KB each) will add up if the pilot grows.

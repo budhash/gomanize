@@ -1,15 +1,15 @@
 # Bengali Support — Design
 
 **Date:** 2026-09-30
-**Status:** Design v4; Part A config/quality refactor implemented on the feature
-branch, 2026-10-04. Experimental Bengali B0 is implemented in its dependent
-branch. The [B1 structural prototype](2026-10-04-bengali-b1-prototype.md) is
-implemented separately. The [B1 rules catalog](2026-10-04-bengali-b1-results.md)
-now passes the fixed dev gates; B2/B3 and A.2' remain unimplemented. B0 measurements and remaining
-T-0055 decisions are in [the B0 report](2026-10-04-bengali-b0-baseline.md) and
-the [evaluation contract](2026-10-04-bengali-evaluation-gate.md). T-0055 is now
-resolved: operational o default, max-reference-votes ≥3 secondary curation,
-and explicit full/curated dev gates before production B1 tuning.
+**Status:** Design v4, **implemented as experimental Bengali** (merged
+2026-10-05/06, #111–#127; keel-reviewed 2026-10-07). Part A, B0, B1, B2 and a B3
+pilot shipped; A.2' (T-0058) and B3 gold (T-0054, after T-0068 attestation)
+remain open. See **As built** below for where the implementation departs from
+this design. Stage records: [B0](2026-10-04-bengali-b0-baseline.md),
+[B1 prototype](2026-10-04-bengali-b1-prototype.md),
+[B1 rules](2026-10-04-bengali-b1-results.md),
+[evaluation contract](2026-10-04-bengali-evaluation-gate.md),
+[retrain](2026-10-06-bengali-retrain.md), [keel review](2026-10-07-bengali-keel.md).
 Sections 1.5 and 1.6 record the earlier Fable/Codex reviews; §1.7 records the
 latest Codex review and accepted resolutions. Part A is independent of Bengali
 implementation; Bengali behavior must pass the B1 prototype gate. Tracked as F-0011.
@@ -24,6 +24,33 @@ training, overrides-are-not-accuracy, measure-before-shipping, negative results
 recorded) carries over unchanged.
 
 ---
+
+
+## As built (2026-10-09)
+
+The design text below is kept as written; these are the departures.
+
+- **B2 components.** Shipped as a three-class inherent-vowel model (Google
+  pronunciation lexicon), an 8,976-entry spelling lexicon (Dakshina train), and a
+  cross-fitted native selector (opt-in with both `SchwaModel` and `Rerank`). A
+  character-only reranker and an initial native selector were rejected on dev and
+  kept as research records. Components were selected on dev; test was reported
+  once after selection (see the amended §3 gate).
+- **B3 lyrics.** Not Gitabitan: a source-pinned pilot of the first four songs of
+  the 1913 *Gitanjali* (82 lines) with assistant-drafted, unreviewed references.
+  Gold promotion waits on maintainer attestation (T-0068) and coverage (T-0054).
+- **B.6 style flag.** `Options.InherentVowelA` exists in the Go API only; it is
+  not exposed in the CLI, npm or web (tracked, keel K23). Hindi style toggles
+  bypass the Bengali lexicon and selector rather than restyling them.
+- **Chandrabindu.** Measured during B1 (b1-results); `n` was kept and no flag was
+  added.
+- **Frequency list.** The IndicCorp-derived Bengali frequency list was not built.
+- **Metrics.** Aksharantar is reported as full and Dakshina-test-unseen slices,
+  not AK-Freq/NEF/NEI. The Bengali CI gate is the preregistered relative B1 dev
+  gate plus frozen output pins, not a pure-accuracy floor.
+- **Isolation.** Training partitions (schema 2) exclude held-out types and their
+  khanda-ta / malformed-আ spelling variants; canonically equivalent input is
+  normalized once in the engine (keel K1).
 
 ## 1. Summary and the one hard finding
 

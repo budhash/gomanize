@@ -135,7 +135,9 @@ macro minCER 0.09150 → 0.09138; train strict 8,015 → 8,016, match-any 13,902
 BanglaTLit B1 macro CER 0.33149376 → 0.33148921 (exact unchanged at 8). Hindi
 frozen outputs are unchanged. The preregistered gate still passes.
 
-Further review notes (tracked, not changed here):
+Further review notes (tracked in TASKS.md: train ablation T-0096, paired-loss
+gate scope T-0094, coda gemination T-0098, BanglaTLit casing T-0100, T-0052
+remainder T-0108):
 
 - **Train evidence for the post-miss rules.** Only the ফ→`f` evidence is recorded
   above. Reviewer ablations on the final catalog: ফ→`f` train match-any +186/−26
@@ -153,3 +155,6 @@ Further review notes (tracked, not changed here):
   penalty.
 - **T-0052 scope.** Anusvara is unchanged (`ng`) and visarga covers the দুঃখ
   family only; the task title overstates the delivered scope.
+
+**Later status (2026-10-09).** CLI, npm/WASM and web language selection shipped
+(#125, #126); see the [keel review](2026-10-07-bengali-keel.md) for the current state.

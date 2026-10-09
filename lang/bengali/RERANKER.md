@@ -1,7 +1,8 @@
 # Experimental Bengali native selector
 
-`selector.json` is the unchanged artifact from the
-[cross-fitting experiment](../../docs/reviews/2026-10-04-bengali-b2-crossfit.md).
+`selector.json` is the artifact selected by the
+[cross-fitting experiment](../../docs/reviews/2026-10-04-bengali-b2-crossfit.md),
+retrained once on the schema-2 training partitions (see the hash note below).
 It is derived from Google's Dakshina dataset (CC BY-SA 4.0) and Google Bengali
 pronunciation data (CC BY 4.0). Credit both sources; the derived selector is
 **CC BY-SA 4.0**, independently of the repository's MIT code license. Source
@@ -31,6 +32,7 @@ contract; a declined rerank retains the normal pipeline's debug trace.
 
 Held-out match-any is 63.04%, versus the vowel model's 62.76%. Aksharantar improves
 slightly, but BanglaTLit sentence CER worsens slightly while exact matches remain
-unchanged. This remains experimental and opt-in, with no default or CLI language
-change. See the [runtime evaluation](../../docs/reviews/2026-10-05-bengali-b2-runtime.md)
+unchanged. This remains experimental and opt-in: it never runs by default, and the CLI
+(`--language=bengali --schwa-model --rerank`), npm and web expose it only on
+request. See the [runtime evaluation](../../docs/reviews/2026-10-05-bengali-b2-runtime.md)
 for all profiles, losses, caveats and reproduction.

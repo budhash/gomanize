@@ -66,11 +66,137 @@ then small learned components for the lexical gap.
    Bengali B2 uses the Google pronunciation lexicon for phonological learning
    and Dakshina train for spelling/roman n-grams, through the frozen
    [training partitions](../training/data/bengali/README.md). Both training
-   sources exclude all normalized Dakshina and Google held-out word types.
+   sources exclude all normalized Dakshina and Google held-out word types and
+   their khanda-ta / malformed-আ spelling variants (schema 2). Bengali results
+   are in §4.
 3. **Benchmarks are never training/mining sources.** COMI-LINGUA overlap may
    estimate a miner's precision, never feed the lexicon.
 4. **Every proposed change is measured before shipping**, and negative results
    are recorded (see §5).
+
+## 3. Datasets
+
+| Dataset | Size (as used) | License | Role |
+|---|---|---|---|
+| [Dakshina](https://github.com/google-research-datasets/dakshina) (Google, 2020; repo archived 2026) | 53K rows; 25K/2.5K/2.5K disjoint splits with attestation counts | CC BY-SA 4.0 | Curated benchmark (1,330 high-attestation words), multi-reference variant sets, held-out test, and the sole training source for Hindi learned components |
+| [Aksharantar test set](https://huggingface.co/datasets/ai4bharat/Aksharantar) (AI4Bharat, 2022) | 10,112 human-annotated pairs; slices AK-Freq / AK-NEF / AK-NEI / Dakshina | CC-BY 4.0 | Independent human benchmark (Karya native-speaker annotators); exposes named-entity weakness and cross-dataset convention shift |
+| [COMI-LINGUA](https://huggingface.co/datasets/LingoIITGN/COMI-LINGUA) MT split (IIT-GN, EMNLP Findings 2025) | 9,606 word types / 152K token occurrences extracted from expert-annotated parallel Devanagari↔Roman sentences | CC-BY 4.0 | *Naturally-typed* colloquial Hindi — the closest proxy to song lyrics; token-weighted scoring |
+| [Shabd](https://osf.io/xfbhd/) (psycholinguistic DB, 1.4B-token corpus) | Top-15K Devanagari words by frequency | CC0 | Frequency weighting; lexicon ranking; token-coverage estimation |
+| Lyrics gold seed (in-repo) | 43 lines: Kabir, Rahim, Meera, Vande Mataram, Sarfaroshi, Raghupati, Jana Gana Mana | Public domain (life+60, India); maintainer-attested romanizations | Line-level evaluation of the primary use case through the sentence API |
+| Aksharantar bulk (`aksharantar_hi.csv`) | 357K machine-mined rows | CC-BY/CC0 | Bulk smoke test + override-miner source (NOT gold — ~93% mining precision upstream) |
+| Dakshina `bn` (Bengali) | 25K/2.5K/2.5K word types, ~3.8 references per word | CC BY-SA 4.0 | Bengali benchmark (dev selection, test reported once) and training source for the Bengali lexicon and selector |
+| [Google Bengali pronunciation lexicon](https://github.com/googlei18n/language-resources/tree/master/bn) | ~65K entries; frozen 55,097 / 3,184 / 3,023 train/dev/test types | CC BY 4.0 | Training source for the Bengali vowel model (train partition only) |
+| [Aksharantar `ben` test](https://huggingface.co/datasets/ai4bharat/Aksharantar) | 7,134 word types | CC-BY 4.0 | External Bengali evaluation; **contains the Dakshina test vocabulary**, so it is reported as full and unseen slices, not as independent confirmation |
+| [BanglaTLit](https://aclanthology.org/2024.findings-emnlp.859.pdf) official test split | 2,500 sentences | MIT | Sentence-level Bengali evaluation only; the upstream train file contains every dev/test pair and is never imported |
+| Bengali lyrics pilot (Wikisource, 1913 *Gitanjali*) | 4 songs, 82 lines | Poems public domain; transcription CC BY-SA 4.0 | Line-level Bengali evaluation; references are **assistant-drafted and unreviewed** pending attestation (T-0068) |
+
+Data pipelines are reproducible: `tools/build_*.py`, `tools/train_ngram.py`,
+`tools/schwa/train.py` regenerate every derived artifact from sources.
+
+A survey (Sept 2026) found no aligned Devanagari-Roman song-lyrics dataset;
+modern film lyrics are copyrighted. The in-repo public-domain seed is a partial
+substitute; expansion paths are
+Giitaayan (ITRANS, deterministic conversion) for Devanagari and LyricsTranslate
+for human romanizations, kept out-of-repo for copyright reasons.
+
+## 4. Results
+
+### Headline (curated Dakshina, 1,330 words)
+
+| Metric | Score |
+|---|---|
+| Match-any + `--rerank` | **94.8%** |
+| Match-any, default rules | 92.9% |
+| Strict top-1, pure (CI gate ≥85%) | 86.2% |
+| Mean minCER | 0.0114 (human floor ≈ 0.054) |
+
+### Generalization & real-world
+
+| Benchmark | Default rules | Best configuration |
+|---|---|---|
+| Held-out Dakshina test (2,500 unseen words) | 69.3% | **70.7%** (`--rerank`), minCER 0.0963 |
+| COMI-LINGUA, token-weighted | 79.9% | **86.6%** (`--lexicon`) |
+| Frequency-weighted (Shabd ∩ gold, 9,987 words) | 82.8% | **97.4%** (`--lexicon`; largely in-sample — gold is mostly the train split the lexicon is built from) |
+| Lyrics gold, mean line CER | 0.0492 | **0.0394** (`--lexicon`); 0.0476 (`--rerank`) |
+| Aksharantar AK-NEI (Indian names) | 43.5% | 51.3% (`--lexicon`) |
+| Aksharantar AK-Freq | 43.0% | — (convention shift, see below) |
+
+### Learned-component numbers
+- **Schwa classifier**: CART tree trained on 24,473 force-aligned schwa
+  instances (56.7% deletion rate ≈ Arora's McGregor 52.9%); **90.67% per-schwa
+  on the disjoint test split** (majority baseline 58.65%); word-level it ties/
+  slightly beats the eight hand-written schwa rules — evidence those rules are
+  near-optimal.
+- **Lexicon**: 8,367 entries (best train spelling, attestation-gated), **71.7%
+  token coverage**; COMI-LINGUA +6.7 points, AK-NEI +7.8 points, lyrics line CER
+  0.0492 → 0.0394;
+  provably 0% held-out type coverage (by split design).
+- **Re-ranker**: char 4-gram LM (31K grams) over {rules, schwa-model}
+  candidates; improved all three benchmarks it was measured on — held-out,
+  curated multi-reference, lyrics CER (ablation in §5).
+
+### Cross-dataset convention shift (why AK-Freq is "only" 43.0%)
+Aksharantar's annotators systematically prefer doubled vowels
+(*atyaachaarapoorn*) where Dakshina's curated set prefers single
+(*atyacharpurn*); ~29% of AK-Freq failures are pure aa/ee/oo/v-w convention
+differences, and the re-included Dakshina slice scores 69.1% — matching the project's own
+held-out 69.3% and validating the harness. Romanization conventions differ
+**between annotation efforts**, not just between annotators. For scale:
+IndicXlit — an 11M-parameter transformer trained on Aksharantar itself —
+reports ~52% top-1 in this direction.
+
+### Known limitations
+
+- **Vowel-length spelling** (ee/oo vs i/u, aa vs a) is a lexical convention, not
+  rule-governed; roughly half of remaining errors are this class. Positional
+  rules for it measured net-negative and were rejected (§5).
+- **Named entities and loanwords** are weak without `--lexicon` — names have
+  conventional spellings no phonetic rule can produce (दीक्षित → *dixit*).
+- **Convention differs between annotation efforts**, so scores against corpora
+  with other conventions (e.g. Aksharantar's frequent-word slice) are
+  substantially lower than against Dakshina-style references (see above).
+
+### Bengali (experimental)
+
+Bengali is scored on its own Dakshina `bn` splits (dev for selection, test
+reported once after selection); its references average about 3.7 variants per
+held-out word versus Hindi's 1.8, so match-any is not comparable across the two
+languages. Stage records are linked below.
+
+#### B0 measurement
+
+The experimental Bengali baseline and split-specific metrics are recorded in
+[the B0 report](reviews/2026-10-04-bengali-b0-baseline.md). Bengali Dakshina v1.0
+fixtures retain all references/votes under CC BY-SA 4.0 with member and fixture
+hashes in `benchmark/data/bengali/manifest.json`. Train/dev support exploratory
+style/attestation histograms; test remains evaluation-only. At B0 no Bengali
+learned artifacts existed; later B2 components are described below. The Hindi
+training policy above remains unchanged.
+
+#### B1 evaluation contract (2026-10-04)
+
+Before production B1 tuning, train/dev exact-anchor slot measurements support
+retaining o as the operational consonant-vowel default, while independent অ
+remains a convention with mixed evidence. Full dev stays primary; a secondary
+subset uses max-reference-votes ≥3 and retains all references (992 dev words).
+Frozen B0 outputs define a gate requiring 10% fewer word misses, 5% lower minCER,
+and no strict top-1 loss on both sets. These are preregistered engineering targets,
+not an estimated rule ceiling. See the [evidence, exclusions, and enforcement
+contract](reviews/2026-10-04-bengali-evaluation-gate.md).
+
+#### B1 and external sentence evaluation (2026-10-04)
+
+B1 passes the fixed full/curated dev gates without learned components. Dakshina
+match-any improves from 48.40% to 54.84% on dev (54.80% as first submitted) and from 50.08% to 56.52% on
+test; test minCER improves from 0.10548 to 0.08772. The independently imported
+BanglaTLit official test yields macro sentence CER 0.33149 versus B0's 0.34312,
+with only 8/2,500 exact sentence matches. It is evaluation-only, imported after
+rule tuning stopped. Its upstream `train` pool includes all official dev/test
+pairs and is not imported as training data. The MIT license is included with
+the fixture. [Results and caveats](reviews/2026-10-04-bengali-b1-results.md);
+[viable source/architecture references](reference/bengali-repositories.md).
+
+#### B2 learned components
 
 The experimental Bengali vowel model is evaluated separately from Hindi: its
 opt-in held-out Dakshina match-any is 62.76% versus B1's 56.52%, without lexicon
@@ -99,81 +225,24 @@ now available as an experimental runtime opt-in using both `SchwaModel` and
 wordwise parity and small Aksharantar gains, but a slight BanglaTLit sentence-CER
 regression. Defaults remain unchanged; independent lyrics validation is pending.
 
-## 3. Datasets
+**Selection-round disclosure.** Dakshina dev was used across four Bengali
+selection rounds (vowel model, rejected character reranker, rejected native
+selector, accepted cross-fitted selector), and held-out test was reported after
+each accepted stage. The 63.04% figure should be read with that forking-paths
+context; the gain over the vowel model is seven words out of 2,500.
 
-| Dataset | Size (as used) | License | Role |
-|---|---|---|---|
-| [Dakshina](https://github.com/google-research-datasets/dakshina) (Google, 2020; repo archived 2026) | 53K rows; 25K/2.5K/2.5K disjoint splits with attestation counts | CC BY-SA 4.0 | Curated benchmark (1,330 high-attestation words), multi-reference variant sets, held-out test, and the sole training source for Hindi learned components |
-| [Aksharantar test set](https://huggingface.co/datasets/ai4bharat/Aksharantar) (AI4Bharat, 2022) | 10,112 human-annotated pairs; slices AK-Freq / AK-NEF / AK-NEI / Dakshina | CC-BY 4.0 | Independent human benchmark (Karya native-speaker annotators); exposes named-entity weakness and cross-dataset convention shift |
-| [COMI-LINGUA](https://huggingface.co/datasets/LingoIITGN/COMI-LINGUA) MT split (IIT-GN, EMNLP Findings 2025) | 9,606 word types / 152K token occurrences extracted from expert-annotated parallel Devanagari↔Roman sentences | CC-BY 4.0 | *Naturally-typed* colloquial Hindi — the closest proxy to song lyrics; token-weighted scoring |
-| [Shabd](https://osf.io/xfbhd/) (psycholinguistic DB, 1.4B-token corpus) | Top-15K Devanagari words by frequency | CC0 | Frequency weighting; lexicon ranking; token-coverage estimation |
-| Lyrics gold seed (in-repo) | 43 lines: Kabir, Rahim, Meera, Vande Mataram, Sarfaroshi, Raghupati, Jana Gana Mana | Public domain (life+60, India); maintainer-attested romanizations | Line-level evaluation of the primary use case through the sentence API |
-| Aksharantar bulk (`aksharantar_hi.csv`) | 357K machine-mined rows | CC-BY/CC0 | Bulk smoke test + override-miner source (NOT gold — ~93% mining precision upstream) |
+#### B3 lyrics pilot (2026-10-05)
 
-Data pipelines are reproducible: `tools/build_*.py`, `tools/train_ngram.py`,
-`tools/schwa/train.py` regenerate every derived artifact from sources.
-
-A survey (Sept 2026) found no aligned Devanagari-Roman song-lyrics dataset;
-modern film lyrics are copyrighted. The in-repo public-domain seed is a partial
-substitute; expansion paths are
-Giitaayan (ITRANS, deterministic conversion) for Devanagari and LyricsTranslate
-for human romanizations, kept out-of-repo for copyright reasons.
-
-## 4. Results
-
-### Headline (curated Dakshina, 1,330 words)
-
-| Metric | Score |
-|---|---|
-| Match-any + `--rerank` | **94.8%** |
-| Match-any, default rules | 92.9% |
-| Strict top-1, pure (CI gate ≥85%) | 86.2% |
-| Mean minCER | 0.0114 (human floor ≈ 0.054) |
-
-### Generalization & real-world
-
-| Benchmark | Default rules | Best configuration |
-|---|---|---|
-| Held-out Dakshina test (2,500 unseen words) | 69.3% | **70.7%** (`--rerank`), minCER 0.0963 |
-| COMI-LINGUA, token-weighted | 79.9% | **86.6%** (`--lexicon`) |
-| Frequency-weighted (Shabd ∩ gold, 9,987 words) | 82.8% | **97.4%** (`--lexicon`) |
-| Lyrics gold, mean line CER | 0.0492 | **0.0394** (`--lexicon`); 0.0465 (`--rerank`) |
-| Aksharantar AK-NEI (Indian names) | 43.5% | 51.3% (`--lexicon`) |
-| Aksharantar AK-Freq | 43.0% | — (convention shift, see below) |
-
-### Learned-component numbers
-- **Schwa classifier**: CART tree trained on 24,473 force-aligned schwa
-  instances (56.7% deletion rate ≈ Arora's McGregor 52.9%); **90.67% per-schwa
-  on the disjoint test split** (majority baseline 58.65%); word-level it ties/
-  slightly beats the eight hand-written schwa rules — evidence those rules are
-  near-optimal.
-- **Lexicon**: 8,367 entries (best train spelling, attestation-gated), **71.1%
-  token coverage**; +5.9 to +7.9 points on three independent evaluations;
-  provably 0% held-out type coverage (by split design).
-- **Re-ranker**: char 4-gram LM (31K grams) over {rules, schwa-model}
-  candidates; improved all three benchmarks it was measured on — held-out,
-  curated multi-reference, lyrics CER (ablation in §5).
-
-### Cross-dataset convention shift (why AK-Freq is "only" 43.0%)
-Aksharantar's annotators systematically prefer doubled vowels
-(*atyaachaarapoorn*) where Dakshina's curated set prefers single
-(*atyacharpurn*); ~29% of AK-Freq failures are pure aa/ee/oo/v-w convention
-differences, and the re-included Dakshina slice scores 69.1% — matching the project's own
-held-out 69.3% and validating the harness. Romanization conventions differ
-**between annotation efforts**, not just between annotators. For scale:
-IndicXlit — an 11M-parameter transformer trained on Aksharantar itself —
-reports ~52% top-1 in this direction.
-
-### Known limitations
-
-- **Vowel-length spelling** (ee/oo vs i/u, aa vs a) is a lexical convention, not
-  rule-governed; roughly half of remaining errors are this class. Positional
-  rules for it measured net-negative and were rejected (§5).
-- **Named entities and loanwords** are weak without `--lexicon` — names have
-  conventional spellings no phonetic rule can produce (दीक्षित → *dixit*).
-- **Convention differs between annotation efforts**, so scores against corpora
-  with other conventions (e.g. Aksharantar's frequent-word slice) are
-  substantially lower than against Dakshina-style references (see above).
+A source-pinned pilot now covers 82 lines (71 unique) from the first four songs
+of Tagore's 1913 *Gitanjali*. Its Roman references were drafted by the assistant
+before prediction and are **unreviewed, not gold**. The pure model plus reranker
+has 52 exact draft agreements and macro line CER 0.017013; these are provisional
+reference-agreement measurements, not a validated accuracy claim. The lexicon
+reduces agreement on this sample. Training overlap is substantial: 142/213
+native word types; only seven lines are entirely unseen by the training word
+vocabularies. [Full results and limitations](reviews/2026-10-05-bengali-b3-lyrics.md);
+[dataset and independent-review handoff](../benchmark/data/bengali_lyrics/README.md).
+T-0068 and the B3 gold task T-0054 remain open. No runtime behavior changes.
 
 ## 5. Negative results (kept deliberately)
 
@@ -196,6 +265,15 @@ reports ~52% top-1 in this direction.
 Together these bound the design: the rule-based ceiling is real (~86% pure /
 ~93% match-any on this data), the remaining gap is lexical, and closing it
 requires human-attested data, not more rules.
+
+**Bengali (2026-10).** Two candidate rerankers were rejected on dev and kept as
+research records, never installed in runtime: a character-only n-gram reranker
+(best setting +1 match-any for −1 strict and worse CER;
+[record](reviews/2026-10-04-bengali-b2-rerank.md)) and an initial native-conditioned
+selector (no threshold changed any output;
+[record](reviews/2026-10-04-bengali-b2-native-selector.md)). In B1, dropping chandrabindu's
+nasal was measured on train (+34 / −52 matches over 312 words) and not adopted;
+see the [B1 record](reviews/2026-10-04-bengali-b1-results.md).
 
 ## 6. Key literature
 
@@ -223,49 +301,3 @@ requires human-attested data, not more rules.
   Methods. [osf.io/xfbhd](https://osf.io/xfbhd/)
 
 Full provenance for every number above: [`reviews/`](reviews/) (2026-09-04 onward).
-
-## Bengali B0 measurement
-
-The experimental Bengali baseline and split-specific metrics are recorded in
-[the B0 report](reviews/2026-10-04-bengali-b0-baseline.md). Bengali Dakshina v1.0
-fixtures retain all references/votes under CC BY-SA 4.0 with member and fixture
-hashes in `benchmark/data/bengali/manifest.json`. Train/dev support exploratory
-style/attestation histograms; test remains evaluation-only. At B0 no Bengali
-learned artifacts existed; later B2 components are described below. The Hindi
-training policy above remains unchanged.
-
-### Bengali B1 evaluation contract (2026-10-04)
-
-Before production B1 tuning, train/dev exact-anchor slot measurements support
-retaining o as the operational consonant-vowel default, while independent অ
-remains a convention with mixed evidence. Full dev stays primary; a secondary
-subset uses max-reference-votes ≥3 and retains all references (992 dev words).
-Frozen B0 outputs define a gate requiring 10% fewer word misses, 5% lower minCER,
-and no strict top-1 loss on both sets. These are preregistered engineering targets,
-not an estimated rule ceiling. See the [evidence, exclusions, and enforcement
-contract](reviews/2026-10-04-bengali-evaluation-gate.md).
-
-### Bengali B1 and external sentence evaluation (2026-10-04)
-
-B1 passes the fixed full/curated dev gates without learned components. Dakshina
-match-any improves from 48.40% to 54.80% on dev and from 50.08% to 56.52% on
-test; test minCER improves from 0.10548 to 0.08772. The independently imported
-BanglaTLit official test yields macro sentence CER 0.33149 versus B0's 0.34312,
-with only 8/2,500 exact sentence matches. It is evaluation-only, imported after
-rule tuning stopped. Its upstream `train` pool includes all official dev/test
-pairs and is not imported as training data. The MIT license is included with
-the fixture. [Results and caveats](reviews/2026-10-04-bengali-b1-results.md);
-[viable source/architecture references](reference/bengali-repositories.md).
-
-### Bengali B3 lyrics pilot (2026-10-05)
-
-A source-pinned pilot now covers 82 lines (71 unique) from the first four songs
-of Tagore's 1913 *Gitanjali*. Its Roman references were drafted by the assistant
-before prediction and are **unreviewed, not gold**. The pure model plus reranker
-has 52 exact draft agreements and macro line CER 0.017013; these are provisional
-reference-agreement measurements, not a validated accuracy claim. The lexicon
-reduces agreement on this sample. Training overlap is substantial: 142/213
-native word types; only seven lines are entirely unseen by the training word
-vocabularies. [Full results and limitations](reviews/2026-10-05-bengali-b3-lyrics.md);
-[dataset and independent-review handoff](../benchmark/data/bengali_lyrics/README.md).
-T-0068 and the B3 gold task T-0054 remain open. No runtime behavior changes.

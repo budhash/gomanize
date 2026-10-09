@@ -11,75 +11,64 @@ tagged release also has auto-generated notes on the
 
 ## [Unreleased]
 
-### Fixed (keel review, 2026-10-07)
+### Added
 
-- One canonical spelling per word: the engine canonicalizes script text once
-  (precomposed vs decomposed nukta letters, nukta/virama order, split matras,
-  format characters within script text) before lexicon lookup, ranking and
-  parsing. Hindi output no longer depends on input encoding; 110 non-canonically
-  encoded snapshot inputs changed deliberately; headline accuracy is unchanged
-  (see docs/reviews/2026-10-09-keel-k1-canonicalization.md).
-
-- Text without any character of the selected script (emoji ZWJ sequences, flag
-  tags, RTL marks, soft hyphens) now passes through unchanged instead of losing
-  its format characters.
-- Learned per-word components (schwa/vowel models, Bengali selector) skip tokens
-  longer than 64 runes; very long unspaced input no longer costs quadratic time
-  (a 2,000-character Bengali word took ~30 s in the web demo).
-- Debug tracing is collected per call: `Translit`/`TranslitDebug` with
-  `Options.Debug` are now safe for concurrent use on a shared instance.
-- npm wrappers snapshot options into validated primitives before calling WASM, so
-  a getter or Proxy cannot pass a BigInt through and crash the runtime.
-- A non-nil `brahmic.ScriptProfile` must set every field; partial profiles now
-  panic instead of silently inheriting Devanagari values.
-- New `core.Options.DefaultStyle()` centralizes the default-style check used by
-  Bengali's lexicon and selector, covering any style option added later.
-- The Hindi lexicon coverage test now asserts zero held-out coverage.
+- **Experimental Bengali** (`gomanize.New("bengali")`, CLI `--language=bengali`,
+  npm `{ language: "bengali" }`, web language selector). Omitted language remains
+  Hindi everywhere; every Bengali learned component is opt-in.
+  - B0: symbols, Unicode aliases, compositional conjuncts, khanda-ta support and a
+    split-aware Dakshina baseline.
+  - B1 rules: scoped phalas/conjuncts, gemination, final-cluster vowels, ফ→f,
+    হও/হওয়া handling; a preregistered dev gate enforced in CI
+    (`make test-bengali-b1-gate`). Brahmic render-time gemination modes carry
+    independent vowel ownership.
+  - B2 learned components: a three-class inherent-vowel model (`SchwaModel`), an
+    8,976-entry spelling lexicon (`Lexicon`), and a cross-fitted native selector
+    (`SchwaModel` + `Rerank`). Held-out Dakshina match-any: rules 56.52%, model
+    62.76%, model + selector 63.04%.
+  - Frozen, normalized training partitions with held-out exclusions (schema 2
+    also excludes khanda-ta and malformed-আ variants of held-out words).
+  - Evaluation fixtures: pinned BanglaTLit test split, reviewed Bengali and
+    reverse-transliteration reference repositories with provenance, Aksharantar
+    overlap audit,
+    and a source-pinned lyrics pilot (first four songs of the 1913 Gitanjali)
+    with **unreviewed** references pending attestation.
+- `Options.InherentVowelA` for profile-aware rendering (Go API only); no Hindi
+  output change.
+- `core.Options.DefaultStyle()`, `core.Canonicalizer`, `brahmic.Canonicalize`
+  and `brahmic.ScriptProfile` for script-general rendering and canonicalization.
 
 ### Changed
 
-- npm/WASM accepts per-call `language: "bengali"`; omitted language remains Hindi.
-  The browser adds explicit language selection and remembers options per language.
-  Unsupported JavaScript language values throw without terminating the WASM engine.
-
-- CLI accepts `--language=bengali` or `--language bengali` for every input mode;
-  omitted language remains Hindi. Bengali learned components stay opt-in.
-  Unsupported names fail with the supported list; Bengali `--rerank` without
-  `--schwa-model` prints a warning instead of being silently ignored.
-- Bengali training partitions (schema 2) exclude khanda-ta (ৎ / ত্ / word-final
-  ত) and malformed-আ spelling variants of held-out words; vowel model, lexicon
-  (8,976 entries) and native selector retrained. Held-out results are unchanged.
-- npm wrappers reject non-object options and non-boolean flags (a BigInt flag
-  previously crashed the WASM runtime). The npm license field and release
-  archives now carry the embedded-data licenses (`NOTICE.md`).
-
-- Debug rule traces now retain metadata-only changes in all phases and fallback
+- The Brahmic renderer and shared rule constants take a script profile; legacy
+  callers keep Devanagari defaults and Hindi output is guarded by a frozen corpus
+  snapshot. A non-nil `ScriptProfile` must set every field (partial profiles
+  now panic instead of inheriting Devanagari values).
+- Rule-engine construction rejects same-phase effective-priority conflicts,
+  matching `AddRule`, including rules disabled by default.
+- Script text is canonicalized once per word before lexicon lookup, ranking and
+  parsing. Hindi output no longer depends on input encoding; 110 non-canonically
+  encoded snapshot inputs changed deliberately and headline accuracy is unchanged
+  (docs/reviews/2026-10-09-keel-k1-canonicalization.md).
+- CLI: unsupported language names fail with the supported list; Bengali
+  `--rerank` without `--schwa-model` prints a warning.
+- npm/WASM: options are snapshotted into validated primitives; non-object
+  options and non-boolean flags throw `TypeError`. The npm license field is
+  `MIT AND CC-BY-SA-4.0 AND CC-BY-4.0`; release archives include `NOTICE.md`.
+- Debug rule traces retain metadata-only changes in all phases and fallback
   passes; metadata extraction remains disabled outside debug execution.
 
-- Generalized the Brahmic renderer and shared rule constants through an optional
-  script profile, with separate retained-vowel quality. Legacy callers retain
-  Devanagari defaults; Hindi output is protected by a frozen corpus snapshot.
-- Rule-engine construction now rejects same-phase effective-priority conflicts,
-  matching `AddRule`, including rules disabled by default.
+### Fixed
 
-### Added
-
-- Experimental Bengali B1 rules: scoped phalas/conjuncts, final-cluster vowels,
-  f spelling, and হও/হওয়া handling; fixed dev acceptance gate now enforced in CI.
-- Pinned BanglaTLit sentence test fixture and importer, plus reviewed Bengali
-  and reverse-transliteration references with provenance/overlap findings.
-
-- Bengali train/dev vowel evidence, frozen B0 dev outputs, and a preregistered
-  B1 acceptance command (`make test-bengali-b1-gate`; B0 intentionally fails).
-
-- Brahmic render-time gemination modes with independent vowel ownership,
-  validated by test-only Bengali B1 prototypes. Public Bengali rules remain B0.
-
-- Experimental Bengali B0 through the Go API: symbols, Unicode aliases,
-  compositional conjuncts, khanda-ta support, and split-aware Dakshina baseline.
-  Bengali pronunciation rules and CLI/npm/web selection are not yet complete.
-- `Options.InherentVowelA` for profile-aware rendering; no Hindi output change.
-  This API option is not yet a CLI flag or a complete academic scheme.
+- Text without any character of the selected script (emoji ZWJ sequences, flag
+  tags, RTL marks, soft hyphens) passes through unchanged.
+- Learned per-word components skip tokens longer than 64 runes, so very long
+  unspaced input no longer costs quadratic time (a 2,000-character Bengali word
+  took ~30 s in the web demo); canonicalization is linear on adversarial input.
+- Debug tracing is collected per call: `Translit`/`TranslitDebug` with
+  `Options.Debug` are safe for concurrent use on a shared instance.
+- A BigInt, getter or Proxy option can no longer crash the npm WASM runtime.
+- The Hindi lexicon coverage test asserts zero held-out coverage, as documented.
 
 ## [1.2.1] - 2026-09-13
 

@@ -127,11 +127,11 @@ Commands:
 
 ```sh
 # Train/dev slot evidence, curation sizes, and synthetic alignment tests
-GOCACHE=/tmp/gomanize-review-go-cache go test ./benchmark -run 'TestBengali(AlignmentDefinitions|VowelEvidence)' -count=1 -v
+go test ./benchmark -run 'TestBengali(AlignmentDefinitions|VowelEvidence)' -count=1 -v
 # Definition tests and current status; normal CI does not claim B1 readiness
-GOCACHE=/tmp/gomanize-review-go-cache go test ./benchmark -run 'TestBengali(GateDefinitions|DevGate)' -count=1 -v
+go test ./benchmark -run 'TestBengali(GateDefinitions|DevGate)' -count=1 -v
 # Actual B1 acceptance: deliberately fails on B0
-GOCACHE=/tmp/gomanize-review-go-cache make test-bengali-b1-gate
+make test-bengali-b1-gate
 ```
 
 T-0052 must add the enforcing target to CI when landing production B1; leaving

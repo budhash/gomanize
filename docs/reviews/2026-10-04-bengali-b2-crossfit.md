@@ -102,9 +102,9 @@ repository license. The five intermediate vowel trees are reproducible local
 artifacts, not additional embedded runtime models.
 
 ```sh
-GOCACHE=/tmp/gomanize-review-go-cache python3 tools/bengali/train_crossfit_selector.py \
+python3 tools/bengali/train_crossfit_selector.py \
   --google /path/to/pinned/lexicon.tsv.gz --output /tmp/bengali-crossfit --dev
-GOCACHE=/tmp/gomanize-review-go-cache python3 tools/bengali/evaluate_crossfit.py \
+python3 tools/bengali/evaluate_crossfit.py \
   --experiment /tmp/bengali-crossfit
 cmp /tmp/bengali-crossfit/selector.json docs/reviews/2026-10-04-bengali-b2-crossfit-selector.json
 cmp /tmp/bengali-crossfit/report.json docs/reviews/2026-10-04-bengali-b2-crossfit.json

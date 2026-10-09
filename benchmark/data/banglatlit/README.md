@@ -17,7 +17,7 @@ Rebuild using a checkout of the pinned revision:
 
 ```sh
 python3 tools/build_banglatlit.py --checkout /path/to/BanglaTLit --output /tmp/banglatlit-rebuilt
-GOCACHE=/tmp/gomanize-review-go-cache go test ./benchmark -run '^TestBenchmarkBengaliBanglaTLit$' -count=1 -v
+go test ./benchmark -run '^TestBenchmarkBengaliBanglaTLit$' -count=1 -v
 ```
 
 This is evaluation-only: never mine its examples for rules, lexicon entries,

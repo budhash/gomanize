@@ -454,10 +454,11 @@ g.translit("আমি বাংলা", { language: "bengali" }); <span class="c
       <p><strong>gomanize</strong> romanizes Hindi and experimental Bengali into readable, diacritic-free Latin script — built for song lyrics and other colloquial text. It follows how words are pronounced (romanization / phonetic transliteration), rather than the strict, reversible transliteration of schemes like IAST or ISO&nbsp;15919.</p>
 
       <h3>How it works</h3>
-      <p>A rule-based engine makes the core decisions — schwa deletion, and consonant, vowel, and rendering rules. Three optional learned components, toggleable above, trade a little more computation for accuracy: a decision-tree <strong>schwa model</strong>, an ~8,000-word attested <strong>lexicon</strong>, and a language-specific <strong>re-ranker</strong>.</p>
+      <p>A rule-based engine makes the core decisions — schwa deletion, and consonant, vowel, and rendering rules. Three optional learned components, toggleable above, trade a little more computation for accuracy: a decision-tree <strong>schwa model</strong> (for Bengali, an inherent-vowel model), an attested-spelling <strong>lexicon</strong> (about 8,400 Hindi / 9,000 Bengali words), and a language-specific <strong>re-ranker</strong> (Bengali's needs the vowel model).</p>
 
       <h3>Accuracy</h3>
-      <p>On the curated Dakshina benchmark: <strong>86.1%</strong> exact (pure) and <strong>92.8%</strong> match-any-attested-variant, rising to <strong>94.7%</strong> with the re-ranker. On a gold lyrics set the character error rate is ≈ 0.049 (0.039 with the lexicon) — close to the ~0.054 human floor.</p>
+      <p>Hindi, on the curated Dakshina benchmark: <strong>86.2%</strong> exact (pure) and <strong>92.9%</strong> match-any-attested-variant, rising to <strong>94.8%</strong> with the re-ranker. On a 43-line lyrics set the character error rate is ≈ 0.049 (0.039 with the lexicon) — close to the ~0.054 human floor.</p>
+      <p>Bengali is <strong>experimental</strong>: on held-out Dakshina words, 56.5% match-any with rules, 62.8% with the vowel model and 63.0% with the re-ranker. Its lyrics references are not yet reviewed.</p>
 
       <h3>Privacy</h3>
       <p>Everything runs client-side in your browser via WebAssembly. No text is ever sent to a server.</p>
@@ -466,7 +467,7 @@ g.translit("আমি বাংলা", { language: "bengali" }); <span class="c
         <a href="https://github.com/budhash/gomanize" rel="noopener">Source</a> ·
         <a href="https://github.com/budhash/gomanize/blob/main/docs/RESEARCH.md" rel="noopener">Research</a> ·
         <a href="https://github.com/budhash/gomanize/blob/main/docs/DESIGN.md" rel="noopener">Design</a> ·
-        MIT licensed
+        <a href="NOTICE.md">MIT code; embedded data CC BY-SA / CC BY</a>
       </p>
     </div>
   </dialog>

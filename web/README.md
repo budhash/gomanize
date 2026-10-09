@@ -3,7 +3,8 @@
 A static, single-page browser demo of gomanize. The Go library is compiled to
 WebAssembly, so **all transliteration runs in the visitor's browser** — no
 server, no backend, and no text ever leaves the machine. The embedded models
-(schwa tree, lexicon, n-gram LM) are baked into the `.wasm` via `go:embed`.
+(Hindi schwa tree, lexicon and n-gram LM; Bengali vowel model, lexicon and
+selector) are baked into the `.wasm` via `go:embed`.
 
 ## Files
 
@@ -44,7 +45,7 @@ The same ESM loader forwards `language` to WASM; no network request carries inpu
 `make npm-test` builds the CLI and WASM and checks ESM/CJS parity for both
 languages across baseline, learned and style profiles, missing-language defaults,
 invalid-language recovery and option reset. Browser interaction is checked
-locally before a PR; no deployment occurs until the stack is reviewed and merged.
+locally before a PR; every merge to `main` redeploys the demo (see Deployment).
 
 ## Deployment
 
@@ -61,4 +62,4 @@ of the Pages artifact, so `index.html` fetches `gomanize.wasm` and
 The `.wasm` embeds both language implementations and their learned data,
 downloaded once and then cached. Measure the built artifact for current size. If that ever needs trimming, the levers are
 lazy-loading the embedded models as separate fetched assets, or building with
-TinyGo — see `docs/ROADMAP.md` (F-0006).
+TinyGo; tracked as T-0086 (keel K24).

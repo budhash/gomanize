@@ -1,7 +1,8 @@
 # Bengali B2 frozen training partitions
 
-These are **word-key manifests, not models or pronunciation data**. No runtime
-output changes. They gate T-0053 training before alignment or feature extraction.
+These are **word-key manifests, not models or pronunciation data**. Every
+Bengali learned artifact (vowel model, spelling lexicon, native selector) is
+trained only from the train partitions listed here.
 `tools/bengali_training_data.py` verifies the frozen inventories, selects only
 training rows, and checks final spelling-lexicon keys. Future trainers must use
 `training_rows`, record this manifest's SHA-256 with their artifacts, and call
@@ -17,7 +18,8 @@ This handles canonical nukta aliases and split matras, without merging words by
 Roman spelling. Original source rows remain in the pinned upstream files; the
 Google loader returns original spelling, phonemes, optional disambiguation label (unchanged),
 and source line number. The Dakshina loader preserves all reference spellings
-and their attestation counts. No alignment labels have been generated.
+and their attestation counts. Alignment and model training happen downstream
+(see the B2 review records), not in this data preparation.
 
 Google starts with 65,037 rows / 64,968 original types / 64,958 normalized types;
 15 row spellings change. Excluding 3,630 Dakshina dev/test types leaves 61,328
@@ -109,7 +111,7 @@ BanglaTLit's 2,500 test sentences contain 4,200 distinct Bengali letter/mark-run
 tokens: 2,217 intersect training and 1,983 are unseen (schema 2). This is a descriptive
 word-overlap audit, not a claim about sentence accuracy or the engine tokenizer.
 Neither external corpus supplies training answers. B2 evaluations must report
-full-corpus and unseen-type performance separately. Bengali lyrics gold does
-not exist yet (T-0054): its overlap is unknown, not zero, and must be measured
-when imported. Ambiguous-alignment counts and model accuracy belong to T-0053;
-this data preparation makes no accuracy claim.
+full-corpus and unseen-type performance separately. The Bengali lyrics pilot
+(T-0067) measured its overlap: 142 of 213 native token types occur in training,
+and only seven lines are entirely unseen. Model accuracy is reported in the B2
+review records; this data preparation makes no accuracy claim.

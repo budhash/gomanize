@@ -91,8 +91,8 @@ to Dakshina and CC BY attribution to Google's Bengali pronunciation source.
   that the existing Hindi surface still builds and runs.
 
 ```sh
-GOCACHE=/tmp/gomanize-review-go-cache make test-bengali-runtime
-GOCACHE=/tmp/gomanize-review-go-cache python3 tools/bengali/evaluate_runtime.py \
+make test-bengali-runtime
+python3 tools/bengali/evaluate_runtime.py \
   /path/to/pinned/ben.zip --output /tmp/bengali-runtime.json
 cmp /tmp/bengali-runtime.json docs/reviews/2026-10-05-bengali-b2-runtime.json
 make ci
@@ -125,6 +125,6 @@ Independent stack review. Tables above record the runtime as submitted.
   selector's SHA-256.
 - **Licensing.** `selector.json` (CC BY-SA 4.0) and `vowel_tree.json` (CC BY 4.0)
   are embedded in every build; the README License section now names both.
-- Tracked: threshold and tie behaviour are protected by the aggregate dev/test pins
+- Tracked (T-0101, T-0074): threshold and tie behaviour are protected by the aggregate dev/test pins
   rather than unit fixtures; enabling Rerank costs about 6× time per word (a fresh
   engine per candidate).

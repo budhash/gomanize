@@ -20,8 +20,8 @@ LDFLAGS := -ldflags "-X main.version=$(VERSION) -X main.date=$(BUILD_TIME) -X ma
 
 help: ## Show this help message
 	@echo "Gomanize - Available Commands:"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
-		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
+		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 # ============================================================================
 # Setup
@@ -254,7 +254,7 @@ dev: check test ## Full development workflow (format, vet, test)
 dev-quick: fmt test-quick ## Quick development workflow
 	@echo "✓ Quick development workflow complete"
 
-ci: fmt-check lint build test-cover benchmark test-bengali test-bengali-b1-gate test-bengali-data test-bengali-vowels test-bengali-lexicon test-bengali-rerank test-bengali-native-selector test-bengali-crossfit test-bengali-runtime test-bengali-lyrics ## Full CI pipeline (format, lint, build, test, benchmark)
+ci: fmt-check lint build test-cover benchmark test-bengali test-bengali-b1-gate test-bengali-data test-bengali-vowels test-bengali-lexicon test-bengali-rerank test-bengali-native-selector test-bengali-crossfit test-bengali-runtime test-bengali-lyrics ## Full CI pipeline (format, lint, build, tests, benchmarks, Bengali gates)
 	@echo "✓ CI pipeline complete"
 
 # ============================================================================
