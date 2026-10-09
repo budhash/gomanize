@@ -13,6 +13,13 @@ tagged release also has auto-generated notes on the
 
 ### Fixed (keel review, 2026-10-07)
 
+- One canonical spelling per word: the engine canonicalizes script text once
+  (precomposed vs decomposed nukta letters, nukta/virama order, split matras,
+  format characters within script text) before lexicon lookup, ranking and
+  parsing. Hindi output no longer depends on input encoding; 110 non-canonically
+  encoded snapshot inputs changed deliberately; headline accuracy is unchanged
+  (see docs/reviews/2026-10-09-keel-k1-canonicalization.md).
+
 - Text without any character of the selected script (emoji ZWJ sequences, flag
   tags, RTL marks, soft hyphens) now passes through unchanged instead of losing
   its format characters.

@@ -201,7 +201,21 @@ func (h Hindi) ScriptConfig() interface{} {
 		Nukta:     Nukta,
 		MultiChar: MultiChar,
 		Profile:   &profile,
+		Canonical: canonicalForms,
 	}
+}
+
+// canonicalForms is Devanagari's NFC subset: क़…य़ (U+0958–U+095F) are
+// composition-excluded and decompose; ऩ/ऱ/ऴ compose; nukta precedes virama.
+var canonicalForms = &brahmic.CanonicalForms{
+	Decompose: map[rune][]rune{
+		0x0958: {0x0915, 0x093C}, 0x0959: {0x0916, 0x093C}, 0x095A: {0x0917, 0x093C}, 0x095B: {0x091C, 0x093C},
+		0x095C: {0x0921, 0x093C}, 0x095D: {0x0922, 0x093C}, 0x095E: {0x092B, 0x093C}, 0x095F: {0x092F, 0x093C},
+	},
+	Compose: map[[2]rune]rune{
+		{0x0928, 0x093C}: 0x0929, {0x0930, 0x093C}: 0x0931, {0x0933, 0x093C}: 0x0934,
+	},
+	Class: map[rune]int{0x093C: 7, 0x094D: 9},
 }
 
 // Rules returns the complete rule catalog for Hindi.

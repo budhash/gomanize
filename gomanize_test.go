@@ -219,3 +219,40 @@ func TestLongTokenCostIsBounded(t *testing.T) {
 		}
 	}
 }
+
+// Canonically equivalent spellings must give identical output for every
+// profile: precomposed vs decomposed nukta letters, format characters inside
+// script text, and nukta/virama order (core canonicalization, keel K1).
+func TestCanonicalEquivalenceAllProfiles(t *testing.T) {
+	profiles := []Options{{}, {SchwaModel: true}, {Lexicon: true}, {Rerank: true},
+		{SchwaModel: true, Lexicon: true, Rerank: true}, {LongVowels: true, SimpleNasals: true, KeepMedialSchwa: true}}
+	cases := map[string][][2]string{
+		"hindi": {
+			{"पढ़ाई", "पढ़ाई"}, {"अरोड़ा", "अरोड़ा"}, {"ज़्यादा", "ज़्यादा"},
+			{"अक्टूबर", "अक्‍टूबर"}, {"मकसद", "‌मकसद"}, {"उज़्ज़ा", "उज़्ज़्ा"},
+			{"ऩ", "ऩ"},
+		},
+		"bengali": {
+			{"রয়্যালটি", "রয়্যালটি"}, {"বড়", "বড়"}, {"কোথায়", "কোথায়"},
+			{"ওয়্যার", "ওয়্যার"}, {"নমস্কার", "‍নমস্কার"},
+		},
+	}
+	for language, pairs := range cases {
+		for _, opts := range profiles {
+			g, err := NewWithOptions(language, opts)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, pair := range pairs {
+				if a, b := g.Translit(pair[0]), g.Translit(pair[1]); a != b {
+					t.Errorf("%s %+v: %q -> %q but %q -> %q", language, opts, pair[0], a, pair[1], b)
+				}
+			}
+		}
+	}
+	// A token mixing an emoji sequence and script text keeps the emoji's ZWJ.
+	g, _ := New("hindi")
+	if got := g.Translit("👨‍👩नमस्ते"); got != "👨‍👩namaste" {
+		t.Errorf("mixed token: %q", got)
+	}
+}

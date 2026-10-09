@@ -1,8 +1,6 @@
 package brahmic
 
 import (
-	"unicode"
-
 	"fmt"
 
 	"github.com/budhash/gomanize/core"
@@ -17,6 +15,7 @@ type Parser struct {
 	multiChar           []string
 	halant              string
 	nukta               string
+	canonical           *CanonicalForms
 }
 
 // NewParser creates a parser with the given configuration.
@@ -33,6 +32,7 @@ func NewParser(config interface{}) *Parser {
 		halant:              cfg.Halant,
 		nukta:               cfg.Nukta,
 		multiChar:           cfg.MultiChar,
+		canonical:           cfg.Canonical,
 	}
 }
 
@@ -44,30 +44,16 @@ func (p *Parser) SetMultiChar(mc []string) {
 // Parse converts input text into a Word with linked Units.
 // Implements core.Parser interface.
 func (p *Parser) Parse(input string, symbols core.SymbolMap) *core.Word {
-	// Strip format characters (ZWNJ/ZWJ etc., Unicode category Cf) BEFORE
-	// parsing. They control conjunct rendering but carry no phonetic content;
-	// emitting them as units corrupts output, and merely skipping them during
-	// the walk leaves Unit.Start.Rune pointing at raw-input positions, which
-	// breaks rune-indexed schwa rules and the schwa model's feature window.
-	// Stripping first also lets multi-char sequences match across them
-	// (ज्&#8205;ञ still parses as the ज्ञ conjunct). Word.Original is the
-	// stripped form so unit indices always align with it.
-	// Text with no character of this script (emoji sequences, other scripts)
-	// keeps its format characters: they are meaningful there (ZWJ in emoji,
-	// RTL marks, soft hyphens) and each rune passes through as a symbol unit.
-	strip := false
-	for _, r := range input {
-		if _, ok := symbols[string(r)]; ok {
-			strip = true
-			break
-		}
-	}
-	runes := make([]rune, 0, len(input))
-	for _, r := range input {
-		if !strip || !unicode.Is(unicode.Cf, r) {
-			runes = append(runes, r)
-		}
-	}
+	// Canonicalize BEFORE parsing (idempotent; the engine already did it).
+	// Format characters in script text carry no phonetic content: emitting them
+	// as units corrupts output, and skipping them during the walk would leave
+	// Unit.Start.Rune pointing at raw-input positions, breaking rune-indexed
+	// schwa rules and the learned models' feature windows. Removing them first
+	// also lets multi-char sequences match across them (ज्&#8205;ञ parses as the
+	// ज्ञ conjunct). Format characters outside script text (ZWJ in emoji, RTL
+	// marks) are kept. Word.Original is the canonical form, so unit indices
+	// always align with it.
+	runes := []rune(Canonicalize(input, Config{Canonical: p.canonical}, symbols))
 	word := core.NewWord(string(runes))
 	pos := 0
 	runeIdx := 0
