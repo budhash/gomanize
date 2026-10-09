@@ -68,7 +68,7 @@ license, pinned source hashes and the frozen normalization/exclusion policy.
 The code retains the repository license. No new data dependency was introduced.
 
 ```sh
-GOCACHE=/tmp/gomanize-review-go-cache python3 tools/bengali/train_native_selector.py --output /tmp/bengali-native
+python3 tools/bengali/train_native_selector.py --output /tmp/bengali-native
 cmp /tmp/bengali-native/report.json docs/reviews/2026-10-04-bengali-b2-native-selector.json
 cmp /tmp/bengali-native/native_selector.json docs/reviews/2026-10-04-bengali-b2-native-selector-tree.json
 make test-bengali-native-selector

@@ -182,6 +182,8 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0111) [P1] [done] Keel should-fix K2-K8 (format chars, long tokens, npm guard, style bypass, profiles, coverage assert, debug race) @tags=keel @done=2026-10-09 @pr=129
   - [x] (T-0112) [P1] [done] Keel K1: one canonical spelling per word across all components @tags=keel,unicode @done=2026-10-09 @pr=130
   - [ ] (T-0113) [P2] [todo] Doc sweep after the Bengali milestone (keel lens 3 checklist) @tags=keel,docs @branch=docs/bengali-milestone-sweep
+  - [ ] (T-0114) [P2] [todo] Confirm redistribution terms for docs/reference/Hindi-Marathi-Nepali-Transliteration.pdf or replace it with a link @tags=licensing
+  - [ ] (T-0115) [P3] [todo] Runtime/lyrics JSON records: rename 'accuracy' (it is the match-any rate) and fill strict_profiles @tags=records
 ## Skipped
 
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow

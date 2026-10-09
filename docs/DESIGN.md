@@ -115,8 +115,8 @@ Every consonant starts `SchwaPending`; schwa-phase rules move it to `Keep` or
 `Delete`; the renderer obeys. A `ConsonantRun` allows **at most one deletion per
 run**, preventing cascade deletions (जनता→janta, never *jnt*).
 
-Shared Brahmic schwa rules (`script/brahmic/schwa_rules.go` — reused by any
-future Brahmic language):
+Shared Brahmic schwa rules (`script/brahmic/schwa_rules.go` — Hindi uses all of
+them; Bengali composes the word-final delete and default keep):
 
 | Rule | Effect |
 |---|---|
@@ -189,11 +189,17 @@ Measured and intentional (each backed by a decision record):
 | Component | Artifact | Integration | Measured value |
 |---|---|---|---|
 | Schwa classifier (`--schwa-model`) | CART tree, 34 KB JSON (`lang/hindi/schwa_tree.json`) | `schwa.model.predict` rule (Language:90, Exclusive) takes over inherent-schwa decisions | 90.67% per-schwa held-out; ties/beats the 8 hand rules word-level |
-| Lexicon (`--lexicon`) | 8,367-entry TSV, ~204 KB (`lang/hindi/lexicon.tsv`) | `core.LexiconProvider` pre-pipeline short-circuit; lossless OOV fallthrough | 71.1% token coverage; +5.9 to +7.9 pts on three independent evals |
-| Re-ranker (`--rerank`) | Char 4-gram LM, 31K grams, 224 KB (`lang/hindi/roman_ngrams.tsv`) | `core.Reranker`: scores {default rules, schwa-model} outputs, stupid backoff, per-char normalized; ties keep the default | Improved held-out (69.0→70.4%), curated match-any (92.9→94.8%), and lyrics CER (0.0492→0.0465) |
+| Lexicon (`--lexicon`) | 8,367-entry TSV, ~204 KB (`lang/hindi/lexicon.tsv`) | `core.LexiconProvider` pre-pipeline short-circuit; lossless OOV fallthrough | 71.7% token coverage; COMI-LINGUA +6.7 pts, AK-NEI +7.8 pts, lyrics CER 0.0492→0.0394 |
+| Re-ranker (`--rerank`) | Char 4-gram LM, 31K grams, 224 KB (`lang/hindi/roman_ngrams.tsv`) | `core.Reranker`: scores {default rules, schwa-model} outputs, stupid backoff, per-char normalized; ties keep the default | Held-out 69.3→70.7%, curated match-any 92.9→94.8%, lyrics CER 0.0492→0.0476 |
+| Bengali vowel model (`SchwaModel`) | Three-class CART tree (`lang/bengali/vowel_tree.json`), Google pronunciation lexicon train partition | `schwa.bengali.model` rule on supported simple words; unsupported words keep B1 rules | Held-out match-any 56.52→62.76% |
+| Bengali lexicon (`Lexicon`) | 8,976-entry TSV (`lang/bengali/lexicon.tsv`), Dakshina train | `OptionsLexiconProvider`; default style only | Zero held-out coverage by construction; helps known words |
+| Bengali native selector (`SchwaModel` + `Rerank`) | Cross-fitted preference tree (`lang/bengali/selector.json`) | `core.NativeReranker`: up to eight single-slot vowel flips, threshold 0.6 | Held-out match-any 62.76→63.04% |
 
 Design constraints that shaped them:
-- **Train on Dakshina TRAIN only** (splits are type-disjoint, so held-out results are uncontaminated).
+- **Train on train partitions only** (Hindi: Dakshina TRAIN; Bengali: the frozen
+  schema-2 partitions, which also exclude spelling variants of held-out words).
+- **Canonical input** — the engine canonicalizes each word once (Unicode NFC
+  subset, format characters in script text) before any component sees it.
 - **Candidate quality gates re-ranking** — only individually-strong candidates
   enter the pool; ablation showed weak candidates drag it below baseline.
 - **Everything distills to data files + ~50 lines of Go inference** — the
@@ -203,32 +209,30 @@ Design constraints that shaped them:
   (`tools/mine_overrides.py`) measured 43% unreviewed precision — output is
   human-review-only by design.
 
-## 5. What is implemented (v1.0 surface)
+## 5. What is implemented
 
-- One language (**hindi**) and one scheme (**colloquial**); the legacy comparison engine was removed pre-1.0.
-- Options: `LongVowels`, `SimpleNasals`, `KeepMedialSchwa`, `SchwaModel`,
-  `Lexicon`, `Rerank`, `Debug`
-- CLI: all options as flags, plus `--list-rules` / `--disable-rule` /
-  `--enable-rule` / `--debug` / `--test=FILE` / `--diff` / `--version`
+- Languages: **hindi** and experimental **bengali**; one scheme (**colloquial**).
+- Options: `InherentVowelA` (Go API only), `LongVowels`, `SimpleNasals`,
+  `KeepMedialSchwa`, `SchwaModel`, `Lexicon`, `Rerank`, `Debug`
+- CLI: `--language`, all options except `InherentVowelA` as flags, plus
+  `--input=FILE` / `--test=FILE` / `--diff` / `--list-rules` / `--disable-rule` /
+  `--enable-rule` / `--debug` / `--version`
 - Public API: `New(lang)`, `NewWithOptions(lang, opts, engineOpts...)`,
-  `Translit(text)`, `TranslitDebug(word)`, rule management via
-  `ListRules/DisableRule/EnableRule`
-- Evaluation: accuracy + parser-QA suites (see RESEARCH §3–4) run by `make ci`
+  `Translit(text)`, `TranslitDebug(word)` (single word; no sentence splitting),
+  rule management via `ListRules/DisableRule/EnableRule`
+- Frontends: WASM/npm (`{ language, ...flags }`) and the web demo
+- Evaluation: accuracy, parser-QA and Bengali gate/record suites run by `make ci`
 
 ## 6. Future directions
 
 **Tractable next (unblocked by current design):**
-- **Bengali (Bangla)** — the second language, designed in
-  [`reviews/2026-09-30-bengali-support-design.md`](reviews/2026-09-30-bengali-support-design.md)
-  (v4, tracked as F-0011; B1 prototype and B2 training-isolation gates are
-  T-0056/T-0057). It splits into a behavior-preserving generalization of the
-  Brahmic layer (implemented on the feature branch with script profiles and
-  separate vowel quality) and the experimental `lang/bengali` B1 rule package.
-  An opt-in three-class vowel model now improves held-out Bengali match-any
-  from 56.52% to 62.76%; unsupported spellings fall back to B1. Details and
-  coverage limits: [B2 vowel evaluation](reviews/2026-10-04-bengali-b2-vowels.md). Bengali's
-  inherent vowel (ɔ/o, not `a`) and weaker word-final deletion
-  make it the stress test of the shared-layer abstraction.
+- **Bengali (Bangla)** — implemented as experimental (F-0011; see the
+  [design](reviews/2026-09-30-bengali-support-design.md) and its as-built notes,
+  and the [keel review](reviews/2026-10-07-bengali-keel.md)). B1 uses
+  source-identity predicates and per-unit gemination metadata for scoped phalas
+  and visarga; its dev gate runs in `make ci`. Next steps are tracked in F-0013
+  (language and option registries, one reranker protocol, performance) and
+  T-0068 (lyrics reference attestation).
 - **Marathi / Nepali** — implement `core.Language` (symbol map + config + rule
   catalog composing `brahmic.SchwaRules()`); parser/renderer/runs are reused.
   Supply a `Config.Profile` and audit which shared schwa rules fit the language;
@@ -251,9 +255,3 @@ Design constraints that shaped them:
 - **Roman→Devanagari** — the pipeline is lossy (schwa deletion, ई/इ collapse,
   श/ष merge) and one-directional; the reverse task is a sequence-disambiguation
   problem best served by a separate model, not this engine.
-
-Bengali B1 uses source-identity predicates and per-unit gemination metadata for
-scoped phalas and visarga, alongside positional conjunct rewrites. Its numerical
-dev gate runs in `make ci`. See the [B1 record](reviews/2026-10-04-bengali-b1-results.md)
-and [viable repository references](reference/bengali-repositories.md), including
-pronunciation-lexicon plumbing relevant to later B2 and reverse conversion.

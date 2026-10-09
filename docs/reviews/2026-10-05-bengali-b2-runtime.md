@@ -91,8 +91,8 @@ to Dakshina and CC BY attribution to Google's Bengali pronunciation source.
   that the existing Hindi surface still builds and runs.
 
 ```sh
-GOCACHE=/tmp/gomanize-review-go-cache make test-bengali-runtime
-GOCACHE=/tmp/gomanize-review-go-cache python3 tools/bengali/evaluate_runtime.py \
+make test-bengali-runtime
+python3 tools/bengali/evaluate_runtime.py \
   /path/to/pinned/ben.zip --output /tmp/bengali-runtime.json
 cmp /tmp/bengali-runtime.json docs/reviews/2026-10-05-bengali-b2-runtime.json
 make ci

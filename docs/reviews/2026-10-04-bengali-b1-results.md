@@ -153,3 +153,6 @@ Further review notes (tracked, not changed here):
   penalty.
 - **T-0052 scope.** Anusvara is unchanged (`ng`) and visarga covers the দুঃখ
   family only; the task title overstates the delivered scope.
+
+**Later status (2026-10-09).** CLI, npm/WASM and web language selection shipped
+(#125, #126); see the [keel review](2026-10-07-bengali-keel.md) for the current state.

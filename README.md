@@ -5,8 +5,9 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/budhash/gomanize.svg)](https://pkg.go.dev/github.com/budhash/gomanize)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A Go library and CLI that romanizes Devanagari (Hindi) into readable Latin
-script, built for song lyrics and other colloquial text. Rule-based engine with
+A Go library and CLI that romanizes Hindi (Devanagari) and, experimentally,
+Bengali into readable Latin script, built for song lyrics and other colloquial
+text. Rule-based engine with
 optional embedded learned components; no runtime dependencies.
 
 ```
@@ -70,9 +71,9 @@ gomanize < lyrics.txt                           # stdin/pipe also works
 | `--language=NAME` | `hindi` (default) or experimental `bengali` | `--language bengali` also works |
 | `--long-vowels` | aa for every ā | गाना → gaanaa |
 | `--simple-nasals` | Simplified nasal endings | करें → karen |
-| `--schwa-model` | Learned schwa classifier | जनता → janta |
-| `--lexicon` | Attested spellings for 8,367 known words | अंकल → uncle |
-| `--rerank` | Character-LM picks best of rules/schwa-model outputs | see Accuracy below |
+| `--schwa-model` | Learned schwa classifier (Bengali: three-class vowel model) | जनता → janta |
+| `--lexicon` | Attested spellings for known words (8,367 Hindi / 8,976 Bengali) | अंकल → uncle |
+| `--rerank` | Pick the best candidate: Hindi character LM; Bengali native selector (needs `--schwa-model`) | see Accuracy below |
 | `--list-rules`, `--debug` | Inspect and trace the rule engine | |
 
 ### Library (Go)
@@ -106,7 +107,7 @@ g.translit("गाना", { longVowels: true }); // "gaanaa"
 The same flags are accepted as options (`longVowels`, `simpleNasals`,
 `keepMedialSchwa`, `schwaModel`, `lexicon`, `rerank`).
 
-## Accuracy
+## Accuracy (Hindi)
 
 Scored against all human-attested romanization variants (see
 [docs/RESEARCH.md](docs/RESEARCH.md) for methodology, datasets, and the full
@@ -149,18 +150,16 @@ suite.
 
 ## License
 
-MIT. Copyright (c) 2023-2026 Budhaditya (budhash@gmail.com).
+Code: MIT. Copyright (c) 2023-2026 Budhaditya (budhash@gmail.com).
 
-Benchmark data derives from Dakshina (CC BY-SA 4.0), Aksharantar (CC-BY 4.0),
-COMI-LINGUA (CC-BY 4.0), and Shabd (CC0). Embedded data files are licensed
-separately from the MIT code: the spelling lexicons (`lang/hindi/lexicon.tsv`,
-`lang/bengali/lexicon.tsv`) and the Bengali selector (`lang/bengali/selector.json`,
-which also uses Google's Bengali pronunciation data, CC BY 4.0) derive from
-Dakshina and are CC BY-SA 4.0; the Bengali vowel model
-(`lang/bengali/vowel_tree.json`) derives from Google's Bengali pronunciation
-lexicon (CC BY 4.0). Experimental Bengali training data also
-derives from Google's Bengali pronunciation lexicon (CC BY 4.0); see
-[docs/RESEARCH.md](docs/RESEARCH.md) for full attribution.
+Embedded data files carry their own licenses: the Hindi lexicon, schwa model and
+character n-grams and the Bengali lexicon and selector derive from Dakshina
+(CC BY-SA 4.0); the Bengali vowel model (and the selector) use Google's Bengali
+pronunciation lexicon (CC BY 4.0). Committed benchmark fixtures derive from
+Dakshina, Aksharantar (CC-BY 4.0), COMI-LINGUA (CC-BY 4.0), Shabd (CC0),
+BanglaTLit (MIT) and Bengali Wikisource (CC BY-SA 4.0). Per-file attribution is
+in [npm/NOTICE.md](npm/NOTICE.md) (shipped as `NOTICE.md` in release archives and
+the npm package); dataset details are in [docs/RESEARCH.md](docs/RESEARCH.md) §3.
 
 ## Experimental Bengali support
 
@@ -171,7 +170,6 @@ Dakshina word set; pronunciation ambiguities remain. The CLI accepts `--language
 `--language bengali`); omitting it preserves Hindi. npm accepts `{ language: "bengali" }`, and the browser has an explicit language
 selector. Both continue to default to Hindi. See the [B1 results and
 limitations](docs/reviews/2026-10-04-bengali-b1-results.md).
-
 
 `SchwaModel: true` enables the [vowel model](docs/reviews/2026-10-04-bengali-b2-vowels.md),
 which raises held-out match-any to 62.76%. `Lexicon: true` adds 8,976 attested
@@ -184,6 +182,12 @@ Add `Rerank: true` alongside `SchwaModel: true` to enable the experimental
 is 63.04%. It preserves alternate styles by bypassing selection, and lexicon
 hits still win first. External word results improve slightly; sentence character
 error worsens slightly. It remains opt-in, pending independent lyrics validation.
+
+Held-out Dakshina (2,500 words), rules / vowel model / model + selector:
+match-any 56.52% / 62.76% / 63.04%, strict top-1 32.00% / 36.56% / 36.64%.
+Bengali references average 3.8 variants per word, which inflates match-any
+relative to Hindi, and Aksharantar contains the Dakshina test vocabulary, so its
+gains are not independent confirmation.
 
 ```go
 g, err := gomanize.New("bengali")

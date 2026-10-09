@@ -155,8 +155,8 @@ Independent stack review. The tables above record the model as submitted.
 - **Latin-script Google rows** (4,419 train rows / 4,416 types) are rejected by the
   aligner as unsupported and are included in the 29,444 unsupported train rows
   above; none reach the tree.
-- Tracked: `training_scripts_sha256` covers `vowels.py` and `train_vowels.py` but
-  not the shared key/loader modules; the runtime evaluates the model twice per
+- Resolved in the 2026-10-06 retrain: `training_scripts_sha256` now also covers
+  the shared key/loader modules. Still tracked: the runtime evaluates the model twice per
   pending consonant when enabled.
 
 **Superseded figures (2026-10-06).** Training partitions were rebuilt (schema 2) and this

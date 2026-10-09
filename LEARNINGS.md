@@ -3,6 +3,45 @@
 Durable insights, gotchas, and decisions — the "why" that isn't obvious from the
 code or git history. Newest first.
 
+## Experimental Bengali — reviewing a 16-PR contractor stack, then a keel (2026-10)
+
+- **Review the stack bottom-up, one PR and one reviewer at a time, merging with
+  merge commits.** Retarget each PR to `main` after its parent lands and merge
+  `main` into it; parent fixes then reach children through ordinary merges. The
+  recurring conflict was the Makefile `ci:` line (each branch appends a target) —
+  script its resolution.
+- **The dominant defect class was "computed but not asserted".** Nearly every PR
+  logged its metrics, or committed a JSON record, without a test that recomputes
+  it, so later rule fixes left records one word stale and nothing failed. Pin
+  outputs (counts plus a digest), make tests rebuild committed records, and prove
+  each guard with a mutation that must fail.
+- **Pin inputs, not their source files.** The Hindi snapshot originally hashed
+  the benchmark CSVs, so a notes-only edit forced a regeneration — exactly what
+  the frozen-snapshot policy forbids. Pin the frozen input set itself.
+- **Hosted CI runs Python 3.12; a stacked PR never ran it until retargeted.** Two
+  latent failures surfaced only then: `gzip.compress` writes a different header
+  byte on 3.11+ (use `gzip.GzipFile`), and 3.12 `sum()` uses compensated
+  summation (compare floats with a tolerance). Run Python suites under 3.12
+  locally (`uv run --no-project --python 3.12 ...`).
+- **Data isolation needs a variant-spelling key, not just Unicode NFC.** Khanda-ta
+  (ৎ / ত্ / word-final ত) and malformed অ+া are not canonical equivalents, yet
+  spell one word; 15+ held-out words leaked into training through them. Exclude
+  training types by a stricter `collision_key`; never move held-out words. Other
+  orthographic variants (ি/ী, ন/ণ, শ/ষ/স) stay distinct by design.
+- **Canonicalize once, in core.** Per-language normalizers had drifted: Bengali was
+  safe through three local copies while Hindi output depended on encoding
+  (precomposed nukta, ZWJ, virama/nukta order). One table-driven NFC subset
+  applied before lexicon, rerank and parse fixed it; it needs an allocation-free
+  fast path and linear handling of long format/mark runs (a security review
+  caught an O(n²) neighbor scan).
+- **Bound learned per-word work.** Learned components re-scanned the whole word
+  per unit; a long unspaced token froze the web demo for ~30 s. Cap the word
+  length learned paths process (no real word comes close) and decode once.
+- **Keel reviews find what per-PR reviews structurally cannot.** Cross-cutting
+  docs nobody owned, duplicated centralizers, Hindi never held to Bengali-era
+  guards, quadratic paths that only appear at scale. Budget a keel at each
+  milestone and turn every deferral into a TASKS ID.
+
 ## F-0010 closed — what the structured parser-QA program actually yielded (2026-09)
 
 The whole program (Tiers 1–5 + follow-ups, T-0038–T-0049) is done. Scorecard:

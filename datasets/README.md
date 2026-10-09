@@ -13,15 +13,13 @@ This directory contains downloaded transliteration datasets. These files are **g
 
 | Location | Purpose | Checked into Git |
 |----------|---------|------------------|
-| `testbed/dakshina/` | Curated test files for accuracy testing | ✓ Yes |
+| `benchmark/data/` | Committed benchmark fixtures (Hindi CSVs; Bengali, BanglaTLit and lyrics subdirectories with their own READMEs) | ✓ Yes |
+| `training/data/bengali/` | Frozen Bengali training partitions (word-key manifests) | ✓ Yes |
 | `datasets/` | Raw downloaded datasets | ✗ No (gitignored) |
 
-The `testbed/` files are **curated subsets** with:
-- High-confidence entries only (4+ human attestations)
-- Native words separated from English loanwords
-- One romanization per word (highest voted)
-
-See `datasets/dakshina/README.md` for the full curation process.
+The curated Hindi benchmark (`benchmark/data/curated_hi.csv`) keeps
+high-confidence Dakshina entries (4+ human attestations) with one romanization per
+word; curation and sources are described in [docs/RESEARCH.md](../docs/RESEARCH.md) §3.
 
 ## Directory Structure
 

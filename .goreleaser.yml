@@ -64,7 +64,7 @@ brews:
     directory: Formula
     homepage: "https://github.com/budhash/gomanize"
     description: "Romanize Devanagari (Hindi) into readable Latin script"
-    license: "MIT"
+    license: "MIT AND CC-BY-SA-4.0 AND CC-BY-4.0"
     commit_author:
       name: budhash
       email: budhash@gmail.com

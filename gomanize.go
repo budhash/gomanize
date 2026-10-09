@@ -145,7 +145,9 @@ func (g Gomanize) Translit(sentence string) string {
 	return sb.String()
 }
 
-// TranslitDebug transliterates a word and returns debug information.
+// TranslitDebug transliterates a single word and returns debug information.
+// It does not split text into words: pass one word (multi-word input is treated
+// as one word and can differ from Translit's output).
 func (g Gomanize) TranslitDebug(word string) (string, *DebugInfo) {
 	return g.romanizer.TransliterateDebug(word, g.options)
 }
