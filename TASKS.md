@@ -111,7 +111,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [ ] (T-0031) [P2] [todo] Per-scheme symbol maps (interface change; unblocks IAST + convention schemes)
   - [ ] (T-0032) [P2] [todo] aksharantar scheme: vowel-doubling conventions; measure on AK test set
 - [ ] (F-0008) [P3] [todo] Additional Brahmic languages (Marathi/Nepali)
-  - [x] (T-0033) [P3] [done] Parameterize renderer inherent vowel (hardcoded 'a'); audit Devanagari rule literals @done=2026-10-09 @tags=delivered-by-T-0050-ScriptProfile
+  - [ ] (T-0033) [P3] [todo] Parameterize renderer inherent vowel (hardcoded 'a'); audit Devanagari rule literals @done=2026-10-09 @tags=inherent-vowel-delivered-by-T-0050,literal-audit-open
   - [ ] (T-0034) [P3] [todo] Implement lang/marathi (symbol map + config + rules composing brahmic.SchwaRules)
 
 - [ ] (T-0035) [P3] [todo] Grow lyrics gold set toward ~500 lines (PD in-repo; copyrighted via fetch script)
@@ -184,6 +184,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [ ] (T-0113) [P2] [todo] Doc sweep after the Bengali milestone (keel lens 3 checklist) @tags=keel,docs @branch=docs/bengali-milestone-sweep
   - [ ] (T-0114) [P2] [todo] Confirm redistribution terms for docs/reference/Hindi-Marathi-Nepali-Transliteration.pdf or replace it with a link @tags=licensing
   - [ ] (T-0115) [P3] [todo] Runtime/lyrics JSON records: rename 'accuracy' (it is the match-any rate) and fill strict_profiles @tags=records
+  - [ ] (T-0116) [P2] [todo] Pin Hindi headline numbers in tests (curated pure/match-any/rerank, held-out, COMI, frequency-weighted, lyrics CER) per the PROCESS asserted-numbers rule @tags=tests
 ## Skipped
 
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow

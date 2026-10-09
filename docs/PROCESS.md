@@ -10,7 +10,7 @@ How work is planned, tracked, and shipped in gomanize. Absorbed from the
 - **`make ci` before every PR.** It runs fmt-check, lint, build, coverage tests
   (including the frozen Hindi snapshot), the accuracy benchmark, and the Bengali
   gate, pins and record assertions; hosted CI also runs `make npm-test`. Run
-  Python suites under Python 3.12 as hosted CI does. A green gate is the *floor*, not the review.
+  Python suites under Python 3.12, the hosted runner's default today. A green gate is the *floor*, not the review.
 - **Zero tech debt forward.** A shortcut is either fixed in the same PR or tracked
   as an explicit task via `./tools/tasks new` with a rationale. "I'll clean it up
   later" without a tracked task is a process violation.
@@ -74,6 +74,7 @@ independently, try to break the change, and flag what the boxes don't name.
 - A regression guard needs a sanity-revert: prove the test fails without the fix.
 - Every headline number in README/RESEARCH must come from an asserting test or a
   committed record that a test recomputes; logged-only numbers drift silently.
+  (Bengali numbers meet this; pinning the Hindi headlines is tracked as T-0116.)
 - Learned components: train on train partitions only, select on dev under a
   protocol committed before results (record the number of attempts after a missed
   gate), and report held-out test once after selection. Label provisional

@@ -76,8 +76,8 @@ averaging two incompatible ones.
 
 ## Direction 3 — Additional languages
 
-**Bengali shipped as experimental** (2026-10; F-0011), proving the shared-Brahmic
-abstraction: a `ScriptProfile` carries the inherent vowel and other script
+**Bengali shipped as experimental** (2026-10; F-0011), exercising the
+shared-Brahmic abstraction: a `ScriptProfile` carries the inherent vowel and other script
 constants, `CanonicalForms` the script's Unicode equivalences, and Bengali
 composes only the shared schwa rules that fit it. Marathi and Nepali (Devanagari)
 are the next candidates: a symbol map, a script config and language-specific
@@ -85,8 +85,7 @@ rules, plus an audit of which shared schwa rules apply.
 
 Before a third language, the keel review's follow-ups (F-0013) make it cheap: a
 language registry consumed by every frontend (today the list is hard-coded in
-about eight places), a single option registry, and one reranker protocol. "The Go
-romanizer for Indic scripts" is an identity nothing else in the ecosystem holds.
+about eight places), a single option registry, and one reranker protocol.
 
 ## Supporting work (enables the above)
 

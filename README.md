@@ -184,8 +184,9 @@ hits still win first. External word results improve slightly; sentence character
 error worsens slightly. It remains opt-in, pending independent lyrics validation.
 
 Held-out Dakshina (2,500 words), rules / vowel model / model + selector:
-match-any 56.52% / 62.76% / 63.04%, strict top-1 32.00% / 36.56% / 36.64%.
-Bengali references average 3.8 variants per word, which inflates match-any
+match-any 56.52% / 62.76% / 63.04%, strict top-1 32.00% / 36.56% / 36.64%,
+mean minCER 0.0877 / 0.0764 / 0.0757. Bengali references average about 3.7
+variants per held-out word (Hindi: 1.8), which inflates match-any
 relative to Hindi, and Aksharantar contains the Dakshina test vocabulary, so its
 gains are not independent confirmation.
 

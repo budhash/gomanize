@@ -64,6 +64,6 @@ output and per-language UI state verified.
   archives now include `NOTICE.md`; the npm README links it absolutely.
 - **Web.** The language select opts out of browser form restoration so a restored
   value cannot desynchronize the UI; structured data lists `bn`.
-- Tracked: unknown option keys are ignored; npm Bengali `rerank` without
-  `schwaModel` is silent (the CLI warns); the About dialog still describes the
-  Hindi components only.
+- Tracked: unknown option keys are ignored (T-0085); npm Bengali `rerank` without
+  `schwaModel` is silent while the CLI warns (T-0104). The About dialog was
+  updated for Bengali in the doc sweep (#131).

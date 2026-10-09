@@ -66,44 +66,13 @@ then small learned components for the lexical gap.
    Bengali B2 uses the Google pronunciation lexicon for phonological learning
    and Dakshina train for spelling/roman n-grams, through the frozen
    [training partitions](../training/data/bengali/README.md). Both training
-   sources exclude all normalized Dakshina and Google held-out word types.
+   sources exclude all normalized Dakshina and Google held-out word types and
+   their khanda-ta / malformed-আ spelling variants (schema 2). Bengali results
+   are in §4.
 3. **Benchmarks are never training/mining sources.** COMI-LINGUA overlap may
    estimate a miner's precision, never feed the lexicon.
 4. **Every proposed change is measured before shipping**, and negative results
    are recorded (see §5).
-
-The experimental Bengali vowel model is evaluated separately from Hindi: its
-opt-in held-out Dakshina match-any is 62.76% versus B1's 56.52%, without lexicon
-or overrides. [B2 report](reviews/2026-10-04-bengali-b2-vowels.md) records strict
-accuracy, CER, alignment coverage, and full/unseen external results.
-
-The optional Bengali spelling lexicon adds 8,976 isolated training spellings.
-It leaves dev/test output unchanged (zero coverage); external improvements and
-in-sample coverage are reported separately in the [lexicon record](reviews/2026-10-04-bengali-b2-lexicon.md).
-
-A Bengali character-only reranker was rejected on dev: no tested margin improved
-match-any while preserving strict accuracy and improving CER. The
-[negative result](reviews/2026-10-04-bengali-b2-rerank.md) is reproducible;
-Bengali runtime behavior and held-out model results remain unchanged.
-
-A subsequent [native-conditioned selector](reviews/2026-10-04-bengali-b2-native-selector.md)
-also failed the dev improvement gate: all six predeclared thresholds retained
-the vowel model. Its training excludes Google training words as well as all
-held-out partitions; neither rejected selector is installed in runtime.
-
-A [cross-fitted selector with single-slot vowel alternatives](reviews/2026-10-04-bengali-b2-crossfit.md)
-passes dev and improves held-out match-any from 62.76% to **63.04%** (seven
-additional words out of 2,500), with improved strict accuracy and CER. This is
-now available as an experimental runtime opt-in using both `SchwaModel` and
-`Rerank`. [Runtime validation](reviews/2026-10-05-bengali-b2-runtime.md) confirms
-wordwise parity and small Aksharantar gains, but a slight BanglaTLit sentence-CER
-regression. Defaults remain unchanged; independent lyrics validation is pending.
-
-**Selection-round disclosure.** Dakshina dev was used across four Bengali
-selection rounds (vowel model, rejected character reranker, rejected native
-selector, accepted cross-fitted selector), and held-out test was reported after
-each accepted stage. The 63.04% figure should be read with that forking-paths
-context; the gain over the vowel model is seven words out of 2,500.
 
 ## 3. Datasets
 
@@ -187,6 +156,94 @@ reports ~52% top-1 in this direction.
   with other conventions (e.g. Aksharantar's frequent-word slice) are
   substantially lower than against Dakshina-style references (see above).
 
+### Bengali (experimental)
+
+Bengali is scored on its own Dakshina `bn` splits (dev for selection, test
+reported once after selection); its references average about 3.7 variants per
+held-out word versus Hindi's 1.8, so match-any is not comparable across the two
+languages. Stage records are linked below.
+
+#### B0 measurement
+
+The experimental Bengali baseline and split-specific metrics are recorded in
+[the B0 report](reviews/2026-10-04-bengali-b0-baseline.md). Bengali Dakshina v1.0
+fixtures retain all references/votes under CC BY-SA 4.0 with member and fixture
+hashes in `benchmark/data/bengali/manifest.json`. Train/dev support exploratory
+style/attestation histograms; test remains evaluation-only. At B0 no Bengali
+learned artifacts existed; later B2 components are described below. The Hindi
+training policy above remains unchanged.
+
+#### B1 evaluation contract (2026-10-04)
+
+Before production B1 tuning, train/dev exact-anchor slot measurements support
+retaining o as the operational consonant-vowel default, while independent অ
+remains a convention with mixed evidence. Full dev stays primary; a secondary
+subset uses max-reference-votes ≥3 and retains all references (992 dev words).
+Frozen B0 outputs define a gate requiring 10% fewer word misses, 5% lower minCER,
+and no strict top-1 loss on both sets. These are preregistered engineering targets,
+not an estimated rule ceiling. See the [evidence, exclusions, and enforcement
+contract](reviews/2026-10-04-bengali-evaluation-gate.md).
+
+#### B1 and external sentence evaluation (2026-10-04)
+
+B1 passes the fixed full/curated dev gates without learned components. Dakshina
+match-any improves from 48.40% to 54.84% on dev (54.80% as first submitted) and from 50.08% to 56.52% on
+test; test minCER improves from 0.10548 to 0.08772. The independently imported
+BanglaTLit official test yields macro sentence CER 0.33149 versus B0's 0.34312,
+with only 8/2,500 exact sentence matches. It is evaluation-only, imported after
+rule tuning stopped. Its upstream `train` pool includes all official dev/test
+pairs and is not imported as training data. The MIT license is included with
+the fixture. [Results and caveats](reviews/2026-10-04-bengali-b1-results.md);
+[viable source/architecture references](reference/bengali-repositories.md).
+
+#### B2 learned components
+
+The experimental Bengali vowel model is evaluated separately from Hindi: its
+opt-in held-out Dakshina match-any is 62.76% versus B1's 56.52%, without lexicon
+or overrides. [B2 report](reviews/2026-10-04-bengali-b2-vowels.md) records strict
+accuracy, CER, alignment coverage, and full/unseen external results.
+
+The optional Bengali spelling lexicon adds 8,976 isolated training spellings.
+It leaves dev/test output unchanged (zero coverage); external improvements and
+in-sample coverage are reported separately in the [lexicon record](reviews/2026-10-04-bengali-b2-lexicon.md).
+
+A Bengali character-only reranker was rejected on dev: no tested margin improved
+match-any while preserving strict accuracy and improving CER. The
+[negative result](reviews/2026-10-04-bengali-b2-rerank.md) is reproducible;
+Bengali runtime behavior and held-out model results remain unchanged.
+
+A subsequent [native-conditioned selector](reviews/2026-10-04-bengali-b2-native-selector.md)
+also failed the dev improvement gate: all six predeclared thresholds retained
+the vowel model. Its training excludes Google training words as well as all
+held-out partitions; neither rejected selector is installed in runtime.
+
+A [cross-fitted selector with single-slot vowel alternatives](reviews/2026-10-04-bengali-b2-crossfit.md)
+passes dev and improves held-out match-any from 62.76% to **63.04%** (seven
+additional words out of 2,500), with improved strict accuracy and CER. This is
+now available as an experimental runtime opt-in using both `SchwaModel` and
+`Rerank`. [Runtime validation](reviews/2026-10-05-bengali-b2-runtime.md) confirms
+wordwise parity and small Aksharantar gains, but a slight BanglaTLit sentence-CER
+regression. Defaults remain unchanged; independent lyrics validation is pending.
+
+**Selection-round disclosure.** Dakshina dev was used across four Bengali
+selection rounds (vowel model, rejected character reranker, rejected native
+selector, accepted cross-fitted selector), and held-out test was reported after
+each accepted stage. The 63.04% figure should be read with that forking-paths
+context; the gain over the vowel model is seven words out of 2,500.
+
+#### B3 lyrics pilot (2026-10-05)
+
+A source-pinned pilot now covers 82 lines (71 unique) from the first four songs
+of Tagore's 1913 *Gitanjali*. Its Roman references were drafted by the assistant
+before prediction and are **unreviewed, not gold**. The pure model plus reranker
+has 52 exact draft agreements and macro line CER 0.017013; these are provisional
+reference-agreement measurements, not a validated accuracy claim. The lexicon
+reduces agreement on this sample. Training overlap is substantial: 142/213
+native word types; only seven lines are entirely unseen by the training word
+vocabularies. [Full results and limitations](reviews/2026-10-05-bengali-b3-lyrics.md);
+[dataset and independent-review handoff](../benchmark/data/bengali_lyrics/README.md).
+T-0068 and the B3 gold task T-0054 remain open. No runtime behavior changes.
+
 ## 5. Negative results (kept deliberately)
 
 1. **Medial ee/oo rule** (ी→ee, ू→oo word-medially): every variant net-negative
@@ -208,6 +265,15 @@ reports ~52% top-1 in this direction.
 Together these bound the design: the rule-based ceiling is real (~86% pure /
 ~93% match-any on this data), the remaining gap is lexical, and closing it
 requires human-attested data, not more rules.
+
+**Bengali (2026-10).** Two candidate rerankers were rejected on dev and kept as
+research records, never installed in runtime: a character-only n-gram reranker
+(best setting +1 match-any for −1 strict and worse CER;
+[record](reviews/2026-10-04-bengali-b2-rerank.md)) and an initial native-conditioned
+selector (no threshold changed any output;
+[record](reviews/2026-10-04-bengali-b2-native-selector.md)). In B1, dropping chandrabindu's
+nasal was measured on train (+34 / −52 matches over 312 words) and not adopted;
+see the [B1 record](reviews/2026-10-04-bengali-b1-results.md).
 
 ## 6. Key literature
 
@@ -235,49 +301,3 @@ requires human-attested data, not more rules.
   Methods. [osf.io/xfbhd](https://osf.io/xfbhd/)
 
 Full provenance for every number above: [`reviews/`](reviews/) (2026-09-04 onward).
-
-## Bengali B0 measurement
-
-The experimental Bengali baseline and split-specific metrics are recorded in
-[the B0 report](reviews/2026-10-04-bengali-b0-baseline.md). Bengali Dakshina v1.0
-fixtures retain all references/votes under CC BY-SA 4.0 with member and fixture
-hashes in `benchmark/data/bengali/manifest.json`. Train/dev support exploratory
-style/attestation histograms; test remains evaluation-only. At B0 no Bengali
-learned artifacts existed; later B2 components are described below. The Hindi
-training policy above remains unchanged.
-
-### Bengali B1 evaluation contract (2026-10-04)
-
-Before production B1 tuning, train/dev exact-anchor slot measurements support
-retaining o as the operational consonant-vowel default, while independent অ
-remains a convention with mixed evidence. Full dev stays primary; a secondary
-subset uses max-reference-votes ≥3 and retains all references (992 dev words).
-Frozen B0 outputs define a gate requiring 10% fewer word misses, 5% lower minCER,
-and no strict top-1 loss on both sets. These are preregistered engineering targets,
-not an estimated rule ceiling. See the [evidence, exclusions, and enforcement
-contract](reviews/2026-10-04-bengali-evaluation-gate.md).
-
-### Bengali B1 and external sentence evaluation (2026-10-04)
-
-B1 passes the fixed full/curated dev gates without learned components. Dakshina
-match-any improves from 48.40% to 54.84% on dev (54.80% as first submitted) and from 50.08% to 56.52% on
-test; test minCER improves from 0.10548 to 0.08772. The independently imported
-BanglaTLit official test yields macro sentence CER 0.33149 versus B0's 0.34312,
-with only 8/2,500 exact sentence matches. It is evaluation-only, imported after
-rule tuning stopped. Its upstream `train` pool includes all official dev/test
-pairs and is not imported as training data. The MIT license is included with
-the fixture. [Results and caveats](reviews/2026-10-04-bengali-b1-results.md);
-[viable source/architecture references](reference/bengali-repositories.md).
-
-### Bengali B3 lyrics pilot (2026-10-05)
-
-A source-pinned pilot now covers 82 lines (71 unique) from the first four songs
-of Tagore's 1913 *Gitanjali*. Its Roman references were drafted by the assistant
-before prediction and are **unreviewed, not gold**. The pure model plus reranker
-has 52 exact draft agreements and macro line CER 0.017013; these are provisional
-reference-agreement measurements, not a validated accuracy claim. The lexicon
-reduces agreement on this sample. Training overlap is substantial: 142/213
-native word types; only seven lines are entirely unseen by the training word
-vocabularies. [Full results and limitations](reviews/2026-10-05-bengali-b3-lyrics.md);
-[dataset and independent-review handoff](../benchmark/data/bengali_lyrics/README.md).
-T-0068 and the B3 gold task T-0054 remain open. No runtime behavior changes.

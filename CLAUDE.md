@@ -2,9 +2,10 @@
 
 A Go library and CLI that romanizes Hindi (Devanagari) and, experimentally,
 Bengali into Latin script, built for song lyrics and other colloquial text
-(pronunciation-based romanization, not strict reversible transliteration; the public API keeps the `Translit` name, and
-"transliteration" is the common colloquial term). MIT licensed (2023-2026);
-Go 1.21+.
+(pronunciation-based romanization, not strict reversible transliteration; the
+public API keeps the `Translit` name, and "transliteration" is the common
+colloquial term). Code MIT licensed (2023-2026); embedded data licenses in
+`NOTICE.md`. Go 1.21+.
 
 This file covers development workflow and repository conventions. For users:
 `README.md`. For research background, datasets, and results: `docs/RESEARCH.md`.
@@ -202,8 +203,8 @@ whitespace/merge-conflict issues. Install via `make init`; run manually with
 
 CI on push/PR to main: format check, lint, build, test with coverage, accuracy
 benchmarks, the Bengali gates and record assertions, and `make npm-test`. Hosted CI
-runs Python 3.12; run Python suites locally under 3.12 too
-(`uv run --no-project --python 3.12 python -m unittest ...`).
+uses the runner's default Python (3.12 today); run Python suites locally under
+3.12 too (`uv run --no-project --python 3.12 python -m unittest ...`).
 
 Releases are automated by GoReleaser on version tags:
 

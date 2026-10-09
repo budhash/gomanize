@@ -62,4 +62,4 @@ of the Pages artifact, so `index.html` fetches `gomanize.wasm` and
 The `.wasm` embeds both language implementations and their learned data,
 downloaded once and then cached. Measure the built artifact for current size. If that ever needs trimming, the levers are
 lazy-loading the embedded models as separate fetched assets, or building with
-TinyGo; tracked as keel follow-up K24 in TASKS.md.
+TinyGo; tracked as T-0086 (keel K24).

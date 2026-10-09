@@ -20,14 +20,17 @@ tagged release also has auto-generated notes on the
     split-aware Dakshina baseline.
   - B1 rules: scoped phalas/conjuncts, gemination, final-cluster vowels, ফ→f,
     হও/হওয়া handling; a preregistered dev gate enforced in CI
-    (`make test-bengali-b1-gate`).
+    (`make test-bengali-b1-gate`). Brahmic render-time gemination modes carry
+    independent vowel ownership.
   - B2 learned components: a three-class inherent-vowel model (`SchwaModel`), an
     8,976-entry spelling lexicon (`Lexicon`), and a cross-fitted native selector
     (`SchwaModel` + `Rerank`). Held-out Dakshina match-any: rules 56.52%, model
     62.76%, model + selector 63.04%.
   - Frozen, normalized training partitions with held-out exclusions (schema 2
     also excludes khanda-ta and malformed-আ variants of held-out words).
-  - Evaluation fixtures: pinned BanglaTLit test split, Aksharantar overlap audit,
+  - Evaluation fixtures: pinned BanglaTLit test split, reviewed Bengali and
+    reverse-transliteration reference repositories with provenance, Aksharantar
+    overlap audit,
     and a source-pinned lyrics pilot (first four songs of the 1913 Gitanjali)
     with **unreviewed** references pending attestation.
 - `Options.InherentVowelA` for profile-aware rendering (Go API only); no Hindi
