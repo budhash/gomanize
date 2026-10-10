@@ -3,6 +3,22 @@
 Durable insights, gotchas, and decisions — the "why" that isn't obvious from the
 code or git history. Newest first.
 
+## Measure the symbol table, not just the models (2026-10, Bengali quality review)
+
+- Bengali's learned components were measured to three decimal places, but the
+  base symbol table never was. স → `sh` was linguistically motivated and
+  convention-wrong (Dakshina votes 3,830 vs 1,064 for `s`); flipping that one
+  symbol gained +161 dev words, nearly the whole vowel model's gain over B1
+  (+174) and twenty times the selector's (+8). Before training anything for a new language, ablate every
+  symbol and default rendering against train attestations.
+- "Remaining failures are lexical" held for Hindi and was carried over to Bengali
+  without measurement. A per-class miss breakdown (nearest reference, edit class)
+  is cheap and should precede any modelling decision.
+- A learned layer that skips hard inputs (here every conjunct-bearing word, ~half
+  the vocabulary) leaves those words to rules that were never designed to carry
+  them; report coverage-stratified accuracy next to the headline.
+- Check cost claims with a stated method: the selector's "~68×" was 4.2–4.6× warm.
+
 ## Experimental Bengali — reviewing a 16-PR contractor stack, then a keel (2026-10)
 
 - **Review the stack bottom-up, one PR and one reviewer at a time, merging with
