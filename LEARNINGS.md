@@ -9,8 +9,9 @@ code or git history. Newest first.
   base symbol table never was. স → `sh` was linguistically motivated and
   convention-wrong (Dakshina votes 3,830 vs 1,064 for `s`); flipping that one
   symbol gained +161 dev words, nearly the whole vowel model's gain over B1
-  (+174) and twenty times the selector's (+8). Before training anything for a new language, ablate every
-  symbol and default rendering against train attestations.
+  (+174) and twenty times the selector's (+8). Before training anything for a
+  new language, ablate every symbol and default rendering against train
+  attestations.
 - "Remaining failures are lexical" held for Hindi and was carried over to Bengali
   without measurement. A per-class miss breakdown (nearest reference, edit class)
   is cheap and should precede any modelling decision.
