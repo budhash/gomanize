@@ -176,8 +176,10 @@ Full results: [`docs/RESEARCH.md`](docs/RESEARCH.md) §4. The Hindi CI regressio
 gate is strict top-1 pure ≥85% on curated Dakshina (`make test-dakshina`), plus
 the frozen Hindi snapshot; Bengali is gated by the preregistered B1 dev gate and
 frozen output pins; overrides
-are an exception list, never headline numbers. Remaining failures are lexical,
-not rule-governed — the evidence, including rejected rules, is in RESEARCH §5.
+are an exception list, never headline numbers. Hindi's remaining failures are
+lexical, not rule-governed — the evidence, including rejected rules, is in RESEARCH
+§5. Bengali's are mostly convention- and rule-governed (measured plan:
+[`docs/reviews/2026-10-10-bengali-quality-assessment.md`](docs/reviews/2026-10-10-bengali-quality-assessment.md)).
 
 Contamination rules (train-split-only training; benchmarks never mined):
 RESEARCH §2. Deliberate divergences from Dakshina/Hunterian conventions:

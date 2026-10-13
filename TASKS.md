@@ -59,10 +59,18 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0065) [P3] [done] B2 candidate expansion and out-of-fold selector training: preregister before further dev selection @deps=T-0064 @branch=feature/bengali-b2-crossfit @done=2026-10-04 @pr=122
   - [x] (T-0066) [P2] [done] B2 promote cross-fitted selector: native-aware runtime contract, parity, style fallbacks and external validation @deps=T-0065 @branch=feature/bengali-b2-runtime-rerank @rel=T-0054 @done=2026-10-05 @pr=123
   - [x] (T-0067) [P2] [done] B3 source-pinned Bengali lyrics pilot, provisional references and line-level evaluation @deps=T-0066 @branch=feature/bengali-b3-lyrics-seed @done=2026-10-05 @pr=124
-  - [ ] (T-0068) [P2] [todo] B3 independent Bengali reference review: correct and attest the lyrics pilot before gold promotion @deps=T-0067
+  - [ ] (T-0068) [P2] [todo] B3 independent Bengali reference review: correct and attest the lyrics pilot before gold promotion @deps=T-0067 @tags=needs-maintainer,eval
   - [x] (T-0069) [P2] [done] Expose Bengali in CLI with explicit language selection and Hindi-default compatibility @deps=T-0067 @branch=feature/bengali-cli @done=2026-10-05 @pr=125
   - [x] (T-0070) [P2] [done] Expose Bengali through npm/WASM and browser language selection with Hindi defaults @deps=T-0069 @branch=feature/bengali-web-npm @done=2026-10-05 @pr=126
   - [x] (T-0109) [P2] [done] Retrain after excluding variant spellings of held-out words (partitions schema 2) @tags=data @done=2026-10-09 @pr=127
+  - [ ] (T-0117) [P2] [todo] Lyrics review worksheet: record each reviewer's স (s/sh), ছ (ch/chh) and o/a register preference, with several accepted spellings per word @tags=quality-review,eval,needs-maintainer
+  - [ ] (T-0118) [P2] [todo] Bengali convention change: স -> s everywhere (retire s-cluster) and ছ -> ch; train-only ablation, deliberate pin update (dev +187 words measured) @tags=quality-review,linguistics @deps=T-0117
+  - [ ] (T-0119) [P2] [todo] Bengali rule bundle: keep -িত/-ৃত/-ূত and final ত after গ র হ ন শ ষ; loan-coda delete table; C+ও; ya-phala after sibilants -> y; ba-phala after শ/স -> w, দ্ব -> db @tags=quality-review,linguistics
+  - [ ] (T-0120) [P2] [todo] Bengali suffix-boundary deletion: drop stem-final inherent vowel before a train-derived suffix table (কে টি গুলো তে দের ...) @tags=quality-review,linguistics
+  - [ ] (T-0121) [P2] [todo] Extend the Bengali vowel model to conjunct-bearing words (align halant clusters; one shared eligibility inventory for model, trainer and selector) @tags=quality-review,model
+  - [ ] (T-0122) [P2] [todo] Retire the Bengali native selector (keep records); recommend the vowel model as the Bengali profile @tags=quality-review,cleanup,needs-maintainer
+  - [ ] (T-0123) [P3] [todo] Shared schwa.delete.ccv for the Bengali rules-only default (dev +142, train +924 with 1,352 losses); decide after the rule bundle @tags=quality-review,linguistics
+  - [ ] (T-0124) [P3] [todo] Optional Bengali lexicon filter: skip entries that differ from rule output only by o/a (470), measured on attested lyrics @tags=quality-review,lexicon @deps=T-0068
 - [x] (F-0009) [P2] [done] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow @done=2026-10-09
   - [x] (T-0036) [P2] [done] Package the WASM engine as @budhash/gomanize with loader, types, make target, and Node smoke test @done=2026-09-08
 - [ ] (F-0006) [P2] [todo] WASM build + web demo (data flywheel) @shadow
@@ -182,9 +190,11 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0111) [P1] [done] Keel should-fix K2-K8 (format chars, long tokens, npm guard, style bypass, profiles, coverage assert, debug race) @tags=keel @done=2026-10-09 @pr=129
   - [x] (T-0112) [P1] [done] Keel K1: one canonical spelling per word across all components @tags=keel,unicode @done=2026-10-09 @pr=130
   - [ ] (T-0113) [P2] [todo] Doc sweep after the Bengali milestone (keel lens 3 checklist) @tags=keel,docs @branch=docs/bengali-milestone-sweep
-  - [ ] (T-0114) [P2] [todo] Confirm redistribution terms for docs/reference/Hindi-Marathi-Nepali-Transliteration.pdf or replace it with a link @tags=licensing
+  - [ ] (T-0114) [P2] [todo] Confirm redistribution terms for docs/reference/Hindi-Marathi-Nepali-Transliteration.pdf or replace it with a link @tags=licensing,needs-maintainer
   - [ ] (T-0115) [P3] [todo] Runtime/lyrics JSON records: rename 'accuracy' (it is the match-any rate) and fill strict_profiles @tags=records
   - [ ] (T-0116) [P2] [todo] Pin Hindi headline numbers in tests (curated pure/match-any/rerank, held-out, COMI, frequency-weighted, lyrics CER) per the PROCESS asserted-numbers rule @tags=tests
+  - [ ] (T-0125) [P3] [todo] Table-driven Bengali rule helper for growing data tables (loan codas, suffixes, -িত endings) @tags=quality-review,arch
+  - [ ] (T-0126) [P3] [todo] Decide whether to keep the committed .claude/settings.local.json or untrack it @tags=needs-maintainer,repo
 ## Skipped
 
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow
