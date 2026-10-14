@@ -33,38 +33,6 @@
         "micro_CER": 0.025974025974025976,
         "edits": 52,
         "reference_characters": 2002
-      },
-      "rerank": {
-        "exact_lines": 52,
-        "exact_fraction": 0.6341463414634146,
-        "macro_line_CER": 0.017012641593352078,
-        "micro_CER": 0.017982017982017984,
-        "edits": 36,
-        "reference_characters": 2002
-      },
-      "rerank_lexicon": {
-        "exact_lines": 46,
-        "exact_fraction": 0.5609756097560976,
-        "macro_line_CER": 0.025233622566280242,
-        "micro_CER": 0.025974025974025976,
-        "edits": 52,
-        "reference_characters": 2002
-      },
-      "rerank_vs_model": {
-        "changed": 3,
-        "CER_better": 2,
-        "CER_worse": 1,
-        "CER_equal": 79,
-        "exact_wins": 1,
-        "exact_losses": 1
-      },
-      "rerank_lexicon_vs_model_lexicon": {
-        "changed": 2,
-        "CER_better": 1,
-        "CER_worse": 1,
-        "CER_equal": 80,
-        "exact_wins": 0,
-        "exact_losses": 1
       }
     },
     "unique_native_lines": {
@@ -100,38 +68,6 @@
         "micro_CER": 0.025395033860045147,
         "edits": 45,
         "reference_characters": 1772
-      },
-      "rerank": {
-        "exact_lines": 42,
-        "exact_fraction": 0.5915492957746479,
-        "macro_line_CER": 0.01897771215543412,
-        "micro_CER": 0.019751693002257337,
-        "edits": 35,
-        "reference_characters": 1772
-      },
-      "rerank_lexicon": {
-        "exact_lines": 38,
-        "exact_fraction": 0.5352112676056338,
-        "macro_line_CER": 0.02479814700843016,
-        "micro_CER": 0.025395033860045147,
-        "edits": 45,
-        "reference_characters": 1772
-      },
-      "rerank_vs_model": {
-        "changed": 3,
-        "CER_better": 2,
-        "CER_worse": 1,
-        "CER_equal": 68,
-        "exact_wins": 1,
-        "exact_losses": 1
-      },
-      "rerank_lexicon_vs_model_lexicon": {
-        "changed": 2,
-        "CER_better": 1,
-        "CER_worse": 1,
-        "CER_equal": 69,
-        "exact_wins": 0,
-        "exact_losses": 1
       }
     },
     "all_tokens_unseen_lines": {
@@ -167,38 +103,6 @@
         "micro_CER": 0.00641025641025641,
         "edits": 1,
         "reference_characters": 156
-      },
-      "rerank": {
-        "exact_lines": 6,
-        "exact_fraction": 0.8571428571428571,
-        "macro_line_CER": 0.006802721088435374,
-        "micro_CER": 0.00641025641025641,
-        "edits": 1,
-        "reference_characters": 156
-      },
-      "rerank_lexicon": {
-        "exact_lines": 6,
-        "exact_fraction": 0.8571428571428571,
-        "macro_line_CER": 0.006802721088435374,
-        "micro_CER": 0.00641025641025641,
-        "edits": 1,
-        "reference_characters": 156
-      },
-      "rerank_vs_model": {
-        "changed": 0,
-        "CER_better": 0,
-        "CER_worse": 0,
-        "CER_equal": 7,
-        "exact_wins": 0,
-        "exact_losses": 0
-      },
-      "rerank_lexicon_vs_model_lexicon": {
-        "changed": 0,
-        "CER_better": 0,
-        "CER_worse": 0,
-        "CER_equal": 7,
-        "exact_wins": 0,
-        "exact_losses": 0
       }
     },
     "song_1": {
@@ -234,38 +138,6 @@
         "micro_CER": 0.02813852813852814,
         "edits": 13,
         "reference_characters": 462
-      },
-      "rerank": {
-        "exact_lines": 16,
-        "exact_fraction": 0.8,
-        "macro_line_CER": 0.007298534798534798,
-        "micro_CER": 0.008658008658008658,
-        "edits": 4,
-        "reference_characters": 462
-      },
-      "rerank_lexicon": {
-        "exact_lines": 13,
-        "exact_fraction": 0.65,
-        "macro_line_CER": 0.026863752189839146,
-        "micro_CER": 0.02813852813852814,
-        "edits": 13,
-        "reference_characters": 462
-      },
-      "rerank_vs_model": {
-        "changed": 0,
-        "CER_better": 0,
-        "CER_worse": 0,
-        "CER_equal": 20,
-        "exact_wins": 0,
-        "exact_losses": 0
-      },
-      "rerank_lexicon_vs_model_lexicon": {
-        "changed": 0,
-        "CER_better": 0,
-        "CER_worse": 0,
-        "CER_equal": 20,
-        "exact_wins": 0,
-        "exact_losses": 0
       }
     },
     "song_2": {
@@ -301,38 +173,6 @@
         "micro_CER": 0.02574257425742574,
         "edits": 13,
         "reference_characters": 505
-      },
-      "rerank": {
-        "exact_lines": 11,
-        "exact_fraction": 0.55,
-        "macro_line_CER": 0.02001512927242905,
-        "micro_CER": 0.02178217821782178,
-        "edits": 11,
-        "reference_characters": 505
-      },
-      "rerank_lexicon": {
-        "exact_lines": 10,
-        "exact_fraction": 0.5,
-        "macro_line_CER": 0.025586557843857622,
-        "micro_CER": 0.027722772277227723,
-        "edits": 14,
-        "reference_characters": 505
-      },
-      "rerank_vs_model": {
-        "changed": 1,
-        "CER_better": 0,
-        "CER_worse": 1,
-        "CER_equal": 19,
-        "exact_wins": 0,
-        "exact_losses": 1
-      },
-      "rerank_lexicon_vs_model_lexicon": {
-        "changed": 1,
-        "CER_better": 0,
-        "CER_worse": 1,
-        "CER_equal": 19,
-        "exact_wins": 0,
-        "exact_losses": 1
       }
     },
     "song_3": {
@@ -368,38 +208,6 @@
         "micro_CER": 0.018036072144288578,
         "edits": 9,
         "reference_characters": 499
-      },
-      "rerank": {
-        "exact_lines": 16,
-        "exact_fraction": 0.8,
-        "macro_line_CER": 0.011159211159211159,
-        "micro_CER": 0.01002004008016032,
-        "edits": 5,
-        "reference_characters": 499
-      },
-      "rerank_lexicon": {
-        "exact_lines": 15,
-        "exact_fraction": 0.75,
-        "macro_line_CER": 0.017645253852150402,
-        "micro_CER": 0.01603206412825651,
-        "edits": 8,
-        "reference_characters": 499
-      },
-      "rerank_vs_model": {
-        "changed": 1,
-        "CER_better": 1,
-        "CER_worse": 0,
-        "CER_equal": 19,
-        "exact_wins": 0,
-        "exact_losses": 0
-      },
-      "rerank_lexicon_vs_model_lexicon": {
-        "changed": 1,
-        "CER_better": 1,
-        "CER_worse": 0,
-        "CER_equal": 19,
-        "exact_wins": 0,
-        "exact_losses": 0
       }
     },
     "song_4": {
@@ -435,38 +243,6 @@
         "micro_CER": 0.03171641791044776,
         "edits": 17,
         "reference_characters": 536
-      },
-      "rerank": {
-        "exact_lines": 9,
-        "exact_fraction": 0.4090909090909091,
-        "macro_line_CER": 0.028435413911425903,
-        "micro_CER": 0.029850746268656716,
-        "edits": 16,
-        "reference_characters": 536
-      },
-      "rerank_lexicon": {
-        "exact_lines": 8,
-        "exact_fraction": 0.36363636363636365,
-        "macro_line_CER": 0.030329353305365295,
-        "micro_CER": 0.03171641791044776,
-        "edits": 17,
-        "reference_characters": 536
-      },
-      "rerank_vs_model": {
-        "changed": 1,
-        "CER_better": 1,
-        "CER_worse": 0,
-        "CER_equal": 21,
-        "exact_wins": 1,
-        "exact_losses": 0
-      },
-      "rerank_lexicon_vs_model_lexicon": {
-        "changed": 0,
-        "CER_better": 0,
-        "CER_worse": 0,
-        "CER_equal": 22,
-        "exact_wins": 0,
-        "exact_losses": 0
       }
     }
   },
@@ -474,9 +250,7 @@
     "B1": 0.02154968820715408,
     "model": 0.017340535789488732,
     "lexicon": 0.029491782282494036,
-    "model_lexicon": 0.025178567260766078,
-    "rerank": 0.016727072285400227,
-    "rerank_lexicon": 0.025106229297803116
+    "model_lexicon": 0.025178567260766078
   },
   "overlap": {
     "types": 213,
@@ -513,9 +287,7 @@
         "B1": "amar matha not kore dao he tomar",
         "model": "amar matha noto kore dao he tomar",
         "lexicon": "amar matha not kore dao he tomar",
-        "model_lexicon": "amar matha noto kore dao he tomar",
-        "rerank": "amar matha noto kore dao he tomar",
-        "rerank_lexicon": "amar matha noto kore dao he tomar"
+        "model_lexicon": "amar matha noto kore dao he tomar"
       }
     },
     {
@@ -530,9 +302,7 @@
         "B1": "choron-dhular tole।",
         "model": "choron-dhular tole।",
         "lexicon": "choron-dhular tole।",
-        "model_lexicon": "choron-dhular tole।",
-        "rerank": "choron-dhular tole।",
-        "rerank_lexicon": "choron-dhular tole।"
+        "model_lexicon": "choron-dhular tole।"
       }
     },
     {
@@ -548,9 +318,7 @@
         "B1": "shokol ohongkar he amar",
         "model": "shokol ohongkar he amar",
         "lexicon": "sakal ohongkar he amar",
-        "model_lexicon": "sakal ohongkar he amar",
-        "rerank": "shokol ohongkar he amar",
-        "rerank_lexicon": "sakal ohongkar he amar"
+        "model_lexicon": "sakal ohongkar he amar"
       }
     },
     {
@@ -565,9 +333,7 @@
         "B1": "dubao chokher jole।",
         "model": "dubao chokher jole।",
         "lexicon": "dubao chokher jole।",
-        "model_lexicon": "dubao chokher jole।",
-        "rerank": "dubao chokher jole।",
-        "rerank_lexicon": "dubao chokher jole।"
+        "model_lexicon": "dubao chokher jole।"
       }
     },
     {
@@ -583,9 +349,7 @@
         "B1": "nijere korite gourob dan,",
         "model": "nijere korite gourob dan,",
         "lexicon": "nijere korite gourob dan,",
-        "model_lexicon": "nijere korite gourob dan,",
-        "rerank": "nijere korite gourob dan,",
-        "rerank_lexicon": "nijere korite gourob dan,"
+        "model_lexicon": "nijere korite gourob dan,"
       }
     },
     {
@@ -602,9 +366,7 @@
         "B1": "nijere keboli kori opoman,",
         "model": "nijere kebli kori opoman,",
         "lexicon": "nijere keboli kori opoman,",
-        "model_lexicon": "nijere kebli kori opoman,",
-        "rerank": "nijere kebli kori opoman,",
-        "rerank_lexicon": "nijere kebli kori opoman,"
+        "model_lexicon": "nijere kebli kori opoman,"
       }
     },
     {
@@ -618,9 +380,7 @@
         "B1": "aponare shudhu gheriya gheriya",
         "model": "apnare shudhu gheriya gheriya",
         "lexicon": "aponare shudhu gheriya gheriya",
-        "model_lexicon": "apnare shudhu gheriya gheriya",
-        "rerank": "apnare shudhu gheriya gheriya",
-        "rerank_lexicon": "apnare shudhu gheriya gheriya"
+        "model_lexicon": "apnare shudhu gheriya gheriya"
       }
     },
     {
@@ -636,9 +396,7 @@
         "B1": "ghure mori pole pole।",
         "model": "ghure mori pole pole।",
         "lexicon": "ghure mori pole pole।",
-        "model_lexicon": "ghure mori pole pole।",
-        "rerank": "ghure mori pole pole।",
-        "rerank_lexicon": "ghure mori pole pole।"
+        "model_lexicon": "ghure mori pole pole।"
       }
     },
     {
@@ -654,9 +412,7 @@
         "B1": "shokol ohongkar he amar",
         "model": "shokol ohongkar he amar",
         "lexicon": "sakal ohongkar he amar",
-        "model_lexicon": "sakal ohongkar he amar",
-        "rerank": "shokol ohongkar he amar",
-        "rerank_lexicon": "sakal ohongkar he amar"
+        "model_lexicon": "sakal ohongkar he amar"
       }
     },
     {
@@ -671,9 +427,7 @@
         "B1": "dubao chokher jole।",
         "model": "dubao chokher jole।",
         "lexicon": "dubao chokher jole।",
-        "model_lexicon": "dubao chokher jole।",
-        "rerank": "dubao chokher jole।",
-        "rerank_lexicon": "dubao chokher jole।"
+        "model_lexicon": "dubao chokher jole।"
       }
     },
     {
@@ -689,9 +443,7 @@
         "B1": "amare na jen kori prochar",
         "model": "amare na jen kori prochar",
         "lexicon": "amare na jen kori prochar",
-        "model_lexicon": "amare na jen kori prochar",
-        "rerank": "amare na jen kori prochar",
-        "rerank_lexicon": "amare na jen kori prochar"
+        "model_lexicon": "amare na jen kori prochar"
       }
     },
     {
@@ -707,9 +459,7 @@
         "B1": "amar apon kaje;",
         "model": "amar apon kaje;",
         "lexicon": "amar apon kaje;",
-        "model_lexicon": "amar apon kaje;",
-        "rerank": "amar apon kaje;",
-        "rerank_lexicon": "amar apon kaje;"
+        "model_lexicon": "amar apon kaje;"
       }
     },
     {
@@ -725,9 +475,7 @@
         "B1": "tomari ichchha kor he purno",
         "model": "tomari ichchha kor he purno",
         "lexicon": "tomari ichchha kor he purno",
-        "model_lexicon": "tomari ichchha kor he purno",
-        "rerank": "tomari ichchha kor he purno",
-        "rerank_lexicon": "tomari ichchha kor he purno"
+        "model_lexicon": "tomari ichchha kor he purno"
       }
     },
     {
@@ -742,9 +490,7 @@
         "B1": "amar jibon majhe।",
         "model": "amar jibon majhe।",
         "lexicon": "amar jibon majhe।",
-        "model_lexicon": "amar jibon majhe।",
-        "rerank": "amar jibon majhe।",
-        "rerank_lexicon": "amar jibon majhe।"
+        "model_lexicon": "amar jibon majhe।"
       }
     },
     {
@@ -761,9 +507,7 @@
         "B1": "jachi he tomar chorom shanti,",
         "model": "jachi he tomar chorom shanti,",
         "lexicon": "jachi he tomar chorom shanti,",
-        "model_lexicon": "jachi he tomar chorom shanti,",
-        "rerank": "jachi he tomar chorom shanti,",
-        "rerank_lexicon": "jachi he tomar chorom shanti,"
+        "model_lexicon": "jachi he tomar chorom shanti,"
       }
     },
     {
@@ -779,9 +523,7 @@
         "B1": "porane tomar porom kanti,",
         "model": "porane tomar porom kanti,",
         "lexicon": "porane tomar porom kanti,",
-        "model_lexicon": "porane tomar porom kanti,",
-        "rerank": "porane tomar porom kanti,",
-        "rerank_lexicon": "porane tomar porom kanti,"
+        "model_lexicon": "porane tomar porom kanti,"
       }
     },
     {
@@ -795,9 +537,7 @@
         "B1": "amare aral koriya danrao",
         "model": "amare aral koriya danrao",
         "lexicon": "amare aral koriya danrao",
-        "model_lexicon": "amare aral koriya danrao",
-        "rerank": "amare aral koriya danrao",
-        "rerank_lexicon": "amare aral koriya danrao"
+        "model_lexicon": "amare aral koriya danrao"
       }
     },
     {
@@ -812,9 +552,7 @@
         "B1": "hridoy-poddo-dole।",
         "model": "hridoy-poddo-dole।",
         "lexicon": "hridoy-poddo-dole।",
-        "model_lexicon": "hridoy-poddo-dole।",
-        "rerank": "hridoy-poddo-dole।",
-        "rerank_lexicon": "hridoy-poddo-dole।"
+        "model_lexicon": "hridoy-poddo-dole।"
       }
     },
     {
@@ -830,9 +568,7 @@
         "B1": "shokol ohongkar he amar",
         "model": "shokol ohongkar he amar",
         "lexicon": "sakal ohongkar he amar",
-        "model_lexicon": "sakal ohongkar he amar",
-        "rerank": "shokol ohongkar he amar",
-        "rerank_lexicon": "sakal ohongkar he amar"
+        "model_lexicon": "sakal ohongkar he amar"
       }
     },
     {
@@ -847,9 +583,7 @@
         "B1": "dubao chokher jole।",
         "model": "dubao chokher jole।",
         "lexicon": "dubao chokher jole।",
-        "model_lexicon": "dubao chokher jole।",
-        "rerank": "dubao chokher jole।",
-        "rerank_lexicon": "dubao chokher jole।"
+        "model_lexicon": "dubao chokher jole।"
       }
     },
     {
@@ -866,9 +600,7 @@
         "B1": "ami bohu bashonay pranopone chai",
         "model": "ami bohu bashonay pranopone chai",
         "lexicon": "ami bohu bashonay pranopone chai",
-        "model_lexicon": "ami bohu bashonay pranopone chai",
-        "rerank": "ami bohu bashonay pranopone chai",
-        "rerank_lexicon": "ami bohu bashonay pranopone chai"
+        "model_lexicon": "ami bohu bashonay pranopone chai"
       }
     },
     {
@@ -884,9 +616,7 @@
         "B1": "bonchit kore banchale more!",
         "model": "bonchit kore banchale more!",
         "lexicon": "bonchit kore banchale more!",
-        "model_lexicon": "bonchit kore banchale more!",
-        "rerank": "bonchit kore banchale more!",
-        "rerank_lexicon": "bonchit kore banchale more!"
+        "model_lexicon": "bonchit kore banchale more!"
       }
     },
     {
@@ -904,9 +634,7 @@
         "B1": "e kripa kothor shonchit mor",
         "model": "e kripa kothor shonchit mor",
         "lexicon": "e kripa kothor sanchita mor",
-        "model_lexicon": "e kripa kothor sanchita mor",
-        "rerank": "e kripa kothor shonchit mor",
-        "rerank_lexicon": "e kripa kothor sanchita mor"
+        "model_lexicon": "e kripa kothor sanchita mor"
       }
     },
     {
@@ -920,9 +648,7 @@
         "B1": "jibon bhore’।",
         "model": "jibon bhore’।",
         "lexicon": "jibon bhore’।",
-        "model_lexicon": "jibon bhore’।",
-        "rerank": "jibon bhore’।",
-        "rerank_lexicon": "jibon bhore’।"
+        "model_lexicon": "jibon bhore’।"
       }
     },
     {
@@ -938,9 +664,7 @@
         "B1": "na chahite more ja korechh dan,",
         "model": "na chahite more ja korechho dan,",
         "lexicon": "na chahite more ja korechh dan,",
-        "model_lexicon": "na chahite more ja korechho dan,",
-        "rerank": "na chahite more ja korechh dan,",
-        "rerank_lexicon": "na chahite more ja korechh dan,"
+        "model_lexicon": "na chahite more ja korechho dan,"
       }
     },
     {
@@ -957,9 +681,7 @@
         "B1": "akash alok tonu mon pran,",
         "model": "akash alok tonu mon pran,",
         "lexicon": "aakash alok tonu mon pran,",
-        "model_lexicon": "aakash alok tonu mon pran,",
-        "rerank": "akash alok tonu mon pran,",
-        "rerank_lexicon": "aakash alok tonu mon pran,"
+        "model_lexicon": "aakash alok tonu mon pran,"
       }
     },
     {
@@ -974,9 +696,7 @@
         "B1": "dine dine tumi nitechh amay",
         "model": "dine dine tumi nitechho amay",
         "lexicon": "dine dine tumi nitechh amay",
-        "model_lexicon": "dine dine tumi nitechho amay",
-        "rerank": "dine dine tumi nitechho amay",
-        "rerank_lexicon": "dine dine tumi nitechho amay"
+        "model_lexicon": "dine dine tumi nitechho amay"
       }
     },
     {
@@ -992,9 +712,7 @@
         "B1": "she moha daneroi joggo kore,",
         "model": "she moha daneroi joggo kore,",
         "lexicon": "she moha daneroi joggo kore,",
-        "model_lexicon": "she moha daneroi joggo kore,",
-        "rerank": "she moha daneroi joggo kore,",
-        "rerank_lexicon": "she moha daneroi joggo kore,"
+        "model_lexicon": "she moha daneroi joggo kore,"
       }
     },
     {
@@ -1012,9 +730,7 @@
         "B1": "oti ichchhar shongkot h’te",
         "model": "oti ichchhar shongkot ho’te",
         "lexicon": "oti ichchhar shongkot h’te",
-        "model_lexicon": "oti ichchhar shongkot ho’te",
-        "rerank": "oti ichchhar shongkot ho’te",
-        "rerank_lexicon": "oti ichchhar shongkot ho’te"
+        "model_lexicon": "oti ichchhar shongkot ho’te"
       }
     },
     {
@@ -1028,9 +744,7 @@
         "B1": "banchaye more!",
         "model": "banchaye more!",
         "lexicon": "banchaye more!",
-        "model_lexicon": "banchaye more!",
-        "rerank": "banchaye more!",
-        "rerank_lexicon": "banchaye more!"
+        "model_lexicon": "banchaye more!"
       }
     },
     {
@@ -1048,9 +762,7 @@
         "B1": "ami kokhono ba bhuli, kokhono ba choli,",
         "model": "ami kokhono ba bhuli, kokhono ba choli,",
         "lexicon": "ami kokhono ba bhuli, kokhono ba choli,",
-        "model_lexicon": "ami kokhono ba bhuli, kokhono ba choli,",
-        "rerank": "ami kokhono ba bhuli, kokhono ba choli,",
-        "rerank_lexicon": "ami kokhono ba bhuli, kokhono ba choli,"
+        "model_lexicon": "ami kokhono ba bhuli, kokhono ba choli,"
       }
     },
     {
@@ -1067,9 +779,7 @@
         "B1": "tomar pother lokshjo dhore;",
         "model": "tomar pother lokshjo dhore;",
         "lexicon": "tomar pother lokshjo dhore;",
-        "model_lexicon": "tomar pother lokshjo dhore;",
-        "rerank": "tomar pother lokshjo dhore;",
-        "rerank_lexicon": "tomar pother lokshjo dhore;"
+        "model_lexicon": "tomar pother lokshjo dhore;"
       }
     },
     {
@@ -1086,9 +796,7 @@
         "B1": "tumi nishthur shommukh hote",
         "model": "tumi nishthur shommukh hote",
         "lexicon": "tumi nishthur shommukh hote",
-        "model_lexicon": "tumi nishthur shommukh hote",
-        "rerank": "tumi nishthur shommukh hote",
-        "rerank_lexicon": "tumi nishthur shommukh hote"
+        "model_lexicon": "tumi nishthur shommukh hote"
       }
     },
     {
@@ -1103,9 +811,7 @@
         "B1": "jao je shore!",
         "model": "jao je shore!",
         "lexicon": "jao je shore!",
-        "model_lexicon": "jao je shore!",
-        "rerank": "jao je shore!",
-        "rerank_lexicon": "jao je shore!"
+        "model_lexicon": "jao je shore!"
       }
     },
     {
@@ -1124,9 +830,7 @@
         "B1": "e je tob doya jani jani hay,",
         "model": "e je tob doya jani jani hay,",
         "lexicon": "e je tob doya jani jani hay,",
-        "model_lexicon": "e je tob doya jani jani hay,",
-        "rerank": "e je tob doya jani jani hay,",
-        "rerank_lexicon": "e je tob doya jani jani hay,"
+        "model_lexicon": "e je tob doya jani jani hay,"
       }
     },
     {
@@ -1142,9 +846,7 @@
         "B1": "nite chao bole firao amay",
         "model": "nite chao bole firao amay",
         "lexicon": "nite chao bole firao amay",
-        "model_lexicon": "nite chao bole firao amay",
-        "rerank": "nite chao bole firao amay",
-        "rerank_lexicon": "nite chao bole firao amay"
+        "model_lexicon": "nite chao bole firao amay"
       }
     },
     {
@@ -1159,9 +861,7 @@
         "B1": "purno koriya lobe e jibon",
         "model": "purno koriya lobe e jibon",
         "lexicon": "purno koriya lobe e jibon",
-        "model_lexicon": "purno koriya lobe e jibon",
-        "rerank": "purno koriya lobe e jibon",
-        "rerank_lexicon": "purno koriya lobe e jibon"
+        "model_lexicon": "purno koriya lobe e jibon"
       }
     },
     {
@@ -1177,9 +877,7 @@
         "B1": "tobe miloneroi joggo kore,",
         "model": "tobe miloneroi joggo kore,",
         "lexicon": "tobe miloneroi joggo kore,",
-        "model_lexicon": "tobe miloneroi joggo kore,",
-        "rerank": "tobe miloneroi joggo kore,",
-        "rerank_lexicon": "tobe miloneroi joggo kore,"
+        "model_lexicon": "tobe miloneroi joggo kore,"
       }
     },
     {
@@ -1197,9 +895,7 @@
         "B1": "adha-ichchhar shongkot h’te",
         "model": "adha-ichchhar shongkot ho’te",
         "lexicon": "adha-ichchhar shongkot h’te",
-        "model_lexicon": "adha-ichchhar shongkot ho’te",
-        "rerank": "adha-ichchhar shongkot ho’te",
-        "rerank_lexicon": "adha-ichchhar shongkot ho’te"
+        "model_lexicon": "adha-ichchhar shongkot ho’te"
       }
     },
     {
@@ -1213,9 +909,7 @@
         "B1": "banchaye more!",
         "model": "banchaye more!",
         "lexicon": "banchaye more!",
-        "model_lexicon": "banchaye more!",
-        "rerank": "banchaye more!",
-        "rerank_lexicon": "banchaye more!"
+        "model_lexicon": "banchaye more!"
       }
     },
     {
@@ -1230,9 +924,7 @@
         "B1": "kot ojanare janaile tumi,",
         "model": "koto ojanare janaile tumi,",
         "lexicon": "kot ojanare janaile tumi,",
-        "model_lexicon": "koto ojanare janaile tumi,",
-        "rerank": "koto ojanare janaile tumi,",
-        "rerank_lexicon": "koto ojanare janaile tumi,"
+        "model_lexicon": "koto ojanare janaile tumi,"
       }
     },
     {
@@ -1249,9 +941,7 @@
         "B1": "kot ghore dile thani,",
         "model": "koto ghore dile thani,",
         "lexicon": "kot ghore dile thani,",
-        "model_lexicon": "koto ghore dile thani,",
-        "rerank": "koto ghore dile thani,",
-        "rerank_lexicon": "koto ghore dile thani,"
+        "model_lexicon": "koto ghore dile thani,"
       }
     },
     {
@@ -1263,9 +953,7 @@
         "B1": "duroke korile nikot, bondhu,",
         "model": "durke korile nikot, bondhu,",
         "lexicon": "duroke korile nikot, bondhu,",
-        "model_lexicon": "durke korile nikot, bondhu,",
-        "rerank": "durke korile nikot, bondhu,",
-        "rerank_lexicon": "durke korile nikot, bondhu,"
+        "model_lexicon": "durke korile nikot, bondhu,"
       }
     },
     {
@@ -1277,9 +965,7 @@
         "B1": "poroke korile bhai।",
         "model": "porke korile bhai।",
         "lexicon": "poroke korile bhai।",
-        "model_lexicon": "porke korile bhai।",
-        "rerank": "porke korile bhai।",
-        "rerank_lexicon": "porke korile bhai।"
+        "model_lexicon": "porke korile bhai।"
       }
     },
     {
@@ -1297,9 +983,7 @@
         "B1": "purano abash chhere jai jobe,",
         "model": "purano abash chhere jai jobe,",
         "lexicon": "purano abas chhere jai jobe,",
-        "model_lexicon": "purano abas chhere jai jobe,",
-        "rerank": "purano abash chhere jai jobe,",
-        "rerank_lexicon": "purano abas chhere jai jobe,"
+        "model_lexicon": "purano abas chhere jai jobe,"
       }
     },
     {
@@ -1318,9 +1002,7 @@
         "B1": "mone bhebe mori ki jani ki hobe,",
         "model": "mone bhebe mori ki jani ki hobe,",
         "lexicon": "mone bhebe mori ki jani ki hobe,",
-        "model_lexicon": "mone bhebe mori ki jani ki hobe,",
-        "rerank": "mone bhebe mori ki jani ki hobe,",
-        "rerank_lexicon": "mone bhebe mori ki jani ki hobe,"
+        "model_lexicon": "mone bhebe mori ki jani ki hobe,"
       }
     },
     {
@@ -1335,9 +1017,7 @@
         "B1": "nutoner majhe tumi puraton,",
         "model": "nutoner majhe tumi puraton,",
         "lexicon": "nutoner majhe tumi puraton,",
-        "model_lexicon": "nutoner majhe tumi puraton,",
-        "rerank": "nutoner majhe tumi puraton,",
-        "rerank_lexicon": "nutoner majhe tumi puraton,"
+        "model_lexicon": "nutoner majhe tumi puraton,"
       }
     },
     {
@@ -1354,9 +1034,7 @@
         "B1": "she kotha je bhule jai।",
         "model": "she kotha je bhule jai।",
         "lexicon": "she kotha je bhule jai।",
-        "model_lexicon": "she kotha je bhule jai।",
-        "rerank": "she kotha je bhule jai।",
-        "rerank_lexicon": "she kotha je bhule jai।"
+        "model_lexicon": "she kotha je bhule jai।"
       }
     },
     {
@@ -1368,9 +1046,7 @@
         "B1": "duroke korile nikot, bondhu,",
         "model": "durke korile nikot, bondhu,",
         "lexicon": "duroke korile nikot, bondhu,",
-        "model_lexicon": "durke korile nikot, bondhu,",
-        "rerank": "durke korile nikot, bondhu,",
-        "rerank_lexicon": "durke korile nikot, bondhu,"
+        "model_lexicon": "durke korile nikot, bondhu,"
       }
     },
     {
@@ -1382,9 +1058,7 @@
         "B1": "poroke korile bhai।",
         "model": "porke korile bhai।",
         "lexicon": "poroke korile bhai।",
-        "model_lexicon": "porke korile bhai।",
-        "rerank": "porke korile bhai।",
-        "rerank_lexicon": "porke korile bhai।"
+        "model_lexicon": "porke korile bhai।"
       }
     },
     {
@@ -1400,9 +1074,7 @@
         "B1": "jibone morone nikhil bhubone,",
         "model": "jibone morone nikhil bhubone,",
         "lexicon": "jibone morone nikhil bhubone,",
-        "model_lexicon": "jibone morone nikhil bhubone,",
-        "rerank": "jibone morone nikhil bhubone,",
-        "rerank_lexicon": "jibone morone nikhil bhubone,"
+        "model_lexicon": "jibone morone nikhil bhubone,"
       }
     },
     {
@@ -1414,9 +1086,7 @@
         "B1": "jokhoni jekhane lobe,",
         "model": "jokhni jekhane lobe,",
         "lexicon": "jokhoni jekhane lobe,",
-        "model_lexicon": "jokhni jekhane lobe,",
-        "rerank": "jokhni jekhane lobe,",
-        "rerank_lexicon": "jokhni jekhane lobe,"
+        "model_lexicon": "jokhni jekhane lobe,"
       }
     },
     {
@@ -1432,9 +1102,7 @@
         "B1": "chir jonomer porichit ohe",
         "model": "chir jonmer porichito ohe",
         "lexicon": "chir jonomer porichit ohe",
-        "model_lexicon": "chir jonmer porichito ohe",
-        "rerank": "chir jonomer porichito ohe",
-        "rerank_lexicon": "chir jonomer porichito ohe"
+        "model_lexicon": "chir jonmer porichito ohe"
       }
     },
     {
@@ -1449,9 +1117,7 @@
         "B1": "tumii chinabe shobe।",
         "model": "tumii chinabe shobe।",
         "lexicon": "tumii chinabe shobe।",
-        "model_lexicon": "tumii chinabe shobe।",
-        "rerank": "tumii chinabe shobe।",
-        "rerank_lexicon": "tumii chinabe shobe।"
+        "model_lexicon": "tumii chinabe shobe।"
       }
     },
     {
@@ -1467,9 +1133,7 @@
         "B1": "tomare janile nahi keho por",
         "model": "tomare janile nahi keho por",
         "lexicon": "tomare janile nahi keho por",
-        "model_lexicon": "tomare janile nahi keho por",
-        "rerank": "tomare janile nahi keho por",
-        "rerank_lexicon": "tomare janile nahi keho por"
+        "model_lexicon": "tomare janile nahi keho por"
       }
     },
     {
@@ -1486,9 +1150,7 @@
         "B1": "nahi kono mana, nahi kono dor,",
         "model": "nahi kono mana, nahi kono dor,",
         "lexicon": "nahi kono mana, nahi kono dor,",
-        "model_lexicon": "nahi kono mana, nahi kono dor,",
-        "rerank": "nahi kono mana, nahi kono dor,",
-        "rerank_lexicon": "nahi kono mana, nahi kono dor,"
+        "model_lexicon": "nahi kono mana, nahi kono dor,"
       }
     },
     {
@@ -1502,9 +1164,7 @@
         "B1": "shobare milaye tumi jagitechh",
         "model": "shobare milaye tumi jagitechho",
         "lexicon": "shobare milaye tumi jagitechh",
-        "model_lexicon": "shobare milaye tumi jagitechho",
-        "rerank": "shobare milaye tumi jagitechho",
-        "rerank_lexicon": "shobare milaye tumi jagitechho"
+        "model_lexicon": "shobare milaye tumi jagitechho"
       }
     },
     {
@@ -1519,9 +1179,7 @@
         "B1": "dekha jen shoda pai!",
         "model": "dekha jen shoda pai!",
         "lexicon": "dekha jen sada pai!",
-        "model_lexicon": "dekha jen sada pai!",
-        "rerank": "dekha jen shoda pai!",
-        "rerank_lexicon": "dekha jen sada pai!"
+        "model_lexicon": "dekha jen sada pai!"
       }
     },
     {
@@ -1533,9 +1191,7 @@
         "B1": "duroke korile nikot, bondhu,",
         "model": "durke korile nikot, bondhu,",
         "lexicon": "duroke korile nikot, bondhu,",
-        "model_lexicon": "durke korile nikot, bondhu,",
-        "rerank": "durke korile nikot, bondhu,",
-        "rerank_lexicon": "durke korile nikot, bondhu,"
+        "model_lexicon": "durke korile nikot, bondhu,"
       }
     },
     {
@@ -1547,9 +1203,7 @@
         "B1": "poroke korile bhai।",
         "model": "porke korile bhai।",
         "lexicon": "poroke korile bhai।",
-        "model_lexicon": "porke korile bhai।",
-        "rerank": "porke korile bhai।",
-        "rerank_lexicon": "porke korile bhai।"
+        "model_lexicon": "porke korile bhai।"
       }
     },
     {
@@ -1565,9 +1219,7 @@
         "B1": "bipode more rokkha kor,",
         "model": "bipde more rokkha kor,",
         "lexicon": "bipode more rokkha kor,",
-        "model_lexicon": "bipde more rokkha kor,",
-        "rerank": "bipde more rokkha kor,",
-        "rerank_lexicon": "bipde more rokkha kor,"
+        "model_lexicon": "bipde more rokkha kor,"
       }
     },
     {
@@ -1584,9 +1236,7 @@
         "B1": "e nohe mor prarthona,",
         "model": "e nohe mor prarthona,",
         "lexicon": "e nohe mor prarthona,",
-        "model_lexicon": "e nohe mor prarthona,",
-        "rerank": "e nohe mor prarthona,",
-        "rerank_lexicon": "e nohe mor prarthona,"
+        "model_lexicon": "e nohe mor prarthona,"
       }
     },
     {
@@ -1603,9 +1253,7 @@
         "B1": "bipode ami na jen kori bhoy।",
         "model": "bipde ami na jen kori bhoy।",
         "lexicon": "bipode ami na jen kori bhoy।",
-        "model_lexicon": "bipde ami na jen kori bhoy।",
-        "rerank": "bipde ami na jen kori bhoy।",
-        "rerank_lexicon": "bipde ami na jen kori bhoy।"
+        "model_lexicon": "bipde ami na jen kori bhoy।"
       }
     },
     {
@@ -1621,9 +1269,7 @@
         "B1": "dukkho-tape byathit chite",
         "model": "dukkho-tape byathit chite",
         "lexicon": "dukkho-tape byathit chite",
-        "model_lexicon": "dukkho-tape byathit chite",
-        "rerank": "dukkho-tape byathit chite",
-        "rerank_lexicon": "dukkho-tape byathit chite"
+        "model_lexicon": "dukkho-tape byathit chite"
       }
     },
     {
@@ -1639,9 +1285,7 @@
         "B1": "nai ba dile shantbona,",
         "model": "nai ba dile shantbona,",
         "lexicon": "nai ba dile shantbona,",
-        "model_lexicon": "nai ba dile shantbona,",
-        "rerank": "nai ba dile shantbona,",
-        "rerank_lexicon": "nai ba dile shantbona,"
+        "model_lexicon": "nai ba dile shantbona,"
       }
     },
     {
@@ -1657,9 +1301,7 @@
         "B1": "dukkhe jen korite pari joy।",
         "model": "dukkhe jen korite pari joy।",
         "lexicon": "dukkhe jen korite pari joy।",
-        "model_lexicon": "dukkhe jen korite pari joy।",
-        "rerank": "dukkhe jen korite pari joy।",
-        "rerank_lexicon": "dukkhe jen korite pari joy।"
+        "model_lexicon": "dukkhe jen korite pari joy।"
       }
     },
     {
@@ -1676,9 +1318,7 @@
         "B1": "shohay mor na jodi jute",
         "model": "shohay mor na jodi jute",
         "lexicon": "shohay mor na jodi jute",
-        "model_lexicon": "shohay mor na jodi jute",
-        "rerank": "shohay mor na jodi jute",
-        "rerank_lexicon": "shohay mor na jodi jute"
+        "model_lexicon": "shohay mor na jodi jute"
       }
     },
     {
@@ -1694,9 +1334,7 @@
         "B1": "nijer bol na jen tute,",
         "model": "nijer bol na jen tute,",
         "lexicon": "nijer bol na jen tute,",
-        "model_lexicon": "nijer bol na jen tute,",
-        "rerank": "nijer bol na jen tute,",
-        "rerank_lexicon": "nijer bol na jen tute,"
+        "model_lexicon": "nijer bol na jen tute,"
       }
     },
     {
@@ -1710,9 +1348,7 @@
         "B1": "shongsharete ghotile khoti",
         "model": "shongsharete ghotile khoti",
         "lexicon": "shongsharete ghotile khoti",
-        "model_lexicon": "shongsharete ghotile khoti",
-        "rerank": "shongsharete ghotile khoti",
-        "rerank_lexicon": "shongsharete ghotile khoti"
+        "model_lexicon": "shongsharete ghotile khoti"
       }
     },
     {
@@ -1726,9 +1362,7 @@
         "B1": "lobhile shudhu bonchona",
         "model": "lobhile shudhu bonchona",
         "lexicon": "lobhile shudhu bonchona",
-        "model_lexicon": "lobhile shudhu bonchona",
-        "rerank": "lobhile shudhu bonchona",
-        "rerank_lexicon": "lobhile shudhu bonchona"
+        "model_lexicon": "lobhile shudhu bonchona"
       }
     },
     {
@@ -1745,9 +1379,7 @@
         "B1": "nijer mone na jen mani khoy।",
         "model": "nijer mone na jen mani khoy।",
         "lexicon": "nijer mone na jen mani khoy।",
-        "model_lexicon": "nijer mone na jen mani khoy।",
-        "rerank": "nijer mone na jen mani khoy।",
-        "rerank_lexicon": "nijer mone na jen mani khoy।"
+        "model_lexicon": "nijer mone na jen mani khoy।"
       }
     },
     {
@@ -1763,9 +1395,7 @@
         "B1": "amare tumi koribe tran",
         "model": "amare tumi koribe tran",
         "lexicon": "amare tumi koribe tran",
-        "model_lexicon": "amare tumi koribe tran",
-        "rerank": "amare tumi koribe tran",
-        "rerank_lexicon": "amare tumi koribe tran"
+        "model_lexicon": "amare tumi koribe tran"
       }
     },
     {
@@ -1782,9 +1412,7 @@
         "B1": "e nohe mor prarthona,",
         "model": "e nohe mor prarthona,",
         "lexicon": "e nohe mor prarthona,",
-        "model_lexicon": "e nohe mor prarthona,",
-        "rerank": "e nohe mor prarthona,",
-        "rerank_lexicon": "e nohe mor prarthona,"
+        "model_lexicon": "e nohe mor prarthona,"
       }
     },
     {
@@ -1798,9 +1426,7 @@
         "B1": "torite pari shokoti jen roy।",
         "model": "torite pari shokti jen roy।",
         "lexicon": "torite pari shokoti jen roy।",
-        "model_lexicon": "torite pari shokti jen roy।",
-        "rerank": "torite pari shokti jen roy।",
-        "rerank_lexicon": "torite pari shokti jen roy।"
+        "model_lexicon": "torite pari shokti jen roy।"
       }
     },
     {
@@ -1816,9 +1442,7 @@
         "B1": "amar bhar laghob kori",
         "model": "amar bhar laghobo kori",
         "lexicon": "amar bhar laghob kori",
-        "model_lexicon": "amar bhar laghob kori",
-        "rerank": "amar bhar laghob kori",
-        "rerank_lexicon": "amar bhar laghob kori"
+        "model_lexicon": "amar bhar laghob kori"
       }
     },
     {
@@ -1834,9 +1458,7 @@
         "B1": "nai ba dile shantbona,",
         "model": "nai ba dile shantbona,",
         "lexicon": "nai ba dile shantbona,",
-        "model_lexicon": "nai ba dile shantbona,",
-        "rerank": "nai ba dile shantbona,",
-        "rerank_lexicon": "nai ba dile shantbona,"
+        "model_lexicon": "nai ba dile shantbona,"
       }
     },
     {
@@ -1853,9 +1475,7 @@
         "B1": "bohite pari emoni jen hoy।",
         "model": "bohite pari emni jen hoy।",
         "lexicon": "bohite pari emni jen hoy।",
-        "model_lexicon": "bohite pari emni jen hoy।",
-        "rerank": "bohite pari emni jen hoy।",
-        "rerank_lexicon": "bohite pari emni jen hoy।"
+        "model_lexicon": "bohite pari emni jen hoy।"
       }
     },
     {
@@ -1871,9 +1491,7 @@
         "B1": "nomro shire shukher dine",
         "model": "nomro shire shukher dine",
         "lexicon": "nomro shire sukher dine",
-        "model_lexicon": "nomro shire sukher dine",
-        "rerank": "nomro shire shukher dine",
-        "rerank_lexicon": "nomro shire sukher dine"
+        "model_lexicon": "nomro shire sukher dine"
       }
     },
     {
@@ -1887,9 +1505,7 @@
         "B1": "tomari mukh loib chine,",
         "model": "tomari mukh loib chine,",
         "lexicon": "tomari mukh loib chine,",
-        "model_lexicon": "tomari mukh loib chine,",
-        "rerank": "tomari mukh loib chine,",
-        "rerank_lexicon": "tomari mukh loib chine,"
+        "model_lexicon": "tomari mukh loib chine,"
       }
     },
     {
@@ -1906,9 +1522,7 @@
         "B1": "dukkher rate nikhil dhora",
         "model": "dukkher rate nikhil dhora",
         "lexicon": "dukkher rate nikhil dhora",
-        "model_lexicon": "dukkher rate nikhil dhora",
-        "rerank": "dukkher rate nikhil dhora",
-        "rerank_lexicon": "dukkher rate nikhil dhora"
+        "model_lexicon": "dukkher rate nikhil dhora"
       }
     },
     {
@@ -1925,9 +1539,7 @@
         "B1": "je din kore bonchona",
         "model": "je din kore bonchona",
         "lexicon": "je din kore bonchona",
-        "model_lexicon": "je din kore bonchona",
-        "rerank": "je din kore bonchona",
-        "rerank_lexicon": "je din kore bonchona"
+        "model_lexicon": "je din kore bonchona"
       }
     },
     {
@@ -1943,9 +1555,7 @@
         "B1": "tomare jen na kori shongshoy।",
         "model": "tomare jen na kori shongshoy।",
         "lexicon": "tomare jen na kori shongshoy।",
-        "model_lexicon": "tomare jen na kori shongshoy।",
-        "rerank": "tomare jen na kori shongshoy।",
-        "rerank_lexicon": "tomare jen na kori shongshoy।"
+        "model_lexicon": "tomare jen na kori shongshoy।"
       }
     }
   ],
@@ -1955,30 +1565,30 @@
   "sources_sha256": {
     "core/catalog.go": "aec4d090c152da993d70f4e9280a4836e969e7f3b656e156b5d7cf90235b18cf",
     "core/categories.go": "610d78c4d8d75bc7fafdf5fc4b0fbcb565ef7f9fb693fe449090d0b5528ff84e",
-    "core/engine.go": "a99041181231726187f6b1e534924e1938ba17f536d8810df5c1903b3f6ae535",
-    "core/interfaces.go": "b9515713db58bc5c9c58be94b321677b7b5eba3ea82020eeaded68cdf2eae7d8",
-    "core/rule.go": "a88b0429e029ceeb54e3f402e1b4dc079cc5305209c1524d5a0afb1b7e5980aa",
-    "core/types.go": "dbd5cf42900e46739949f7fad126b67beef76641b64e2dd203cc9fc7ad3f098a",
-    "gomanize.go": "00c1da5d0d35ad4e7f4c67ca5da57ea02dc82b914c8707a4f4a7ee00836ee8af",
-    "lang/bengali/lexicon.go": "8275a824fff98cd2b5d68315fbe12fda24431e79a9ff8cd6ecb581ec1ce9dd68",
-    "lang/bengali/reranker.go": "38e8002da02df991ebcdf04f450dbd6eec833d092b653845ecf05f46516118fa",
+    "core/engine.go": "cc1d59644b37e5b147c612ee18a24ec757929dfc59b24e6ea8e78cf909194c83",
+    "core/interfaces.go": "c5bc611f772f14db828523af2341302dbce2778479902209e15a6b03485bbed6",
+    "core/rule.go": "6a7f43bd053ef0911d052d5c2017d854ff8238228e26d0d57683cf6460f9e964",
+    "core/types.go": "58e22ae0186080cd316d9942d8afe129f269ea3e9eae7b7fa6ba734f715c3a06",
+    "gomanize.go": "44c46cd0ed0a942b4c0e98d077920ce8a6f62dc9fa04b5a5c490adee42ee8a40",
+    "lang/bengali/lexicon.go": "2e70e18c7481ed3fe5cedf2030bb7c6dd653b570de76f7080d65fd024a3a61c0",
     "lang/bengali/rules.go": "57c91ddd79aa87e4a7288510b99e5a404dc9e2fae3c2b02522afa8801b25756f",
-    "lang/bengali/symbols.go": "6629829d23d0b136d8dfce8d4c770101882bdd1044bb04cb63ccba362d82bff8",
-    "lang/bengali/vowel_model.go": "112b33ec83b05faecb389f93a0156423a29c713345e90855091e12b5f58ea86e",
+    "lang/bengali/symbols.go": "23510f8f62b9d795558ca638dfa3cbd93f50fab7f33f0022f5412ff9c09417d4",
+    "lang/bengali/vowel_model.go": "ac556374fce2ae424670b0ea478bdd5c1de0e5ec6ddd5e1c8f9bffff562268cb",
     "scheme/colloquial/colloquial.go": "74f13f297210d886d9450c3d5264057efac6a7f6fd0ddac2b8086bf09f6d6a07",
     "script/brahmic/brahmic.go": "675ba122ff54f082f836a0e0abe545930652ea2131e68ab377e5cac141cb722d",
+    "script/brahmic/canonical.go": "0282c6e6d5de1c269fd07b279fd19bfb0fb87e0be12691c4ebfde58508a1c0b0",
     "script/brahmic/categories.go": "d848e919f2ea2e6782d0f5923c375c72fb17f5e90faff03ad1e082dd368d7f51",
-    "script/brahmic/parser.go": "f1873744500eb0b4bab3d814bfdf85daaf438e9559c5c3c4d331548ae9d474a2",
-    "script/brahmic/profile.go": "3a790875847b462b7a685c45763936a1f92e43b0e477f4740a1ac29c88aadceb",
+    "script/brahmic/parser.go": "e3e4075f8051211501049be9cf78fd3fc4a270add42f03f22196c9c2734d5d0b",
+    "script/brahmic/profile.go": "00e0e725fa1daf2e8a93e2c113d1b414a1ce7f04f1b85c9a412bd92c683f2e5b",
     "script/brahmic/renderer.go": "967191702ba3e2ad635bff4057621c58c927648c498787d81e3e501e39001594",
     "script/brahmic/runs.go": "027bb02f2313ee0c976c24a213e00459abd9e53573ad3299070f71a1719aa0b7",
     "script/brahmic/schwa_rules.go": "00d87de66393a140f8409b601d94edfc99fa65e0bbf2b9c3e9dcd4ced6fa6bf0",
-    "script/brahmic/types.go": "022379c164126f32ccabde7bbf0ed6b402d035f4efea5dc14d7258a1bd6f40f5",
+    "script/brahmic/types.go": "85f566be202f495bc8ae1711d36c0983ad478ae6d19f356feb649a65c1882fb4",
     "tools/audit_bengali_training_overlap.py": "6a478e807b9ed673960e367e5960b56bef1668dff8a1f420879854d937ea8d2a",
     "tools/bengali/evaluate_external.py": "806fb46b3b691d3151d375c2a104a564c6abef905a787b7854933489ac173642",
-    "tools/bengali/evaluate_lyrics.py": "859a065a2f9e8fa389ed2947d618fb12553522f46a48a442a929fe750934c3d0",
-    "tools/bengali/evaluate_runtime/main.go": "f9e0ef83bfdc696be837eb788fcd47cf491578dc3a977935cecfc1a24811b577",
-    "tools/bengali/evaluate_runtime.py": "048477daaa9016734af81fdc24ddf5e7a4c07a145b91e31f7c21a992505f8582",
+    "tools/bengali/evaluate_lyrics.py": "408fabee62f378a0d1c2cab176b11740651575a9d1c4ad853803e223a263b569",
+    "tools/bengali/profiles.py": "5436a0fb4d77a45691247ca6d8da7ad983dce53c54a7a22a6a29c03f28adc52e",
+    "tools/bengali/render_profiles/main.go": "4f4c62e9a7925689d81d1cd2c33ce32385108db78395744d0f472c9d133ae4ed",
     "tools/bengali_lyrics.py": "ff8688b0a5697963e4824aefb45b2f8e593cadc696c4e3fb2caa2b6583a378be",
     "tools/bengali_training_data.py": "900803ae899abe44cd166070c68f93b5bb9890559392b7aa5f7d268d01b8d94e",
     "tools/build_bengali.py": "a9f28f137bb47014c06932b71aedbd3c4aa588ee20fe7f8b2edea9aa53f08d0c",
@@ -1986,7 +1596,6 @@
   },
   "artifacts_sha256": {
     "vowel_tree.json": "aae73bcc1c4a8c0303fbcec194e06a353260c0bbc4478a320f832deba4cc966e",
-    "selector.json": "252781600c834993beaa303dd0a918a8c0cd51cf40428851919c47c363f40961",
     "lexicon.tsv": "f7219dd805c7fd977af9ec64bb590134a9bf1aef11d3f3580062a03b4588a1ea"
   },
   "limitations": [

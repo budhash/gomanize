@@ -22,10 +22,9 @@ tagged release also has auto-generated notes on the
     হও/হওয়া handling; a preregistered dev gate enforced in CI
     (`make test-bengali-b1-gate`). Brahmic render-time gemination modes carry
     independent vowel ownership.
-  - B2 learned components: a three-class inherent-vowel model (`SchwaModel`), an
-    8,976-entry spelling lexicon (`Lexicon`), and a cross-fitted native selector
-    (`SchwaModel` + `Rerank`). Held-out Dakshina match-any: rules 56.52%, model
-    62.76%, model + selector 63.04%.
+  - B2 learned components: a three-class inherent-vowel model (`SchwaModel`, the
+    recommended Bengali profile) and an 8,976-entry spelling lexicon (`Lexicon`).
+    Held-out Dakshina match-any: rules 56.52%, model 62.76%.
   - Frozen, normalized training partitions with held-out exclusions (schema 2
     also excludes khanda-ta and malformed-আ variants of held-out words).
   - Evaluation fixtures: pinned BanglaTLit test split, reviewed Bengali and
@@ -33,6 +32,9 @@ tagged release also has auto-generated notes on the
     overlap audit,
     and a source-pinned lyrics pilot (first four songs of the 1913 Gitanjali)
     with **unreviewed** references pending attestation.
+- `gomanize.ValidateOptions(language, opts)` reports options a language does
+  not support (today: `Rerank` with Bengali); `NewWithOptions` and the WASM
+  bridge use it.
 - `Options.InherentVowelA` for profile-aware rendering (Go API only); no Hindi
   output change.
 - `core.Options.DefaultStyle()`, `core.Canonicalizer`, `brahmic.Canonicalize`
@@ -57,6 +59,19 @@ tagged release also has auto-generated notes on the
   `MIT AND CC-BY-SA-4.0 AND CC-BY-4.0`; release archives include `NOTICE.md`.
 - Debug rule traces retain metadata-only changes in all phases and fallback
   passes; metadata extraction remains disabled outside debug execution.
+
+### Removed
+
+- The experimental Bengali native selector (`lang/bengali/selector.json`), its
+  training/evaluation tools and Make targets, and the `core.NativeReranker` /
+  `core.CandidateRenderer` protocol, leaving one reranker protocol (Hindi's
+  character LM). It added 7/2,500 held-out words (63.04% vs 62.76%), sat at its
+  candidate-set ceiling and would be invalidated by every planned rule change
+  ([assessment](docs/reviews/2026-10-10-bengali-quality-assessment.md)).
+  `Rerank` with Bengali is now an error from `NewWithOptions`,
+  `ValidateOptions`, the CLI (`--rerank` usage error), WASM and npm; the web demo
+  hides the re-ranker for Bengali. Hindi output and the other Bengali profiles
+  are unchanged.
 
 ### Fixed
 

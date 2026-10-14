@@ -39,7 +39,7 @@ class BengaliLyricsTest(unittest.TestCase):
         predictions = report['predictions']
         self.assertEqual([(r['id'], r['native'], r['roman']) for r in rows],
                          [(p['id'], p['native'], p['reference']) for p in predictions])
-        from evaluate_runtime import PROFILES
+        from profiles import PROFILES
         values = [[p['profiles'][name] for name in PROFILES] for p in predictions]
         assert_close(self, score(rows, values), report['scores']['all_lines'])
 
@@ -83,15 +83,15 @@ class BengaliLyricsTest(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     verify(data)
 
-    def test_denominators_and_paired_changes(self):
+    def test_denominators(self):
         rows = [{'roman':'a'}, {'roman':'abc'}]
-        preds = [['x','a','x','a','x','x'], ['ab','ab','ab','ab','abc','abc']]
+        preds = [['x','a','x','a'], ['ab','ab','ab','abc']]
         result = score(rows, preds)
         self.assertAlmostEqual(result['B1']['macro_line_CER'], 2/3)
         self.assertEqual(result['B1']['micro_CER'], .5)
-        self.assertEqual(result['rerank_vs_model'], {'changed':2, 'CER_better':1, 'CER_worse':1, 'CER_equal':0, 'exact_wins':1, 'exact_losses':1})
+        self.assertEqual(result['model_lexicon']['exact_lines'], 2)
         self.assertIsNone(score([], [])['B1']['macro_line_CER'])
-        for bad in (preds[:1], [preds[0][:5],preds[1]], [[None]*6, preds[1]]):
+        for bad in (preds[:1], [preds[0][:3],preds[1]], [[None]*4, preds[1]]):
             with self.assertRaises(ValueError):
                 score(rows, bad)
 
@@ -99,7 +99,7 @@ class BengaliLyricsTest(unittest.TestCase):
         rows = [{'id':str(i), 'native':w, 'roman':r, 'song':s} for i,(w,r,s) in enumerate([
             ('ক','a','1'), ('ক','a','1'), ('খ','a','2')])]
         groups = {'google-train': {'ক'}, 'dakshina-train':set()}
-        result = evaluate(rows, [['b']*6, ['b']*6, ['a']*6], groups)
+        result = evaluate(rows, [['b']*4, ['b']*4, ['a']*4], groups)
         self.assertAlmostEqual(result['scores']['all_lines']['B1']['macro_line_CER'], 2/3)
         self.assertEqual(result['scores']['unique_native_lines']['B1']['macro_line_CER'], .5)
         self.assertEqual(result['equal_weight_song_macro_CER']['B1'], .5)

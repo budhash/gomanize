@@ -1,5 +1,10 @@
 # Bengali B2 runtime selector and external validation
 
+> **Retired 2026-10-13.** The runtime selector, `core.NativeReranker` /
+> `CandidateRenderer` and the parity tooling described below were removed;
+> `Rerank` with Bengali is now an error. This record is history.
+> See [the quality assessment](2026-10-10-bengali-quality-assessment.md) and `CHANGELOG.md`.
+
 T-0066 integrates the frozen cross-fitted selector as an experimental opt-in.
 Enable **both `SchwaModel` and `Rerank`** through the Bengali Go API. No default
 changes, training, threshold tuning, or CLI/npm/web language-selection expansion

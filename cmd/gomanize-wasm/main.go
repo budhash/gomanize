@@ -6,8 +6,9 @@
 //	gomanizeTranslit(text, options) -> string
 //
 // where options contains boolean flags (see webdemo.FlagNames) and an optional
-// language: "hindi" (default) or "bengali". Invalid languages return a JS Error
-// which the npm wrapper throws. The engine
+// language: "hindi" (default) or "bengali". Invalid languages, and options the
+// language does not support (rerank with bengali; see gomanize.ValidateOptions),
+// return a JS Error which the npm wrapper throws. The engine
 // and all its embedded models are compiled in via go:embed, so the page needs
 // no network calls beyond fetching the .wasm itself.
 //
@@ -63,7 +64,11 @@ func main() {
 		if !ok {
 			return js.Global().Get("Error").New("gomanize: unsupported language: " + language)
 		}
-		g.SetOptions(webdemo.Options(flags))
+		opts := webdemo.Options(flags)
+		if err := gomanize.ValidateOptions(language, opts); err != nil {
+			return js.Global().Get("Error").New("gomanize: " + err.Error())
+		}
+		g.SetOptions(opts)
 		return g.Translit(text)
 	})
 

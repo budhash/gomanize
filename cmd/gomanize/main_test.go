@@ -41,14 +41,18 @@ func TestCLILanguage(t *testing.T) {
 	for _, language := range []string{"hindi", "bengali"} {
 		text := "নমস্কার, সমতা।\nनमस्ते दुनिया English 123"
 		for _, learned := range []bool{false, true} {
-			opts := gomanize.Options{SchwaModel: learned, Rerank: learned, Lexicon: learned}
+			rerank := learned && language == "hindi"
+			opts := gomanize.Options{SchwaModel: learned, Rerank: rerank, Lexicon: learned}
 			g, err := gomanize.NewWithOptions(language, opts)
 			if err != nil {
 				t.Fatal(err)
 			}
 			args := []string{"--language=" + language}
 			if learned {
-				args = append(args, "--schwa-model", "--rerank", "--lexicon")
+				args = append(args, "--schwa-model", "--lexicon")
+			}
+			if rerank {
+				args = append(args, "--rerank")
 			}
 			for _, stdin := range []bool{false, true} {
 				a := append([]string{}, args...)
@@ -81,9 +85,11 @@ func TestCLILanguage(t *testing.T) {
 			t.Fatalf("invalid language %v: %q %q %v", args, out, stderr, err)
 		}
 	}
-	// Bengali reranking needs the vowel model; say so instead of silently ignoring it.
-	if out, stderr, err := cli(t, "", "--language=bengali", "--rerank", "আমি"); err != nil || out != "ami\n" || !strings.Contains(stderr, "--schwa-model") {
-		t.Fatalf("rerank without schwa model: %q %q %v", out, stderr, err)
+	// Rerank is Hindi-only; Bengali rejects it instead of silently ignoring it.
+	for _, args := range [][]string{{"--language=bengali", "--rerank", "আমি"}, {"--language=bengali", "--schwa-model", "--rerank", "আমি"}} {
+		if out, stderr, err := cli(t, "", args...); err == nil || out != "" || !strings.Contains(stderr, "--rerank is not available for bengali") {
+			t.Fatalf("%v: %q %q %v", args, out, stderr, err)
+		}
 	}
 }
 
@@ -102,7 +108,6 @@ func TestCLILearnedFlagsReachEngine(t *testing.T) {
 		{"hindi", "अपमानजनक", []string{"--rerank"}, gomanize.Options{Rerank: true}, gomanize.Options{}},
 		{"bengali", "সমতা", []string{"--schwa-model"}, gomanize.Options{SchwaModel: true}, gomanize.Options{}},
 		{"bengali", "বলল পথ সকল", []string{"--lexicon"}, gomanize.Options{Lexicon: true}, gomanize.Options{}},
-		{"bengali", "সমতা", []string{"--schwa-model", "--rerank"}, gomanize.Options{SchwaModel: true, Rerank: true}, gomanize.Options{SchwaModel: true}},
 	} {
 		with, _ := gomanize.NewWithOptions(tc.language, tc.opts)
 		without, _ := gomanize.NewWithOptions(tc.language, tc.baseline)

@@ -41,12 +41,13 @@ are case-insensitive at runtime. The TypeScript type uses canonical lowercase na
 | Hindi rule tweak | `keepMedialSchwa` | disable CCV deletion (जनता → janata) |
 | learned | `schwaModel` | decision-tree schwa classifier |
 | learned | `lexicon` | prefer attested spellings |
-| learned | `rerank` | rank candidates; Bengali requires `schwaModel: true` |
+| learned | `rerank` | rank candidates with a character LM (Hindi only) |
 
-For Bengali, `schwaModel` enables the three-way vowel model; `rerank` requires
-that option too. `lexicon` remains opt-in and can change spelling style. The
-three Hindi rule tweaks do not implement Bengali rendering styles; supplying
-any of them bypasses Bengali lexicon lookup and reranking. Language selection
+For Bengali, `schwaModel` enables the three-way vowel model, the recommended
+Bengali profile; `rerank` is Hindi-only and throws `Error` with Bengali.
+`lexicon` remains opt-in and can change spelling style. The three Hindi rule
+tweaks do not implement Bengali rendering styles; supplying any of them bypasses
+Bengali lexicon lookup. Language selection
 is explicit, not script detection. Input in other scripts is preserved.
 
 ## Notes

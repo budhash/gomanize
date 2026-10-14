@@ -83,6 +83,12 @@ item as a TASKS.md entry during the doc sweep; nothing is dropped.
 | K22 | Construct analyzer described as a regression net cannot fail; heldout "per-construct floors" exist only for chandrabindu; construct/akshara/invariant suites are Hindi-only |
 | K23 | `InherentVowelA` unreachable from CLI/npm/WASM; unknown npm option keys silently ignored |
 
+*Note 2026-10-13:* the native selector was retired, which resolves K11 (one
+reranker protocol: `NativeReranker` was removed rather than Hindi ported to it),
+K12, K14 (the rejected-experiment tooling and its CI targets were removed) and
+K16, the selector half of K5, and the reranker digest in K19.
+See the [quality assessment](2026-10-10-bengali-quality-assessment.md).
+
 ### 🟢 Later
 
 | ID | Finding |

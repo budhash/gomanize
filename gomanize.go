@@ -1,7 +1,7 @@
 // Package gomanize transliterates Hindi and experimental Bengali text into
 // readable Latin script, using a rule-based engine with optional language-specific learned components
-// (a schwa classifier, an attested-spelling lexicon, and a character-LM
-// re-ranker). It targets colloquial, diacritic-free romanization of the kind
+// (a schwa classifier, an attested-spelling lexicon, and, for Hindi, a
+// character-LM re-ranker). It targets colloquial, diacritic-free romanization of the kind
 // used for song lyrics.
 //
 // Basic use:
@@ -84,27 +84,54 @@ func New(language string) (*Gomanize, error) {
 	return NewWithOptions(language, NewOptions())
 }
 
-// NewWithOptions creates a Gomanize instance with custom options.
+// ValidateOptions reports whether opts requests a component the language does
+// not provide: Rerank needs a language reranker (Hindi has one; Bengali does
+// not). Unsupported languages are left to NewWithOptions to report.
+func ValidateOptions(language string, opts Options) error {
+	l := strings.ToLower(language)
+	lang, ok := languageByName(l)
+	if !ok {
+		return nil
+	}
+	if _, hasReranker := lang.(core.Reranker); opts.Rerank && !hasReranker {
+		return fmt.Errorf("rerank is not available for %s", l)
+	}
+	return nil
+}
+
+// languageByName maps a lower-case language name to its implementation.
+func languageByName(name string) (core.Language, bool) {
+	switch name {
+	case "bengali":
+		return bengali.Bengali{}, true
+	case "hindi":
+		return hindiLang.Hindi{}, true
+	}
+	return nil, false
+}
+
+// NewWithOptions creates a Gomanize instance with custom options. Options that
+// ValidateOptions rejects are an error.
 func NewWithOptions(language string, opts Options, engineOpts ...EngineOption) (*Gomanize, error) {
+	if err := ValidateOptions(language, opts); err != nil {
+		return nil, err
+	}
 	l := strings.ToLower(language)
 
-	// Create engine with options
-	var romanizer Romanizer
-	switch l {
-	case "bengali":
-		engine := core.NewEngine(bengali.Bengali{}, colloquial.Colloquial{}, engineOpts...)
-		romanizer = &coreEngineAdapter{name: "bengali", engine: engine}
-	case "hindi":
-		engine := core.NewEngine(hindiLang.Hindi{}, colloquial.Colloquial{}, engineOpts...)
-		romanizer = &coreEngineAdapter{name: "hindi", engine: engine}
-	default:
+	lang, ok := languageByName(l)
+	if !ok {
 		return nil, fmt.Errorf("language not supported : %s", l)
 	}
+	engine := core.NewEngine(lang, colloquial.Colloquial{}, engineOpts...)
+	romanizer := &coreEngineAdapter{name: l, engine: engine}
 
 	return &Gomanize{romanizer: romanizer, options: opts}, nil
 }
 
-// SetOptions updates the options for this instance.
+// SetOptions updates the options for this instance. It does not validate
+// opts: the engine ignores Rerank for a language without a reranker
+// (Bengali). Callers that accept untrusted options should check them with
+// ValidateOptions first.
 func (g *Gomanize) SetOptions(opts Options) {
 	g.options = opts
 }

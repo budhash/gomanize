@@ -73,7 +73,7 @@ gomanize < lyrics.txt                           # stdin/pipe also works
 | `--simple-nasals` | Simplified nasal endings | करें → karen |
 | `--schwa-model` | Learned schwa classifier (Bengali: three-class vowel model) | जनता → janta |
 | `--lexicon` | Attested spellings for known words (8,367 Hindi / 8,976 Bengali) | अंकल → uncle |
-| `--rerank` | Pick the best candidate: Hindi character LM; Bengali native selector (needs `--schwa-model`) | see Accuracy below |
+| `--rerank` | Pick the best candidate with a character LM (Hindi only; an error with Bengali) | see Accuracy below |
 | `--list-rules`, `--debug` | Inspect and trace the rule engine | |
 
 ### Library (Go)
@@ -153,9 +153,8 @@ suite.
 Code: MIT. Copyright (c) 2023-2026 Budhaditya (budhash@gmail.com).
 
 Embedded data files carry their own licenses: the Hindi lexicon, schwa model and
-character n-grams and the Bengali lexicon and selector derive from Dakshina
-(CC BY-SA 4.0); the Bengali vowel model (and the selector) use Google's Bengali
-pronunciation lexicon (CC BY 4.0). Committed benchmark fixtures derive from
+character n-grams and the Bengali lexicon derive from Dakshina (CC BY-SA 4.0);
+the Bengali vowel model uses Google's Bengali pronunciation lexicon (CC BY 4.0). Committed benchmark fixtures derive from
 Dakshina, Aksharantar (CC-BY 4.0), COMI-LINGUA (CC-BY 4.0), Shabd (CC0),
 BanglaTLit (MIT) and Bengali Wikisource (CC BY-SA 4.0). Per-file attribution is
 in [npm/NOTICE.md](npm/NOTICE.md) (shipped as `NOTICE.md` in release archives and
@@ -176,16 +175,17 @@ which raises held-out match-any to 62.76%. `Lexicon: true` adds 8,976 attested
 training spellings; it helps known words and leaves the excluded held-out score
 unchanged. Both are opt-in and can be combined. Alternate-style flags bypass the
 lexicon so the requested style is preserved. See the [lexicon evaluation](docs/reviews/2026-10-04-bengali-b2-lexicon.md).
+The vowel model (`SchwaModel: true`, `--schwa-model`) is the recommended Bengali
+profile.
 
-Add `Rerank: true` alongside `SchwaModel: true` to enable the experimental
-[native selector](docs/reviews/2026-10-05-bengali-b2-runtime.md): held-out match-any
-is 63.04%. It preserves alternate styles by bypassing selection, and lexicon
-hits still win first. External word results improve slightly; sentence character
-error worsens slightly. It remains opt-in, pending independent lyrics validation.
+`Rerank` is Hindi-only: with Bengali, `NewWithOptions`, the CLI, npm and WASM
+return an error. The experimental Bengali native selector (+0.28 points
+held-out) was retired on 2026-10-13; see the
+[quality assessment](docs/reviews/2026-10-10-bengali-quality-assessment.md).
 
-Held-out Dakshina (2,500 words), rules / vowel model / model + selector:
-match-any 56.52% / 62.76% / 63.04%, strict top-1 32.00% / 36.56% / 36.64%,
-mean minCER 0.0877 / 0.0764 / 0.0757. Bengali references average about 3.7
+Held-out Dakshina (2,500 words), rules / vowel model:
+match-any 56.52% / 62.76%, strict top-1 32.00% / 36.56%,
+mean minCER 0.0877 / 0.0764. Bengali references average about 3.7
 variants per held-out word (Hindi: 1.8), which inflates match-any
 relative to Hindi, and Aksharantar contains the Dakshina test vocabulary, so its
 gains are not independent confirmation.
@@ -200,17 +200,17 @@ fmt.Println(g.Translit("আমি বাংলা")) // ami bangla
 
 ```sh
 gomanize --language=bengali "আমি বাংলা"  # ami bangla
-echo "আমি বাংলা" | gomanize --language bengali --schwa-model --rerank
+echo "আমি বাংলা" | gomanize --language bengali --schwa-model
 gomanize --language=bengali --input=lyrics.txt
 gomanize --language=bengali --list-rules
 ```
 
 Language selection also applies to `--test`, `--debug`, and rule overrides.
 Only `hindi` and `bengali` are accepted (case-insensitive); unsupported or empty
-languages fail with a nonzero exit. Bengali reranking needs `--schwa-model`;
-Hindi style flags do not implement Bengali rendering styles; supplying them
-bypasses Bengali lexicon lookup and reranking. The browser hides those Hindi
-style controls while Bengali is selected.
+languages fail with a nonzero exit, as does `--rerank` with Bengali. Hindi
+style flags do not implement Bengali rendering styles; supplying them bypasses
+Bengali lexicon lookup. The browser hides those Hindi style controls and the
+re-ranker while Bengali is selected.
 
 ```js
 const g = await load();

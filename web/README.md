@@ -3,8 +3,8 @@
 A static, single-page browser demo of gomanize. The Go library is compiled to
 WebAssembly, so **all transliteration runs in the visitor's browser** — no
 server, no backend, and no text ever leaves the machine. The embedded models
-(Hindi schwa tree, lexicon and n-gram LM; Bengali vowel model, lexicon and
-selector) are baked into the `.wasm` via `go:embed`.
+(Hindi schwa tree, lexicon and n-gram LM; Bengali vowel model and lexicon)
+are baked into the `.wasm` via `go:embed`.
 
 ## Files
 
@@ -38,8 +38,8 @@ The page starts in Hindi with its existing Long vowels checkbox selected.
 Bengali starts with all flags off; toggles are remembered separately per language
 for the current page session. Switching languages preserves entered text,
 updates the input label/placeholder, and immediately rerenders it. Sample text
-uses the selected language. The Hindi-only style group is hidden for Bengali;
-Bengali re-ranking needs the vowel model enabled. Bengali remains experimental.
+uses the selected language. The Hindi-only style group and the Hindi-only re-ranker are hidden for Bengali
+(the engine rejects rerank with Bengali). Bengali remains experimental.
 The same ESM loader forwards `language` to WASM; no network request carries input.
 
 `make npm-test` builds the CLI and WASM and checks ESM/CJS parity for both

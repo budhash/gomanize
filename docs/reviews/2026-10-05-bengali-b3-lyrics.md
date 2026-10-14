@@ -1,5 +1,11 @@
 # B3: source-pinned lyrics pilot (T-0067)
 
+> **Retired 2026-10-13 (selector).** The two reranker profiles below are
+> historical: the native selector was retired and the regenerated
+> [JSON](2026-10-05-bengali-b3-lyrics.json) carries only the four remaining
+> profiles (B1, model, lexicon, model + lexicon), whose numbers are unchanged.
+> See [the quality assessment](2026-10-10-bengali-quality-assessment.md) and `CHANGELOG.md`.
+
 The lyrics measurement path now runs end to end against 82 lines from the first
 four songs in Tagore's 1913 *Gitanjali*, with committed source captures and six
 runtime profiles. **The Roman references are assistant drafts, not reviewed
@@ -19,10 +25,10 @@ validated language accuracy or a new release gate.
 |---|---:|---:|---:|
 | B1 pure rules | 43 | 0.021638 | 0.022478 |
 | Vowel model, no lexicon | 52 | 0.017664 | 0.018482 |
-| Model + native reranker, no lexicon | 52 | 0.017013 | 0.017982 |
+| Model + native reranker, no lexicon (historical) | 52 | 0.017013 | 0.017982 |
 | Rules + lexicon | 37 | 0.029390 | 0.029970 |
 | Model + lexicon | 47 | 0.025304 | 0.025974 |
-| Model + reranker + lexicon | 46 | 0.025234 | 0.025974 |
+| Model + reranker + lexicon (historical) | 46 | 0.025234 | 0.025974 |
 
 The pure reranker changes three lines: two improve CER and one worsens; exact
 agreement has one win and one loss. With the lexicon, two lines change, one
@@ -40,8 +46,8 @@ changes `korechho` to `korechh` (an exact-agreement loss), `jonmer` to `jonomer`
 Refrains create 11 extra occurrences. Deduplicating to 71 native lines gives
 42 exact lines for both model profiles; macro CER is 0.019730 for the model and
 0.018978 with reranking (B1: 37 exact, CER 0.021711). Equal-weight song macro
-CER is 0.017341 and 0.016727 respectively. The JSON includes all six profiles
-for each slice and each song.
+CER is 0.017341 and 0.016727 respectively. The JSON included all six profiles
+for each slice and each song (four since the 2026-10-13 regeneration).
 
 ## Exposure and limits
 

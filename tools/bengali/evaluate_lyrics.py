@@ -9,7 +9,7 @@ from bengali_lyrics import ROOT, DATA, verify, sha, STATUS
 from bengali_training_data import verify as training_groups
 from audit_bengali_training_overlap import bengali_tokens, overlap
 from evaluate_external import distance
-from evaluate_runtime import PROFILES, predict
+from profiles import PROFILES, predict
 
 
 def score(rows, predictions):
@@ -27,13 +27,6 @@ def score(rows, predictions):
         result[name] = {'exact_lines': exact, 'exact_fraction': exact/len(rows) if rows else None,
                         'macro_line_CER': sum(e[i]/len(r['roman']) for r, e in zip(rows, errors))/len(rows) if rows else None,
                         'micro_CER': edits/chars if chars else None, 'edits': edits, 'reference_characters': chars}
-    for a, b, name in ((1, 4, 'rerank_vs_model'), (3, 5, 'rerank_lexicon_vs_model_lexicon')):
-        result[name] = {'changed': sum(p[a] != p[b] for p in predictions),
-                        'CER_better': sum(e[b] < e[a] for e in errors),
-                        'CER_worse': sum(e[b] > e[a] for e in errors),
-                        'CER_equal': sum(e[b] == e[a] for e in errors),
-                        'exact_wins': sum(e[b] == 0 < e[a] for e in errors),
-                        'exact_losses': sum(e[a] == 0 < e[b] for e in errors)}
     return result
 
 
@@ -68,16 +61,16 @@ def main():
     predictions = predict([(r['native'], [r['roman']]) for r in rows])
     result = evaluate(rows, predictions, training_groups())
     sources = [ROOT/name for name in ('gomanize.go', 'tools/bengali/evaluate_lyrics.py',
-        'tools/bengali_lyrics.py', 'tools/bengali/evaluate_runtime.py',
+        'tools/bengali_lyrics.py', 'tools/bengali/profiles.py',
         'tools/bengali/evaluate_external.py', 'tools/audit_bengali_training_overlap.py',
         'tools/bengali_training_data.py', 'tools/build_bengali.py',
         'training/data/bengali/manifest.json')] + [p for folder in (
-        'core', 'lang/bengali', 'script/brahmic', 'scheme', 'tools/bengali/evaluate_runtime')
+        'core', 'lang/bengali', 'script/brahmic', 'scheme', 'tools/bengali/render_profiles')
         for p in (ROOT/folder).rglob('*.go') if not p.name.endswith('_test.go')]
     result.update({'reference_status': STATUS, 'fixture_sha256': manifest['fixture_sha256'],
         'manifest_sha256': sha((DATA/'manifest.json').read_bytes()),
         'sources_sha256': {str(p.relative_to(ROOT)): sha(p.read_bytes()) for p in sorted(sources)},
-        'artifacts_sha256': {name: sha((ROOT/'lang/bengali'/name).read_bytes()) for name in ('vowel_tree.json','selector.json','lexicon.tsv')},
+        'artifacts_sha256': {name: sha((ROOT/'lang/bengali'/name).read_bytes()) for name in ('vowel_tree.json','lexicon.tsv')},
         'limitations': ['Assistant-authored single references, not human-attested gold or an accuracy gate.',
             'Four consecutive Tagore songs only; repeated refrains count in all_lines.',
             'Exact Unicode character scoring includes punctuation and spaces; no spelling-variant acceptance.',

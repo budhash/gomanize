@@ -14,7 +14,6 @@ the web demo) embeds the data files below:
 | `lang/hindi/roman_ngrams.tsv` | Dakshina Hindi train romanizations | CC BY-SA 4.0 | Character 4-gram counts |
 | `lang/bengali/lexicon.tsv` | Dakshina Bengali train spellings | CC BY-SA 4.0 | Normalized native keys, held-out vocabularies excluded, unique high-attestation winners, TSV |
 | `lang/bengali/vowel_tree.json` | Google Bengali pronunciation lexicon (train partition) | CC BY 4.0 | Grapheme–phoneme alignment; inherent-vowel decision tree |
-| `lang/bengali/selector.json` | Dakshina Bengali train spellings and the Google Bengali lexicon | CC BY-SA 4.0 | Out-of-fold candidate generation; preference tree |
 
 Sources:
 
@@ -31,7 +30,6 @@ Sources:
 Source hashes, transformations, exclusions and reproduction tools are recorded
 in the [training data record](https://github.com/budhash/gomanize/blob/main/training/data/bengali/README.md),
 [Bengali lexicon record](https://github.com/budhash/gomanize/blob/main/lang/bengali/LEXICON.md),
-[selector record](https://github.com/budhash/gomanize/blob/main/lang/bengali/RERANKER.md),
 and [research record](https://github.com/budhash/gomanize/blob/main/docs/RESEARCH.md).
 These notices identify adapted data and do not imply endorsement by its creators.
 

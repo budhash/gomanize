@@ -100,13 +100,14 @@ func main() {
 		engineOpts = append(engineOpts, gomanize.WithEnabledRules(enableRules...))
 	}
 
+	if err := gomanize.ValidateOptions(language, opts); err != nil {
+		fmt.Fprintf(os.Stderr, "Error: --%v\n", err)
+		os.Exit(1)
+	}
 	g, err := gomanize.NewWithOptions(language, opts, engineOpts...)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v (supported: hindi, bengali)\n", err)
 		os.Exit(1)
-	}
-	if strings.EqualFold(language, "bengali") && opts.Rerank && !opts.SchwaModel {
-		fmt.Fprintln(os.Stderr, "Warning: --rerank has no effect for bengali without --schwa-model")
 	}
 
 	// Warn on rule patterns that matched nothing (typo protection).
@@ -287,7 +288,7 @@ func printUsage() {
 	fmt.Fprintln(os.Stderr, "  --keep-medial-schwa      Retain schwa in more positions (जनता→janata not janta)")
 	fmt.Fprintln(os.Stderr, "  --schwa-model            Use the learned schwa classifier instead of heuristic rules")
 	fmt.Fprintln(os.Stderr, "  --lexicon                Use the high-confidence lexicon for known words (rules for OOV)")
-	fmt.Fprintln(os.Stderr, "  --rerank                 Pick best candidate: Hindi via char LM; Bengali via native selector (needs --schwa-model)")
+	fmt.Fprintln(os.Stderr, "  --rerank                 Pick the best candidate with a character LM (Hindi only)")
 	fmt.Fprintln(os.Stderr, "  --debug                  Show debug info (parsed units, rule applications)")
 	fmt.Fprintln(os.Stderr, "  --input=FILE             Read input lines from file (one per line)")
 	fmt.Fprintln(os.Stderr, "  --test=FILE              Test against expected values (TSV format)")
