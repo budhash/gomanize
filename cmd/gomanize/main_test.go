@@ -87,7 +87,7 @@ func TestCLILanguage(t *testing.T) {
 	}
 	// Rerank is Hindi-only; Bengali rejects it instead of silently ignoring it.
 	for _, args := range [][]string{{"--language=bengali", "--rerank", "আমি"}, {"--language=bengali", "--schwa-model", "--rerank", "আমি"}} {
-		if out, stderr, err := cli(t, "", args...); err == nil || out != "" || !strings.Contains(stderr, "--rerank is not available for bengali") {
+		if out, stderr, err := cli(t, "", args...); err == nil || out != "" || !strings.Contains(stderr, "rerank is not available for bengali") {
 			t.Fatalf("%v: %q %q %v", args, out, stderr, err)
 		}
 	}

@@ -55,7 +55,7 @@ make test-analysis  # Failure pattern breakdown
 make test-bengali            # Fixtures, symbols, rules, pinned outputs
 make test-bengali-b1-gate    # Preregistered B1 dev gate
 make test-bengali-data       # Frozen training partitions + isolation guards
-make test-bengali-vowels / -lexicon / -lyrics
+make test-bengali-vowels / -lexicon / -profiles / -lyrics
 
 # Code Quality
 make fmt / fmt-check / lint / lint-fix

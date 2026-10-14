@@ -209,7 +209,8 @@ in-sample coverage are reported separately in the [lexicon record](reviews/2026-
 
 A Bengali character-only reranker was rejected on dev: no tested margin improved
 match-any while preserving strict accuracy and improving CER. The
-[negative result](reviews/2026-10-04-bengali-b2-rerank.md) is reproducible;
+[negative result](reviews/2026-10-04-bengali-b2-rerank.md) was reproducible from
+the tools at `6e9be30~1` (removed with the selector);
 Bengali runtime behavior and held-out model results remain unchanged.
 
 A subsequent [native-conditioned selector](reviews/2026-10-04-bengali-b2-native-selector.md)

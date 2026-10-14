@@ -101,7 +101,7 @@ func main() {
 	}
 
 	if err := gomanize.ValidateOptions(language, opts); err != nil {
-		fmt.Fprintf(os.Stderr, "Error: --%v\n", err)
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 		os.Exit(1)
 	}
 	g, err := gomanize.NewWithOptions(language, opts, engineOpts...)

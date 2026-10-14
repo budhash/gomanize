@@ -73,8 +73,11 @@ must not be described as unseen-word generalization.
 
 The [machine-readable report](2026-10-05-bengali-b2-runtime.json) records every
 profile, strict Dakshina results, paired outcomes, source hashes and data hashes.
-The [artifact record](../../lang/bengali/RERANKER.md) retains CC BY-SA attribution
-to Dakshina and CC BY attribution to Google's Bengali pronunciation source.
+The selector artifact (removed 2026-10-13; `lang/bengali/RERANKER.md` at
+`6e9be30~1`) carried CC BY-SA attribution to Dakshina and CC BY attribution to
+Google's Bengali pronunciation source; the [cross-fit record](2026-10-04-bengali-b2-crossfit.md)
+keeps the same attribution. The four shipped profiles in this report stay asserted
+by `make test-bengali-profiles`.
 
 ## Verification and reproduction
 

@@ -1,7 +1,7 @@
 # Gomanize - Hindi Transliteration Library
 # Development workflow Makefile
 
-.PHONY: help init hooks hooks-update build version wasm wasm-serve npm npm-test regression-baseline regression-diff test test-quick test-verbose test-cover test-unit test-integration test-bengali test-bengali-lyrics test-bengali-lexicon test-bengali-vowels test-bengali-data test-bengali-b1-gate test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets tasks
+.PHONY: help init hooks hooks-update build version wasm wasm-serve npm npm-test regression-baseline regression-diff test test-quick test-verbose test-cover test-unit test-integration test-bengali test-bengali-lyrics test-bengali-profiles test-bengali-lexicon test-bengali-vowels test-bengali-data test-bengali-b1-gate test-dakshina test-analysis bench benchmark clean fmt fmt-check vet lint lint-fix check dev ci install run download-datasets tasks
 
 # Go parameters
 GOCMD := go
@@ -131,6 +131,9 @@ test-integration: ## Run integration tests (full Dakshina + Aksharantar datasets
 	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkDakshinaHindi|TestBenchmarkAksharantarHindi"
 	@echo "✓ Integration tests complete"
 
+test-bengali-profiles: ## Assert shipped Bengali profiles on held-out Dakshina and BanglaTLit (runtime record)
+	@python3 -m unittest discover -s tools -p 'bengali_profiles_test.py'
+
 test-bengali-lyrics: ## Verify provisional lyrics provenance, scoring and line boundaries
 	@python3 -m unittest discover -s tools -p 'bengali_lyrics_test.py'
 	@$(GOTEST) ./benchmark -run '^TestBenchmarkBengaliLyricsPilot$$' -count=1 -v
@@ -240,7 +243,7 @@ dev: check test ## Full development workflow (format, vet, test)
 dev-quick: fmt test-quick ## Quick development workflow
 	@echo "✓ Quick development workflow complete"
 
-ci: fmt-check lint build test-cover benchmark test-bengali test-bengali-b1-gate test-bengali-data test-bengali-vowels test-bengali-lexicon test-bengali-lyrics ## Full CI pipeline (format, lint, build, tests, benchmarks, Bengali gates)
+ci: fmt-check lint build test-cover benchmark test-bengali test-bengali-b1-gate test-bengali-data test-bengali-vowels test-bengali-lexicon test-bengali-profiles test-bengali-lyrics ## Full CI pipeline (format, lint, build, tests, benchmarks, Bengali gates)
 	@echo "✓ CI pipeline complete"
 
 # ============================================================================
