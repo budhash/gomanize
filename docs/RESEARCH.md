@@ -84,7 +84,7 @@ then small learned components for the lexical gap.
 | [Shabd](https://osf.io/xfbhd/) (psycholinguistic DB, 1.4B-token corpus) | Top-15K Devanagari words by frequency | CC0 | Frequency weighting; lexicon ranking; token-coverage estimation |
 | Lyrics gold seed (in-repo) | 43 lines: Kabir, Rahim, Meera, Vande Mataram, Sarfaroshi, Raghupati, Jana Gana Mana | Public domain (life+60, India); maintainer-attested romanizations | Line-level evaluation of the primary use case through the sentence API |
 | Aksharantar bulk (`aksharantar_hi.csv`) | 357K machine-mined rows | CC-BY/CC0 | Bulk smoke test + override-miner source (NOT gold — ~93% mining precision upstream) |
-| Dakshina `bn` (Bengali) | 25K/2.5K/2.5K word types, ~3.8 references per word | CC BY-SA 4.0 | Bengali benchmark (dev selection, test reported once) and training source for the Bengali lexicon and selector |
+| Dakshina `bn` (Bengali) | 25K/2.5K/2.5K word types, ~3.8 references per word | CC BY-SA 4.0 | Bengali benchmark (dev selection, test reported once) and training source for the Bengali lexicon (and the retired selector) |
 | [Google Bengali pronunciation lexicon](https://github.com/googlei18n/language-resources/tree/master/bn) | ~65K entries; frozen 55,097 / 3,184 / 3,023 train/dev/test types | CC BY 4.0 | Training source for the Bengali vowel model (train partition only) |
 | [Aksharantar `ben` test](https://huggingface.co/datasets/ai4bharat/Aksharantar) | 7,134 word types | CC-BY 4.0 | External Bengali evaluation; **contains the Dakshina test vocabulary**, so it is reported as full and unseen slices, not as independent confirmation |
 | [BanglaTLit](https://aclanthology.org/2024.findings-emnlp.859.pdf) official test split | 2,500 sentences | MIT | Sentence-level Bengali evaluation only; the upstream train file contains every dev/test pair and is never imported |
@@ -209,7 +209,8 @@ in-sample coverage are reported separately in the [lexicon record](reviews/2026-
 
 A Bengali character-only reranker was rejected on dev: no tested margin improved
 match-any while preserving strict accuracy and improving CER. The
-[negative result](reviews/2026-10-04-bengali-b2-rerank.md) is reproducible;
+[negative result](reviews/2026-10-04-bengali-b2-rerank.md) was reproducible from
+the tools at `6e9be30~1` (removed with the selector);
 Bengali runtime behavior and held-out model results remain unchanged.
 
 A subsequent [native-conditioned selector](reviews/2026-10-04-bengali-b2-native-selector.md)
@@ -219,24 +220,29 @@ held-out partitions; neither rejected selector is installed in runtime.
 
 A [cross-fitted selector with single-slot vowel alternatives](reviews/2026-10-04-bengali-b2-crossfit.md)
 passes dev and improves held-out match-any from 62.76% to **63.04%** (seven
-additional words out of 2,500), with improved strict accuracy and CER. This is
-now available as an experimental runtime opt-in using both `SchwaModel` and
-`Rerank`. [Runtime validation](reviews/2026-10-05-bengali-b2-runtime.md) confirms
+additional words out of 2,500), with improved strict accuracy and CER. It
+shipped as an experimental runtime opt-in (`SchwaModel` plus `Rerank`);
+[runtime validation](reviews/2026-10-05-bengali-b2-runtime.md) confirmed
 wordwise parity and small Aksharantar gains, but a slight BanglaTLit sentence-CER
-regression. Defaults remain unchanged; independent lyrics validation is pending.
+regression. **Retired 2026-10-13:** the selector sat at its candidate-set
+ceiling and every planned rule change would invalidate it
+([quality assessment](reviews/2026-10-10-bengali-quality-assessment.md)). The
+current Bengali profiles are rules (56.52%) and the vowel model (62.76%, the
+recommended profile); `Rerank` is Hindi-only.
 
 **Selection-round disclosure.** Dakshina dev was used across four Bengali
 selection rounds (vowel model, rejected character reranker, rejected native
 selector, accepted cross-fitted selector), and held-out test was reported after
 each accepted stage. The 63.04% figure should be read with that forking-paths
-context; the gain over the vowel model is seven words out of 2,500.
+context; the gain over the vowel model was seven words out of 2,500.
 
 #### B3 lyrics pilot (2026-10-05)
 
 A source-pinned pilot now covers 82 lines (71 unique) from the first four songs
 of Tagore's 1913 *Gitanjali*. Its Roman references were drafted by the assistant
-before prediction and are **unreviewed, not gold**. The pure model plus reranker
-has 52 exact draft agreements and macro line CER 0.017013; these are provisional
+before prediction and are **unreviewed, not gold**. The vowel model has 52 exact
+draft agreements and macro line CER 0.017664 (the since-retired selector:
+52 and 0.017013); these are provisional
 reference-agreement measurements, not a validated accuracy claim. The lexicon
 reduces agreement on this sample. Training overlap is substantial: 142/213
 native word types; only seven lines are entirely unseen by the training word
@@ -267,7 +273,8 @@ Together these bound the design: the rule-based ceiling is real (~86% pure /
 requires human-attested data, not more rules.
 
 **Bengali (2026-10).** Two candidate rerankers were rejected on dev and kept as
-research records, never installed in runtime: a character-only n-gram reranker
+research records, never installed in runtime (the third, cross-fitted selector
+shipped and was retired on 2026-10-13; §4): a character-only n-gram reranker
 (best setting +1 match-any for −1 strict and worse CER;
 [record](reviews/2026-10-04-bengali-b2-rerank.md)) and an initial native-conditioned
 selector (no threshold changed any output;

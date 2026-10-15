@@ -1,5 +1,10 @@
 # Bengali B2 runtime selector and external validation
 
+> **Retired 2026-10-13.** The runtime selector, `core.NativeReranker` /
+> `CandidateRenderer` and the parity tooling described below were removed;
+> `Rerank` with Bengali is now an error. This record is history.
+> See [the quality assessment](2026-10-10-bengali-quality-assessment.md) and `CHANGELOG.md`.
+
 T-0066 integrates the frozen cross-fitted selector as an experimental opt-in.
 Enable **both `SchwaModel` and `Rerank`** through the Bengali Go API. No default
 changes, training, threshold tuning, or CLI/npm/web language-selection expansion
@@ -68,8 +73,11 @@ must not be described as unseen-word generalization.
 
 The [machine-readable report](2026-10-05-bengali-b2-runtime.json) records every
 profile, strict Dakshina results, paired outcomes, source hashes and data hashes.
-The [artifact record](../../lang/bengali/RERANKER.md) retains CC BY-SA attribution
-to Dakshina and CC BY attribution to Google's Bengali pronunciation source.
+The selector artifact (removed 2026-10-13; `lang/bengali/RERANKER.md` at
+`6e9be30~1`) carried CC BY-SA attribution to Dakshina and CC BY attribution to
+Google's Bengali pronunciation source; the [cross-fit record](2026-10-04-bengali-b2-crossfit.md)
+keeps the same attribution. The four shipped profiles in this report stay asserted
+by `make test-bengali-profiles`.
 
 ## Verification and reproduction
 

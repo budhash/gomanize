@@ -68,7 +68,7 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [ ] (T-0119) [P2] [todo] Bengali rule bundle: keep -িত/-ৃত/-ূত and final ত after গ র হ ন শ ষ; loan-coda delete table; C+ও; ya-phala after sibilants -> y; ba-phala after শ/স -> w, দ্ব -> db @tags=quality-review,linguistics
   - [ ] (T-0120) [P2] [todo] Bengali suffix-boundary deletion: drop stem-final inherent vowel before a train-derived suffix table (কে টি গুলো তে দের ...) @tags=quality-review,linguistics
   - [ ] (T-0121) [P2] [todo] Extend the Bengali vowel model to conjunct-bearing words (align halant clusters; one shared eligibility inventory for model, trainer and selector) @tags=quality-review,model
-  - [ ] (T-0122) [P2] [todo] Retire the Bengali native selector (keep records); recommend the vowel model as the Bengali profile @tags=quality-review,cleanup,needs-maintainer
+  - [x] (T-0122) [P2] [done] Retire the Bengali native selector (keep records); recommend the vowel model as the Bengali profile @tags=quality-review,cleanup,needs-maintainer @done=2026-10-13 @branch=feature/retire-bengali-selector
   - [ ] (T-0123) [P3] [todo] Shared schwa.delete.ccv for the Bengali rules-only default (dev +142, train +924 with 1,352 losses); decide after the rule bundle @tags=quality-review,linguistics
   - [ ] (T-0124) [P3] [todo] Optional Bengali lexicon filter: skip entries that differ from rule output only by o/a (470), measured on attested lyrics @tags=quality-review,lexicon @deps=T-0068
 - [x] (F-0009) [P2] [done] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow @done=2026-10-09
@@ -150,12 +150,11 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
 - [ ] (F-0013) [P2] [todo] Bengali keel follow-ups (docs/reviews/2026-10-07-bengali-keel.md) @tags=keel
   - [ ] (T-0071) [P2] [todo] K9: language registry (gomanize.Languages metadata) consumed by CLI, WASM, npm, d.ts and web @tags=keel,arch
   - [ ] (T-0072) [P2] [todo] K10: single option/flag registry; engine evaluates Rule.Conditional; fix --list-rules mentioning nonexistent --inherent-vowel-a @tags=keel,arch
-  - [ ] (T-0073) [P2] [todo] K11: port Hindi reranker to NativeReranker and remove the legacy Reranker protocol from core @tags=keel,arch
+  - [x] (T-0073) [P2] [done] K11: port Hindi reranker to NativeReranker and remove the legacy Reranker protocol from core @tags=keel,arch @done=2026-10-13
   - [ ] (T-0074) [P2] [todo] K12: Bengali rerank and vowel-model per-word cost (reuse candidate engines, compute features once, cache normalized profile) @tags=keel,perf
   - [ ] (T-0075) [P2] [todo] K13: CI cost: run Hindi snapshot outside -race; stop re-running Go tests in Bengali make targets @tags=keel,ci
-  - [ ] (T-0076) [P2] [todo] K14: move shared helpers out of rejected-experiment tools; reproduce-* targets for #120/#121; rename test-bengali-rerank @tags=keel,tooling
+  - [x] (T-0076) [P2] [done] K14: move shared helpers out of rejected-experiment tools; reproduce-* targets for #120/#121; rename test-bengali-rerank @tags=keel,tooling @done=2026-10-13
   - [ ] (T-0077) [P2] [todo] K15: one Python normalization module + Go/Python parity fixture (bengali_lyrics NFC-before-Cf) @tags=keel,tooling
-  - [ ] (T-0078) [P2] [todo] K16: cross-fit folds keyed by collision_key (57 variant pairs across folds) @tags=keel,data
   - [ ] (T-0079) [P2] [todo] K17: decide runtime khanda-ta folding (ৎ vs ত্ vs ত্+ZWJ) for Bengali lexicon and selector features @tags=keel,unicode
   - [ ] (T-0080) [P2] [todo] K18: parser sets Nukta flag on the MultiChar path (Hindi decomposed nukta) @tags=keel,unicode
   - [ ] (T-0081) [P2] [todo] K19: assert remaining committed records (BanglaTLit external sections, external-overlap.json, manifest counts, reranker digest, Hindi artifact hashes, Hindi lyrics rerank CER) @tags=keel,tests
@@ -179,9 +178,8 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [ ] (T-0099) [P3] [todo] Malformed অা renders literally (অাবার -> oabar); consider folding to আ @tags=review,unicode
   - [ ] (T-0100) [P3] [todo] BanglaTLit scoring is case-sensitive (1,344 references uppercase); casefold or report both @tags=review,eval
   - [ ] (T-0101) [P3] [todo] Go-side hash pin of vowel_tree.json; selector parity fixture pins threshold and tie cases @tags=review,tests
-  - [ ] (T-0102) [P3] [todo] Out-of-alphabet reranker candidates score -inf silently; count and report @tags=review,tooling
   - [ ] (T-0103) [P3] [todo] Lyrics pilot: ZWJ/ZWNJ extraction policy, letters-only CER for T-0068, trimmed captures before growth @tags=review,lyrics
-  - [ ] (T-0104) [P3] [todo] npm: warn or error for Bengali rerank without schwaModel (CLI warns) @tags=review,npm
+  - [x] (T-0104) [P3] [done] npm: warn or error for Bengali rerank without schwaModel (CLI warns) @tags=review,npm @done=2026-10-13
   - [ ] (T-0105) [P3] [todo] renderOnset type assertions before Gemination check (hot-path nit) @tags=review,perf
   - [ ] (T-0106) [P3] [todo] isSonorousRune reads only Runes[0] (inert today; fix before Bengali uses sonorous-final) @tags=review,unicode
   - [ ] (T-0107) [P3] [todo] Replace deprecated goreleaser brews config @tags=review,release
@@ -197,6 +195,9 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [ ] (T-0126) [P3] [todo] Decide whether to keep the committed .claude/settings.local.json or untrack it @tags=needs-maintainer,repo
 ## Skipped
 
+- [ ] (F-0013) [P2] [todo] Bengali keel follow-ups (docs/reviews/2026-10-07-bengali-keel.md) @tags=keel @shadow
+  - [ ] (T-0078) [P2] [skipped] K16: cross-fit folds keyed by collision_key (57 variant pairs across folds) @tags=keel,data
+  - [ ] (T-0102) [P3] [skipped] Out-of-alphabet reranker candidates score -inf silently; count and report @tags=review,tooling
 - [ ] (F-0003) [P1] [todo] H2: Push the rule ceiling (~86%→~90% pure, honestly) @shadow
   - [ ] (T-0010) [P1] [skipped] Medial ee/oo rule (ी→ee, ू→oo medial; i/u word-final) @deps=T-0005
   - [ ] (T-0011) [P2] [skipped] Narrow contextual ा→aa extension (never blanket) @deps=T-0005

@@ -1,5 +1,9 @@
 # Bengali B2 native-conditioned selector: no improvement at dev
 
+> **Retired 2026-10-13.** This record is history. Its trainer and tests were
+> removed with the shipped cross-fitted selector it preceded; the evidence below
+> is unchanged. See [the quality assessment](2026-10-10-bengali-quality-assessment.md) and `CHANGELOG.md`.
+
 T-0064 tested whether Bengali input features can improve selection between the
 frozen B1 and vowel-model candidates. The fixed experiment produced no output
 changes at any tested threshold, so it fails the improvement gate. Nothing is

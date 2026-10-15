@@ -20,14 +20,15 @@ export interface Options {
   schwaModel?: boolean;
   /** Learned model: prefer attested spellings from the embedded lexicon. */
   lexicon?: boolean;
-  /** Learned model: re-rank candidates; Bengali requires schwaModel: true. */
+  /** Learned model: re-rank candidates with a character LM. Hindi only; with Bengali, translit throws. */
   rerank?: boolean;
 }
 
 export interface Gomanize {
   /**
    * Romanize text in the selected language into Latin script. Whitespace and punctuation are
-   * preserved; words are romanized in place. Unsupported languages throw Error.
+   * preserved; words are romanized in place. Unsupported languages, and rerank
+   * with Bengali, throw Error.
    */
   translit(text: string, options?: Options): string;
 }

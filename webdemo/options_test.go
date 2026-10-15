@@ -57,3 +57,18 @@ func TestOptionsIgnoresUnknownFlags(t *testing.T) {
 		t.Errorf("unknown flag changed options: %+v", o)
 	}
 }
+
+// The WASM glue validates the mapped options per language before translating,
+// so rerank with Bengali surfaces as an error rather than a silent no-op.
+func TestOptionsValidatedPerLanguage(t *testing.T) {
+	for _, flag := range FlagNames() {
+		o := Options(map[string]bool{flag: true})
+		if err := gomanize.ValidateOptions("hindi", o); err != nil {
+			t.Errorf("hindi %q: %v", flag, err)
+		}
+		err := gomanize.ValidateOptions("bengali", o)
+		if (err != nil) != (flag == FlagRerank) {
+			t.Errorf("bengali %q: err = %v", flag, err)
+		}
+	}
+}

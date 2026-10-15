@@ -85,7 +85,8 @@ rules, plus an audit of which shared schwa rules apply.
 
 Before a third language, the keel review's follow-ups (F-0013) make it cheap: a
 language registry consumed by every frontend (today the list is hard-coded in
-about eight places), a single option registry, and one reranker protocol.
+about eight places) and a single option registry. (The second reranker protocol
+went with the Bengali native selector, retired 2026-10-13.)
 
 ## Supporting work (enables the above)
 

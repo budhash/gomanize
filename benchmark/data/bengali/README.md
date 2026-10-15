@@ -35,7 +35,8 @@ make test-bengali
 Train/dev may inform spelling-style and attestation-threshold choices. Test is
 reserved for aggregate evaluation, never example mining or rule tuning. These
 B0 fixtures are benchmark data. The train split is also the source of the
-runtime spelling lexicon and the selector's training spellings, after the
+runtime spelling lexicon (and was the source of the retired native selector's
+training spellings), after the
 exclusions in [training/data/bengali](../../../training/data/bengali/README.md)
 (design B.4.1, T-0057); dev and test never feed any artifact.
 

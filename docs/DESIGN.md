@@ -69,14 +69,12 @@ language may implement (`core/engine.go`):
   to bypass its default-style lexicon when alternate-style flags are requested;
   Hindi retains the original interface and behavior.
 - `Reranker` — `Options.Rerank`: the engine runs the pipeline under candidate
-  configurations and the language picks the most natural output.
-- `NativeReranker` takes precedence over `Reranker`, including on a decline.
-  It receives source text/options and a synchronous `CandidateRenderer` callback
-  preserving the caller's scheme and rule controls. Candidate rendering disables
-  recursive reranking, lexicon lookup and debug traces. Declines retain the original
-  pipeline; handled results return no single-path debug trace. Bengali uses this
-  for its frozen selector, requiring `SchwaModel` plus `Rerank` and default style.
-  See the [runtime contract](reviews/2026-10-05-bengali-b2-runtime.md).
+  configurations and the language picks the most natural output. Only Hindi
+  implements it; the engine ignores `Rerank` for other languages, and the public
+  API (`gomanize.ValidateOptions`, used by `NewWithOptions`, the CLI and WASM)
+  rejects `Rerank` with Bengali. A second, source-aware `NativeReranker`
+  protocol served the Bengali native selector until both were retired on
+  2026-10-13 ([quality assessment](reviews/2026-10-10-bengali-quality-assessment.md)).
 
 The sentence-level API (`gomanize.Translit`) segments on **all whitespace and
 punctuation, preserved verbatim** — so multi-line lyrics romanize correctly and
@@ -191,9 +189,8 @@ Measured and intentional (each backed by a decision record):
 | Schwa classifier (`--schwa-model`) | CART tree, 34 KB JSON (`lang/hindi/schwa_tree.json`) | `schwa.model.predict` rule (Language:90, Exclusive) takes over inherent-schwa decisions | 90.67% per-schwa held-out; ties/beats the 8 hand rules word-level |
 | Lexicon (`--lexicon`) | 8,367-entry TSV, ~204 KB (`lang/hindi/lexicon.tsv`) | `core.LexiconProvider` pre-pipeline short-circuit; lossless OOV fallthrough | 71.7% token coverage; COMI-LINGUA +6.7 pts, AK-NEI +7.8 pts, lyrics CER 0.0492→0.0394 |
 | Re-ranker (`--rerank`) | Char 4-gram LM, 31K grams, 224 KB (`lang/hindi/roman_ngrams.tsv`) | `core.Reranker`: scores {default rules, schwa-model} outputs, stupid backoff, per-char normalized; ties keep the default | Held-out 69.3→70.7%, curated match-any 92.9→94.8%, lyrics CER 0.0492→0.0476 |
-| Bengali vowel model (`SchwaModel`) | Three-class CART tree (`lang/bengali/vowel_tree.json`), Google pronunciation lexicon train partition | `schwa.bengali.model` rule on supported simple words; unsupported words keep B1 rules | Held-out match-any 56.52→62.76% |
+| Bengali vowel model (`SchwaModel`; the recommended Bengali profile) | Three-class CART tree (`lang/bengali/vowel_tree.json`), Google pronunciation lexicon train partition | `schwa.bengali.model` rule on supported simple words; unsupported words keep B1 rules | Held-out match-any 56.52→62.76% |
 | Bengali lexicon (`Lexicon`) | 8,976-entry TSV (`lang/bengali/lexicon.tsv`), Dakshina train | `OptionsLexiconProvider`; default style only | Zero held-out coverage by construction; helps known words |
-| Bengali native selector (`SchwaModel` + `Rerank`) | Cross-fitted preference tree (`lang/bengali/selector.json`) | `core.NativeReranker`: up to eight single-slot vowel flips, threshold 0.6 | Held-out match-any 62.76→63.04% |
 
 Design constraints that shaped them:
 - **Train on train partitions only** (Hindi: Dakshina TRAIN; Bengali: the frozen
@@ -218,6 +215,7 @@ Design constraints that shaped them:
   `--input=FILE` / `--test=FILE` / `--diff` / `--list-rules` / `--disable-rule` /
   `--enable-rule` / `--debug` / `--version`
 - Public API: `New(lang)`, `NewWithOptions(lang, opts, engineOpts...)`,
+  `ValidateOptions(lang, opts)`,
   `Translit(text)`, `TranslitDebug(word)` (single word; no sentence splitting),
   rule management via `ListRules/DisableRule/EnableRule`
 - Frontends: WASM/npm (`{ language, ...flags }`) and the web demo
@@ -231,7 +229,7 @@ Design constraints that shaped them:
   and the [keel review](reviews/2026-10-07-bengali-keel.md)). B1 uses
   source-identity predicates and per-unit gemination metadata for scoped phalas
   and visarga; its dev gate runs in `make ci`. Next steps are tracked in F-0013
-  (language and option registries, one reranker protocol, performance) and
+  (language and option registries, performance) and
   T-0068 (lyrics reference attestation).
 - **Marathi / Nepali** — implement `core.Language` (symbol map + config + rule
   catalog composing `brahmic.SchwaRules()`); parser/renderer/runs are reused.

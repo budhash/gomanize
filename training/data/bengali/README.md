@@ -1,8 +1,8 @@
 # Bengali B2 frozen training partitions
 
 These are **word-key manifests, not models or pronunciation data**. Every
-Bengali learned artifact (vowel model, spelling lexicon, native selector) is
-trained only from the train partitions listed here.
+Bengali learned artifact (vowel model, spelling lexicon; formerly the native
+selector, retired 2026-10-13) is trained only from the train partitions listed here.
 `tools/bengali_training_data.py` verifies the frozen inventories, selects only
 training rows, and checks final spelling-lexicon keys. Future trainers must use
 `training_rows`, record this manifest's SHA-256 with their artifacts, and call

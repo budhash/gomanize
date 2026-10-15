@@ -1,5 +1,10 @@
 # Bengali B2 character reranker: rejected at dev
 
+> **Retired 2026-10-13.** This record is history. The trainer and the
+> `test-bengali-rerank` target below were removed with the native selector;
+> reproduce from the tools at commit `6e9be30~1`. See [the quality
+> assessment](2026-10-10-bengali-quality-assessment.md) and `CHANGELOG.md`.
+
 T-0063 evaluated a character-only selector between B1 and the opt-in vowel
 model. It fails the dev gate. No reranker is installed, no Go behavior changes,
 and no held-out or external evaluation was run for this candidate. T-0053

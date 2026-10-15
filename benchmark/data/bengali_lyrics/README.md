@@ -78,11 +78,13 @@ No quality threshold is enforced while references are unreviewed.
 Training exposure uses normalized Bengali letter/mark tokens and the union of
 frozen Google/Dakshina training vocabularies. Source independence alone does
 not imply word-level novelty. The evaluator records every prediction for
-recomputation, source/artifact hashes, and paired reranker wins **and losses**.
-The Go suite independently computes macro CER and exercises multiline public
-API rendering for all six profiles. Python tests reject corrupt snapshots,
-changed references, source/native mismatches even after rehashing, and false
-reference status; they check scoring denominators and duplicate weighting.
+recomputation and source/artifact hashes. Paired reranker wins and losses were
+reported until the native selector was retired (2026-10-13). The Go suite
+independently computes macro CER and exercises multiline public API rendering
+for all four profiles (B1, model, lexicon, model+lexicon). Python tests reject
+corrupt snapshots, changed references, source/native mismatches even after
+rehashing, and false reference status; they check scoring denominators and
+duplicate weighting.
 
 ## Review handoff (T-0068)
 

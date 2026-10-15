@@ -61,6 +61,11 @@ for (const [name, engine] of [["ESM", g], ["CJS", g2]]) {
   assert.equal(engine.translit("गाना", proxy), "gaanaa", `${name}: Proxy read once`);
   assert.equal(engine.translit("गाना"), "gana", `${name}: runtime survives getter/Proxy options`);
   assert.equal(engine.translit("गाना", { longVowels: false, schwaModel: null }), "gana", name);
+  // Rerank is Hindi-only: Bengali throws instead of silently ignoring it.
+  for (const opts of [{ rerank: true }, { schwaModel: true, rerank: true }]) {
+    assert.throws(() => engine.translit("আমি", { language: "bengali", ...opts }), /rerank is not available for bengali/, name);
+    assert.equal(engine.translit("আমি", { language: "bengali" }), "ami", `${name}: runtime survives Bengali rerank`);
+  }
   // make npm-test supplies the freshly built CLI for cross-interface parity.
   if (process.env.GOMANIZE_CLI) {
     const profiles = [{}, { schwaModel: true }, { lexicon: true },
@@ -71,6 +76,7 @@ for (const [name, engine] of [["ESM", g], ["CJS", g2]]) {
     for (const language of ["hindi", "bengali"]) {
       const text = "সমতা, অডিও। আমি বাংলা\nनमस्ते दुनिया, जनता। English 123";
       for (const profile of profiles) {
+        if (language === "bengali" && profile.rerank) continue; // rejected above
         const flags = Object.keys(profile).map(k => "--" + k.replace(/[A-Z]/g, c => "-"+c.toLowerCase()));
         const cli = execFileSync(process.env.GOMANIZE_CLI, ["--language="+language, ...flags, text], { encoding: "utf8" });
         assert.equal(engine.translit(text, { language, ...profile })+"\n", cli, `${name} ${language} ${JSON.stringify(profile)}`);

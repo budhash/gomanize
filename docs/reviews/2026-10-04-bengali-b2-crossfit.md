@@ -1,5 +1,10 @@
 # Bengali B2 expanded candidates and cross-fitting
 
+> **Retired 2026-10-13.** The selector this record accepted shipped as an opt-in
+> (`SchwaModel` + `Rerank`) and has been removed from runtime with its trainer,
+> evaluator and tests; `Rerank` is now Hindi-only. The measurements below are
+> history. See [the quality assessment](2026-10-10-bengali-quality-assessment.md) and `CHANGELOG.md`.
+
 T-0065 protocol, fixed before dev evaluation:
 
 - Use only the frozen, isolated Google and Dakshina training partitions.

@@ -13,7 +13,7 @@ func (s *canonScript) Canonicalize(input string, _ interface{}, _ SymbolMap) str
 	return strings.ToLower(input)
 }
 
-// recordingLanguage records the input its lexicon and native reranker receive.
+// recordingLanguage records the input its lexicon and reranker receive.
 type recordingLanguage struct {
 	mockLanguage
 	lexiconSaw, rerankSaw []string
@@ -24,9 +24,9 @@ func (l *recordingLanguage) LexiconLookup(word string) (string, bool) {
 	return "", false
 }
 
-func (l *recordingLanguage) RerankNative(input string, _ Options, _ CandidateRenderer) (string, bool) {
-	l.rerankSaw = append(l.rerankSaw, input)
-	return "", false
+func (l *recordingLanguage) RerankRomans(candidates []string) string {
+	l.rerankSaw = append(l.rerankSaw, candidates...)
+	return candidates[0]
 }
 
 // The engine canonicalizes once, before lexicon lookup, candidate ranking and
@@ -38,8 +38,15 @@ func TestEngineCanonicalizesBeforeEveryComponent(t *testing.T) {
 	if got := e.TransliterateWithOptions("ABC", Options{Lexicon: true, Rerank: true}); got != "abc" {
 		t.Fatalf("parser/renderer saw non-canonical input: %q", got)
 	}
-	if len(lang.lexiconSaw) != 1 || lang.lexiconSaw[0] != "abc" {
-		t.Errorf("lexicon saw %q, want canonical \"abc\"", lang.lexiconSaw)
+	// The reranker renders its candidates through the same pipeline, so the
+	// lexicon is consulted once per call; every lookup must be canonical.
+	if len(lang.lexiconSaw) == 0 {
+		t.Error("lexicon not consulted")
+	}
+	for _, w := range lang.lexiconSaw {
+		if w != "abc" {
+			t.Errorf("lexicon saw %q, want canonical \"abc\"", lang.lexiconSaw)
+		}
 	}
 	if len(lang.rerankSaw) != 1 || lang.rerankSaw[0] != "abc" {
 		t.Errorf("reranker saw %q, want canonical \"abc\"", lang.rerankSaw)

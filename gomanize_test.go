@@ -58,6 +58,18 @@ func TestPublicAPISurface(t *testing.T) {
 		t.Error("New(klingon) should error")
 	}
 
+	// Rerank is Hindi-only: Bengali rejects it rather than silently ignoring it.
+	if _, err := NewWithOptions("Bengali", Options{SchwaModel: true, Rerank: true}); err == nil ||
+		!strings.Contains(err.Error(), "rerank is not available for bengali") {
+		t.Errorf("NewWithOptions(bengali, Rerank) error = %v", err)
+	}
+	if _, err := NewWithOptions("hindi", Options{Rerank: true}); err != nil {
+		t.Errorf("NewWithOptions(hindi, Rerank): %v", err)
+	}
+	if ValidateOptions("bengali", Options{Rerank: true}) == nil || ValidateOptions("bengali", Options{SchwaModel: true, Lexicon: true}) != nil {
+		t.Error("ValidateOptions(bengali) must reject exactly Rerank")
+	}
+
 	// Options round-trip.
 	opts := NewOptions()
 	opts.KeepMedialSchwa = true
@@ -193,13 +205,14 @@ func TestConcurrentDebugCalls(t *testing.T) {
 
 // Learned per-word components are bounded (core.MaxLearnedWordRunes), so a
 // pathological unspaced token cannot cost quadratic time. Before the bound, a
-// 2,000-rune Bengali word with the vowel model and selector took ~30 s in WASM.
+// 2,000-rune Bengali word with the vowel model and the (since retired) native
+// selector took ~30 s in WASM.
 func TestLongTokenCostIsBounded(t *testing.T) {
 	for _, tc := range []struct {
 		language, unit string
 		opts           Options
 	}{
-		{"bengali", "কলকাতা", Options{SchwaModel: true, Rerank: true, Lexicon: true}},
+		{"bengali", "কলকাতা", Options{SchwaModel: true, Lexicon: true}},
 		{"hindi", "नमस्ते", Options{SchwaModel: true, Rerank: true, Lexicon: true}},
 	} {
 		g, err := NewWithOptions(tc.language, tc.opts)
@@ -239,6 +252,9 @@ func TestCanonicalEquivalenceAllProfiles(t *testing.T) {
 	}
 	for language, pairs := range cases {
 		for _, opts := range profiles {
+			if opts.Rerank && language == "bengali" {
+				continue // Rerank is Hindi-only
+			}
 			g, err := NewWithOptions(language, opts)
 			if err != nil {
 				t.Fatal(err)
@@ -265,7 +281,7 @@ func TestCanonicalizationAdversarialInputIsFast(t *testing.T) {
 		"bengali": "ক" + strings.Repeat("‌", 50000) + "ক" + strings.Repeat("়্", 25000),
 	}
 	for language, input := range inputs {
-		g, err := NewWithOptions(language, Options{SchwaModel: true, Lexicon: true, Rerank: true})
+		g, err := NewWithOptions(language, Options{SchwaModel: true, Lexicon: true, Rerank: language == "hindi"})
 		if err != nil {
 			t.Fatal(err)
 		}

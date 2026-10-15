@@ -84,7 +84,7 @@ type Word struct {
 }
 
 // MaxLearnedWordRunes bounds the word length that learned per-word components
-// (vowel/schwa models, candidate selectors) process; longer tokens fall back to
+// (vowel/schwa models) process; longer tokens fall back to
 // the rules. Real words are far shorter (dataset maximum 53); the bound keeps
 // pathological input from costing quadratic time.
 const MaxLearnedWordRunes = 64
@@ -141,9 +141,10 @@ type Options struct {
 	// to the rule engine. Requires LexiconProvider or OptionsLexiconProvider;
 	// the latter can decline lookup when the requested style is unsupported.
 	Lexicon bool
-	// Rerank enables the language's optional candidate selector (NativeReranker
-	// or legacy Reranker). Bengali also requires SchwaModel and default style;
-	// Hindi uses its character LM. A lexicon hit (with Lexicon) wins first.
+	// Rerank enables Hindi's character-LM reranker: the engine renders candidate
+	// rule configurations and the language's Reranker picks the most natural.
+	// The engine ignores Rerank for languages without a Reranker; the public API
+	// rejects it for them. A lexicon hit (with Lexicon) wins first.
 	Rerank bool
 	// Debug enables debug output showing rule applications.
 	Debug bool
@@ -152,7 +153,7 @@ type Options struct {
 // DefaultStyle reports whether opts requests the default rendering style:
 // every option other than the component switches (SchwaModel, Lexicon, Rerank)
 // and Debug is unset. Components evaluated only for the default style (e.g.
-// Bengali's lexicon and native selector) must decline otherwise. Any style
+// Bengali's lexicon) must decline otherwise. Any style
 // option added later is non-default automatically.
 func (o Options) DefaultStyle() bool {
 	o.SchwaModel, o.Lexicon, o.Rerank, o.Debug = false, false, false, false

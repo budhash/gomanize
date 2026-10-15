@@ -266,7 +266,9 @@ the Hindi snapshot must not move.
    profile is what CLI/npm/web users get.
 8. **Retire the native selector** (keep the records); recommend the vowel model as
    the Bengali profile. Revisit reranking only with an attested lyrics target, a
-   whole-word a-style candidate and a preregistered gate.
+   whole-word a-style candidate and a preregistered gate. *Done 2026-10-13*
+   (T-0122): selector, `NativeReranker` and selector tooling removed; `Rerank`
+   with Bengali is an error.
 9. **Lexicon: no restyle.** Optionally a documented filter that skips entries
    differing from rule output only by o/a (470), measured on the attested lyrics.
 10. **Then** more training data, and a design note for a compact character-level

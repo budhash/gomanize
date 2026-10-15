@@ -35,8 +35,6 @@ func TestBenchmarkBengaliLyricsPilot(t *testing.T) {
 		{"model", gomanize.Options{SchwaModel: true}},
 		{"lexicon", gomanize.Options{Lexicon: true}},
 		{"model_lexicon", gomanize.Options{SchwaModel: true, Lexicon: true}},
-		{"rerank", gomanize.Options{SchwaModel: true, Rerank: true}},
-		{"rerank_lexicon", gomanize.Options{SchwaModel: true, Rerank: true, Lexicon: true}},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			e, err := gomanize.NewWithOptions("bengali", tc.opts)

@@ -55,8 +55,7 @@ make test-analysis  # Failure pattern breakdown
 make test-bengali            # Fixtures, symbols, rules, pinned outputs
 make test-bengali-b1-gate    # Preregistered B1 dev gate
 make test-bengali-data       # Frozen training partitions + isolation guards
-make test-bengali-vowels / -lexicon / -crossfit / -runtime / -lyrics
-make test-bengali-rerank / -native-selector   # Rejected-experiment records
+make test-bengali-vowels / -lexicon / -profiles / -lyrics
 
 # Code Quality
 make fmt / fmt-check / lint / lint-fix
@@ -103,8 +102,7 @@ gomanize/
 ├── lang/bengali/                  # Experimental Bengali (rules, opt-in learned components)
 │   ├── symbols.go / rules.go      # Symbol map, canonical forms, B1 rules
 │   ├── vowel_model.go + vowel_tree.json    # Three-class inherent-vowel model (Google lexicon, CC BY 4.0)
-│   ├── lexicon.go + lexicon.tsv + LEXICON.md   # 8,976-entry spelling lexicon (CC BY-SA 4.0)
-│   └── reranker.go + selector.json + RERANKER.md # Cross-fitted native selector (CC BY-SA 4.0)
+│   └── lexicon.go + lexicon.tsv + LEXICON.md   # 8,976-entry spelling lexicon (CC BY-SA 4.0)
 ├── scheme/colloquial/             # Colloquial romanization scheme
 ├── webdemo/                       # Host-testable JS-flag → Options mapping (WASM demo)
 ├── web/                           # Browser demo: index.html → budhash.com/gomanize
@@ -131,7 +129,7 @@ gomanize/
 │   ├── regression/                # Corpus-diff transition-matrix harness (make regression-*)
 │   ├── mine_constructs.py         # Construct-stratified candidate mining (F-0010)
 │   ├── schwa/                     # Schwa classifier training + build_lexicon.py
-│   ├── bengali/                   # Bengali trainers/evaluators (vowels, lexicon, selector, records)
+│   ├── bengali/                   # Bengali trainers/evaluators (vowels, lexicon, records)
 │   ├── bengali_*.py / build_bengali.py / build_banglatlit.py / audit_bengali_*.py
 │   └── build_freq.py / build_aksharantar_test.py / build_comilingua.py /
 │       train_ngram.py / mine_overrides.py
@@ -166,10 +164,11 @@ regression nets (`make test-constructs` / `test-heldout` / `test-combinatorial`
 capture).
 
 **Experimental Bengali** (F-0011; merged 2026-10-05/06, keel-reviewed
-2026-10-07): rules plus opt-in vowel model, lexicon and native selector across
-the Go API, CLI (`--language=bengali`), npm and web. Held-out match-any 56.52%
-rules / 62.76% model / 63.04% model + selector. Lyrics references are unreviewed
-pending maintainer attestation (T-0068). Keel follow-ups: F-0013. Records:
+2026-10-07): rules plus opt-in vowel model (the recommended profile) and lexicon
+across the Go API, CLI (`--language=bengali`), npm and web. Held-out match-any
+56.52% rules / 62.76% vowel model. The native selector was retired 2026-10-13
+(`Rerank` is Hindi-only and an error with Bengali). Lyrics references are
+unreviewed pending maintainer attestation (T-0068). Keel follow-ups: F-0013. Records:
 [`docs/reviews/2026-10-07-bengali-keel.md`](docs/reviews/2026-10-07-bengali-keel.md).
 
 Full results: [`docs/RESEARCH.md`](docs/RESEARCH.md) §4. The Hindi CI regression

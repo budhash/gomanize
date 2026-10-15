@@ -1,5 +1,10 @@
 # Bengali CLI, npm/WASM and browser integration
 
+> **Retired 2026-10-13 (selector).** The frontend contract below still holds
+> except for Bengali reranking: the native selector was removed, and `--rerank`
+> / `rerank: true` with Bengali is now an error (the browser hides the control).
+> See [the quality assessment](2026-10-10-bengali-quality-assessment.md) and `CHANGELOG.md`.
+
 T-0069 exposes the existing Bengali engine through CLI language selection;
 T-0070 adds the same choice to npm/WASM and the browser. Neither increment
 changes the core rules, learned artifacts or quality thresholds. Bengali
