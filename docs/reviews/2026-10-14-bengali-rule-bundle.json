@@ -1,49 +1,99 @@
 {
   "BanglaTLit": {
-    "all_tokens_unseen_sentences": {
-      "B1": {
-        "accuracy": 0.02631578947368421,
-        "macro_minCER": 0.5170832901849824,
-        "match_any": 1
+    "after": {
+      "all_tokens_unseen_sentences": {
+        "B1": {
+          "accuracy": 0.02631578947368421,
+          "macro_minCER": 0.5170832901849826,
+          "match_any": 1
+        },
+        "items": 38,
+        "lexicon": {
+          "accuracy": 0.02631578947368421,
+          "macro_minCER": 0.5170832901849826,
+          "match_any": 1
+        },
+        "model": {
+          "accuracy": 0.05263157894736842,
+          "macro_minCER": 0.5062400763812424,
+          "match_any": 2
+        },
+        "model_lexicon": {
+          "accuracy": 0.05263157894736842,
+          "macro_minCER": 0.5062400763812424,
+          "match_any": 2
+        }
       },
-      "items": 38,
-      "lexicon": {
-        "accuracy": 0.02631578947368421,
-        "macro_minCER": 0.5170832901849824,
-        "match_any": 1
-      },
-      "model": {
-        "accuracy": 0.05263157894736842,
-        "macro_minCER": 0.5062400763812424,
-        "match_any": 2
-      },
-      "model_lexicon": {
-        "accuracy": 0.05263157894736842,
-        "macro_minCER": 0.5062400763812424,
-        "match_any": 2
+      "full_sentences": {
+        "B1": {
+          "accuracy": 0.0032,
+          "macro_minCER": 0.32726527832070285,
+          "match_any": 8
+        },
+        "items": 2500,
+        "lexicon": {
+          "accuracy": 0.0052,
+          "macro_minCER": 0.2906539188429695,
+          "match_any": 13
+        },
+        "model": {
+          "accuracy": 0.0052,
+          "macro_minCER": 0.30870834202266695,
+          "match_any": 13
+        },
+        "model_lexicon": {
+          "accuracy": 0.0072,
+          "macro_minCER": 0.2781979057706019,
+          "match_any": 18
+        }
       }
     },
-    "full_sentences": {
-      "B1": {
-        "accuracy": 0.0032,
-        "macro_minCER": 0.32726527832070285,
-        "match_any": 8
+    "before": {
+      "all_tokens_unseen_sentences": {
+        "B1": {
+          "accuracy": 0.02631578947368421,
+          "macro_minCER": 0.5318006872679403,
+          "match_any": 1
+        },
+        "items": 38,
+        "lexicon": {
+          "accuracy": 0.02631578947368421,
+          "macro_minCER": 0.5318006872679403,
+          "match_any": 1
+        },
+        "model": {
+          "accuracy": 0.05263157894736842,
+          "macro_minCER": 0.5209574734642001,
+          "match_any": 2
+        },
+        "model_lexicon": {
+          "accuracy": 0.05263157894736842,
+          "macro_minCER": 0.5209574734642001,
+          "match_any": 2
+        }
       },
-      "items": 2500,
-      "lexicon": {
-        "accuracy": 0.0052,
-        "macro_minCER": 0.29065391884296893,
-        "match_any": 13
-      },
-      "model": {
-        "accuracy": 0.0052,
-        "macro_minCER": 0.30870834202266667,
-        "match_any": 13
-      },
-      "model_lexicon": {
-        "accuracy": 0.0072,
-        "macro_minCER": 0.2781979057706017,
-        "match_any": 18
+      "full_sentences": {
+        "B1": {
+          "accuracy": 0.0032,
+          "macro_minCER": 0.3314892105029765,
+          "match_any": 8
+        },
+        "items": 2500,
+        "lexicon": {
+          "accuracy": 0.0052,
+          "macro_minCER": 0.2940239824512892,
+          "match_any": 13
+        },
+        "model": {
+          "accuracy": 0.0048,
+          "macro_minCER": 0.31285795745759365,
+          "match_any": 12
+        },
+        "model_lexicon": {
+          "accuracy": 0.0068,
+          "macro_minCER": 0.2814354673315806,
+          "match_any": 17
+        }
       }
     }
   },
@@ -288,7 +338,7 @@
     "benchmark/data/bengali/test.csv.gz": "9cb15941b0893acdcc2891130ff98ba403645fd9170b955372af62f64bd33ca0",
     "benchmark/data/bengali/train.csv.gz": "44b554fa749c717386bd9f68daaf837788d6c5ff10197d7f23d2bcefc28cf378",
     "lang/bengali/lexicon.tsv": "f7219dd805c7fd977af9ec64bb590134a9bf1aef11d3f3580062a03b4588a1ea",
-    "lang/bengali/rules.go": "05ca9f78dd3011249042000c5437e31703d8d30fa9ced6435a18747e6b304b82",
+    "lang/bengali/rules.go": "ea0075b3e1bfff2ccc89ba2460222631ecd95769b0f3891cacca85df9052e5d1",
     "lang/bengali/vowel_tree.json": "aae73bcc1c4a8c0303fbcec194e06a353260c0bbc4478a320f832deba4cc966e"
   },
   "rejected_at_selection": {

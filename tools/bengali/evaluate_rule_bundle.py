@@ -95,13 +95,14 @@ def banglatlit_rows():
 
 def banglatlit_section():
     rows = banglatlit_rows()
-    values = predict(rows)
     groups = verify()
     training = groups['google-train'] | groups['dakshina-train']
-    unseen = [(r, p) for r, p in zip(rows, values)
-              if (tokens := set(bengali_tokens(r[0]))) and not tokens & training]
-    return {'full_sentences': score(rows, values),
-            'all_tokens_unseen_sentences': score([r for r, _ in unseen], [p for _, p in unseen])}
+    unseen = [i for i, r in enumerate(rows) if (tokens := set(bengali_tokens(r[0]))) and not tokens & training]
+
+    def section(values):
+        return {'full_sentences': score(rows, values),
+                'all_tokens_unseen_sentences': score([rows[i] for i in unseen], [values[i] for i in unseen])}
+    return {'before': section(predict(rows, all_rules())), 'after': section(predict(rows))}
 
 
 def main():

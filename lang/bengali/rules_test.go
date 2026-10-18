@@ -139,7 +139,7 @@ func TestRuleBundleProductionOutputs(t *testing.T) {
 			t.Errorf("%s: %s != %s", input, got, want)
 		}
 	}
-	for input, want := range map[string]string{"চিহ্নিত": "chinnita", "গত": "gata", "এখনও": "ekhana", "দৃশ্যের": "drishyer"} {
+	for input, want := range map[string]string{"চিহ্নিত": "chinnita", "গত": "gata", "এখনও": "ekhanao", "কও": "kao", "দৃশ্যের": "drishyer"} {
 		if got := e.TransliterateWithOptions(input, core.Options{InherentVowelA: true}); got != want {
 			t.Errorf("a style %s: %s != %s", input, got, want)
 		}

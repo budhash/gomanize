@@ -108,9 +108,11 @@ func RuleCatalog() core.RuleCatalog {
 	add("render.bengali.medial-phala", core.PhaseRender, 60, func(u *core.Unit, w *core.Word) bool { return phala(u) && !u.Prev.IsWordInitial() }, func(u *core.Unit, w *core.Word) { brahmic.GetBrahmicData(u).Gemination = brahmic.RepeatPrevious })
 	add("consonant.bengali.visarga-suppress", core.PhaseConsonant, 50, func(u *core.Unit, w *core.Word) bool { return source(u, "ঃ") && visargaTarget(u.Next) }, func(u *core.Unit, w *core.Word) { u.BaseRom = "" })
 	add("render.bengali.visarga-gemination", core.PhaseRender, 50, func(u *core.Unit, w *core.Word) bool { return visargaTarget(u) }, func(u *core.Unit, w *core.Word) { brahmic.GetBrahmicData(u).Gemination = brahmic.GeminateSelf })
-	// এখনও: the final ও after a bare consonant repeats the inherent vowel already rendered.
+	// এখনও: the final ও after a bare consonant repeats the inherent vowel already
+	// rendered, but only when that vowel renders as o (not a-style or open: কও kao).
 	add("vowel.bengali.final-o", core.PhaseVowel, 41, func(u *core.Unit, w *core.Word) bool {
-		return source(u, "ও") && u.IsWordFinal() && consonant(u.Prev) && !brahmic.IsAfterHalant(u) && w.Original != "হও"
+		return source(u, "ও") && u.IsWordFinal() && consonant(u.Prev) && !brahmic.IsAfterHalant(u) && w.Original != "হও" &&
+			brahmic.InherentVowelRoman(u.Prev, w) == "o"
 	}, func(u *core.Unit, w *core.Word) { u.BaseRom = "" })
 	add("vowel.bengali.hao", core.PhaseVowel, 40, func(u *core.Unit, w *core.Word) bool { return w.Original == "হও" && source(u, "হ") }, func(u *core.Unit, w *core.Word) { brahmic.GetBrahmicData(u).SchwaQuality = brahmic.SchwaOpen })
 	add("vowel.bengali.howa-w", core.PhaseVowel, 39, func(u *core.Unit, w *core.Word) bool { return howa(w) && source(u, "ও") }, func(u *core.Unit, w *core.Word) { u.BaseRom = "w" })

@@ -17,9 +17,9 @@ Five named rules in `lang/bengali/rules.go`, each disableable with
 | Key | Rule(s) | Mechanism | Example (before → after) |
 |---|---|---|---|
 | ito | `schwa.bengali.final-ito` | Final bare ত after ি/ী/ৃ/ূ keeps its vowel | চিহ্নিত chinnit → chinnito; মৃত mrit → mrito |
-| tacons | `schwa.bengali.final-ta` | Final bare ত after a bare গ র হ ন শ ষ keeps its vowel | গত got → goto; ভারত bharot → bharoto |
+| tacons | `schwa.bengali.final-ta` | Final bare ত after a bare গ র হ ন শ ষ keeps its vowel | গত got → goto (a train loss too: ভারত bharot → bharoto, against references bharat/bharot/varot) |
 | coda | `schwa.bengali.loan-coda` | Final ন্ট ন্ড ঞ্জ ন্স ক্স র্স র্ক ল্ড close (র্ট/র্ড/স্ট already did) | পেইন্ট peinto → peint; গোল্ড goldo → gold |
-| osuf | `vowel.bengali.final-o` | Final ও after a bare consonant adds no second `o` (হও excepted) | এখনও ekhonoo → ekhono; কও koo → ko |
+| osuf | `vowel.bengali.final-o` | Final ও after a bare consonant adds no second `o` when that consonant's inherent vowel renders `o` (হও excepted; a-style keeps it: কও kao) | এখনও ekhonoo → ekhono; কও koo → ko |
 | yph | `consonant.bengali.sibilant-ya`, `render.bengali.sibilant-ya` | Medial ya-phala after শ/ষ/স is `y`, not a geminate | দৃশ্যের drishsher → drishyer |
 
 Unchanged contexts (unit-tested): মত/যত `mot`/`jot`, রাত `rat`, চিত্ত `chitto`,
@@ -88,7 +88,7 @@ The lexicon and model + lexicon profiles equal B1 and model on dev and test
 Dev confirmed the bundle for both profiles, so nothing was iterated. Test was
 run once, after the bundle was frozen.
 
-**BanglaTLit** (2,500 sentences; before from the 2026-10-05 runtime record):
+**BanglaTLit** (2,500 sentences; before and after both recomputed and asserted):
 
 | Profile | Full: exact, macro CER | All-tokens-unseen (38): exact, macro CER |
 |---|---|---|
@@ -124,6 +124,19 @@ assistant drafts** (T-0068), so this is agreement, not a quality claim:
 | Model | 52, 0.017664 | 55, 0.016324 |
 | Lexicon | 37, 0.029390 | 40, 0.027664 |
 | Model + lexicon | 47, 0.025304 | 49, 0.024400 |
+
+## Review fixes (2026-10-17)
+
+- **a-style `final-o`.** The rule removed ও's vowel even when the preceding
+  consonant rendered `a` (Go-only `InherentVowelA`: কও `ka`, এখনও `ekhana`). It now
+  fires only when that inherent vowel renders `o`. Default output and every score
+  are unchanged; the rules-pin digests (which include a-style output) moved.
+- **BanglaTLit "before"** is now recomputed by the evaluator (bundle rules
+  disabled) instead of copied from the runtime record; values are unchanged. The
+  lyrics "before" column is from the lyrics record at `fa79734`.
+- **Loan-coda entries were selected as one rule.** Some entries also close native
+  words (তর্ক `torko` → `tork`; 14 of 22 train words ending in র্ক have an open
+  reference). Per-entry train ablation is tracked as T-0127 for the next rules PR.
 
 ## Data discipline
 

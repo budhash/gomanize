@@ -96,6 +96,10 @@ func inherentVowel(u *core.Unit, w *core.Word) string {
 	return profile.InherentVowel
 }
 
+// InherentVowelRoman is the inherent vowel u renders before a following
+// independent vowel (quality and style aware), for rules that must agree with it.
+func InherentVowelRoman(u *core.Unit, w *core.Word) string { return inherentVowel(u, w) }
+
 // RenderDebug returns a detailed debug representation of the word.
 func (r *Renderer) RenderDebug(word *core.Word) string {
 	var sb strings.Builder
