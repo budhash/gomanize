@@ -131,7 +131,7 @@ test-integration: ## Run integration tests (full Dakshina + Aksharantar datasets
 	@$(GOTEST) ./benchmark/... -v -run "TestBenchmarkDakshinaHindi|TestBenchmarkAksharantarHindi"
 	@echo "✓ Integration tests complete"
 
-test-bengali-profiles: ## Assert shipped Bengali profiles on held-out Dakshina and BanglaTLit (runtime record)
+test-bengali-profiles: ## Assert shipped Bengali profiles on held-out Dakshina and BanglaTLit (rule-bundle record)
 	@python3 -m unittest discover -s tools -p 'bengali_profiles_test.py'
 
 test-bengali-lyrics: ## Verify provisional lyrics provenance, scoring and line boundaries

@@ -227,22 +227,43 @@ wordwise parity and small Aksharantar gains, but a slight BanglaTLit sentence-CE
 regression. **Retired 2026-10-13:** the selector sat at its candidate-set
 ceiling and every planned rule change would invalidate it
 ([quality assessment](reviews/2026-10-10-bengali-quality-assessment.md)). The
-current Bengali profiles are rules (56.52%) and the vowel model (62.76%, the
-recommended profile); `Rerank` is Hindi-only.
+Bengali profiles after the selector were rules (56.52%) and the vowel model
+(62.76%, the recommended profile); `Rerank` is Hindi-only.
 
 **Selection-round disclosure.** Dakshina dev was used across four Bengali
 selection rounds (vowel model, rejected character reranker, rejected native
 selector, accepted cross-fitted selector), and held-out test was reported after
 each accepted stage. The 63.04% figure should be read with that forking-paths
-context; the gain over the vowel model was seven words out of 2,500.
+context; the gain over the vowel model was seven words out of 2,500. The
+2026-10-10 quality assessment consulted dev a fifth time (as confirmation of
+train-chosen candidates); the rule bundle below selected on train only.
+
+#### Rule bundle (T-0119, 2026-10-14)
+
+Five convention-neutral rules from the quality assessment shipped as named,
+individually disableable catalog rules: keep the final vowel after -িত/-ীত/-ৃত/-ূত
+(`schwa.bengali.final-ito`) and after a bare গ র হ ন শ ষ + final ত
+(`schwa.bengali.final-ta`); close the loan codas ন্ট ন্ড ঞ্জ ন্স ক্স র্স র্ক ল্ড
+(`schwa.bengali.loan-coda`); no extra `o` for a final ও after a bare consonant
+(`vowel.bengali.final-o`); medial ya-phala after শ/ষ/স as `y` without gemination
+(`*.bengali.sibilant-ya`). The preregistered criterion was train-only: disabling a
+rule alone from the bundle must lose net match-any, with paired losses at most a
+quarter of wins, for both rules-only and model profiles. A sixth candidate
+(ba-phala after শ/স as `w`, medial দ্ব as `db`) failed it (37 wins / 30 losses)
+and was removed. Dev confirmed (rules 54.84% → 56.20%, model 61.80% → 63.08%);
+test, reported once after freezing: rules **56.52% → 58.68%** match-any (strict
+32.00% → 33.12%, minCER 0.0877 → 0.0837), vowel model **62.76% → 64.60%** (strict
+36.56% → 37.48%, minCER 0.0764 → 0.0728). BanglaTLit macro sentence CER improves
+for all four profiles (model 0.3129 → 0.3087). The vowel model (64.60%) remains
+the recommended profile. [Record](reviews/2026-10-14-bengali-rule-bundle.md).
 
 #### B3 lyrics pilot (2026-10-05)
 
 A source-pinned pilot now covers 82 lines (71 unique) from the first four songs
 of Tagore's 1913 *Gitanjali*. Its Roman references were drafted by the assistant
-before prediction and are **unreviewed, not gold**. The vowel model has 52 exact
-draft agreements and macro line CER 0.017664 (the since-retired selector:
-52 and 0.017013); these are provisional
+before prediction and are **unreviewed, not gold**. The vowel model has 55 exact
+draft agreements and macro line CER 0.016324 after the rule bundle (52 and
+0.017664 before; the since-retired selector: 52 and 0.017013); these are provisional
 reference-agreement measurements, not a validated accuracy claim. The lexicon
 reduces agreement on this sample. Training overlap is substantial: 142/213
 native word types; only seven lines are entirely unseen by the training word
@@ -280,7 +301,9 @@ shipped and was retired on 2026-10-13; §4): a character-only n-gram reranker
 selector (no threshold changed any output;
 [record](reviews/2026-10-04-bengali-b2-native-selector.md)). In B1, dropping chandrabindu's
 nasal was measured on train (+34 / −52 matches over 312 words) and not adopted;
-see the [B1 record](reviews/2026-10-04-bengali-b1-results.md).
+see the [B1 record](reviews/2026-10-04-bengali-b1-results.md). The rule bundle
+(T-0119) rejected ba-phala `w` / medial দ্ব `db` on its train leave-one-out
+(37 wins / 30 losses on both profiles; [record](reviews/2026-10-14-bengali-rule-bundle.md)).
 
 ## 6. Key literature
 

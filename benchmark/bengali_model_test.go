@@ -17,8 +17,8 @@ var bnPinnedModel = map[string]struct {
 	strict, any, changed int
 	digest               string
 }{
-	"train": {9026, 15262, 3372, "0784bb6674748c5f6f0944e5a675f550fa0a65a487c4b083c7a12dcaa61d140e"},
-	"dev":   {895, 1545, 408, "a365907e0142de00a59e2c0d7ee9451b182ea27e8c113b380377a819e18ac47e"},
+	"train": {9238, 15656, 3219, "d6b292814f1ae9079346ba42e1ab831cdb095ca93c78593bd12836452f33bbcf"},
+	"dev":   {909, 1577, 393, "78cc4b8767f1eeffdc39a8c9ad9355f35a6f2d24146ff5a53f57e35bfbf9d2ca"},
 }
 
 func TestBengaliVowelModel(t *testing.T) {

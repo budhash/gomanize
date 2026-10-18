@@ -65,12 +65,13 @@ Tags: `@deps=` `@rel=` `@branch=` `@pr=` `@issue=` `@tags=` `@effort=` `@system=
   - [x] (T-0109) [P2] [done] Retrain after excluding variant spellings of held-out words (partitions schema 2) @tags=data @done=2026-10-09 @pr=127
   - [ ] (T-0117) [P2] [todo] Lyrics review worksheet: record each reviewer's স (s/sh), ছ (ch/chh) and o/a register preference, with several accepted spellings per word @tags=quality-review,eval,needs-maintainer
   - [ ] (T-0118) [P2] [todo] Bengali convention change: স -> s everywhere (retire s-cluster) and ছ -> ch; train-only ablation, deliberate pin update (dev +187 words measured) @tags=quality-review,linguistics @deps=T-0117
-  - [ ] (T-0119) [P2] [todo] Bengali rule bundle: keep -িত/-ৃত/-ূত and final ত after গ র হ ন শ ষ; loan-coda delete table; C+ও; ya-phala after sibilants -> y; ba-phala after শ/স -> w, দ্ব -> db @tags=quality-review,linguistics
+  - [ ] (T-0119) [P2] [doing] Bengali rule bundle: keep -িত/-ৃত/-ূত and final ত after গ র হ ন শ ষ; loan-coda delete table; C+ও; ya-phala after sibilants -> y; ba-phala after শ/স -> w, দ্ব -> db @tags=quality-review,linguistics @branch=feature/bengali-rule-bundle
   - [ ] (T-0120) [P2] [todo] Bengali suffix-boundary deletion: drop stem-final inherent vowel before a train-derived suffix table (কে টি গুলো তে দের ...) @tags=quality-review,linguistics
   - [ ] (T-0121) [P2] [todo] Extend the Bengali vowel model to conjunct-bearing words (align halant clusters; one shared eligibility inventory for model, trainer and selector) @tags=quality-review,model
   - [x] (T-0122) [P2] [done] Retire the Bengali native selector (keep records); recommend the vowel model as the Bengali profile @tags=quality-review,cleanup,needs-maintainer @done=2026-10-13 @branch=feature/retire-bengali-selector
   - [ ] (T-0123) [P3] [todo] Shared schwa.delete.ccv for the Bengali rules-only default (dev +142, train +924 with 1,352 losses); decide after the rule bundle @tags=quality-review,linguistics
   - [ ] (T-0124) [P3] [todo] Optional Bengali lexicon filter: skip entries that differ from rule output only by o/a (470), measured on attested lyrics @tags=quality-review,lexicon @deps=T-0068
+  - [ ] (T-0127) [P3] [todo] Per-entry train ablation of the Bengali loan-coda table (র্ক closes native words like তর্ক); regenerate the table from train with a tool @tags=quality-review,linguistics
 - [x] (F-0009) [P2] [done] npm distribution: @budhash/gomanize (WASM engine + JS/TS wrapper) @shadow @done=2026-10-09
   - [x] (T-0036) [P2] [done] Package the WASM engine as @budhash/gomanize with loader, types, make target, and Node smoke test @done=2026-09-08
 - [ ] (F-0006) [P2] [todo] WASM build + web demo (data flywheel) @shadow

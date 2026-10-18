@@ -3,70 +3,70 @@
     "all_lines": {
       "lines": 82,
       "B1": {
-        "exact_lines": 43,
-        "exact_fraction": 0.524390243902439,
-        "macro_line_CER": 0.02163762093447945,
-        "micro_CER": 0.022477522477522476,
-        "edits": 45,
+        "exact_lines": 47,
+        "exact_fraction": 0.573170731707317,
+        "macro_line_CER": 0.019476277309721183,
+        "micro_CER": 0.01998001998001998,
+        "edits": 40,
         "reference_characters": 2002
       },
       "model": {
-        "exact_lines": 52,
-        "exact_fraction": 0.6341463414634146,
-        "macro_line_CER": 0.017663935308670182,
-        "micro_CER": 0.01848151848151848,
-        "edits": 37,
+        "exact_lines": 55,
+        "exact_fraction": 0.6707317073170732,
+        "macro_line_CER": 0.016323812017327383,
+        "micro_CER": 0.016983016983016984,
+        "edits": 34,
         "reference_characters": 2002
       },
       "lexicon": {
-        "exact_lines": 37,
-        "exact_fraction": 0.45121951219512196,
-        "macro_line_CER": 0.029389558755437622,
-        "micro_CER": 0.029970029970029972,
-        "edits": 60,
+        "exact_lines": 40,
+        "exact_fraction": 0.4878048780487805,
+        "macro_line_CER": 0.027663755200365774,
+        "micro_CER": 0.027972027972027972,
+        "edits": 56,
         "reference_characters": 2002
       },
       "model_lexicon": {
-        "exact_lines": 47,
-        "exact_fraction": 0.573170731707317,
-        "macro_line_CER": 0.025304196188683136,
-        "micro_CER": 0.025974025974025976,
-        "edits": 52,
+        "exact_lines": 49,
+        "exact_fraction": 0.5975609756097561,
+        "macro_line_CER": 0.02439961296702674,
+        "micro_CER": 0.024975024975024976,
+        "edits": 50,
         "reference_characters": 2002
       }
     },
     "unique_native_lines": {
       "lines": 71,
       "B1": {
-        "exact_lines": 37,
-        "exact_fraction": 0.5211267605633803,
-        "macro_line_CER": 0.02171099554680397,
-        "micro_CER": 0.022573363431151242,
-        "edits": 40,
+        "exact_lines": 41,
+        "exact_fraction": 0.5774647887323944,
+        "macro_line_CER": 0.019214795867505692,
+        "micro_CER": 0.019751693002257337,
+        "edits": 35,
         "reference_characters": 1772
       },
       "model": {
-        "exact_lines": 42,
-        "exact_fraction": 0.5915492957746479,
-        "macro_line_CER": 0.019729910530871936,
-        "micro_CER": 0.020316027088036117,
-        "edits": 36,
+        "exact_lines": 45,
+        "exact_fraction": 0.6338028169014085,
+        "macro_line_CER": 0.01818216250425067,
+        "micro_CER": 0.018623024830699775,
+        "edits": 33,
         "reference_characters": 1772
       },
       "lexicon": {
-        "exact_lines": 33,
-        "exact_fraction": 0.4647887323943662,
-        "macro_line_CER": 0.026989718590482565,
-        "micro_CER": 0.027652370203160272,
-        "edits": 49,
+        "exact_lines": 36,
+        "exact_fraction": 0.5070422535211268,
+        "macro_line_CER": 0.024996537019836205,
+        "micro_CER": 0.025395033860045147,
+        "edits": 45,
         "reference_characters": 1772
       },
       "model_lexicon": {
-        "exact_lines": 39,
-        "exact_fraction": 0.5492957746478874,
-        "macro_line_CER": 0.02487965457233209,
-        "micro_CER": 0.025395033860045147,
-        "edits": 45,
+        "exact_lines": 41,
+        "exact_fraction": 0.5774647887323944,
+        "macro_line_CER": 0.023834924654362738,
+        "micro_CER": 0.024266365688487584,
+        "edits": 43,
         "reference_characters": 1772
       }
     },
@@ -108,11 +108,11 @@
     "song_1": {
       "lines": 20,
       "B1": {
-        "exact_lines": 17,
-        "exact_fraction": 0.85,
-        "macro_line_CER": 0.005223942723942724,
-        "micro_CER": 0.006493506493506494,
-        "edits": 3,
+        "exact_lines": 18,
+        "exact_fraction": 0.9,
+        "macro_line_CER": 0.0037087912087912086,
+        "micro_CER": 0.004329004329004329,
+        "edits": 2,
         "reference_characters": 462
       },
       "model": {
@@ -124,11 +124,11 @@
         "reference_characters": 462
       },
       "lexicon": {
-        "exact_lines": 14,
-        "exact_fraction": 0.7,
-        "macro_line_CER": 0.024789160115247073,
-        "micro_CER": 0.025974025974025976,
-        "edits": 12,
+        "exact_lines": 15,
+        "exact_fraction": 0.75,
+        "macro_line_CER": 0.02327400860009556,
+        "micro_CER": 0.023809523809523808,
+        "edits": 11,
         "reference_characters": 462
       },
       "model_lexicon": {
@@ -143,35 +143,35 @@
     "song_2": {
       "lines": 20,
       "B1": {
-        "exact_lines": 8,
-        "exact_fraction": 0.4,
-        "macro_line_CER": 0.025438409695709475,
-        "micro_CER": 0.027722772277227723,
-        "edits": 14,
+        "exact_lines": 10,
+        "exact_fraction": 0.5,
+        "macro_line_CER": 0.021866981124280902,
+        "micro_CER": 0.023762376237623763,
+        "edits": 12,
         "reference_characters": 505
       },
       "model": {
-        "exact_lines": 12,
-        "exact_fraction": 0.6,
-        "macro_line_CER": 0.01845262927242905,
-        "micro_CER": 0.019801980198019802,
-        "edits": 10,
+        "exact_lines": 14,
+        "exact_fraction": 0.7,
+        "macro_line_CER": 0.014881200701000477,
+        "micro_CER": 0.015841584158415842,
+        "edits": 8,
         "reference_characters": 505
       },
       "lexicon": {
-        "exact_lines": 7,
-        "exact_fraction": 0.35,
-        "macro_line_CER": 0.031009838267138046,
-        "micro_CER": 0.033663366336633666,
-        "edits": 17,
+        "exact_lines": 8,
+        "exact_fraction": 0.4,
+        "macro_line_CER": 0.02922412398142376,
+        "micro_CER": 0.031683168316831684,
+        "edits": 16,
         "reference_characters": 505
       },
       "model_lexicon": {
-        "exact_lines": 11,
-        "exact_fraction": 0.55,
-        "macro_line_CER": 0.02402405784385762,
-        "micro_CER": 0.02574257425742574,
-        "edits": 13,
+        "exact_lines": 12,
+        "exact_fraction": 0.6,
+        "macro_line_CER": 0.022238343558143334,
+        "micro_CER": 0.023762376237623763,
+        "edits": 12,
         "reference_characters": 505
       }
     },
@@ -180,9 +180,9 @@
       "B1": {
         "exact_lines": 9,
         "exact_fraction": 0.45,
-        "macro_line_CER": 0.030381470381470377,
-        "micro_CER": 0.028056112224448898,
-        "edits": 14,
+        "macro_line_CER": 0.02852961852961853,
+        "micro_CER": 0.026052104208416832,
+        "edits": 13,
         "reference_characters": 499
       },
       "model": {
@@ -196,9 +196,9 @@
       "lexicon": {
         "exact_lines": 8,
         "exact_fraction": 0.4,
-        "macro_line_CER": 0.03686751307440962,
-        "micro_CER": 0.03406813627254509,
-        "edits": 17,
+        "macro_line_CER": 0.03501566122255777,
+        "micro_CER": 0.03206412825651302,
+        "edits": 16,
         "reference_characters": 499
       },
       "model_lexicon": {
@@ -213,44 +213,44 @@
     "song_4": {
       "lines": 22,
       "B1": {
-        "exact_lines": 9,
-        "exact_fraction": 0.4090909090909091,
-        "macro_line_CER": 0.025154930027493746,
-        "micro_CER": 0.026119402985074626,
-        "edits": 14,
+        "exact_lines": 10,
+        "exact_fraction": 0.45454545454545453,
+        "macro_line_CER": 0.023406678279242,
+        "micro_CER": 0.024253731343283583,
+        "edits": 13,
         "reference_characters": 536
       },
       "model": {
-        "exact_lines": 8,
-        "exact_fraction": 0.36363636363636365,
-        "macro_line_CER": 0.03059991607592807,
-        "micro_CER": 0.03171641791044776,
-        "edits": 17,
+        "exact_lines": 9,
+        "exact_fraction": 0.4090909090909091,
+        "macro_line_CER": 0.028851664327676316,
+        "micro_CER": 0.029850746268656716,
+        "edits": 16,
         "reference_characters": 536
       },
       "lexicon": {
-        "exact_lines": 8,
-        "exact_fraction": 0.36363636363636365,
-        "macro_line_CER": 0.025300617673181394,
-        "micro_CER": 0.026119402985074626,
-        "edits": 14,
+        "exact_lines": 9,
+        "exact_fraction": 0.4090909090909091,
+        "macro_line_CER": 0.02355236592492965,
+        "micro_CER": 0.024253731343283583,
+        "edits": 13,
         "reference_characters": 536
       },
       "model_lexicon": {
-        "exact_lines": 8,
-        "exact_fraction": 0.36363636363636365,
-        "macro_line_CER": 0.030329353305365295,
-        "micro_CER": 0.03171641791044776,
-        "edits": 17,
+        "exact_lines": 9,
+        "exact_fraction": 0.4090909090909091,
+        "macro_line_CER": 0.028581101557113544,
+        "micro_CER": 0.029850746268656716,
+        "edits": 16,
         "reference_characters": 536
       }
     }
   },
   "equal_weight_song_macro_CER": {
-    "B1": 0.02154968820715408,
-    "model": 0.017340535789488732,
-    "lexicon": 0.029491782282494036,
-    "model_lexicon": 0.025178567260766078
+    "B1": 0.019378017285483162,
+    "model": 0.01601061570956865,
+    "lexicon": 0.027766539932251685,
+    "model_lexicon": 0.02429507575227457
   },
   "overlap": {
     "types": 213,
@@ -284,9 +284,9 @@
         "হে"
       ],
       "profiles": {
-        "B1": "amar matha not kore dao he tomar",
+        "B1": "amar matha noto kore dao he tomar",
         "model": "amar matha noto kore dao he tomar",
-        "lexicon": "amar matha not kore dao he tomar",
+        "lexicon": "amar matha noto kore dao he tomar",
         "model_lexicon": "amar matha noto kore dao he tomar"
       }
     },
@@ -613,10 +613,10 @@
         "মোরে"
       ],
       "profiles": {
-        "B1": "bonchit kore banchale more!",
-        "model": "bonchit kore banchale more!",
-        "lexicon": "bonchit kore banchale more!",
-        "model_lexicon": "bonchit kore banchale more!"
+        "B1": "bonchito kore banchale more!",
+        "model": "bonchito kore banchale more!",
+        "lexicon": "bonchito kore banchale more!",
+        "model_lexicon": "bonchito kore banchale more!"
       }
     },
     {
@@ -631,8 +631,8 @@
         "সঞ্চিত"
       ],
       "profiles": {
-        "B1": "e kripa kothor shonchit mor",
-        "model": "e kripa kothor shonchit mor",
+        "B1": "e kripa kothor shonchito mor",
+        "model": "e kripa kothor shonchito mor",
         "lexicon": "e kripa kothor sanchita mor",
         "model_lexicon": "e kripa kothor sanchita mor"
       }
@@ -1099,9 +1099,9 @@
         "পরিচিত"
       ],
       "profiles": {
-        "B1": "chir jonomer porichit ohe",
+        "B1": "chir jonomer porichito ohe",
         "model": "chir jonmer porichito ohe",
-        "lexicon": "chir jonomer porichit ohe",
+        "lexicon": "chir jonomer porichito ohe",
         "model_lexicon": "chir jonmer porichito ohe"
       }
     },
@@ -1266,10 +1266,10 @@
         "ব্যথিত"
       ],
       "profiles": {
-        "B1": "dukkho-tape byathit chite",
-        "model": "dukkho-tape byathit chite",
-        "lexicon": "dukkho-tape byathit chite",
-        "model_lexicon": "dukkho-tape byathit chite"
+        "B1": "dukkho-tape byathito chite",
+        "model": "dukkho-tape byathito chite",
+        "lexicon": "dukkho-tape byathito chite",
+        "model_lexicon": "dukkho-tape byathito chite"
       }
     },
     {
@@ -1568,10 +1568,10 @@
     "core/engine.go": "cc1d59644b37e5b147c612ee18a24ec757929dfc59b24e6ea8e78cf909194c83",
     "core/interfaces.go": "c5bc611f772f14db828523af2341302dbce2778479902209e15a6b03485bbed6",
     "core/rule.go": "6a7f43bd053ef0911d052d5c2017d854ff8238228e26d0d57683cf6460f9e964",
-    "core/types.go": "58e22ae0186080cd316d9942d8afe129f269ea3e9eae7b7fa6ba734f715c3a06",
-    "gomanize.go": "44c46cd0ed0a942b4c0e98d077920ce8a6f62dc9fa04b5a5c490adee42ee8a40",
+    "core/types.go": "c7bfeba48a7d92be21cf484cb3f93a1fef1fd25e8c44b0ac9dcff40a05fd5997",
+    "gomanize.go": "afb2e656775137c4e1e3c51c7189fc6c0a5aa64228debe60360aeb7178895c7f",
     "lang/bengali/lexicon.go": "2e70e18c7481ed3fe5cedf2030bb7c6dd653b570de76f7080d65fd024a3a61c0",
-    "lang/bengali/rules.go": "57c91ddd79aa87e4a7288510b99e5a404dc9e2fae3c2b02522afa8801b25756f",
+    "lang/bengali/rules.go": "05ca9f78dd3011249042000c5437e31703d8d30fa9ced6435a18747e6b304b82",
     "lang/bengali/symbols.go": "23510f8f62b9d795558ca638dfa3cbd93f50fab7f33f0022f5412ff9c09417d4",
     "lang/bengali/vowel_model.go": "ac556374fce2ae424670b0ea478bdd5c1de0e5ec6ddd5e1c8f9bffff562268cb",
     "scheme/colloquial/colloquial.go": "74f13f297210d886d9450c3d5264057efac6a7f6fd0ddac2b8086bf09f6d6a07",
@@ -1587,8 +1587,8 @@
     "tools/audit_bengali_training_overlap.py": "6a478e807b9ed673960e367e5960b56bef1668dff8a1f420879854d937ea8d2a",
     "tools/bengali/evaluate_external.py": "806fb46b3b691d3151d375c2a104a564c6abef905a787b7854933489ac173642",
     "tools/bengali/evaluate_lyrics.py": "408fabee62f378a0d1c2cab176b11740651575a9d1c4ad853803e223a263b569",
-    "tools/bengali/profiles.py": "5436a0fb4d77a45691247ca6d8da7ad983dce53c54a7a22a6a29c03f28adc52e",
-    "tools/bengali/render_profiles/main.go": "4f4c62e9a7925689d81d1cd2c33ce32385108db78395744d0f472c9d133ae4ed",
+    "tools/bengali/profiles.py": "a05246a1db4e3f2e365ffb892289cc9c3c5c4899567cc8c81aadbe20cf24f587",
+    "tools/bengali/render_profiles/main.go": "4b8b7aeb2f49680d98c2f674514b66a584099abcaed384f5812f82c647709063",
     "tools/bengali_lyrics.py": "ff8688b0a5697963e4824aefb45b2f8e593cadc696c4e3fb2caa2b6583a378be",
     "tools/bengali_training_data.py": "900803ae899abe44cd166070c68f93b5bb9890559392b7aa5f7d268d01b8d94e",
     "tools/build_bengali.py": "a9f28f137bb47014c06932b71aedbd3c4aa588ee20fe7f8b2edea9aa53f08d0c",

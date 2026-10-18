@@ -175,8 +175,8 @@ var bnPinnedRules = map[string]struct {
 	strict, any int
 	digest      string
 }{
-	"train": {8016, 13903, "bba03052cb0fde6ca8effaff9197a0e046627fc4092141caa28e8641a55ee9d6"},
-	"dev":   {775, 1371, "f0e503ee034edc99c68907e68729cdee8edf164455ccd019f2d26f078cdb1dde"},
+	"train": {8268, 14370, "210d1d52516626b529afa978d7fed88eb9dee6ba9f0c1f239deb8ebbc898c247"},
+	"dev":   {791, 1405, "8aede44fb0a26c73b70f07d0bd28e96d12dacc6e10078ece2b3ebd79080b9d63"},
 }
 
 func TestBenchmarkBengali(t *testing.T) {

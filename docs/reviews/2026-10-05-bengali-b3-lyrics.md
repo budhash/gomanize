@@ -5,6 +5,12 @@
 > [JSON](2026-10-05-bengali-b3-lyrics.json) carries only the four remaining
 > profiles (B1, model, lexicon, model + lexicon), whose numbers are unchanged.
 > See [the quality assessment](2026-10-10-bengali-quality-assessment.md) and `CHANGELOG.md`.
+>
+> **Regenerated 2026-10-14 (rule bundle, T-0119).** The JSON now reflects the
+> Bengali rule bundle; the tables below are the pre-bundle figures. All-lines
+> exact agreement moved B1 43 → 47, model 52 → 55, lexicon 37 → 40 and
+> model + lexicon 47 → 49 of 82, against the same unreviewed drafts. See the
+> [rule-bundle record](2026-10-14-bengali-rule-bundle.md).
 
 The lyrics measurement path now runs end to end against 82 lines from the first
 four songs in Tagore's 1913 *Gitanjali*, with committed source captures and six
