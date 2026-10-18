@@ -166,10 +166,12 @@ capture).
 **Experimental Bengali** (F-0011; merged 2026-10-05/06, keel-reviewed
 2026-10-07): rules plus opt-in vowel model (the recommended profile) and lexicon
 across the Go API, CLI (`--language=bengali`), npm and web. Held-out match-any
-56.52% rules / 62.76% vowel model. The native selector was retired 2026-10-13
+58.68% rules / 64.60% vowel model after the T-0119 rule bundle (2026-10-14; was
+56.52% / 62.76%). The native selector was retired 2026-10-13
 (`Rerank` is Hindi-only and an error with Bengali). Lyrics references are
 unreviewed pending maintainer attestation (T-0068). Keel follow-ups: F-0013. Records:
-[`docs/reviews/2026-10-07-bengali-keel.md`](docs/reviews/2026-10-07-bengali-keel.md).
+[`docs/reviews/2026-10-07-bengali-keel.md`](docs/reviews/2026-10-07-bengali-keel.md),
+[`docs/reviews/2026-10-14-bengali-rule-bundle.md`](docs/reviews/2026-10-14-bengali-rule-bundle.md).
 
 Full results: [`docs/RESEARCH.md`](docs/RESEARCH.md) §4. The Hindi CI regression
 gate is strict top-1 pure ≥85% on curated Dakshina (`make test-dakshina`), plus

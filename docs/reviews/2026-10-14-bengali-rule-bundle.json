@@ -1,0 +1,311 @@
+{
+  "BanglaTLit": {
+    "all_tokens_unseen_sentences": {
+      "B1": {
+        "accuracy": 0.02631578947368421,
+        "macro_minCER": 0.5170832901849824,
+        "match_any": 1
+      },
+      "items": 38,
+      "lexicon": {
+        "accuracy": 0.02631578947368421,
+        "macro_minCER": 0.5170832901849824,
+        "match_any": 1
+      },
+      "model": {
+        "accuracy": 0.05263157894736842,
+        "macro_minCER": 0.5062400763812424,
+        "match_any": 2
+      },
+      "model_lexicon": {
+        "accuracy": 0.05263157894736842,
+        "macro_minCER": 0.5062400763812424,
+        "match_any": 2
+      }
+    },
+    "full_sentences": {
+      "B1": {
+        "accuracy": 0.0032,
+        "macro_minCER": 0.32726527832070285,
+        "match_any": 8
+      },
+      "items": 2500,
+      "lexicon": {
+        "accuracy": 0.0052,
+        "macro_minCER": 0.29065391884296893,
+        "match_any": 13
+      },
+      "model": {
+        "accuracy": 0.0052,
+        "macro_minCER": 0.30870834202266667,
+        "match_any": 13
+      },
+      "model_lexicon": {
+        "accuracy": 0.0072,
+        "macro_minCER": 0.2781979057706017,
+        "match_any": 18
+      }
+    }
+  },
+  "Dakshina": {
+    "dev": {
+      "after": {
+        "B1": {
+          "CER": 0.0876616199813257,
+          "any": 1405,
+          "strict": 791,
+          "words": 2500
+        },
+        "lexicon": {
+          "CER": 0.0876616199813257,
+          "any": 1405,
+          "strict": 791,
+          "words": 2500
+        },
+        "model": {
+          "CER": 0.07478187694658278,
+          "any": 1577,
+          "strict": 909,
+          "words": 2500
+        },
+        "model_lexicon": {
+          "CER": 0.07478187694658278,
+          "any": 1577,
+          "strict": 909,
+          "words": 2500
+        }
+      },
+      "before": {
+        "B1": {
+          "CER": 0.09137531889678925,
+          "any": 1371,
+          "strict": 775,
+          "words": 2500
+        },
+        "lexicon": {
+          "CER": 0.09137531889678925,
+          "any": 1371,
+          "strict": 775,
+          "words": 2500
+        },
+        "model": {
+          "CER": 0.0783930173094878,
+          "any": 1545,
+          "strict": 895,
+          "words": 2500
+        },
+        "model_lexicon": {
+          "CER": 0.0783930173094878,
+          "any": 1545,
+          "strict": 895,
+          "words": 2500
+        }
+      }
+    },
+    "test": {
+      "after": {
+        "B1": {
+          "CER": 0.08368047021605822,
+          "any": 1467,
+          "strict": 828,
+          "words": 2500
+        },
+        "lexicon": {
+          "CER": 0.08368047021605822,
+          "any": 1467,
+          "strict": 828,
+          "words": 2500
+        },
+        "model": {
+          "CER": 0.07278169526551877,
+          "any": 1615,
+          "strict": 937,
+          "words": 2500
+        },
+        "model_lexicon": {
+          "CER": 0.07278169526551877,
+          "any": 1615,
+          "strict": 937,
+          "words": 2500
+        }
+      },
+      "before": {
+        "B1": {
+          "CER": 0.08772387863770194,
+          "any": 1413,
+          "strict": 800,
+          "words": 2500
+        },
+        "lexicon": {
+          "CER": 0.08772387863770194,
+          "any": 1413,
+          "strict": 800,
+          "words": 2500
+        },
+        "model": {
+          "CER": 0.07642207338413215,
+          "any": 1569,
+          "strict": 914,
+          "words": 2500
+        },
+        "model_lexicon": {
+          "CER": 0.07642207338413215,
+          "any": 1569,
+          "strict": 914,
+          "words": 2500
+        }
+      }
+    },
+    "train": {
+      "ablation": {
+        "coda": {
+          "B1": {
+            "changed": 348,
+            "losses": 15,
+            "net": 75,
+            "wins": 90
+          },
+          "model": {
+            "changed": 348,
+            "losses": 15,
+            "net": 75,
+            "wins": 90
+          },
+          "rules": [
+            "schwa.bengali.loan-coda"
+          ],
+          "shipped": true
+        },
+        "ito": {
+          "B1": {
+            "changed": 482,
+            "losses": 27,
+            "net": 248,
+            "wins": 275
+          },
+          "model": {
+            "changed": 356,
+            "losses": 11,
+            "net": 195,
+            "wins": 206
+          },
+          "rules": [
+            "schwa.bengali.final-ito"
+          ],
+          "shipped": true
+        },
+        "osuf": {
+          "B1": {
+            "changed": 130,
+            "losses": 7,
+            "net": 71,
+            "wins": 78
+          },
+          "model": {
+            "changed": 130,
+            "losses": 7,
+            "net": 71,
+            "wins": 78
+          },
+          "rules": [
+            "vowel.bengali.final-o"
+          ],
+          "shipped": true
+        },
+        "tacons": {
+          "B1": {
+            "changed": 117,
+            "losses": 10,
+            "net": 45,
+            "wins": 55
+          },
+          "model": {
+            "changed": 59,
+            "losses": 4,
+            "net": 25,
+            "wins": 29
+          },
+          "rules": [
+            "schwa.bengali.final-ta"
+          ],
+          "shipped": true
+        },
+        "yph": {
+          "B1": {
+            "changed": 118,
+            "losses": 7,
+            "net": 28,
+            "wins": 35
+          },
+          "model": {
+            "changed": 118,
+            "losses": 7,
+            "net": 28,
+            "wins": 35
+          },
+          "rules": [
+            "consonant.bengali.sibilant-ya",
+            "render.bengali.sibilant-ya"
+          ],
+          "shipped": true
+        }
+      },
+      "after": {
+        "B1": {
+          "CER": 0.08053211664444757,
+          "any": 14370,
+          "strict": 8268,
+          "words": 25000
+        },
+        "model": {
+          "CER": 0.07095383009766143,
+          "any": 15656,
+          "strict": 9238,
+          "words": 25000
+        }
+      },
+      "before": {
+        "B1": {
+          "CER": 0.08470142026067977,
+          "any": 13903,
+          "strict": 8016,
+          "words": 25000
+        },
+        "model": {
+          "CER": 0.07471175672246422,
+          "any": 15262,
+          "strict": 9026,
+          "words": 25000
+        }
+      }
+    }
+  },
+  "before_definition": "same engine with every bundle rule disabled (equals the pre-bundle runtime)",
+  "criterion": "train leave-one-out from the full bundle, for both B1 and model: net match-any > 0 and paired losses <= 0.25 x wins",
+  "inputs_sha256": {
+    "benchmark/data/banglatlit/test.csv.gz": "386721b4221e2d93b16ab73f3761c7c4e4cd295adf1160fe9c95c06cb34c5386",
+    "benchmark/data/bengali/dev.csv.gz": "8e83784102a527a88af0ad6dfba0fa41c11f57633a34fe2a9abe12acb54aa51a",
+    "benchmark/data/bengali/test.csv.gz": "9cb15941b0893acdcc2891130ff98ba403645fd9170b955372af62f64bd33ca0",
+    "benchmark/data/bengali/train.csv.gz": "44b554fa749c717386bd9f68daaf837788d6c5ff10197d7f23d2bcefc28cf378",
+    "lang/bengali/lexicon.tsv": "f7219dd805c7fd977af9ec64bb590134a9bf1aef11d3f3580062a03b4588a1ea",
+    "lang/bengali/rules.go": "05ca9f78dd3011249042000c5437e31703d8d30fa9ced6435a18747e6b304b82",
+    "lang/bengali/vowel_tree.json": "aae73bcc1c4a8c0303fbcec194e06a353260c0bbc4478a320f832deba4cc966e"
+  },
+  "rejected_at_selection": {
+    "bph": {
+      "B1": {
+        "changed": 346,
+        "losses": 30,
+        "net": 7,
+        "wins": 37
+      },
+      "mechanism": "ba-phala after শ/স renders w; medial দ্ব renders db",
+      "model": {
+        "changed": 346,
+        "losses": 30,
+        "net": 7,
+        "wins": 37
+      }
+    }
+  }
+}

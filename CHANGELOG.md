@@ -25,6 +25,14 @@ tagged release also has auto-generated notes on the
   - B2 learned components: a three-class inherent-vowel model (`SchwaModel`, the
     recommended Bengali profile) and an 8,976-entry spelling lexicon (`Lexicon`).
     Held-out Dakshina match-any: rules 56.52%, model 62.76%.
+  - Rule bundle (T-0119): five named, disableable rules for the participle -িত
+    family, final ত after গ র হ ন শ ষ, loan codas (ন্ট ন্ড ঞ্জ ন্স ক্স র্স র্ক ল্ড),
+    final ও after a consonant (এখনও→ekhono, কও→ko) and medial ya-phala after
+    sibilants (দৃশ্যের→drishyer), each selected by a preregistered train-only
+    leave-one-out; ba-phala `w` failed it and was dropped. Held-out Dakshina
+    match-any: rules 58.68%, model 64.60%
+    ([record](docs/reviews/2026-10-14-bengali-rule-bundle.md)). Bengali pins and
+    the lyrics pilot record were regenerated; the Hindi snapshot is unchanged.
   - Frozen, normalized training partitions with held-out exclusions (schema 2
     also excludes khanda-ta and malformed-আ variants of held-out words).
   - Evaluation fixtures: pinned BanglaTLit test split, reviewed Bengali and

@@ -253,7 +253,11 @@ the Hindi snapshot must not move.
 4. **Rule bundle:** -িত/-ৃত/-ূত keep; final ত after গ র হ ন শ ষ; loan-coda
    delete table; C+ও; ya-phala after sibilants → `y`; ba-phala after শ/স → `w` and
    দ্ব → `db` (keep or drop `bph` on its own ablation). +54 dev / +525 train on top
-   of item 2. One day.
+   of item 2. One day. *Done 2026-10-14* (T-0119, without item 2): `ito`, `tacons`,
+   `coda`, `osuf` and `yph` shipped on a preregistered train-only leave-one-out;
+   `bph` failed it (37 wins / 30 losses) and was dropped. Held-out test match-any
+   rules 56.52% → 58.68%, model 62.76% → 64.60%
+   ([record](2026-10-14-bengali-rule-bundle.md)).
 5. **Suffix-boundary deletion** (the measurable morphology layer: nominal suffixes
    on conjunct-bearing stems, not verb endings). +24 dev on top of 2–4; +88 for
    rules-only. Half a day; the suffix table grows from train only.

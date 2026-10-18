@@ -164,14 +164,16 @@ the npm package); dataset details are in [docs/RESEARCH.md](docs/RESEARCH.md) §
 
 The Go library accepts `gomanize.New("bengali")`. Experimental B1 adds scoped
 phalas, positional conjuncts, final-cluster vowels, and হও/হওয়া handling to the
-B0 symbols and Unicode aliases. It reaches 56.52% match-any on the held-out
-Dakshina word set; pronunciation ambiguities remain. The CLI accepts `--language=bengali` (or
+B0 symbols and Unicode aliases, plus a train-selected rule bundle (participle
+-িত, final ত, loan codas, final ও, ya-phala after sibilants; see the
+[rule-bundle record](docs/reviews/2026-10-14-bengali-rule-bundle.md)). It reaches
+58.68% match-any on the held-out Dakshina word set; pronunciation ambiguities remain. The CLI accepts `--language=bengali` (or
 `--language bengali`); omitting it preserves Hindi. npm accepts `{ language: "bengali" }`, and the browser has an explicit language
 selector. Both continue to default to Hindi. See the [B1 results and
 limitations](docs/reviews/2026-10-04-bengali-b1-results.md).
 
 `SchwaModel: true` enables the [vowel model](docs/reviews/2026-10-04-bengali-b2-vowels.md),
-which raises held-out match-any to 62.76%. `Lexicon: true` adds 8,976 attested
+which raises held-out match-any to 64.60%. `Lexicon: true` adds 8,976 attested
 training spellings; it helps known words and leaves the excluded held-out score
 unchanged. Both are opt-in and can be combined. Alternate-style flags bypass the
 lexicon so the requested style is preserved. See the [lexicon evaluation](docs/reviews/2026-10-04-bengali-b2-lexicon.md).
@@ -184,8 +186,8 @@ held-out) was retired on 2026-10-13; see the
 [quality assessment](docs/reviews/2026-10-10-bengali-quality-assessment.md).
 
 Held-out Dakshina (2,500 words), rules / vowel model:
-match-any 56.52% / 62.76%, strict top-1 32.00% / 36.56%,
-mean minCER 0.0877 / 0.0764. Bengali references average about 3.7
+match-any 58.68% / 64.60%, strict top-1 33.12% / 37.48%,
+mean minCER 0.0837 / 0.0728. Bengali references average about 3.7
 variants per held-out word (Hindi: 1.8), which inflates match-any
 relative to Hindi, and Aksharantar contains the Dakshina test vocabulary, so its
 gains are not independent confirmation.

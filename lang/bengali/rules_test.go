@@ -20,7 +20,7 @@ func TestB1ProductionOutputs(t *testing.T) {
 		"জ্ঞান": "gyan", "জ্ঞাত": "gyat", "বিজ্ঞ": "biggo", "অজ্ঞান": "oggan",
 		"ব্রহ্ম": "brommo", "চিহ্ন": "chinno", "চিহ্নে": "chinne",
 		"দুঃখ": "dukkho", "দুঃখে": "dukkhe", "অতঃপর": "otohpor", "উঃ": "uh",
-		"হও": "hao", "হওয়া": "howa", "হওয়া": "howa", "ও": "o", "কও": "koo", "য়া": "ya",
+		"হও": "hao", "হওয়া": "howa", "হওয়া": "howa", "ও": "o", "কও": "ko", "য়া": "ya",
 		"স্তর": "stor", "স্থল": "sthol", "আস্তে": "aste", "স্বর": "shor", "আর্ট": "art", "কর্ড": "kord", "টেস্ট": "test",
 		"ফল": "fol", "ফুল": "ful", "বাংলা": "bangla", "চাঁদ": "chand", "চাঁ": "chan", "হঠাৎ": "hothat", "উৎসব": "utshob",
 	} {
@@ -93,7 +93,7 @@ func TestB1RulesOwnTheirUnits(t *testing.T) {
 	// NewRuleEngine also rejects all composed priority ties, including disabled rules.
 	_ = core.NewRuleEngine(RuleCatalog().AllRules())
 	for _, r := range RuleCatalog().AllRules() {
-		for _, input := range []string{"অন্ত", "মোহ", "দুঃখ", "ক্ষতি", "কক্ষ", "জ্ঞান", "বিজ্ঞ", "চিহ্ন", "ফল", "স্তর", "স্বামী", "ব্যবহার", "মধ্য", "হও", "হওয়া"} {
+		for _, input := range []string{"অন্ত", "মোহ", "দুঃখ", "ক্ষতি", "কক্ষ", "জ্ঞান", "বিজ্ঞ", "চিহ্ন", "ফল", "স্তর", "স্বামী", "ব্যবহার", "মধ্য", "হও", "হওয়া", "চিহ্নিত", "গত", "পেইন্ট", "এখনও", "কও", "দৃশ্যের", "শ্যাম"} {
 			w := brahmic.NewParser(Bengali{}.ScriptConfig()).Parse(input, Symbols)
 			w.Options.InherentVowelA = true
 			w.Options.SchwaModel = true
@@ -119,5 +119,64 @@ func TestB1RulesOwnTheirUnits(t *testing.T) {
 				}
 			}
 		}
+	}
+}
+
+func TestRuleBundleProductionOutputs(t *testing.T) {
+	e := core.NewEngine(Bengali{}, colloquial.Colloquial{})
+	for input, want := range map[string]string{
+		"চিহ্নিত": "chinnito", "নির্ধারিত": "nirdharito", "গীত": "gito", "মৃত": "mrito", "দূত": "duto",
+		"গত": "goto", "শত": "shoto", "ভারত": "bharoto", "নত": "noto",
+		"পেইন্ট": "peint", "গোল্ড": "gold", "মার্ক": "mark", "বক্স": "boksh", "পঞ্জ": "ponj",
+		"এখনও": "ekhono", "কখনও": "kokhono", "কও": "ko",
+		"দৃশ্যের": "drishyer", "আলস্য": "aloshyo", "অবশ্য": "oboshyo",
+		// Negative contexts: none of the bundle rules fire.
+		"যত": "jot", "রাত": "rat", "হাত": "hat", "চিত্ত": "chitto", "শরৎ": "shorot", "হিত্": "hit",
+		"অন্ত": "onto", "মন্ত্র": "montro", "আর্ট": "art", "যাও": "jao", "তবুও": "tobuo", "ও": "o",
+		"শ্যাম": "shyam", "মধ্য": "moddho", "বিশ্বাস": "bishshash",
+	} {
+		if got := e.Transliterate(input); got != want {
+			t.Errorf("%s: %s != %s", input, got, want)
+		}
+	}
+	for input, want := range map[string]string{"চিহ্নিত": "chinnita", "গত": "gata", "এখনও": "ekhana", "দৃশ্যের": "drishyer"} {
+		if got := e.TransliterateWithOptions(input, core.Options{InherentVowelA: true}); got != want {
+			t.Errorf("a style %s: %s != %s", input, got, want)
+		}
+	}
+	// The bundle overrides the vowel model's final decision as it does B1's.
+	for input, want := range map[string]string{"চিহ্নিত": "chinnito", "গত": "goto", "পেইন্ট": "peint", "এখনও": "ekhono"} {
+		if got := e.TransliterateWithOptions(input, core.Options{SchwaModel: true}); got != want {
+			t.Errorf("model %s: %s != %s", input, got, want)
+		}
+	}
+}
+
+func TestRuleBundleDisableControls(t *testing.T) {
+	tests := []struct {
+		input, want, without string
+		rules                []string
+	}{
+		{"চিহ্নিত", "chinnito", "chinnit", []string{"schwa.bengali.final-ito"}},
+		{"গত", "goto", "got", []string{"schwa.bengali.final-ta"}},
+		{"পেইন্ট", "peint", "peinto", []string{"schwa.bengali.loan-coda"}},
+		{"এখনও", "ekhono", "ekhonoo", []string{"vowel.bengali.final-o"}},
+		{"দৃশ্যের", "drishyer", "drishsher", []string{"consonant.bengali.sibilant-ya", "render.bengali.sibilant-ya"}},
+		// The pair splits spelling from gemination: without the render half the
+		// medial-phala copy of the sibilant hides the y spelling.
+		{"দৃশ্যের", "drishyer", "drishjer", []string{"consonant.bengali.sibilant-ya"}},
+		{"দৃশ্যের", "drishyer", "drishsher", []string{"render.bengali.sibilant-ya"}},
+	}
+	e := core.NewEngine(Bengali{}, colloquial.Colloquial{})
+	for _, tc := range tests {
+		t.Run(strings.Join(tc.rules, "+"), func(t *testing.T) {
+			if got := e.Transliterate(tc.input); got != tc.want {
+				t.Fatalf("enabled: %s != %s", got, tc.want)
+			}
+			off := core.NewEngine(Bengali{}, colloquial.Colloquial{}, core.WithDisabledRules(tc.rules...))
+			if got := off.Transliterate(tc.input); got != tc.without {
+				t.Fatalf("disabled: %s != %s", got, tc.without)
+			}
+		})
 	}
 }

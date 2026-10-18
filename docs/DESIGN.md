@@ -130,6 +130,20 @@ learned-model rule below), plus consonant rules (व→v/w contexts, फ→f wit
 फू exception), vowel rules (closed-final ा→aa, िए glide), and render rules
 (nasal endings, ांव→aon, etc.).
 
+Bengali (`lang/bengali/rules.go`) adds B1 schwa rules (final cluster, final হ,
+post-visarga), consonant rules (ফ→f, হ্ম/হ্ন, ক্ষ, জ্ঞ, স-clusters, initial
+phalas, visarga suppression, হওয়া), render rules (medial phala and visarga
+gemination), the opt-in `schwa.bengali.model`, and the T-0119 rule bundle
+(train leave-one-out selected; [record](reviews/2026-10-14-bengali-rule-bundle.md)):
+
+| Rule | Effect |
+|---|---|
+| `schwa.bengali.final-ito` | Final ত after ি/ী/ৃ/ূ keeps its vowel (চিহ্নিত→chinnito) |
+| `schwa.bengali.final-ta` | Final ত after a bare গ র হ ন শ ষ keeps its vowel (গত→goto) |
+| `schwa.bengali.loan-coda` | Final ন্ট ন্ড ঞ্জ ন্স ক্স র্স র্ক ল্ড close (পেইন্ট→peint); র্ট/র্ড/স্ট close via `final-cluster`'s exclusion |
+| `vowel.bengali.final-o` | Final ও after a bare consonant adds no second `o` (এখনও→ekhono) |
+| `consonant.bengali.sibilant-ya` + `render.bengali.sibilant-ya` | Medial ya-phala after শ/ষ/স is `y`, not a geminate (দৃশ্যের→drishyer) |
+
 ## 3. The colloquial scheme
 
 Design principles: **no diacritics** (aa not ā), **schwa deletion matching
@@ -189,7 +203,7 @@ Measured and intentional (each backed by a decision record):
 | Schwa classifier (`--schwa-model`) | CART tree, 34 KB JSON (`lang/hindi/schwa_tree.json`) | `schwa.model.predict` rule (Language:90, Exclusive) takes over inherent-schwa decisions | 90.67% per-schwa held-out; ties/beats the 8 hand rules word-level |
 | Lexicon (`--lexicon`) | 8,367-entry TSV, ~204 KB (`lang/hindi/lexicon.tsv`) | `core.LexiconProvider` pre-pipeline short-circuit; lossless OOV fallthrough | 71.7% token coverage; COMI-LINGUA +6.7 pts, AK-NEI +7.8 pts, lyrics CER 0.0492→0.0394 |
 | Re-ranker (`--rerank`) | Char 4-gram LM, 31K grams, 224 KB (`lang/hindi/roman_ngrams.tsv`) | `core.Reranker`: scores {default rules, schwa-model} outputs, stupid backoff, per-char normalized; ties keep the default | Held-out 69.3→70.7%, curated match-any 92.9→94.8%, lyrics CER 0.0492→0.0476 |
-| Bengali vowel model (`SchwaModel`; the recommended Bengali profile) | Three-class CART tree (`lang/bengali/vowel_tree.json`), Google pronunciation lexicon train partition | `schwa.bengali.model` rule on supported simple words; unsupported words keep B1 rules | Held-out match-any 56.52→62.76% |
+| Bengali vowel model (`SchwaModel`; the recommended Bengali profile) | Three-class CART tree (`lang/bengali/vowel_tree.json`), Google pronunciation lexicon train partition | `schwa.bengali.model` rule on supported simple words; unsupported words keep B1 rules | Held-out match-any 56.52→62.76% (64.60% with the rule bundle) |
 | Bengali lexicon (`Lexicon`) | 8,976-entry TSV (`lang/bengali/lexicon.tsv`), Dakshina train | `OptionsLexiconProvider`; default style only | Zero held-out coverage by construction; helps known words |
 
 Design constraints that shaped them:

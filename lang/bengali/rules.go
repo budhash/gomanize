@@ -52,6 +52,17 @@ func RuleCatalog() core.RuleCatalog {
 		return source(u, "হ") && u.Prev != nil && u.IsWordFinal() && !spelledDead(u)
 	}, keep)
 	add("schwa.bengali.post-visarga", core.PhaseSchwa, 78, func(u *core.Unit, w *core.Word) bool { return visargaTarget(u) && !spelledDead(u) }, keep)
+	// T-0119 bundle: each rule ships on its own train-only leave-one-out ablation
+	// (docs/reviews/2026-10-14-bengali-rule-bundle.md).
+	add("schwa.bengali.final-ito", core.PhaseSchwa, 81, func(u *core.Unit, w *core.Word) bool {
+		return finalBareTa(u) && matraOf(u.Prev, "িীৃূ")
+	}, keep)
+	add("schwa.bengali.final-ta", core.PhaseSchwa, 82, func(u *core.Unit, w *core.Word) bool {
+		return finalBareTa(u) && consonant(u.Prev) && !brahmic.IsAfterHalant(u.Prev) && oneOf(u.Prev, "গরহনশষ")
+	}, keep)
+	add("schwa.bengali.loan-coda", core.PhaseSchwa, 83, func(u *core.Unit, w *core.Word) bool {
+		return u.IsWordFinal() && simpleClusterRight(u) && loanCodas[string(u.Prev.Runes)+string(u.Runes)]
+	}, func(u *core.Unit, w *core.Word) { brahmic.SetSchwa(u, brahmic.SchwaDelete) })
 	add("consonant.bengali.f-spelling", core.PhaseConsonant, 95, func(u *core.Unit, w *core.Word) bool { return source(u, "ফ") }, func(u *core.Unit, w *core.Word) { u.BaseRom = "f" })
 	add("consonant.bengali.h-nasal", core.PhaseConsonant, 94, func(u *core.Unit, w *core.Word) bool { return pairLeft(u, "হ", "ম") || pairLeft(u, "হ", "ন") }, func(u *core.Unit, w *core.Word) {
 		if source(u.Next, "ম") {
@@ -92,9 +103,15 @@ func RuleCatalog() core.RuleCatalog {
 			brahmic.GetBrahmicData(u).SchwaQuality = brahmic.SchwaOpen
 		}
 	})
+	add("consonant.bengali.sibilant-ya", core.PhaseConsonant, 61, sibilantYa, func(u *core.Unit, w *core.Word) { u.BaseRom = "y" })
+	add("render.bengali.sibilant-ya", core.PhaseRender, 61, sibilantYa, noGemination)
 	add("render.bengali.medial-phala", core.PhaseRender, 60, func(u *core.Unit, w *core.Word) bool { return phala(u) && !u.Prev.IsWordInitial() }, func(u *core.Unit, w *core.Word) { brahmic.GetBrahmicData(u).Gemination = brahmic.RepeatPrevious })
 	add("consonant.bengali.visarga-suppress", core.PhaseConsonant, 50, func(u *core.Unit, w *core.Word) bool { return source(u, "ঃ") && visargaTarget(u.Next) }, func(u *core.Unit, w *core.Word) { u.BaseRom = "" })
 	add("render.bengali.visarga-gemination", core.PhaseRender, 50, func(u *core.Unit, w *core.Word) bool { return visargaTarget(u) }, func(u *core.Unit, w *core.Word) { brahmic.GetBrahmicData(u).Gemination = brahmic.GeminateSelf })
+	// এখনও: the final ও after a bare consonant repeats the inherent vowel already rendered.
+	add("vowel.bengali.final-o", core.PhaseVowel, 41, func(u *core.Unit, w *core.Word) bool {
+		return source(u, "ও") && u.IsWordFinal() && consonant(u.Prev) && !brahmic.IsAfterHalant(u) && w.Original != "হও"
+	}, func(u *core.Unit, w *core.Word) { u.BaseRom = "" })
 	add("vowel.bengali.hao", core.PhaseVowel, 40, func(u *core.Unit, w *core.Word) bool { return w.Original == "হও" && source(u, "হ") }, func(u *core.Unit, w *core.Word) { brahmic.GetBrahmicData(u).SchwaQuality = brahmic.SchwaOpen })
 	add("vowel.bengali.howa-w", core.PhaseVowel, 39, func(u *core.Unit, w *core.Word) bool { return howa(w) && source(u, "ও") }, func(u *core.Unit, w *core.Word) { u.BaseRom = "w" })
 	add("consonant.bengali.howa-y", core.PhaseConsonant, 39, func(u *core.Unit, w *core.Word) bool { return howa(w) && (source(u, "য়") || source(u, "য়")) }, func(u *core.Unit, w *core.Word) { u.BaseRom = "" })
@@ -142,6 +159,22 @@ func visargaTarget(u *core.Unit) bool {
 	vowel := u.Prev.Prev
 	return source(vowel, "ু") && source(vowel.Prev, "দ") && vowel.Prev.IsWordInitial()
 }
+func matraOf(u *core.Unit, s string) bool { return brahmic.IsMatraUnit(u) && oneOf(u, s) }
+func noGemination(u *core.Unit, w *core.Word) {
+	brahmic.GetBrahmicData(u).Gemination = brahmic.GeminationNone
+}
+
+// finalBareTa is a word-final ত with its own inherent vowel (not a cluster
+// member and not spelled dead), as in the participle ending -িত.
+func finalBareTa(u *core.Unit) bool {
+	return source(u, "ত") && u.IsWordFinal() && !brahmic.IsAfterHalant(u) && !brahmic.GetBrahmicData(u).TrailingHalant
+}
+
+// sibilantYa is a medial ya-phala after শ/ষ/স: দৃশ্যের reads drishyer, not drishsher.
+func sibilantYa(u *core.Unit, w *core.Word) bool {
+	return source(u, "য") && simpleClusterRight(u) && oneOf(u.Prev, "শষস") && !u.Prev.IsWordInitial()
+}
+
 func howa(w *core.Word) bool { return w.Original == "হওয়া" || w.Original == "হওয়া" }
 
 // These final clusters in Bengali loans retain a closed coda (art/card/test),
@@ -149,3 +182,7 @@ func howa(w *core.Word) bool { return w.Original == "হওয়া" || w.Origi
 func loanCoda(u *core.Unit) bool {
 	return (source(u.Prev, "র") && oneOf(u, "টড")) || (source(u.Prev, "স") && source(u, "ট"))
 }
+
+// loanCodas extends loanCoda with final clusters that Dakshina train mostly
+// writes closed (ন্ট in পেইন্ট, ক্স in বক্স). Keys join the two letters.
+var loanCodas = map[string]bool{"নট": true, "নড": true, "ঞজ": true, "নস": true, "কস": true, "রস": true, "রক": true, "লড": true}
