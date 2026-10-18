@@ -146,5 +146,8 @@ assistant drafts** (T-0068), so this is agreement, not a quality claim:
 - Dev was previously consulted for these candidates by the 2026-10-10 review
   (the **fifth** use of Bengali dev); here it was only a confirmation step and
   changed nothing. Dev figures remain mildly optimistic.
+- The criterion was written into the implementation brief before any dev run, but
+  criterion, code and results land in one commit, so git alone cannot prove the
+  order; the train-only `ships()` check in the evaluator is what is enforced.
 - Test and BanglaTLit were run once, after freezing. Unit-test examples avoid
   dev/test words except দৃশ্যের and বিশ্বাস, the spec's own examples.
