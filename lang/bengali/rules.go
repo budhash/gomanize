@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/budhash/gomanize/core"
+	"github.com/budhash/gomanize/internal/bengalitables"
 	"github.com/budhash/gomanize/script/brahmic"
 )
 
@@ -61,8 +62,12 @@ func RuleCatalog() core.RuleCatalog {
 		return finalBareTa(u) && consonant(u.Prev) && !brahmic.IsAfterHalant(u.Prev) && oneOf(u.Prev, "গরহনশষ")
 	}, keep)
 	add("schwa.bengali.loan-coda", core.PhaseSchwa, 83, func(u *core.Unit, w *core.Word) bool {
-		return u.IsWordFinal() && simpleClusterRight(u) && loanCodas[string(u.Prev.Runes)+string(u.Runes)]
+		return u.IsWordFinal() && simpleClusterRight(u) && bengalitables.LoanCodas[string(u.Prev.Runes)+string(u.Runes)]
 	}, func(u *core.Unit, w *core.Word) { brahmic.SetSchwa(u, brahmic.SchwaDelete) })
+	// T-0120: a stem-final bare consonant before a word-final nominal suffix
+	// loses its vowel (অঞ্চলকে oncholke). Entries and the rule are selected on
+	// train (docs/reviews/2026-10-20-bengali-suffix-coda.md).
+	add("schwa.bengali.suffix-boundary", core.PhaseSchwa, 84, suffixStem, func(u *core.Unit, w *core.Word) { brahmic.SetSchwa(u, brahmic.SchwaDelete) })
 	add("consonant.bengali.f-spelling", core.PhaseConsonant, 95, func(u *core.Unit, w *core.Word) bool { return source(u, "ফ") }, func(u *core.Unit, w *core.Word) { u.BaseRom = "f" })
 	add("consonant.bengali.h-nasal", core.PhaseConsonant, 94, func(u *core.Unit, w *core.Word) bool { return pairLeft(u, "হ", "ম") || pairLeft(u, "হ", "ন") }, func(u *core.Unit, w *core.Word) {
 		if source(u.Next, "ম") {
@@ -185,6 +190,37 @@ func loanCoda(u *core.Unit) bool {
 	return (source(u.Prev, "র") && oneOf(u, "টড")) || (source(u.Prev, "স") && source(u, "ট"))
 }
 
-// loanCodas extends loanCoda with final clusters that Dakshina train mostly
-// writes closed (ন্ট in পেইন্ট, ক্স in বক্স). Keys join the two letters.
-var loanCodas = map[string]bool{"নট": true, "নড": true, "ঞজ": true, "নস": true, "কস": true, "রস": true, "রক": true, "লড": true}
+// The loan-coda entries (bengalitables.LoanCodas) extend loanCoda with final
+// clusters that Dakshina train mostly writes closed (ন্ট in পেইন্ট, ক্স in বক্স).
+
+// suffixStem is a bare consonant (no matra, no hasant, not in the word's first
+// akshara) immediately followed by the longest word-final suffix in
+// bengalitables.Suffixes. Suffixes are matched on unit boundaries.
+func suffixStem(u *core.Unit, w *core.Word) bool {
+	if !consonant(u) || u.Next == nil || !consonant(u.Next) || brahmic.IsAfterHalant(u.Next) || brahmic.GetBrahmicData(u).NoInherentVowel {
+		return false
+	}
+	first := u
+	for brahmic.IsAfterHalant(first) && first.Prev != nil {
+		first = first.Prev
+	}
+	if first.IsWordInitial() {
+		return false
+	}
+	var tail strings.Builder
+	for x := u.Next; x != nil; x = x.Next {
+		tail.WriteString(string(x.Runes))
+	}
+	if !bengalitables.Suffixes[tail.String()] {
+		return false
+	}
+	// Longest match: no longer table suffix may start at or before u.
+	longer := tail.String()
+	for x := u; x != nil; x = x.Prev {
+		longer = string(x.Runes) + longer
+		if bengalitables.Suffixes[longer] {
+			return false
+		}
+	}
+	return true
+}
