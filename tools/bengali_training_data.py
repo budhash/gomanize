@@ -16,6 +16,10 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT = ROOT / 'training/data/bengali'
 SEED = 'gomanize-bengali-b2-v1'
 GOOGLE_SHA = '1bc2edda15da62bd4ef8576114e391c9a89ad8971f1eef3635e8fee0d7c1dd61'
+# Uncompressed content of the same lexicon: upstream googlei18n/language-resources
+# bn/data/lexicon.tsv (path last changed in 49f1dbd). Only the gzip bytes differ,
+# so the raw .tsv is accepted when it matches this digest (2026-10-21 prereg).
+GOOGLE_TSV_SHA = 'c9db2307a004c5b34022ad0d1a6429900e71251f2fe1ef967e8889e5806df268'
 GOOGLE_KEYS_SHA = {
     'train': '45d1dbc35c0a60fbe5f34b1d5ae5aa70df2f96b0a28f574e897ee4f3fd621665',
     'dev': '892f87edb11483b313bc637d06d1cb98bcb807fd7f5755cb38257055daa06fe6',
@@ -73,8 +77,17 @@ def partition(key):
     return 'train' if bucket < 9000 else 'dev' if bucket < 9500 else 'test'
 
 
+def google_text(path):
+    """Pinned lexicon text: the original .gz (GOOGLE_SHA) or its raw .tsv (GOOGLE_TSV_SHA)."""
+    if Path(path).is_file():
+        data = Path(path).read_bytes()
+        if sha(data) == GOOGLE_TSV_SHA:
+            return data.decode('utf-8')
+    return gzip.decompress(pinned(path, GOOGLE_SHA)).decode('utf-8')
+
+
 def google_rows(path):
-    text = gzip.decompress(pinned(path, GOOGLE_SHA)).decode('utf-8')
+    text = google_text(path)
     rows = []
     for number, line in enumerate(text.splitlines(), 1):
         if not line or line.startswith('#'):
@@ -242,7 +255,7 @@ def assert_lexicon_isolation(keys, directory=DEFAULT):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--google', type=Path, help='pinned lexicon.tsv.gz, required for build')
+    parser.add_argument('--google', type=Path, help='pinned lexicon.tsv.gz or its raw lexicon.tsv, required for build')
     parser.add_argument('--output', type=Path, default=DEFAULT)
     parser.add_argument('--verify', action='store_true')
     args = parser.parse_args()

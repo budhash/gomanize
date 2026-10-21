@@ -44,11 +44,12 @@ cat << 'EOF'
    ./tools/tasks tree    # backlog (never hand-edit TASKS.md)
    ./tools/tasks next    # next actionable task
 
-6. CURRENT STATUS (2026-10-14; v1.2.1 + experimental Bengali, keel-reviewed)
+6. CURRENT STATUS (2026-10-21; v1.2.1 + experimental Bengali, keel-reviewed)
    Hindi curated Dakshina: 86.2% pure / 92.9% match-any / 94.8% with --rerank
    Hindi held-out: 70.7% (rerank) | Lyrics gold CER: 0.039 (--lexicon; human floor ~0.054)
    Bengali (--language=bengali, experimental): held-out match-any 58.7% rules /
-   64.6% vowel model (--schwa-model, recommended; T-0119 rule bundle 2026-10-14); native selector retired
+   64.8% vowel model (--schwa-model, recommended; T-0119 rule bundle 2026-10-14,
+   T-0121 conjunct retrain 2026-10-21); native selector retired
    2026-10-13 (--rerank is Hindi-only); lyrics references unreviewed (T-0068)
    Keel follow-ups: F-0013. Run Python suites under 3.12 (hosted CI does).
    See CLAUDE.md for status and docs/reviews/ for all decision records.

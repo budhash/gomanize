@@ -7,11 +7,15 @@ from bengali_training_data import ROOT, dak_rows
 from evaluate_external import distance
 
 PROFILES = ('B1', 'model', 'lexicon', 'model_lexicon')
+# Build tag that swaps in the pre-T-0121 simple-word vowel model
+# (lang/bengali/vowel_model_v1.go); evaluation only.
+SIMPLE_V1 = ('bengali_vowel_v1',)
 
 
-def predict(rows, disable=()):
-    """Outputs per row for PROFILES; disable names rules to ablate in every profile."""
-    command = ['go', 'run', './tools/bengali/render_profiles']
+def predict(rows, disable=(), tags=()):
+    """Outputs per row for PROFILES; disable names rules to ablate in every profile,
+    tags selects Go build tags (SIMPLE_V1 = the previous vowel model)."""
+    command = ['go', 'run'] + (['-tags', ','.join(tags)] if tags else []) + ['./tools/bengali/render_profiles']
     if disable:
         command += ['-disable', ','.join(disable)]
     proc = subprocess.run(command, cwd=ROOT,

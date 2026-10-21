@@ -33,6 +33,21 @@ tagged release also has auto-generated notes on the
     match-any: rules 58.68%, model 64.60%
     ([record](docs/reviews/2026-10-14-bengali-rule-bundle.md)). Bengali pins and
     the lyrics pilot record were regenerated; the Hindi snapshot is unchanged.
+  - Vowel model on conjunct-bearing words (T-0121). Halant-cluster words, such as
+    reph, ya/ba/ma-phala and ক্ষ, are now eligible. The eligibility inventory is
+    shared by Go and Python (`lang/bengali/vowel_inventory.json`). The model was
+    retrained at the same depth and min-leaf, and its rule precedence is
+    unchanged. A preregistered train-only selection passed (net +190 match-any)
+    and dev confirmed it.
+    - Held-out Dakshina, model: match-any 64.60% → 64.76%, minCER 0.0728 →
+      0.0703. Rules-only output is byte-identical.
+    - Newly covered test words improved (54.0% → 56.4%); previously covered
+      words fell (68.9% → 67.5%).
+    - BanglaTLit model sentence CER worsened slightly (0.3087 → 0.3094).
+    - জ্ঞ words stay on the rules
+      ([record](docs/reviews/2026-10-21-bengali-vowel-conjuncts.md)).
+    - The model pins and the lyrics pilot record were regenerated. The B1 pins,
+      the B1 gate and the Hindi snapshot did not change.
   - Frozen, normalized training partitions with held-out exclusions (schema 2
     also excludes khanda-ta and malformed-আ variants of held-out words).
   - Evaluation fixtures: pinned BanglaTLit test split, reviewed Bengali and

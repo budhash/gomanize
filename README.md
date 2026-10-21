@@ -173,7 +173,11 @@ selector. Both continue to default to Hindi. See the [B1 results and
 limitations](docs/reviews/2026-10-04-bengali-b1-results.md).
 
 `SchwaModel: true` enables the [vowel model](docs/reviews/2026-10-04-bengali-b2-vowels.md),
-which raises held-out match-any to 64.60%. `Lexicon: true` adds 8,976 attested
+which raises held-out match-any to 64.76%. Since T-0121 it also decides words
+with halant clusters such as reph, phalas and ক্ষ. That raises its coverage to
+70% of held-out words, but only +4 test words of accuracy: newly covered words
+improved (54.0% → 56.4%), previously covered words fell (68.9% → 67.5%), and
+BanglaTLit sentence CER got slightly worse. See the [vowel-conjunct record](docs/reviews/2026-10-21-bengali-vowel-conjuncts.md). `Lexicon: true` adds 8,976 attested
 training spellings; it helps known words and leaves the excluded held-out score
 unchanged. Both are opt-in and can be combined. Alternate-style flags bypass the
 lexicon so the requested style is preserved. See the [lexicon evaluation](docs/reviews/2026-10-04-bengali-b2-lexicon.md).
@@ -186,8 +190,8 @@ held-out) was retired on 2026-10-13; see the
 [quality assessment](docs/reviews/2026-10-10-bengali-quality-assessment.md).
 
 Held-out Dakshina (2,500 words), rules / vowel model:
-match-any 58.68% / 64.60%, strict top-1 33.12% / 37.48%,
-mean minCER 0.0837 / 0.0728. Bengali references average about 3.7
+match-any 58.68% / 64.76%, strict top-1 33.12% / 37.52%,
+mean minCER 0.0837 / 0.0703. Bengali references average about 3.7
 variants per held-out word (Hindi: 1.8), which inflates match-any
 relative to Hindi, and Aksharantar contains the Dakshina test vocabulary, so its
 gains are not independent confirmation.

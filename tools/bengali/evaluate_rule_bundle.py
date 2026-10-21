@@ -6,6 +6,10 @@ alone from the bundle loses net match-any on Dakshina train, with paired losses
 at most a quarter of wins, for both the rules-only (B1) and vowel-model
 profiles. Dev and test are reported before/after and never select; BanglaTLit is
 reported after. Aksharantar is not run.
+
+History since 2026-10-21: the T-0121 vowel-model retrain moved the model
+profiles, so this script no longer reproduces its record; the shipped profiles
+are asserted against docs/reviews/2026-10-21-bengali-vowel-conjuncts.json.
 """
 import argparse
 import csv

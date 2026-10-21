@@ -268,6 +268,12 @@ the Hindi snapshot must not move.
    `tools/bengali/vowels.py`, mirror `vowelUnits`, regenerate the parity fixture,
    with one shared eligibility inventory. *Estimate*, not measurement: +120–160 dev
    words if coverage reaches ~90%. 2–4 days; needs the pinned Google lexicon.
+   *Done 2026-10-21* (T-0121): a train-only selection passed (net +190 match-any).
+   Dev confirmed it, but with +13 words, not the +120–160 estimated. The model is
+   now eligible on 70.3% of test words (was 39.5%). Test match-any moved 64.60% →
+   64.76% and minCER 0.0728 → 0.0703. The newly eligible words gained and the
+   previously eligible ones lost slightly. BanglaTLit sentence CER worsened
+   slightly ([record](2026-10-21-bengali-vowel-conjuncts.md)).
 7. **Shared CCV for the rules-only default** (not under the model): +142 dev /
    +924 train, with 1,352 train losses (a net win, not a clean one). The default
    profile is what CLI/npm/web users get.

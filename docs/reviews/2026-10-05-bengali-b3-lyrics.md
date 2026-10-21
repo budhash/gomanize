@@ -11,6 +11,12 @@
 > exact agreement moved B1 43 → 47, model 52 → 55, lexicon 37 → 40 and
 > model + lexicon 47 → 49 of 82, against the same unreviewed drafts. See the
 > [rule-bundle record](2026-10-14-bengali-rule-bundle.md).
+>
+> **Regenerated 2026-10-21 (vowel model on conjuncts, T-0121).** All-lines exact
+> agreement moved model 55 → 58 and model + lexicon 49 → 52 of 82 (macro line CER
+> 0.016324 → 0.015461 and 0.024400 → 0.023068). B1 and lexicon did not change.
+> These are measured against the same unreviewed drafts. See the
+> [vowel-conjunct record](2026-10-21-bengali-vowel-conjuncts.md).
 
 The lyrics measurement path now runs end to end against 82 lines from the first
 four songs in Tagore's 1913 *Gitanjali*, with committed source captures and six

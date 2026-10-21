@@ -1,5 +1,11 @@
 # Bengali convention-neutral rule bundle (T-0119, 2026-10-14)
 
+> **Superseded as the asserted profile record (2026-10-21).** The T-0121 vowel-model
+> retrain moved the model profiles, so the model-profile numbers here and in the
+> [JSON](2026-10-14-bengali-rule-bundle.json) are history and are no longer
+> recomputed. The rules-only figures are unchanged. `make test-bengali-profiles`
+> now asserts the [vowel-conjunct record](2026-10-21-bengali-vowel-conjuncts.md).
+
 **Status:** shipped (experimental Bengali). Item 4 of the
 [quality assessment](2026-10-10-bengali-quality-assessment.md) plan, without the
 স/ছ spelling change (T-0117/T-0118, pending a maintainer decision), the suffix

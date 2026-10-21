@@ -106,7 +106,8 @@ func TestCLILearnedFlagsReachEngine(t *testing.T) {
 		{"hindi", "अंतरिक्ष", []string{"--schwa-model"}, gomanize.Options{SchwaModel: true}, gomanize.Options{}},
 		{"hindi", "अक्षांश", []string{"--lexicon"}, gomanize.Options{Lexicon: true}, gomanize.Options{}},
 		{"hindi", "अपमानजनक", []string{"--rerank"}, gomanize.Options{Rerank: true}, gomanize.Options{}},
-		{"bengali", "সমতা", []string{"--schwa-model"}, gomanize.Options{SchwaModel: true}, gomanize.Options{}},
+		// A train word with halant clusters (T-0121): only the model decides them.
+		{"bengali", "প্রধানমন্ত্রী", []string{"--schwa-model"}, gomanize.Options{SchwaModel: true}, gomanize.Options{}},
 		{"bengali", "বলল পথ সকল", []string{"--lexicon"}, gomanize.Options{Lexicon: true}, gomanize.Options{}},
 	} {
 		with, _ := gomanize.NewWithOptions(tc.language, tc.opts)

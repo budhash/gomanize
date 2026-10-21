@@ -1,0 +1,817 @@
+[
+  {
+    "word": "কমল",
+    "eligible": true,
+    "legacy_eligible": true
+  },
+  {
+    "word": "কাম",
+    "eligible": true,
+    "legacy_eligible": true
+  },
+  {
+    "word": "ফল",
+    "eligible": true,
+    "legacy_eligible": true
+  },
+  {
+    "word": "মন",
+    "eligible": true,
+    "legacy_eligible": true
+  },
+  {
+    "word": "ড়ক",
+    "eligible": true,
+    "legacy_eligible": true
+  },
+  {
+    "word": "কড়",
+    "eligible": true,
+    "legacy_eligible": true
+  },
+  {
+    "word": "কোড়",
+    "eligible": true,
+    "legacy_eligible": true
+  },
+  {
+    "word": "কামালমালকামাল",
+    "eligible": true,
+    "legacy_eligible": true
+  },
+  {
+    "word": "কমলকমলকমলকমলকমল",
+    "eligible": true,
+    "legacy_eligible": true
+  },
+  {
+    "word": "মনমনমনমনমনমনমন",
+    "eligible": true,
+    "legacy_eligible": true
+  },
+  {
+    "word": "কামালমালকামালমালকামাল",
+    "eligible": true,
+    "legacy_eligible": true
+  },
+  {
+    "word": "ড়কমলকমলকমলকমল",
+    "eligible": true,
+    "legacy_eligible": true
+  },
+  {
+    "word": "কোকমলকমলকমলক",
+    "eligible": true,
+    "legacy_eligible": true
+  },
+  {
+    "word": "গর্ত",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "মধ্য",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ক্ষতি",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "পক্ষ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "দ্বাল",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "স্মরণ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "স্ত্রী",
+    "eligible": false,
+    "legacy_eligible": false
+  },
+  {
+    "word": "বস্ত্র",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ড়্গ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কন্যা",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ক্",
+    "eligible": false,
+    "legacy_eligible": false
+  },
+  {
+    "word": "্ক",
+    "eligible": false,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ক্্ক",
+    "eligible": false,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ক্‍ষ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ক্ষ্ম্য",
+    "eligible": false,
+    "legacy_eligible": false
+  },
+  {
+    "word": "স্ত্র্য",
+    "eligible": false,
+    "legacy_eligible": false
+  },
+  {
+    "word": "জ্ঞান",
+    "eligible": false,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ক্য়",
+    "eligible": false,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ক্ৎ",
+    "eligible": false,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ক্অ",
+    "eligible": false,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ক্কঅ",
+    "eligible": false,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ক্কাঅ",
+    "eligible": false,
+    "legacy_eligible": false
+  },
+  {
+    "word": "া্ক",
+    "eligible": false,
+    "legacy_eligible": false
+  },
+  {
+    "word": "অ্ক",
+    "eligible": false,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ক্ষ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ক্ক",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ক",
+    "eligible": true,
+    "legacy_eligible": true
+  },
+  {
+    "word": "কা",
+    "eligible": false,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ক্কা",
+    "eligible": false,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ঙ্ক্ষ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কয্য",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ধ্ধার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ভ্সার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "থ্ধার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "খ্টার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কদ্ধ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "য্মার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কভ্খ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ধ্ঢার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ড়্ঝার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কত্ন",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "দ্কার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কক্ম",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ঢ্শার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কছ্ফ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "দ্বার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ণ্ড়ার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ঠ্মার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কগ্ঙ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কয্র",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কণ্ড",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "চ্ঝার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কচ্র",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ন্রার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কঘ্ঢ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "খ্ভার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ল্ঠার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "য্হার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "থ্চার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কট্ম",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কব্দ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কট্খ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কঙ্ব",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "দ্ষার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "জ্ণার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ড্ছার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কঝ্ব",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কজ্স",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কল্দ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ঢ্ঙার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "র্টার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ল্ছার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "গ্ধার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "গ্খার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কভ্ত",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কহ্ফ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ঝ্লার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কছ্ভ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কদ্ম",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ফ্ধার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কঢ্জ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ড্ঝার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ম্ঙার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ভ্যার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কঠ্প",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কজ্ম",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কড়্ল",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ভ্নার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ফ্পার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ছ্কার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কথ্ছ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ণ্পার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ঠ্জার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কট্য",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ষ্ঝার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ন্ঘার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "র্ফার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ল্ড়ার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ন্জার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কহ্ঠ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কড়্স",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কছ্স",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কক্ঢ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কত্ল",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "গ্চার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কড্শ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কঘ্প",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কন্থ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কহ্ণ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কশ্ছ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কঘ্ঝ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কন্খ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ত্জার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কম্ঝ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কব্থ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কছ্ছ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ছ্রার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কহ্ঘ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কড়্ভ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "য্ভার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "গ্হার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কগ্ম",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ঙ্তার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "স্পার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কছ্ধ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কফ্প",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কপ্ঢ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ঠ্থার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ধ্সার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কহ্থ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ঘ্দার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কখ্ফ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "প্পার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "দ্সার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কর্ছ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ত্ডার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ধ্ঘার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "প্ঠার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কট্থ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "ঘ্ঝার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "স্ঙার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কঝ্ণ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কক্ক",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "গ্ভার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কল্ড",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "য্খার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কপ্থ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কফ্দ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "শ্ফার",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "কথ্ক",
+    "eligible": true,
+    "legacy_eligible": false
+  }
+]

@@ -11,11 +11,11 @@
         "reference_characters": 2002
       },
       "model": {
-        "exact_lines": 55,
-        "exact_fraction": 0.6707317073170732,
-        "macro_line_CER": 0.016323812017327383,
-        "micro_CER": 0.016983016983016984,
-        "edits": 34,
+        "exact_lines": 58,
+        "exact_fraction": 0.7073170731707317,
+        "macro_line_CER": 0.015460761686033199,
+        "micro_CER": 0.015984015984015984,
+        "edits": 32,
         "reference_characters": 2002
       },
       "lexicon": {
@@ -27,11 +27,11 @@
         "reference_characters": 2002
       },
       "model_lexicon": {
-        "exact_lines": 49,
-        "exact_fraction": 0.5975609756097561,
-        "macro_line_CER": 0.02439961296702674,
-        "micro_CER": 0.024975024975024976,
-        "edits": 50,
+        "exact_lines": 52,
+        "exact_fraction": 0.6341463414634146,
+        "macro_line_CER": 0.023067519483762587,
+        "micro_CER": 0.023476523476523476,
+        "edits": 47,
         "reference_characters": 2002
       }
     },
@@ -46,11 +46,11 @@
         "reference_characters": 1772
       },
       "model": {
-        "exact_lines": 45,
-        "exact_fraction": 0.6338028169014085,
-        "macro_line_CER": 0.01818216250425067,
-        "micro_CER": 0.018623024830699775,
-        "edits": 33,
+        "exact_lines": 48,
+        "exact_fraction": 0.676056338028169,
+        "macro_line_CER": 0.017185400149798236,
+        "micro_CER": 0.017494356659142212,
+        "edits": 31,
         "reference_characters": 1772
       },
       "lexicon": {
@@ -62,11 +62,11 @@
         "reference_characters": 1772
       },
       "model_lexicon": {
-        "exact_lines": 41,
-        "exact_fraction": 0.5774647887323944,
-        "macro_line_CER": 0.023834924654362738,
-        "micro_CER": 0.024266365688487584,
-        "edits": 43,
+        "exact_lines": 44,
+        "exact_fraction": 0.6197183098591549,
+        "macro_line_CER": 0.022296450490592864,
+        "micro_CER": 0.022573363431151242,
+        "edits": 40,
         "reference_characters": 1772
       }
     },
@@ -81,11 +81,11 @@
         "reference_characters": 156
       },
       "model": {
-        "exact_lines": 6,
-        "exact_fraction": 0.8571428571428571,
-        "macro_line_CER": 0.006802721088435374,
-        "micro_CER": 0.00641025641025641,
-        "edits": 1,
+        "exact_lines": 7,
+        "exact_fraction": 1.0,
+        "macro_line_CER": 0.0,
+        "micro_CER": 0.0,
+        "edits": 0,
         "reference_characters": 156
       },
       "lexicon": {
@@ -97,11 +97,11 @@
         "reference_characters": 156
       },
       "model_lexicon": {
-        "exact_lines": 6,
-        "exact_fraction": 0.8571428571428571,
-        "macro_line_CER": 0.006802721088435374,
-        "micro_CER": 0.00641025641025641,
-        "edits": 1,
+        "exact_lines": 7,
+        "exact_fraction": 1.0,
+        "macro_line_CER": 0.0,
+        "micro_CER": 0.0,
+        "edits": 0,
         "reference_characters": 156
       }
     },
@@ -116,9 +116,9 @@
         "reference_characters": 462
       },
       "model": {
-        "exact_lines": 16,
-        "exact_fraction": 0.8,
-        "macro_line_CER": 0.007298534798534798,
+        "exact_lines": 17,
+        "exact_fraction": 0.85,
+        "macro_line_CER": 0.007554945054945056,
         "micro_CER": 0.008658008658008658,
         "edits": 4,
         "reference_characters": 462
@@ -132,9 +132,9 @@
         "reference_characters": 462
       },
       "model_lexicon": {
-        "exact_lines": 13,
-        "exact_fraction": 0.65,
-        "macro_line_CER": 0.026863752189839146,
+        "exact_lines": 14,
+        "exact_fraction": 0.7,
+        "macro_line_CER": 0.027120162446249402,
         "micro_CER": 0.02813852813852814,
         "edits": 13,
         "reference_characters": 462
@@ -151,11 +151,11 @@
         "reference_characters": 505
       },
       "model": {
-        "exact_lines": 14,
-        "exact_fraction": 0.7,
-        "macro_line_CER": 0.014881200701000477,
-        "micro_CER": 0.015841584158415842,
-        "edits": 8,
+        "exact_lines": 15,
+        "exact_fraction": 0.75,
+        "macro_line_CER": 0.013268297475194027,
+        "micro_CER": 0.013861386138613862,
+        "edits": 7,
         "reference_characters": 505
       },
       "lexicon": {
@@ -167,11 +167,11 @@
         "reference_characters": 505
       },
       "model_lexicon": {
-        "exact_lines": 12,
-        "exact_fraction": 0.6,
-        "macro_line_CER": 0.022238343558143334,
-        "micro_CER": 0.023762376237623763,
-        "edits": 12,
+        "exact_lines": 13,
+        "exact_fraction": 0.65,
+        "macro_line_CER": 0.020625440332336882,
+        "micro_CER": 0.02178217821782178,
+        "edits": 11,
         "reference_characters": 505
       }
     },
@@ -186,11 +186,11 @@
         "reference_characters": 499
       },
       "model": {
-        "exact_lines": 16,
-        "exact_fraction": 0.8,
-        "macro_line_CER": 0.013011063011063011,
-        "micro_CER": 0.012024048096192385,
-        "edits": 6,
+        "exact_lines": 17,
+        "exact_fraction": 0.85,
+        "macro_line_CER": 0.01063011063011063,
+        "micro_CER": 0.01002004008016032,
+        "edits": 5,
         "reference_characters": 499
       },
       "lexicon": {
@@ -202,11 +202,11 @@
         "reference_characters": 499
       },
       "model_lexicon": {
-        "exact_lines": 15,
-        "exact_fraction": 0.75,
-        "macro_line_CER": 0.019497105704002253,
-        "micro_CER": 0.018036072144288578,
-        "edits": 9,
+        "exact_lines": 16,
+        "exact_fraction": 0.8,
+        "macro_line_CER": 0.017116153323049874,
+        "micro_CER": 0.01603206412825651,
+        "edits": 8,
         "reference_characters": 499
       }
     },
@@ -223,7 +223,7 @@
       "model": {
         "exact_lines": 9,
         "exact_fraction": 0.4090909090909091,
-        "macro_line_CER": 0.028851664327676316,
+        "macro_line_CER": 0.029032517956805805,
         "micro_CER": 0.029850746268656716,
         "edits": 16,
         "reference_characters": 536
@@ -239,18 +239,18 @@
       "model_lexicon": {
         "exact_lines": 9,
         "exact_fraction": 0.4090909090909091,
-        "macro_line_CER": 0.028581101557113544,
-        "micro_CER": 0.029850746268656716,
-        "edits": 16,
+        "macro_line_CER": 0.02701370343799129,
+        "micro_CER": 0.027985074626865673,
+        "edits": 15,
         "reference_characters": 536
       }
     }
   },
   "equal_weight_song_macro_CER": {
     "B1": 0.019378017285483162,
-    "model": 0.01601061570956865,
+    "model": 0.015121467779263879,
     "lexicon": 0.027766539932251685,
-    "model_lexicon": 0.02429507575227457
+    "model_lexicon": 0.02296886488490686
   },
   "overlap": {
     "types": 213,
@@ -364,9 +364,9 @@
       ],
       "profiles": {
         "B1": "nijere keboli kori opoman,",
-        "model": "nijere kebli kori opoman,",
+        "model": "nijere kebli kori opman,",
         "lexicon": "nijere keboli kori opoman,",
-        "model_lexicon": "nijere kebli kori opoman,"
+        "model_lexicon": "nijere kebli kori opman,"
       }
     },
     {
@@ -378,9 +378,9 @@
       ],
       "profiles": {
         "B1": "aponare shudhu gheriya gheriya",
-        "model": "apnare shudhu gheriya gheriya",
+        "model": "aponare shudhu gheriya gheriya",
         "lexicon": "aponare shudhu gheriya gheriya",
-        "model_lexicon": "apnare shudhu gheriya gheriya"
+        "model_lexicon": "aponare shudhu gheriya gheriya"
       }
     },
     {
@@ -598,9 +598,9 @@
       ],
       "profiles": {
         "B1": "ami bohu bashonay pranopone chai",
-        "model": "ami bohu bashonay pranopone chai",
+        "model": "ami bohu bashonay pranpone chai",
         "lexicon": "ami bohu bashonay pranopone chai",
-        "model_lexicon": "ami bohu bashonay pranopone chai"
+        "model_lexicon": "ami bohu bashonay pranpone chai"
       }
     },
     {
@@ -1084,9 +1084,9 @@
       "training_tokens": [],
       "profiles": {
         "B1": "jokhoni jekhane lobe,",
-        "model": "jokhni jekhane lobe,",
+        "model": "jokhoni jekhane lobe,",
         "lexicon": "jokhoni jekhane lobe,",
-        "model_lexicon": "jokhni jekhane lobe,"
+        "model_lexicon": "jokhoni jekhane lobe,"
       }
     },
     {
@@ -1424,9 +1424,9 @@
       ],
       "profiles": {
         "B1": "torite pari shokoti jen roy।",
-        "model": "torite pari shokti jen roy।",
+        "model": "torite pari shokoti jen roy।",
         "lexicon": "torite pari shokoti jen roy।",
-        "model_lexicon": "torite pari shokti jen roy।"
+        "model_lexicon": "torite pari shokoti jen roy।"
       }
     },
     {
@@ -1473,7 +1473,7 @@
       ],
       "profiles": {
         "B1": "bohite pari emoni jen hoy।",
-        "model": "bohite pari emni jen hoy।",
+        "model": "bohite pari emoni jen hoy।",
         "lexicon": "bohite pari emni jen hoy।",
         "model_lexicon": "bohite pari emni jen hoy।"
       }
@@ -1571,31 +1571,32 @@
     "core/types.go": "c7bfeba48a7d92be21cf484cb3f93a1fef1fd25e8c44b0ac9dcff40a05fd5997",
     "gomanize.go": "afb2e656775137c4e1e3c51c7189fc6c0a5aa64228debe60360aeb7178895c7f",
     "lang/bengali/lexicon.go": "2e70e18c7481ed3fe5cedf2030bb7c6dd653b570de76f7080d65fd024a3a61c0",
-    "lang/bengali/rules.go": "05ca9f78dd3011249042000c5437e31703d8d30fa9ced6435a18747e6b304b82",
+    "lang/bengali/rules.go": "ea0075b3e1bfff2ccc89ba2460222631ecd95769b0f3891cacca85df9052e5d1",
     "lang/bengali/symbols.go": "23510f8f62b9d795558ca638dfa3cbd93f50fab7f33f0022f5412ff9c09417d4",
-    "lang/bengali/vowel_model.go": "ac556374fce2ae424670b0ea478bdd5c1de0e5ec6ddd5e1c8f9bffff562268cb",
+    "lang/bengali/vowel_model.go": "20849f70f6f7fe15c607670ce9f3630492623bb4c8cea9c296b8210a084f9cb8",
+    "lang/bengali/vowel_model_v1.go": "b4b9f356cb35bf9c32461b2de739c7f1bff8e675cfe81b1b0de068f6889eece1",
     "scheme/colloquial/colloquial.go": "74f13f297210d886d9450c3d5264057efac6a7f6fd0ddac2b8086bf09f6d6a07",
     "script/brahmic/brahmic.go": "675ba122ff54f082f836a0e0abe545930652ea2131e68ab377e5cac141cb722d",
     "script/brahmic/canonical.go": "0282c6e6d5de1c269fd07b279fd19bfb0fb87e0be12691c4ebfde58508a1c0b0",
     "script/brahmic/categories.go": "d848e919f2ea2e6782d0f5923c375c72fb17f5e90faff03ad1e082dd368d7f51",
     "script/brahmic/parser.go": "e3e4075f8051211501049be9cf78fd3fc4a270add42f03f22196c9c2734d5d0b",
     "script/brahmic/profile.go": "00e0e725fa1daf2e8a93e2c113d1b414a1ce7f04f1b85c9a412bd92c683f2e5b",
-    "script/brahmic/renderer.go": "967191702ba3e2ad635bff4057621c58c927648c498787d81e3e501e39001594",
+    "script/brahmic/renderer.go": "d5b7af16190c160f9cb0d2329be0200a9fc57d395585493efd7a07ae581e38f3",
     "script/brahmic/runs.go": "027bb02f2313ee0c976c24a213e00459abd9e53573ad3299070f71a1719aa0b7",
     "script/brahmic/schwa_rules.go": "00d87de66393a140f8409b601d94edfc99fa65e0bbf2b9c3e9dcd4ced6fa6bf0",
     "script/brahmic/types.go": "85f566be202f495bc8ae1711d36c0983ad478ae6d19f356feb649a65c1882fb4",
     "tools/audit_bengali_training_overlap.py": "6a478e807b9ed673960e367e5960b56bef1668dff8a1f420879854d937ea8d2a",
     "tools/bengali/evaluate_external.py": "806fb46b3b691d3151d375c2a104a564c6abef905a787b7854933489ac173642",
     "tools/bengali/evaluate_lyrics.py": "408fabee62f378a0d1c2cab176b11740651575a9d1c4ad853803e223a263b569",
-    "tools/bengali/profiles.py": "a05246a1db4e3f2e365ffb892289cc9c3c5c4899567cc8c81aadbe20cf24f587",
+    "tools/bengali/profiles.py": "ab79d33a03d8453c037cf50677a83bc397bf9f021fa99bbbba34d201b29828e9",
     "tools/bengali/render_profiles/main.go": "4b8b7aeb2f49680d98c2f674514b66a584099abcaed384f5812f82c647709063",
     "tools/bengali_lyrics.py": "ff8688b0a5697963e4824aefb45b2f8e593cadc696c4e3fb2caa2b6583a378be",
-    "tools/bengali_training_data.py": "900803ae899abe44cd166070c68f93b5bb9890559392b7aa5f7d268d01b8d94e",
+    "tools/bengali_training_data.py": "341afc0a2d531d09236f5add7421f381dba024fe94057c0cf2203cecbe11eb04",
     "tools/build_bengali.py": "a9f28f137bb47014c06932b71aedbd3c4aa588ee20fe7f8b2edea9aa53f08d0c",
     "training/data/bengali/manifest.json": "29d1ac4406cd9b915ef14208179aab28a58ba2fb4e66072ebea011e9b01eae17"
   },
   "artifacts_sha256": {
-    "vowel_tree.json": "aae73bcc1c4a8c0303fbcec194e06a353260c0bbc4478a320f832deba4cc966e",
+    "vowel_tree.json": "365dd7e9ae6364dbcb7253cd1e40da2eae932bdd0c83aa207142b6ab6e89e753",
     "lexicon.tsv": "f7219dd805c7fd977af9ec64bb590134a9bf1aef11d3f3580062a03b4588a1ea"
   },
   "limitations": [

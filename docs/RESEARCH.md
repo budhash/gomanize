@@ -257,13 +257,58 @@ test, reported once after freezing: rules **56.52% → 58.68%** match-any (stric
 for all four profiles (model 0.3129 → 0.3087). The vowel model (64.60%) remains
 the recommended profile. [Record](reviews/2026-10-14-bengali-rule-bundle.md).
 
+#### Vowel model on conjunct-bearing words (T-0121, 2026-10-21)
+
+Before this change, the vowel model decided only simple words; any word with a
+halant cluster fell back to the rules.
+
+**Change.** Words with clusters of two or three inventory consonants (reph,
+ya/ba/ma-phala, ক্ষ) are now eligible.
+
+- A member before ্ has no inherent slot.
+- The features and the CART (depth 10, min-leaf 20) are unchanged.
+- One eligibility inventory is shared by Go and Python.
+- The aligner gains consonant-only alternatives: gemination or silence for
+  non-first members, ক্ষ as `kh`, and, from Google train failures, a silent ক in
+  ক্ষ.
+- জ্ঞ stays ineligible, because ঞ is not an inventory consonant.
+
+**Alignment and Google accuracy.** Google train accepted types rose from 19,658
+to 33,298 and slot instances from 32,580 to 59,485. Slot accuracy on Google dev
+fell from 0.8558 to 0.8335. On the slots eligible before, it fell from 0.8558 to
+0.8380: one tree now serves both populations.
+
+**Selection.** The preregistered criterion was train-only: net paired match-any
+> 0 against the previous model, and macro minCER not worse.
+
+- Overall: +190 (676 wins / 486 losses); minCER 0.0710 → 0.0692.
+- Newly eligible words: +352.
+- Previously eligible words: −162.
+
+**Held-out.** Dev was used once, as confirmation, and is its seventh Bengali
+use: 63.08% → 63.60%, minCER 0.0748 → 0.0727. Test was reported once.
+
+- Test: **64.60% → 64.76%** match-any (strict 37.48% → 37.52%), minCER
+  **0.0728 → 0.0703**.
+- The model is now eligible on 70.3% of test words, up from 39.5%.
+- Newly eligible test words: 54.03% → 56.36%.
+- Previously eligible test words: 68.90% → 67.48%.
+- Rules-only output is byte-identical.
+- BanglaTLit sentence CER worsened slightly for the model (0.3087 → 0.3094) and
+  improved on the 38 all-unseen sentences.
+- The gain is mostly in CER. The +13 dev words fall far short of the assessment's
+  +120–160 estimate.
+
+[Record](reviews/2026-10-21-bengali-vowel-conjuncts.md).
+
 #### B3 lyrics pilot (2026-10-05)
 
 A source-pinned pilot now covers 82 lines (71 unique) from the first four songs
 of Tagore's 1913 *Gitanjali*. Its Roman references were drafted by the assistant
-before prediction and are **unreviewed, not gold**. The vowel model has 55 exact
-draft agreements and macro line CER 0.016324 after the rule bundle (52 and
-0.017664 before; the since-retired selector: 52 and 0.017013); these are provisional
+before prediction and are **unreviewed, not gold**. The vowel model has 58 exact
+draft agreements and macro line CER 0.015461 after the conjunct retrain. It had
+55 and 0.016324 after the rule bundle, and 52 and 0.017664 before that; the
+since-retired selector had 52 and 0.017013. These are provisional
 reference-agreement measurements, not a validated accuracy claim. The lexicon
 reduces agreement on this sample. Training overlap is substantial: 142/213
 native word types; only seven lines are entirely unseen by the training word
