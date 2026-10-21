@@ -1,9 +1,9 @@
 # Bengali vowel model on conjunct-bearing words (T-0121, 2026-10-21)
 
 **Status:** shipped (experimental Bengali). Plan item 6 of the
-[quality assessment](2026-10-10-bengali-quality-assessment.md), run exactly as
-[preregistered](2026-10-21-bengali-vowel-conjuncts-prereg.md). The deviations
-are listed below. No rule-table, symbol, lexicon or Hindi change, and no স/ছ
+[quality assessment](2026-10-10-bengali-quality-assessment.md), run as
+[preregistered](2026-10-21-bengali-vowel-conjuncts-prereg.md) with the six
+deviations listed below. No rule-table, symbol, lexicon or Hindi change, and no স/ছ
 change.
 
 [Machine-readable record](2026-10-21-bengali-vowel-conjuncts.json), written by
@@ -21,10 +21,12 @@ record.
   `tools/bengali/vowels.py` reads it.
   - The aligner's phone table must list exactly the inventory's letters.
   - A Go test and a Python test assert that both sides agree on eligibility
-    (`lang/bengali/testdata/vowel_eligibility.json`, synthetic words only).
+    (`lang/bengali/testdata/vowel_eligibility.json`; constructed cases plus some
+    real Dakshina words, see the fixture note below).
   - Before the Dakshina run, Go and Python were also checked on all 60,708
     Google and Dakshina **train** types: zero eligibility disagreements, and
-    zero label disagreements on 69,757 slots.
+    zero label disagreements on 69,757 slots. This was a one-off check; it is
+    not in the JSON and no test asserts it.
 - **Units.** A consonant followed by ্ has no inherent slot. A cluster's last
   member has a slot unless a matra follows. Ineligible words: clusters of four
   or more, a halant that is unterminated, leading or doubled, any member outside
@@ -101,6 +103,9 @@ Reported as before; this never selects.
 | Train | 28,117 / 32,580 (0.86301) | 49,949 / 59,485 (0.83969) | | |
 | Dev | 1,585 / 1,852 (0.85583) | 2,883 / 3,459 (0.83348) | 1,552 / 1,852 (0.83801) | 1,331 / 1,607 (0.82825) |
 | Test | 1,531 / 1,793 (0.85388) | 2,758 / 3,312 (0.83273) | 1,509 / 1,793 (0.84161) | 1,249 / 1,519 (0.82225) |
+
+The two stratified "after" columns were computed once and are not in the JSON
+or asserted; the other figures match `vowel_tree.json` metadata.
 
 Sharing one tree with conjunct words costs some accuracy on the slots that were
 eligible before (dev −33, test −22). The Dakshina strata below show the same
@@ -227,9 +232,15 @@ Pins moved deliberately:
   - model-lexicon 13,159 / 18,373 → **13,199 / 18,500**, with a new digest;
   - B1-lexicon 12,739 / 17,718 and 8,976 hits are unchanged.
 - **Fixtures:**
-  - `lang/bengali/testdata/vowel_features.json` was regenerated (525 synthetic
-    slots, now including clusters);
+  - `lang/bengali/testdata/vowel_features.json` was regenerated (525 slots, now
+    including clusters);
   - `vowel_eligibility.json` is new.
+  - Fixture note: both fixtures contain some real Dakshina words, mostly
+    train (গর্ত, দ্বার, মধ্য, ক্ষতি, স্মরণ) and a few short held-out ones (ফল,
+    আপ and উল from dev, ওক from test, the last three predating this PR).
+    Fixtures train nothing, so this is not contamination. The first commit's
+    fixtures used কর্ম, a Dakshina **test** word; the second commit replaced it
+    with গর্ত.
 
 These are byte-identical and their tests pass unmodified:
 
@@ -263,6 +274,9 @@ assertion now points to this record.
 5. **The "before" profile is an evaluation build tag** (`bengali_vowel_v1`), not
    a second checkout. It was verified identical to main's runtime on every
    evaluated set.
+6. **`prev` and `next2` (not `prev` and `next`) may be ্.** The prereg's item 3
+   named `next`. A slot consonant is never followed by ্, so `next` cannot be;
+   `next2` can. The feature definitions themselves are unchanged.
 
 ## Reproduction
 

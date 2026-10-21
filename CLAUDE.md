@@ -168,7 +168,9 @@ capture).
 across the Go API, CLI (`--language=bengali`), npm and web. Held-out match-any
 58.68% rules / 64.76% vowel model. The rules figure follows the T-0119 rule
 bundle (2026-10-14; was 56.52%). The model figure also includes the T-0121
-retrain onto halant-cluster words (2026-10-21; 62.76% → 64.60% → 64.76%). The
+retrain onto halant-cluster words (2026-10-21; 62.76% → 64.60% → 64.76%; that
+retrain is +4 test words, trades previously covered words for new ones, and is
+slightly worse on BanglaTLit). The
 native selector was retired 2026-10-13
 (`Rerank` is Hindi-only and an error with Bengali). Lyrics references are
 unreviewed pending maintainer attestation (T-0068). Keel follow-ups: F-0013. Records:

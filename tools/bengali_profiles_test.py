@@ -4,7 +4,8 @@ Recomputes the vowel-conjunct record (docs/reviews/2026-10-21-bengali-vowel-conj
 the Dakshina train selection that shipped the halant-cluster vowel model
 (paired against the previous simple-word model, build tag bengali_vowel_v1),
 Dakshina dev/test before and after, and BanglaTLit for the four shipped
-profiles, and requires them to match. The 2026-10-14 rule-bundle and
+profiles, and requires them to match. It also re-checks the 2026-10-14
+rules-only (B1) bundle ablation, which T-0121 left unchanged. The rule-bundle and
 2026-10-05 runtime records are history. Aksharantar needs the pinned external
 archive and remains an offline step.
 """
@@ -16,6 +17,8 @@ import unittest
 sys.path.insert(0, str(Path(__file__).parent/'bengali'))
 from bengali_training_data import ROOT, DAK_SHA, sha
 import evaluate_vowel_conjuncts as conjuncts
+import evaluate_rule_bundle as bundle
+import profiles
 
 RECORD = ROOT/'docs/reviews/2026-10-21-bengali-vowel-conjuncts.json'
 
@@ -50,6 +53,21 @@ class BengaliProfilesTest(unittest.TestCase):
     def test_train_selection(self):
         # The retrained model must still win on train, paired, per eligibility stratum.
         self.assert_close(json.loads(json.dumps(conjuncts.train_section())), self.record['Dakshina']['train'], 'train')
+
+    def test_rule_bundle_b1_ablation(self):
+        # T-0121 left B1 untouched, so the T-0119 rules-only train ablation must
+        # still reproduce exactly (the model columns of that record are history).
+        old = json.loads((ROOT/'docs/reviews/2026-10-14-bengali-rule-bundle.json').read_text())
+        rows = profiles.references('train')
+        column = profiles.PROFILES.index('B1')
+        full = profiles.predict(rows)
+        for key, rules in bundle.BUNDLE.items():
+            without = profiles.predict(rows, rules)
+            wins = sum(f[column] in refs and w[column] not in refs for (_, refs), f, w in zip(rows, full, without))
+            losses = sum(w[column] in refs and f[column] not in refs for (_, refs), f, w in zip(rows, full, without))
+            changed = sum(f[column] != w[column] for f, w in zip(full, without))
+            self.assertEqual({'wins': wins, 'losses': losses, 'net': wins-losses, 'changed': changed},
+                             old['Dakshina']['train']['ablation'][key]['B1'], key)
 
     def test_dakshina_heldout_profiles(self):
         dev = conjuncts.heldout_section('dev')

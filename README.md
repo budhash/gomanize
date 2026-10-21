@@ -174,8 +174,10 @@ limitations](docs/reviews/2026-10-04-bengali-b1-results.md).
 
 `SchwaModel: true` enables the [vowel model](docs/reviews/2026-10-04-bengali-b2-vowels.md),
 which raises held-out match-any to 64.76%. Since T-0121 it also decides words
-with halant clusters such as reph, phalas and ক্ষ, which is 70% of held-out
-words; see the [vowel-conjunct record](docs/reviews/2026-10-21-bengali-vowel-conjuncts.md). `Lexicon: true` adds 8,976 attested
+with halant clusters such as reph, phalas and ক্ষ. That raises its coverage to
+70% of held-out words, but only +4 test words of accuracy: newly covered words
+improved (54.0% → 56.4%), previously covered words fell (68.9% → 67.5%), and
+BanglaTLit sentence CER got slightly worse. See the [vowel-conjunct record](docs/reviews/2026-10-21-bengali-vowel-conjuncts.md). `Lexicon: true` adds 8,976 attested
 training spellings; it helps known words and leaves the excluded held-out score
 unchanged. Both are opt-in and can be combined. Alternate-style flags bypass the
 lexicon so the requested style is preserved. See the [lexicon evaluation](docs/reviews/2026-10-04-bengali-b2-lexicon.md).

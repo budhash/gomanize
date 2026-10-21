@@ -41,6 +41,8 @@ tagged release also has auto-generated notes on the
     and dev confirmed it.
     - Held-out Dakshina, model: match-any 64.60% → 64.76%, minCER 0.0728 →
       0.0703. Rules-only output is byte-identical.
+    - Newly covered test words improved (54.0% → 56.4%); previously covered
+      words fell (68.9% → 67.5%).
     - BanglaTLit model sentence CER worsened slightly (0.3087 → 0.3094).
     - জ্ঞ words stay on the rules
       ([record](docs/reviews/2026-10-21-bengali-vowel-conjuncts.md)).
