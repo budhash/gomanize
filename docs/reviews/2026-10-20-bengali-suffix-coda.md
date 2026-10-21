@@ -57,7 +57,9 @@ remained passed round 2.
 | তে | 50/10 | 8/9 | failed |
 | গুলো | 40/16 | 11/16 | failed |
 
-Most failures came from the loss bound under the model.
+Most failures broke the loss bound. 13 of the 16 broke it under the model and
+10 under B1, so the B1 bound alone would have removed কে, দের, টি and গুলো. Five
+(খানি, গুলোকে, টার, তে, রা) failed only under the model.
 
 **Rules.** Both rules passed leave-one-out with the surviving tables:
 
@@ -90,7 +92,8 @@ so neither is pursued.
    assessment scoped the layer to *conjunct-bearing stems*, where the vowel model
    does not run. The preregistration let it fire on every stem, so it overrode
    the vowel model on words the model already handles. This is consistent with
-   most losses falling under the model (কে: 65 wins, 40 losses).
+   the model's much worse loss-to-win ratio (কে: 40/65 under the model
+   against 47/174 under B1).
 2. **The per-entry loss bound was stricter than the rule-level one.** It removed
    three net-positive `main` entries (ন্ড, ঞ্জ, ক্স) whose wins may generalize
    better than their train losses suggest.

@@ -7,9 +7,10 @@ code or git history. Newest first.
 
 - A committed-first preregistration worked as intended: when dev fell (−4/−6
   match-any) the work stopped instead of being tuned, and the result is recorded.
-- What failed was the spec's *scope*. The assessment had measured the suffix
-  layer on conjunct-bearing stems (where the vowel model does not run); the
-  preregistration let it fire everywhere, so it overrode the stronger component.
+- The likely failure (a hypothesis, untested to avoid a seventh dev use) was the
+  spec's *scope*. The assessment had measured the suffix layer on
+  conjunct-bearing stems, where the vowel model does not run. The preregistration
+  let the rule fire everywhere, so it probably overrode the stronger component.
   When a rule complements a learned layer, write the eligibility boundary into the
   preregistration, and ablate per profile with that boundary.
 - A per-entry loss bound is stricter than a per-rule one and can delete
