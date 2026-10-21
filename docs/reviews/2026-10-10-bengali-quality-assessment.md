@@ -261,6 +261,9 @@ the Hindi snapshot must not move.
 5. **Suffix-boundary deletion** (the measurable morphology layer: nominal suffixes
    on conjunct-bearing stems, not verb endings). +24 dev on top of 2–4; +88 for
    rules-only. Half a day; the suffix table grows from train only.
+   *Tried 2026-10-20, not shipped* (T-0120): a preregistered train-only table
+   lowered dev match-any for both profiles (−4 B1, −6 model); likely because it
+   fired on model-eligible stems too ([record](2026-10-20-bengali-suffix-coda.md)).
 6. **Extend the vowel model to conjunct-bearing words.** Align halant clusters in
    `tools/bengali/vowels.py`, mirror `vowelUnits`, regenerate the parity fixture,
    with one shared eligibility inventory. *Estimate*, not measurement: +120–160 dev
