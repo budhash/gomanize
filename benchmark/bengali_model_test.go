@@ -17,8 +17,10 @@ var bnPinnedModel = map[string]struct {
 	strict, any, changed int
 	digest               string
 }{
-	"train": {9238, 15656, 3219, "d6b292814f1ae9079346ba42e1ab831cdb095ca93c78593bd12836452f33bbcf"},
-	"dev":   {909, 1577, 393, "78cc4b8767f1eeffdc39a8c9ad9355f35a6f2d24146ff5a53f57e35bfbf9d2ca"},
+	// T-0121 (2026-10-21) halant-cluster retrain; was train 9238/15656/3219 and
+	// dev 909/1577/393 (docs/reviews/2026-10-21-bengali-vowel-conjuncts.md).
+	"train": {9292, 15846, 5051, "c6f98cfb6ccce7e4233b2202f0766b5a4bf03768cc4ad3908ee40c59e5a0942c"},
+	"dev":   {914, 1590, 567, "9d70008d80f6bc6493597f10e2b6d7aa55d24ffc578640cf1bd41112d0360fb5"},
 }
 
 func TestBengaliVowelModel(t *testing.T) {

@@ -5,6 +5,8 @@ change, training run or Dakshina run for this work. Results go in a separate
 record. This file is not edited after its first commit, except to link to that
 record.
 
+**Record:** [2026-10-21-bengali-vowel-conjuncts.md](2026-10-21-bengali-vowel-conjuncts.md).
+
 This is plan item 6 of the [quality assessment](2026-10-10-bengali-quality-assessment.md).
 It follows the [suffix/coda negative result](2026-10-20-bengali-suffix-coda.md):
 the conjunct-bearing words that rule tried to reach are given to the vowel model

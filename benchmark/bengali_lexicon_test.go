@@ -52,7 +52,7 @@ func TestBengaliLexiconHeldoutIsolation(t *testing.T) {
 var bnPinnedLexiconTrain = struct {
 	b1Strict, b1Any, modelStrict, modelAny, hits int
 	digest                                       string
-}{12739, 17718, 13159, 18373, 8976, "ce6b6bc6445b9bd923e93cda19b01c0a43dc878376b52f4779cba8785f8393d9"}
+}{12739, 17718, 13199, 18500, 8976, "92af6d72f205a9ccbe31ec8f3baa98f4eb322436839aa72e3b62d66d18e6c50f"} // model-lexicon was 13159/18373 before T-0121
 
 func TestBenchmarkBengaliLexicon(t *testing.T) {
 	options := []gomanize.Options{{}, {SchwaModel: true}, {Lexicon: true}, {SchwaModel: true, Lexicon: true}}

@@ -1095,10 +1095,10 @@
     "label": 0
   },
   {
-    "word": "কর্ম",
+    "word": "গর্ত",
     "index": 0,
     "features": {
-      "cons": "ক",
+      "cons": "গ",
       "prev": "^",
       "next": "র",
       "next2": "্",
@@ -1110,10 +1110,10 @@
     "label": 1
   },
   {
-    "word": "কর্ম",
+    "word": "গর্ত",
     "index": 3,
     "features": {
-      "cons": "ম",
+      "cons": "ত",
       "prev": "্",
       "next": "$",
       "next2": "$",
@@ -1200,10 +1200,10 @@
     "label": 2
   },
   {
-    "word": "দ্বার",
+    "word": "দ্বাল",
     "index": 4,
     "features": {
-      "cons": "র",
+      "cons": "ল",
       "prev": "া",
       "next": "$",
       "next2": "$",

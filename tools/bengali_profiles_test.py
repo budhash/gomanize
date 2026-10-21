@@ -1,10 +1,12 @@
 """Held-out and external guards for the shipped Bengali profiles.
 
-Recomputes the rule-bundle record (docs/reviews/2026-10-14-bengali-rule-bundle.json):
-the train leave-one-out ablation that selected each bundle rule, Dakshina
-dev/test before and after the bundle, and BanglaTLit for the four shipped
-profiles, and requires them to match. The 2026-10-05 runtime record is history.
-Aksharantar needs the pinned external archive and remains an offline step.
+Recomputes the vowel-conjunct record (docs/reviews/2026-10-21-bengali-vowel-conjuncts.json):
+the Dakshina train selection that shipped the halant-cluster vowel model
+(paired against the previous simple-word model, build tag bengali_vowel_v1),
+Dakshina dev/test before and after, and BanglaTLit for the four shipped
+profiles, and requires them to match. The 2026-10-14 rule-bundle and
+2026-10-05 runtime records are history. Aksharantar needs the pinned external
+archive and remains an offline step.
 """
 import json
 import math
@@ -12,10 +14,10 @@ from pathlib import Path
 import sys
 import unittest
 sys.path.insert(0, str(Path(__file__).parent/'bengali'))
-from bengali_training_data import ROOT, DAK_SHA
-import evaluate_rule_bundle as bundle
+from bengali_training_data import ROOT, DAK_SHA, sha
+import evaluate_vowel_conjuncts as conjuncts
 
-RECORD = ROOT/'docs/reviews/2026-10-14-bengali-rule-bundle.json'
+RECORD = ROOT/'docs/reviews/2026-10-21-bengali-vowel-conjuncts.json'
 
 
 class BengaliProfilesTest(unittest.TestCase):
@@ -34,22 +36,29 @@ class BengaliProfilesTest(unittest.TestCase):
             self.assertEqual(got, want, path)
 
     def test_record_inputs_and_criterion(self):
-        self.assertEqual(self.record['criterion'], bundle.CRITERION)
+        self.assertEqual(self.record['criterion'], conjuncts.CRITERION)
+        self.assertEqual(self.record['confirmation'], conjuncts.CONFIRMATION)
         for split in ('train', 'dev', 'test'):
             self.assertEqual(self.record['inputs_sha256'][f'benchmark/data/bengali/{split}.csv.gz'], DAK_SHA[split])
-        self.assertTrue(all(row['shipped'] for row in self.record['Dakshina']['train']['ablation'].values()))
-        self.assertFalse(set(bundle.REJECTED) & set(bundle.BUNDLE))
+        # The record describes the shipped model, inventory and rules.
+        self.assertEqual(self.record['inputs_sha256'], conjuncts.inputs())
+        self.assertTrue(self.record['Dakshina']['train']['ships'])
+        self.assertTrue(self.record['Dakshina']['dev']['confirmed'])
+        self.assertEqual(self.record['inputs_sha256']['lang/bengali/testdata/vowel_tree_simple_v1.json'],
+                         sha((ROOT/'lang/bengali/testdata/vowel_tree_simple_v1.json').read_bytes()))
 
-    def test_train_ablation(self):
-        # Every bundle rule must still earn its place on train, alone and paired.
-        self.assert_close(json.loads(json.dumps(bundle.train_section())), self.record['Dakshina']['train'], 'train')
+    def test_train_selection(self):
+        # The retrained model must still win on train, paired, per eligibility stratum.
+        self.assert_close(json.loads(json.dumps(conjuncts.train_section())), self.record['Dakshina']['train'], 'train')
 
     def test_dakshina_heldout_profiles(self):
-        for split in ('dev', 'test'):
-            self.assert_close(bundle.heldout_section(split), self.record['Dakshina'][split], split)
+        dev = conjuncts.heldout_section('dev')
+        dev['confirmed'] = conjuncts.confirmed(dev)
+        self.assert_close(dev, self.record['Dakshina']['dev'], 'dev')
+        self.assert_close(conjuncts.heldout_section('test'), self.record['Dakshina']['test'], 'test')
 
     def test_banglatlit_profiles(self):
-        self.assert_close(bundle.banglatlit_section(), self.record['BanglaTLit'], 'BanglaTLit')
+        self.assert_close(conjuncts.banglatlit_section(), self.record['BanglaTLit'], 'BanglaTLit')
 
 
 if __name__ == '__main__':

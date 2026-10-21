@@ -25,38 +25,38 @@ class BengaliVowelsTest(unittest.TestCase):
         for word in ('ক্', '্ক', 'ক্্ক', 'ক্ষ্ম্য', 'জ্ঞান', 'ক্য়', 'ক্অ', 'চাঁদ', 'বাংলা', 'হওয়া', 'ঐ', 'ৎ', 'কাা', 'াক', 'aক', ''):
             self.assertIsNone(units(word))
         # The legacy simple-word scope still rejects every cluster.
-        for word in ('ক্ষ', 'কর্ম', 'মধ্য'):
+        for word in ('ক্ষ', 'গর্ত', 'মধ্য'):
             self.assertIsNone(units(word, 1))
             self.assertFalse(eligible(word, 1))
             self.assertTrue(eligible(word))
 
     def test_cluster_units(self):
         # Members before a halant have no slot; the last member has one unless a matra follows.
-        self.assertEqual(units('কর্ম'), [(0, 'ক', True), (1, 'র', False), (2, '্', False), (3, 'ম', True)])
+        self.assertEqual(units('গর্ত'), [(0, 'গ', True), (1, 'র', False), (2, '্', False), (3, 'ত', True)])
         self.assertEqual(units('স্ত্রী'), [(0, 'স', False), (1, '্', False), (2, 'ত', False), (3, '্', False),
                                            (4, 'র', False), (5, 'ী', False)])
         self.assertFalse(eligible('স্ত্রী'))  # supported, but no inherent slot
         self.assertEqual(units('ড়্গ'), [(0, 'ড়', False), (2, '্', False), (3, 'গ', True)])
         self.assertIsNone(units('ক্কঅ'))  # slot before an independent vowel stays B1
         self.assertEqual(features('মধ্য', 3)['prev'], '্')
-        self.assertEqual(features('কর্ম', 0)['next2'], '্')
-        self.assertEqual(features('কর্ম', 3)['last'], '1')
+        self.assertEqual(features('গর্ত', 0)['next2'], '্')
+        self.assertEqual(features('গর্ত', 3)['last'], '1')
 
     def test_cluster_alignment_alternatives(self):
         # Own phone, gemination of the previous member, or silence, for non-first members.
-        self.assertEqual(align('কর্ম', 'k O r . m o'), ('aligned', ((0, 1), (3, 2))))
+        self.assertEqual(align('গর্ত', 'g O r . t o'), ('aligned', ((0, 1), (3, 2))))
         self.assertEqual(align('পত্র', 'p O t . t o'), ('aligned', ((0, 1), (3, 2))))
         self.assertEqual(align('কন্যা', 'k O n . n a'), ('aligned', ((0, 1),)))
-        self.assertEqual(align('দ্বার', 'd a r'), ('aligned', ((4, 0),)))
+        self.assertEqual(align('দ্বাল', 'd a l'), ('aligned', ((4, 0),)))
         # ক্ষ: ষ may read kh after ক; ক may be silent (train-failure alternative).
         self.assertEqual(align('পক্ষ', 'p O k . kh o'), ('aligned', ((0, 1), (3, 2))))
         self.assertEqual(align('ক্ষমা', 'kh O . m a'), ('aligned', ((2, 1),)))
         # First members never go silent or geminate, and phones are never invented.
-        self.assertEqual(align('কর্ম', 'k O m o'), ('unmatched', None))
+        self.assertEqual(align('গর্ত', 'g O t o'), ('unmatched', None))
         self.assertEqual(align('পত্র', 'p O t . t r o'), ('unmatched', None))
         self.assertEqual(align('মধ্য', 'm O d . dh o'), ('unmatched', None))
         # Vowel handling is unchanged: a ya-phala read as E does not align.
-        self.assertEqual(align('ব্যাগ', 'b E g'), ('unmatched', None))
+        self.assertEqual(align('ব্যাল', 'b E l'), ('unmatched', None))
         self.assertEqual(align('জ্ঞান', 'g a n'), ('unsupported', None))
 
     def test_shared_inventory(self):

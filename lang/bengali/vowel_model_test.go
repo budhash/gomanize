@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"unicode"
 
 	"github.com/budhash/gomanize/core"
 	"github.com/budhash/gomanize/scheme/colloquial"
@@ -53,7 +54,7 @@ func TestBengaliVowelModelScopeAndStyle(t *testing.T) {
 	e := core.NewEngine(Bengali{}, colloquial.Colloquial{})
 	disabled := core.NewEngine(Bengali{}, colloquial.Colloquial{}, core.WithDisabledRules("schwa.bengali.model"))
 	for _, tc := range []struct{ input, baseline, model, style string }{
-		{"মত", "mot", "moto", "mato"},
+		{"মত", "mot", "mot", "mat"},
 		{"কোড়ক", "korok", "kork", "kork"},
 		{"কোড়ক", "korok", "kork", "kork"},
 		{"কোড়ক", "korok", "kork", "kork"},
@@ -72,7 +73,7 @@ func TestBengaliVowelModelScopeAndStyle(t *testing.T) {
 			t.Errorf("style %s = %s", tc.input, got)
 		}
 	}
-	for _, word := range []string{"মধ্য", "হও", "হওয়া", "ক্ষতি", "বাংলা", "চাঁদ", "কঅ", "কও", "উৎসব", "কাা", "ঐ", "aক"} {
+	for _, word := range []string{"ক্ষ্ম্য", "জ্ঞান", "ক্কঅ", "ক্", "হও", "হওয়া", "বাংলা", "চাঁদ", "কঅ", "কও", "উৎসব", "কাা", "ঐ", "aক"} {
 		if vowelEligible(vowelWordView(word), inventory.MaxCluster) {
 			t.Errorf("unsupported word accepted: %s", word)
 		}
@@ -90,10 +91,10 @@ func TestBengaliVowelModelScopeAndStyle(t *testing.T) {
 	if e.TransliterateWithOptions("কো\u200dড়ক", core.Options{SchwaModel: true}) != "kork" {
 		t.Fatal("format marks shifted model positions")
 	}
-	_, info := e.TransliterateDebug("মত", core.Options{SchwaModel: true})
+	_, info := e.TransliterateDebug("কলম", core.Options{SchwaModel: true})
 	found := false
 	for _, tr := range info.Traces {
-		if tr.Rule == "schwa.bengali.model" && tr.Unit == "ত" && strings.Contains(tr.Metadata, "quality=Raised") {
+		if tr.Rule == "schwa.bengali.model" && tr.Unit == "ল" && strings.Contains(tr.Metadata, "quality=Raised") {
 			found = true
 		}
 	}
@@ -130,5 +131,137 @@ func TestBengaliVowelModelRejectsMalformedTrees(t *testing.T) {
 	}
 	if decodeVowels([]byte("not json")) != nil {
 		t.Fatal("accepted invalid JSON")
+	}
+}
+
+// stripFormat mirrors the parser's (and native_key's) removal of Cf runes.
+func stripFormat(s string) string {
+	return strings.Map(func(r rune) rune {
+		if unicode.Is(unicode.Cf, r) {
+			return -1
+		}
+		return r
+	}, s)
+}
+
+func TestBengaliVowelEligibilityParity(t *testing.T) {
+	data, err := os.ReadFile("testdata/vowel_eligibility.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var cases []struct {
+		Word           string
+		Eligible       bool
+		LegacyEligible bool `json:"legacy_eligible"`
+	}
+	if err = json.Unmarshal(data, &cases); err != nil {
+		t.Fatal(err)
+	}
+	if len(cases) < 100 {
+		t.Fatal("incomplete eligibility parity corpus")
+	}
+	both := map[[2]bool]bool{}
+	for _, tc := range cases {
+		word := vowelWordView(stripFormat(tc.Word))
+		got := [2]bool{vowelEligible(word, inventory.MaxCluster), vowelEligible(word, 1)}
+		if got != [2]bool{tc.Eligible, tc.LegacyEligible} {
+			t.Errorf("%q: Go eligible/legacy %v, Python %v/%v", tc.Word, got, tc.Eligible, tc.LegacyEligible)
+		}
+		both[got] = true
+	}
+	if !both[[2]bool{true, false}] || !both[[2]bool{true, true}] || !both[[2]bool{false, false}] {
+		t.Fatal("eligibility fixture must cover new, previous and ineligible words")
+	}
+}
+
+func TestBengaliVowelClusterUnits(t *testing.T) {
+	units, ok := vowelUnits([]rune("গর্ত"), inventory.MaxCluster)
+	want := []vowelUnit{{0, "গ", true}, {1, "র", false}, {2, "্", false}, {3, "ত", true}}
+	if !ok || !reflect.DeepEqual(units, want) {
+		t.Fatalf("units = %v", units)
+	}
+	// A matra after the last member removes its slot; nukta letters stay one unit.
+	units, ok = vowelUnits([]rune("ড়্গা"), inventory.MaxCluster)
+	if !ok || len(units) != 4 || units[0].spelling != "ড়" || units[0].inherent || units[2].inherent {
+		t.Fatalf("nukta cluster units = %v", units)
+	}
+	if vowelEligible("স্ত্রী", inventory.MaxCluster) {
+		t.Fatal("a word with no inherent slot is not eligible")
+	}
+	for _, word := range []string{"ক্ষ", "স্ত্র", "গর্ত"} {
+		if !vowelEligible(word, inventory.MaxCluster) || vowelEligible(word, 1) {
+			t.Errorf("%s: clusters must be eligible only in the cluster scope", word)
+		}
+	}
+	for _, word := range []string{"ক্ষ্ম্য", "্ক", "ক্্ক", "ক্", "ক্অ", "ক্কঅ", "জ্ঞ", "ক্য়", "ক্ৎ", "া্ক"} {
+		if vowelEligible(word, inventory.MaxCluster) {
+			t.Errorf("%s: ineligible cluster accepted", word)
+		}
+	}
+	got, ok := vowelFeatures("স্মরণ", 2, inventory.MaxCluster)
+	if !ok || got["cons"] != "ম" || got["prev"] != "্" || got["first"] != "0" || got["position"] != "2" {
+		t.Fatalf("cluster features = %v", got)
+	}
+	if got, _ := vowelFeatures("গর্ত", 0, inventory.MaxCluster); got["next2"] != "্" {
+		t.Fatalf("next2 = %v", got)
+	}
+	if _, ok := vowelFeatures("গর্ত", 1, inventory.MaxCluster); ok {
+		t.Fatal("a member before a halant has no slot")
+	}
+}
+
+func TestBengaliVowelClusterPrecedence(t *testing.T) {
+	e := core.NewEngine(Bengali{}, colloquial.Colloquial{})
+	decided := func(word string) map[string]bool {
+		_, info := e.TransliterateDebug(word, core.Options{SchwaModel: true})
+		units := map[string]bool{}
+		for _, tr := range info.Traces {
+			if tr.Rule == "schwa.bengali.model" {
+				units[tr.Unit] = true
+			}
+		}
+		return units
+	}
+	// The model decides a cluster's last member (ম in স্মরণ) ...
+	if !decided("স্মরণ")["ম"] {
+		t.Fatal("model did not decide the cluster's last member")
+	}
+	// ... but never a member before a halant, and higher-priority rules
+	// (schwa.bengali.final-cluster, 80) still own a word-final cluster.
+	if units := decided("গর্ত"); units["র"] || units["ত"] || !units["গ"] {
+		t.Fatalf("precedence changed: %v", units)
+	}
+	if e.Transliterate("গর্ত") != e.TransliterateWithOptions("গর্ত", core.Options{SchwaModel: true}) {
+		t.Fatal("final-cluster rule no longer overrides the model")
+	}
+}
+
+func TestBengaliVowelModelScopes(t *testing.T) {
+	model := decodeVowels(vowelTreeJSON)
+	if model == nil || model.Scope != inventory.Scope || model.maxCluster != inventory.MaxCluster {
+		t.Fatal("embedded model must use the inventory's cluster scope")
+	}
+	legacy, err := os.ReadFile("testdata/vowel_tree_simple_v1.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if old := decodeVowels(legacy); old == nil || old.maxCluster != 1 {
+		t.Fatal("the legacy simple-word tree must decode with clusters disabled")
+	}
+	var raw map[string]interface{}
+	if err := json.Unmarshal(vowelTreeJSON, &raw); err != nil {
+		t.Fatal(err)
+	}
+	raw["scope"] = "unknown-scope"
+	data, _ := json.Marshal(raw)
+	if decodeVowels(data) != nil {
+		t.Fatal("accepted an unknown scope")
+	}
+	for _, bad := range []string{`not json`, `{"schema":2,"scope":"s","legacy_scope":"l","halant":"্","max_cluster":3}`,
+		`{"schema":1,"scope":"s","legacy_scope":"l","halant":"্","max_cluster":1}`,
+		`{"schema":1,"scope":"s","legacy_scope":"l","halant":"্","max_cluster":3,"matras":["াি"]}`} {
+		if decodeInventory([]byte(bad)) != nil {
+			t.Errorf("accepted malformed inventory %s", bad)
+		}
 	}
 }

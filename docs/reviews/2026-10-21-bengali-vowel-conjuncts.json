@@ -1,0 +1,778 @@
+{
+  "BanglaTLit": {
+    "after": {
+      "all_tokens_unseen_sentences": {
+        "B1": {
+          "accuracy": 0.02631578947368421,
+          "macro_minCER": 0.5170832901849824,
+          "match_any": 1
+        },
+        "items": 38,
+        "lexicon": {
+          "accuracy": 0.02631578947368421,
+          "macro_minCER": 0.5170832901849824,
+          "match_any": 1
+        },
+        "model": {
+          "accuracy": 0.05263157894736842,
+          "macro_minCER": 0.4919350831288806,
+          "match_any": 2
+        },
+        "model_lexicon": {
+          "accuracy": 0.05263157894736842,
+          "macro_minCER": 0.4919350831288806,
+          "match_any": 2
+        }
+      },
+      "full_sentences": {
+        "B1": {
+          "accuracy": 0.0032,
+          "macro_minCER": 0.32726527832070285,
+          "match_any": 8
+        },
+        "items": 2500,
+        "lexicon": {
+          "accuracy": 0.0052,
+          "macro_minCER": 0.29065391884296893,
+          "match_any": 13
+        },
+        "model": {
+          "accuracy": 0.004,
+          "macro_minCER": 0.30938483423974755,
+          "match_any": 10
+        },
+        "model_lexicon": {
+          "accuracy": 0.0056,
+          "macro_minCER": 0.27835349494927936,
+          "match_any": 14
+        }
+      }
+    },
+    "before": {
+      "all_tokens_unseen_sentences": {
+        "B1": {
+          "accuracy": 0.02631578947368421,
+          "macro_minCER": 0.5170832901849824,
+          "match_any": 1
+        },
+        "items": 38,
+        "lexicon": {
+          "accuracy": 0.02631578947368421,
+          "macro_minCER": 0.5170832901849824,
+          "match_any": 1
+        },
+        "model": {
+          "accuracy": 0.05263157894736842,
+          "macro_minCER": 0.5062400763812424,
+          "match_any": 2
+        },
+        "model_lexicon": {
+          "accuracy": 0.05263157894736842,
+          "macro_minCER": 0.5062400763812424,
+          "match_any": 2
+        }
+      },
+      "full_sentences": {
+        "B1": {
+          "accuracy": 0.0032,
+          "macro_minCER": 0.32726527832070285,
+          "match_any": 8
+        },
+        "items": 2500,
+        "lexicon": {
+          "accuracy": 0.0052,
+          "macro_minCER": 0.29065391884296893,
+          "match_any": 13
+        },
+        "model": {
+          "accuracy": 0.0052,
+          "macro_minCER": 0.30870834202266667,
+          "match_any": 13
+        },
+        "model_lexicon": {
+          "accuracy": 0.0072,
+          "macro_minCER": 0.2781979057706017,
+          "match_any": 18
+        }
+      }
+    },
+    "token_coverage": {
+      "ineligible": 11287,
+      "newly_eligible": 3373,
+      "previously_eligible": 11020,
+      "sentences_with_newly_eligible_token": 1626,
+      "tokens": 25680
+    }
+  },
+  "Dakshina": {
+    "dev": {
+      "after": {
+        "B1": {
+          "CER": 0.0876616199813257,
+          "any": 1405,
+          "strict": 791,
+          "words": 2500
+        },
+        "lexicon": {
+          "CER": 0.0876616199813257,
+          "any": 1405,
+          "strict": 791,
+          "words": 2500
+        },
+        "model": {
+          "CER": 0.07269182072829126,
+          "any": 1590,
+          "strict": 914,
+          "words": 2500
+        },
+        "model_lexicon": {
+          "CER": 0.07269182072829126,
+          "any": 1590,
+          "strict": 914,
+          "words": 2500
+        }
+      },
+      "before": {
+        "B1": {
+          "CER": 0.0876616199813257,
+          "any": 1405,
+          "strict": 791,
+          "words": 2500
+        },
+        "lexicon": {
+          "CER": 0.0876616199813257,
+          "any": 1405,
+          "strict": 791,
+          "words": 2500
+        },
+        "model": {
+          "CER": 0.07478187694658278,
+          "any": 1577,
+          "strict": 909,
+          "words": 2500
+        },
+        "model_lexicon": {
+          "CER": 0.07478187694658278,
+          "any": 1577,
+          "strict": 909,
+          "words": 2500
+        }
+      },
+      "confirmed": true,
+      "paired_model": {
+        "all": {
+          "changed": 200,
+          "losses": 47,
+          "net": 13,
+          "wins": 60,
+          "words": 2500
+        },
+        "ineligible": {
+          "changed": 0,
+          "losses": 0,
+          "net": 0,
+          "wins": 0,
+          "words": 719
+        },
+        "newly_eligible": {
+          "changed": 152,
+          "losses": 25,
+          "net": 25,
+          "wins": 50,
+          "words": 762
+        },
+        "previously_eligible": {
+          "changed": 48,
+          "losses": 22,
+          "net": -12,
+          "wins": 10,
+          "words": 1019
+        }
+      },
+      "stratified_after": {
+        "ineligible": {
+          "B1": {
+            "CER": 0.07261482971926408,
+            "any": 480,
+            "strict": 307,
+            "words": 719
+          },
+          "lexicon": {
+            "CER": 0.07261482971926408,
+            "any": 480,
+            "strict": 307,
+            "words": 719
+          },
+          "model": {
+            "CER": 0.07261482971926408,
+            "any": 480,
+            "strict": 307,
+            "words": 719
+          },
+          "model_lexicon": {
+            "CER": 0.07261482971926408,
+            "any": 480,
+            "strict": 307,
+            "words": 719
+          }
+        },
+        "newly_eligible": {
+          "B1": {
+            "CER": 0.09038770100604311,
+            "any": 400,
+            "strict": 166,
+            "words": 762
+          },
+          "lexicon": {
+            "CER": 0.09038770100604311,
+            "any": 400,
+            "strict": 166,
+            "words": 762
+          },
+          "model": {
+            "CER": 0.08112096654824792,
+            "any": 425,
+            "strict": 174,
+            "words": 762
+          },
+          "model_lexicon": {
+            "CER": 0.08112096654824792,
+            "any": 425,
+            "strict": 174,
+            "words": 762
+          }
+        },
+        "previously_eligible": {
+          "B1": {
+            "CER": 0.09623999923313005,
+            "any": 525,
+            "strict": 318,
+            "words": 1019
+          },
+          "lexicon": {
+            "CER": 0.09623999923313005,
+            "any": 525,
+            "strict": 318,
+            "words": 1019
+          },
+          "model": {
+            "CER": 0.06644289768676434,
+            "any": 685,
+            "strict": 433,
+            "words": 1019
+          },
+          "model_lexicon": {
+            "CER": 0.06644289768676434,
+            "any": 685,
+            "strict": 433,
+            "words": 1019
+          }
+        }
+      },
+      "stratified_before": {
+        "ineligible": {
+          "B1": {
+            "CER": 0.07261482971926408,
+            "any": 480,
+            "strict": 307,
+            "words": 719
+          },
+          "lexicon": {
+            "CER": 0.07261482971926408,
+            "any": 480,
+            "strict": 307,
+            "words": 719
+          },
+          "model": {
+            "CER": 0.07261482971926408,
+            "any": 480,
+            "strict": 307,
+            "words": 719
+          },
+          "model_lexicon": {
+            "CER": 0.07261482971926408,
+            "any": 480,
+            "strict": 307,
+            "words": 719
+          }
+        },
+        "newly_eligible": {
+          "B1": {
+            "CER": 0.09038770100604311,
+            "any": 400,
+            "strict": 166,
+            "words": 762
+          },
+          "lexicon": {
+            "CER": 0.09038770100604311,
+            "any": 400,
+            "strict": 166,
+            "words": 762
+          },
+          "model": {
+            "CER": 0.09038770100604311,
+            "any": 400,
+            "strict": 166,
+            "words": 762
+          },
+          "model_lexicon": {
+            "CER": 0.09038770100604311,
+            "any": 400,
+            "strict": 166,
+            "words": 762
+          }
+        },
+        "previously_eligible": {
+          "B1": {
+            "CER": 0.09623999923313005,
+            "any": 525,
+            "strict": 318,
+            "words": 1019
+          },
+          "lexicon": {
+            "CER": 0.09623999923313005,
+            "any": 525,
+            "strict": 318,
+            "words": 1019
+          },
+          "model": {
+            "CER": 0.06464102220971712,
+            "any": 697,
+            "strict": 436,
+            "words": 1019
+          },
+          "model_lexicon": {
+            "CER": 0.06464102220971712,
+            "any": 697,
+            "strict": 436,
+            "words": 1019
+          }
+        }
+      }
+    },
+    "test": {
+      "after": {
+        "B1": {
+          "CER": 0.08368047021605822,
+          "any": 1467,
+          "strict": 828,
+          "words": 2500
+        },
+        "lexicon": {
+          "CER": 0.08368047021605822,
+          "any": 1467,
+          "strict": 828,
+          "words": 2500
+        },
+        "model": {
+          "CER": 0.07029238957121312,
+          "any": 1619,
+          "strict": 938,
+          "words": 2500
+        },
+        "model_lexicon": {
+          "CER": 0.07029238957121312,
+          "any": 1619,
+          "strict": 938,
+          "words": 2500
+        }
+      },
+      "before": {
+        "B1": {
+          "CER": 0.08368047021605822,
+          "any": 1467,
+          "strict": 828,
+          "words": 2500
+        },
+        "lexicon": {
+          "CER": 0.08368047021605822,
+          "any": 1467,
+          "strict": 828,
+          "words": 2500
+        },
+        "model": {
+          "CER": 0.07278169526551877,
+          "any": 1615,
+          "strict": 937,
+          "words": 2500
+        },
+        "model_lexicon": {
+          "CER": 0.07278169526551877,
+          "any": 1615,
+          "strict": 937,
+          "words": 2500
+        }
+      },
+      "paired_model": {
+        "all": {
+          "changed": 193,
+          "losses": 42,
+          "net": 4,
+          "wins": 46,
+          "words": 2500
+        },
+        "ineligible": {
+          "changed": 0,
+          "losses": 0,
+          "net": 0,
+          "wins": 0,
+          "words": 743
+        },
+        "newly_eligible": {
+          "changed": 148,
+          "losses": 22,
+          "net": 18,
+          "wins": 40,
+          "words": 770
+        },
+        "previously_eligible": {
+          "changed": 45,
+          "losses": 20,
+          "net": -14,
+          "wins": 6,
+          "words": 987
+        }
+      },
+      "stratified_after": {
+        "ineligible": {
+          "B1": {
+            "CER": 0.06648406100448702,
+            "any": 519,
+            "strict": 339,
+            "words": 743
+          },
+          "lexicon": {
+            "CER": 0.06648406100448702,
+            "any": 519,
+            "strict": 339,
+            "words": 743
+          },
+          "model": {
+            "CER": 0.06648406100448702,
+            "any": 519,
+            "strict": 339,
+            "words": 743
+          },
+          "model_lexicon": {
+            "CER": 0.06648406100448702,
+            "any": 519,
+            "strict": 339,
+            "words": 743
+          }
+        },
+        "newly_eligible": {
+          "B1": {
+            "CER": 0.08722494422647234,
+            "any": 416,
+            "strict": 178,
+            "words": 770
+          },
+          "lexicon": {
+            "CER": 0.08722494422647234,
+            "any": 416,
+            "strict": 178,
+            "words": 770
+          },
+          "model": {
+            "CER": 0.07632020142237883,
+            "any": 434,
+            "strict": 186,
+            "words": 770
+          },
+          "model_lexicon": {
+            "CER": 0.07632020142237883,
+            "any": 434,
+            "strict": 186,
+            "words": 770
+          }
+        },
+        "previously_eligible": {
+          "B1": {
+            "CER": 0.09386049762860094,
+            "any": 532,
+            "strict": 311,
+            "words": 987
+          },
+          "lexicon": {
+            "CER": 0.09386049762860094,
+            "any": 532,
+            "strict": 311,
+            "words": 987
+          },
+          "model": {
+            "CER": 0.06845669858811299,
+            "any": 666,
+            "strict": 413,
+            "words": 987
+          },
+          "model_lexicon": {
+            "CER": 0.06845669858811299,
+            "any": 666,
+            "strict": 413,
+            "words": 987
+          }
+        }
+      },
+      "stratified_before": {
+        "ineligible": {
+          "B1": {
+            "CER": 0.06648406100448702,
+            "any": 519,
+            "strict": 339,
+            "words": 743
+          },
+          "lexicon": {
+            "CER": 0.06648406100448702,
+            "any": 519,
+            "strict": 339,
+            "words": 743
+          },
+          "model": {
+            "CER": 0.06648406100448702,
+            "any": 519,
+            "strict": 339,
+            "words": 743
+          },
+          "model_lexicon": {
+            "CER": 0.06648406100448702,
+            "any": 519,
+            "strict": 339,
+            "words": 743
+          }
+        },
+        "newly_eligible": {
+          "B1": {
+            "CER": 0.08722494422647234,
+            "any": 416,
+            "strict": 178,
+            "words": 770
+          },
+          "lexicon": {
+            "CER": 0.08722494422647234,
+            "any": 416,
+            "strict": 178,
+            "words": 770
+          },
+          "model": {
+            "CER": 0.08722494422647234,
+            "any": 416,
+            "strict": 178,
+            "words": 770
+          },
+          "model_lexicon": {
+            "CER": 0.08722494422647234,
+            "any": 416,
+            "strict": 178,
+            "words": 770
+          }
+        },
+        "previously_eligible": {
+          "B1": {
+            "CER": 0.09386049762860094,
+            "any": 532,
+            "strict": 311,
+            "words": 987
+          },
+          "lexicon": {
+            "CER": 0.09386049762860094,
+            "any": 532,
+            "strict": 311,
+            "words": 987
+          },
+          "model": {
+            "CER": 0.06625468468397142,
+            "any": 680,
+            "strict": 420,
+            "words": 987
+          },
+          "model_lexicon": {
+            "CER": 0.06625468468397142,
+            "any": 680,
+            "strict": 420,
+            "words": 987
+          }
+        }
+      }
+    },
+    "train": {
+      "after": {
+        "B1": {
+          "CER": 0.08053211664444757,
+          "any": 14370,
+          "strict": 8268,
+          "words": 25000
+        },
+        "lexicon": {
+          "CER": 0.04985238324712724,
+          "any": 17718,
+          "strict": 12739,
+          "words": 25000
+        },
+        "model": {
+          "CER": 0.06922646635201607,
+          "any": 15846,
+          "strict": 9292,
+          "words": 25000
+        },
+        "model_lexicon": {
+          "CER": 0.04410572018968255,
+          "any": 18500,
+          "strict": 13199,
+          "words": 25000
+        }
+      },
+      "before": {
+        "B1": {
+          "CER": 0.08053211664444757,
+          "any": 14370,
+          "strict": 8268,
+          "words": 25000
+        },
+        "lexicon": {
+          "CER": 0.04985238324712724,
+          "any": 17718,
+          "strict": 12739,
+          "words": 25000
+        },
+        "model": {
+          "CER": 0.07095383009766143,
+          "any": 15656,
+          "strict": 9238,
+          "words": 25000
+        },
+        "model_lexicon": {
+          "CER": 0.045162553021797065,
+          "any": 18373,
+          "strict": 13159,
+          "words": 25000
+        }
+      },
+      "paired_model": {
+        "all": {
+          "changed": 2149,
+          "losses": 486,
+          "net": 190,
+          "wins": 676,
+          "words": 25000
+        },
+        "ineligible": {
+          "changed": 0,
+          "losses": 0,
+          "net": 0,
+          "wins": 0,
+          "words": 7188
+        },
+        "newly_eligible": {
+          "changed": 1751,
+          "losses": 274,
+          "net": 352,
+          "wins": 626,
+          "words": 8817
+        },
+        "previously_eligible": {
+          "changed": 398,
+          "losses": 212,
+          "net": -162,
+          "wins": 50,
+          "words": 8995
+        }
+      },
+      "ships": true,
+      "stratified_after": {
+        "ineligible": {
+          "B1": {
+            "CER": 0.07352827963456093,
+            "any": 4665,
+            "strict": 2986,
+            "words": 7188
+          },
+          "lexicon": {
+            "CER": 0.049853137496355254,
+            "any": 5232,
+            "strict": 3866,
+            "words": 7188
+          },
+          "model": {
+            "CER": 0.07352827963456093,
+            "any": 4665,
+            "strict": 2986,
+            "words": 7188
+          },
+          "model_lexicon": {
+            "CER": 0.049853137496355254,
+            "any": 5232,
+            "strict": 3866,
+            "words": 7188
+          }
+        },
+        "newly_eligible": {
+          "B1": {
+            "CER": 0.08357804945402103,
+            "any": 4604,
+            "strict": 2231,
+            "words": 8817
+          },
+          "lexicon": {
+            "CER": 0.05472905115087698,
+            "any": 5774,
+            "strict": 3768,
+            "words": 8817
+          },
+          "model": {
+            "CER": 0.07551248847141982,
+            "any": 4956,
+            "strict": 2381,
+            "words": 8817
+          },
+          "model_lexicon": {
+            "CER": 0.04967428288645197,
+            "any": 6009,
+            "strict": 3853,
+            "words": 8817
+          }
+        },
+        "previously_eligible": {
+          "B1": {
+            "CER": 0.08314329961777721,
+            "any": 5101,
+            "strict": 3051,
+            "words": 8995
+          },
+          "lexicon": {
+            "CER": 0.04507161588183545,
+            "any": 6712,
+            "strict": 5105,
+            "words": 8995
+          },
+          "model": {
+            "CER": 0.05962721222175658,
+            "any": 6225,
+            "strict": 3925,
+            "words": 8995
+          },
+          "model_lexicon": {
+            "CER": 0.03405453031777936,
+            "any": 7259,
+            "strict": 5480,
+            "words": 8995
+          }
+        }
+      }
+    }
+  },
+  "before_definition": "same engine built with -tags bengali_vowel_v1: the simple-word model shipped at 46c2967",
+  "confirmation": "Dakshina dev, run once: model match-any rises and macro minCER is not worse",
+  "criterion": "Dakshina train, model profile paired against the previous simple-word model: net match-any > 0 and macro minCER not worse",
+  "inputs_sha256": {
+    "benchmark/data/banglatlit/test.csv.gz": "386721b4221e2d93b16ab73f3761c7c4e4cd295adf1160fe9c95c06cb34c5386",
+    "benchmark/data/bengali/dev.csv.gz": "8e83784102a527a88af0ad6dfba0fa41c11f57633a34fe2a9abe12acb54aa51a",
+    "benchmark/data/bengali/test.csv.gz": "9cb15941b0893acdcc2891130ff98ba403645fd9170b955372af62f64bd33ca0",
+    "benchmark/data/bengali/train.csv.gz": "44b554fa749c717386bd9f68daaf837788d6c5ff10197d7f23d2bcefc28cf378",
+    "lang/bengali/lexicon.tsv": "f7219dd805c7fd977af9ec64bb590134a9bf1aef11d3f3580062a03b4588a1ea",
+    "lang/bengali/rules.go": "ea0075b3e1bfff2ccc89ba2460222631ecd95769b0f3891cacca85df9052e5d1",
+    "lang/bengali/testdata/vowel_tree_simple_v1.json": "aae73bcc1c4a8c0303fbcec194e06a353260c0bbc4478a320f832deba4cc966e",
+    "lang/bengali/vowel_inventory.json": "13cd8bbcc98e175ded2793aaf4bb6d905f86edd5b980b31440e06c8cde9a7af9",
+    "lang/bengali/vowel_model.go": "20849f70f6f7fe15c607670ce9f3630492623bb4c8cea9c296b8210a084f9cb8",
+    "lang/bengali/vowel_tree.json": "365dd7e9ae6364dbcb7253cd1e40da2eae932bdd0c83aa207142b6ab6e89e753"
+  }
+}

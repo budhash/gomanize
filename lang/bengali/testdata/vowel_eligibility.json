@@ -65,7 +65,7 @@
     "legacy_eligible": true
   },
   {
-    "word": "কর্ম",
+    "word": "গর্ত",
     "eligible": true,
     "legacy_eligible": false
   },
@@ -85,7 +85,7 @@
     "legacy_eligible": false
   },
   {
-    "word": "দ্বার",
+    "word": "দ্বাল",
     "eligible": true,
     "legacy_eligible": false
   },
@@ -286,6 +286,11 @@
   },
   {
     "word": "কছ্ফ",
+    "eligible": true,
+    "legacy_eligible": false
+  },
+  {
+    "word": "দ্বার",
     "eligible": true,
     "legacy_eligible": false
   },

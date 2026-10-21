@@ -14,7 +14,7 @@ EDGE_WORDS = ['কমল', 'কাম', 'ফল', 'মন', 'ড়ক', 'কড
               'কমলকমলকমলকমলকমল', 'মনমনমনমনমনমনমন', 'কামালমালকামালমালকামাল',
               'ড\u09bcকমলকমলকমলকমল', 'কে\u09beকমলকমলকমলক',
               # Halant clusters (T-0121): reph, phalas, ক্ষ, three members, nukta member.
-              'কর্ম', 'মধ্য', 'ক্ষতি', 'পক্ষ', 'দ্বার', 'স্মরণ', 'স্ত্রী', 'বস্ত্র', 'ড়্গ', 'কন্যা']
+              'গর্ত', 'মধ্য', 'ক্ষতি', 'পক্ষ', 'দ্বাল', 'স্মরণ', 'স্ত্রী', 'বস্ত্র', 'ড়্গ', 'কন্যা']
 # Eligibility edges: unterminated, leading or doubled halant; four members;
 # non-inventory members (ঞ, য়, ৎ); a slot before an independent vowel.
 ELIGIBILITY_EDGES = ['ক্', '্ক', 'ক্্ক', 'ক্\u200dষ', 'ক্ষ্ম্য', 'স্ত্র্য', 'জ্ঞান', 'ক্য়', 'ক্ৎ', 'ক্অ',

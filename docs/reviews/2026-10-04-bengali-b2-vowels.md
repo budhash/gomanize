@@ -1,5 +1,11 @@
 # Bengali B2 vowel model (T-0061)
 
+> **Retrained 2026-10-21 (T-0121).** The model now also covers halant-cluster
+> words. The figures below and the
+> [external record](2026-10-04-bengali-b2-vowels-external.json) describe the
+> earlier simple-word model. See the
+> [vowel-conjunct record](2026-10-21-bengali-vowel-conjuncts.md).
+
 The opt-in `SchwaModel` option now selects a Bengali three-class inherent-vowel
 model on supported simple words. B1 remains the default. No lexicon or reranker
 is used in these results; both remain T-0053 work. This PR builds on T-0057's
