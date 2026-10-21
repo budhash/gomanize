@@ -3,6 +3,18 @@
 Durable insights, gotchas, and decisions — the "why" that isn't obvious from the
 code or git history. Newest first.
 
+## Preregister the scope, not just the threshold (2026-10, Bengali suffix attempt)
+
+- A committed-first preregistration worked as intended: when dev fell (−4/−6
+  match-any) the work stopped instead of being tuned, and the result is recorded.
+- What failed was the spec's *scope*. The assessment had measured the suffix
+  layer on conjunct-bearing stems (where the vowel model does not run); the
+  preregistration let it fire everywhere, so it overrode the stronger component.
+  When a rule complements a learned layer, write the eligibility boundary into the
+  preregistration, and ablate per profile with that boundary.
+- A per-entry loss bound is stricter than a per-rule one and can delete
+  net-positive entries; pick the granularity deliberately.
+
 ## Measure the symbol table, not just the models (2026-10, Bengali quality review)
 
 - Bengali's learned components were measured to three decimal places, but the

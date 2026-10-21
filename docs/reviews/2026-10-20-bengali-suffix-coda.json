@@ -1,0 +1,2227 @@
+{
+  "after": {
+    "B1": {
+      "CER": 0.08059615344098436,
+      "any": 14403,
+      "strict": 8294,
+      "words": 25000
+    },
+    "model": {
+      "CER": 0.07110278897212033,
+      "any": 15674,
+      "strict": 9252,
+      "words": 25000
+    }
+  },
+  "attempt_commit": "2244a3d (tag archive/t0120-t0127-attempt)",
+  "before": {
+    "B1": {
+      "CER": 0.08053211664444757,
+      "any": 14370,
+      "strict": 8268,
+      "words": 25000
+    },
+    "model": {
+      "CER": 0.07095383009766143,
+      "any": 15656,
+      "strict": 9238,
+      "words": 25000
+    }
+  },
+  "bundle_reablation": {
+    "coda": {
+      "B1": {
+        "changed": 232,
+        "losses": 4,
+        "net": 86,
+        "wins": 90
+      },
+      "model": {
+        "changed": 232,
+        "losses": 4,
+        "net": 86,
+        "wins": 90
+      },
+      "passes": true,
+      "rules": [
+        "schwa.bengali.loan-coda"
+      ]
+    },
+    "ito": {
+      "B1": {
+        "changed": 482,
+        "losses": 27,
+        "net": 248,
+        "wins": 275
+      },
+      "model": {
+        "changed": 356,
+        "losses": 11,
+        "net": 195,
+        "wins": 206
+      },
+      "passes": true,
+      "rules": [
+        "schwa.bengali.final-ito"
+      ]
+    },
+    "osuf": {
+      "B1": {
+        "changed": 130,
+        "losses": 7,
+        "net": 71,
+        "wins": 78
+      },
+      "model": {
+        "changed": 130,
+        "losses": 7,
+        "net": 71,
+        "wins": 78
+      },
+      "passes": true,
+      "rules": [
+        "vowel.bengali.final-o"
+      ]
+    },
+    "tacons": {
+      "B1": {
+        "changed": 117,
+        "losses": 10,
+        "net": 45,
+        "wins": 55
+      },
+      "model": {
+        "changed": 59,
+        "losses": 4,
+        "net": 25,
+        "wins": 29
+      },
+      "passes": true,
+      "rules": [
+        "schwa.bengali.final-ta"
+      ]
+    },
+    "yph": {
+      "B1": {
+        "changed": 118,
+        "losses": 7,
+        "net": 28,
+        "wins": 35
+      },
+      "model": {
+        "changed": 118,
+        "losses": 7,
+        "net": 28,
+        "wins": 35
+      },
+      "passes": true,
+      "rules": [
+        "consonant.bengali.sibilant-ya",
+        "render.bengali.sibilant-ya"
+      ]
+    }
+  },
+  "dev_confirmation": {
+    "after": {
+      "B1": {
+        "CER": 0.0880952936932347,
+        "any": 1401,
+        "strict": 792,
+        "words": 2500
+      },
+      "lexicon": {
+        "CER": 0.0880952936932347,
+        "any": 1401,
+        "strict": 792,
+        "words": 2500
+      },
+      "model": {
+        "CER": 0.0753854207883619,
+        "any": 1571,
+        "strict": 908,
+        "words": 2500
+      },
+      "model_lexicon": {
+        "CER": 0.0753854207883619,
+        "any": 1571,
+        "strict": 908,
+        "words": 2500
+      }
+    },
+    "before": {
+      "B1": {
+        "CER": 0.0876616199813257,
+        "any": 1405,
+        "strict": 791,
+        "words": 2500
+      },
+      "lexicon": {
+        "CER": 0.0876616199813257,
+        "any": 1405,
+        "strict": 791,
+        "words": 2500
+      },
+      "model": {
+        "CER": 0.07478187694658278,
+        "any": 1577,
+        "strict": 909,
+        "words": 2500
+      },
+      "model_lexicon": {
+        "CER": 0.07478187694658278,
+        "any": 1577,
+        "strict": 909,
+        "words": 2500
+      }
+    },
+    "improves_both": false
+  },
+  "frozen": {
+    "coda": true,
+    "suf": true
+  },
+  "prereg": "docs/reviews/2026-10-20-bengali-suffix-coda-prereg.md",
+  "rule_ablation": {
+    "coda": {
+      "B1": {
+        "changed": 232,
+        "losses": 4,
+        "net": 86,
+        "wins": 90
+      },
+      "model": {
+        "changed": 232,
+        "losses": 4,
+        "net": 86,
+        "wins": 90
+      },
+      "passes": true,
+      "rules": [
+        "schwa.bengali.loan-coda"
+      ]
+    },
+    "suf": {
+      "B1": {
+        "changed": 33,
+        "losses": 1,
+        "net": 22,
+        "wins": 23
+      },
+      "model": {
+        "changed": 14,
+        "losses": 1,
+        "net": 7,
+        "wins": 8
+      },
+      "passes": true,
+      "rules": [
+        "schwa.bengali.suffix-boundary"
+      ]
+    }
+  },
+  "selection": {
+    "candidates": {
+      "coda": {
+        "candidates": [
+          "কট",
+          "কত",
+          "কয",
+          "কর",
+          "কষ",
+          "কস",
+          "খয",
+          "গন",
+          "গয",
+          "ঙক",
+          "ঙগ",
+          "চছ",
+          "জঞ",
+          "জয",
+          "ঞচ",
+          "ঞজ",
+          "ণড",
+          "ণয",
+          "তত",
+          "তন",
+          "তব",
+          "তয",
+          "তর",
+          "দধ",
+          "দয",
+          "দর",
+          "ধয",
+          "নট",
+          "নড",
+          "নত",
+          "নদ",
+          "নধ",
+          "নন",
+          "নয",
+          "নস",
+          "পত",
+          "বদ",
+          "বধ",
+          "বয",
+          "মপ",
+          "মব",
+          "মভ",
+          "ময",
+          "রক",
+          "রগ",
+          "রচ",
+          "রণ",
+          "রত",
+          "রথ",
+          "রন",
+          "রব",
+          "রম",
+          "রয",
+          "রশ",
+          "রষ",
+          "রস",
+          "লট",
+          "লড",
+          "লপ",
+          "লয",
+          "শয",
+          "ষট",
+          "ষঠ",
+          "ষণ",
+          "ষয",
+          "সক",
+          "সত",
+          "সথ",
+          "সয",
+          "হন"
+        ],
+        "definition": "word-final C + hasant + C (each a single letter, the left not itself after a hasant) on which main keeps the final vowel in both B1 and model, in at least 5 distinct Dakshina train word types; plus the eight entries on main",
+        "enumerated": {
+          "কট": {
+            "keep_types": 11,
+            "types": 11
+          },
+          "কত": {
+            "keep_types": 77,
+            "types": 77
+          },
+          "কয": {
+            "keep_types": 12,
+            "types": 12
+          },
+          "কর": {
+            "keep_types": 5,
+            "types": 5
+          },
+          "কষ": {
+            "keep_types": 27,
+            "types": 27
+          },
+          "খয": {
+            "keep_types": 7,
+            "types": 7
+          },
+          "গন": {
+            "keep_types": 5,
+            "types": 5
+          },
+          "গয": {
+            "keep_types": 24,
+            "types": 24
+          },
+          "ঙক": {
+            "keep_types": 15,
+            "types": 15
+          },
+          "ঙগ": {
+            "keep_types": 43,
+            "types": 43
+          },
+          "চছ": {
+            "keep_types": 8,
+            "types": 8
+          },
+          "জঞ": {
+            "keep_types": 15,
+            "types": 15
+          },
+          "জয": {
+            "keep_types": 12,
+            "types": 12
+          },
+          "ঞচ": {
+            "keep_types": 9,
+            "types": 9
+          },
+          "ণড": {
+            "keep_types": 19,
+            "types": 19
+          },
+          "ণয": {
+            "keep_types": 12,
+            "types": 12
+          },
+          "তত": {
+            "keep_types": 14,
+            "types": 14
+          },
+          "তন": {
+            "keep_types": 6,
+            "types": 6
+          },
+          "তব": {
+            "keep_types": 38,
+            "types": 38
+          },
+          "তয": {
+            "keep_types": 29,
+            "types": 29
+          },
+          "তর": {
+            "keep_types": 84,
+            "types": 84
+          },
+          "দধ": {
+            "keep_types": 46,
+            "types": 46
+          },
+          "দয": {
+            "keep_types": 12,
+            "types": 12
+          },
+          "দর": {
+            "keep_types": 10,
+            "types": 10
+          },
+          "ধয": {
+            "keep_types": 8,
+            "types": 8
+          },
+          "নত": {
+            "keep_types": 67,
+            "types": 67
+          },
+          "নদ": {
+            "keep_types": 28,
+            "types": 28
+          },
+          "নধ": {
+            "keep_types": 10,
+            "types": 10
+          },
+          "নন": {
+            "keep_types": 38,
+            "types": 38
+          },
+          "নয": {
+            "keep_types": 29,
+            "types": 29
+          },
+          "পত": {
+            "keep_types": 44,
+            "types": 44
+          },
+          "বদ": {
+            "keep_types": 8,
+            "types": 8
+          },
+          "বধ": {
+            "keep_types": 8,
+            "types": 8
+          },
+          "বয": {
+            "keep_types": 18,
+            "types": 18
+          },
+          "মপ": {
+            "keep_types": 8,
+            "types": 8
+          },
+          "মব": {
+            "keep_types": 7,
+            "types": 7
+          },
+          "মভ": {
+            "keep_types": 5,
+            "types": 5
+          },
+          "ময": {
+            "keep_types": 9,
+            "types": 9
+          },
+          "রগ": {
+            "keep_types": 18,
+            "types": 18
+          },
+          "রচ": {
+            "keep_types": 7,
+            "types": 7
+          },
+          "রণ": {
+            "keep_types": 54,
+            "types": 54
+          },
+          "রত": {
+            "keep_types": 15,
+            "types": 15
+          },
+          "রথ": {
+            "keep_types": 14,
+            "types": 14
+          },
+          "রন": {
+            "keep_types": 19,
+            "types": 19
+          },
+          "রব": {
+            "keep_types": 20,
+            "types": 20
+          },
+          "রম": {
+            "keep_types": 24,
+            "types": 24
+          },
+          "রয": {
+            "keep_types": 28,
+            "types": 28
+          },
+          "রশ": {
+            "keep_types": 5,
+            "types": 5
+          },
+          "রষ": {
+            "keep_types": 13,
+            "types": 13
+          },
+          "লট": {
+            "keep_types": 7,
+            "types": 7
+          },
+          "লপ": {
+            "keep_types": 14,
+            "types": 14
+          },
+          "লয": {
+            "keep_types": 13,
+            "types": 13
+          },
+          "শয": {
+            "keep_types": 7,
+            "types": 7
+          },
+          "ষট": {
+            "keep_types": 48,
+            "types": 48
+          },
+          "ষঠ": {
+            "keep_types": 17,
+            "types": 17
+          },
+          "ষণ": {
+            "keep_types": 8,
+            "types": 8
+          },
+          "ষয": {
+            "keep_types": 5,
+            "types": 5
+          },
+          "সক": {
+            "keep_types": 9,
+            "types": 9
+          },
+          "সত": {
+            "keep_types": 32,
+            "types": 32
+          },
+          "সথ": {
+            "keep_types": 20,
+            "types": 20
+          },
+          "সয": {
+            "keep_types": 9,
+            "types": 9
+          },
+          "হন": {
+            "keep_types": 6,
+            "types": 6
+          }
+        },
+        "main": [
+          "কস",
+          "ঞজ",
+          "নট",
+          "নড",
+          "নস",
+          "রক",
+          "রস",
+          "লড"
+        ],
+        "min_types": 5
+      },
+      "suf": [
+        "কে",
+        "টি",
+        "টা",
+        "টার",
+        "টির",
+        "টাকে",
+        "টিকে",
+        "গুলো",
+        "গুলি",
+        "গুলোর",
+        "গুলির",
+        "গুলোকে",
+        "গুলিকে",
+        "তে",
+        "দের",
+        "দেরকে",
+        "রা",
+        "খানা",
+        "খানি"
+      ]
+    },
+    "coda": {
+      "removed": [
+        "কত",
+        "কয",
+        "কর",
+        "কষ",
+        "কস",
+        "খয",
+        "গন",
+        "গয",
+        "ঙক",
+        "ঙগ",
+        "চছ",
+        "জঞ",
+        "জয",
+        "ঞচ",
+        "ঞজ",
+        "ণড",
+        "ণয",
+        "তত",
+        "তন",
+        "তব",
+        "তয",
+        "তর",
+        "দধ",
+        "দয",
+        "দর",
+        "ধয",
+        "নড",
+        "নত",
+        "নদ",
+        "নধ",
+        "নন",
+        "নয",
+        "পত",
+        "বদ",
+        "বধ",
+        "বয",
+        "মব",
+        "মভ",
+        "ময",
+        "রগ",
+        "রণ",
+        "রত",
+        "রথ",
+        "রন",
+        "রব",
+        "রম",
+        "রয",
+        "রশ",
+        "রষ",
+        "লপ",
+        "লয",
+        "শয",
+        "ষট",
+        "ষঠ",
+        "ষণ",
+        "ষয",
+        "সত",
+        "সথ",
+        "সয",
+        "হন"
+      ],
+      "rounds": [
+        {
+          "কট": {
+            "B1": {
+              "changed": 11,
+              "losses": 0,
+              "net": 6,
+              "wins": 6
+            },
+            "model": {
+              "changed": 11,
+              "losses": 0,
+              "net": 6,
+              "wins": 6
+            },
+            "passes": true
+          },
+          "কত": {
+            "B1": {
+              "changed": 77,
+              "losses": 54,
+              "net": -54,
+              "wins": 0
+            },
+            "model": {
+              "changed": 77,
+              "losses": 54,
+              "net": -54,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "কয": {
+            "B1": {
+              "changed": 12,
+              "losses": 5,
+              "net": -5,
+              "wins": 0
+            },
+            "model": {
+              "changed": 12,
+              "losses": 5,
+              "net": -5,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "কর": {
+            "B1": {
+              "changed": 5,
+              "losses": 3,
+              "net": -3,
+              "wins": 0
+            },
+            "model": {
+              "changed": 5,
+              "losses": 3,
+              "net": -3,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "কষ": {
+            "B1": {
+              "changed": 27,
+              "losses": 20,
+              "net": -20,
+              "wins": 0
+            },
+            "model": {
+              "changed": 27,
+              "losses": 20,
+              "net": -20,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "কস": {
+            "B1": {
+              "changed": 39,
+              "losses": 1,
+              "net": 2,
+              "wins": 3
+            },
+            "model": {
+              "changed": 39,
+              "losses": 1,
+              "net": 2,
+              "wins": 3
+            },
+            "passes": false
+          },
+          "খয": {
+            "B1": {
+              "changed": 7,
+              "losses": 0,
+              "net": 0,
+              "wins": 0
+            },
+            "model": {
+              "changed": 7,
+              "losses": 0,
+              "net": 0,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "গন": {
+            "B1": {
+              "changed": 5,
+              "losses": 3,
+              "net": -3,
+              "wins": 0
+            },
+            "model": {
+              "changed": 5,
+              "losses": 3,
+              "net": -3,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "গয": {
+            "B1": {
+              "changed": 24,
+              "losses": 1,
+              "net": -1,
+              "wins": 0
+            },
+            "model": {
+              "changed": 24,
+              "losses": 1,
+              "net": -1,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "ঙক": {
+            "B1": {
+              "changed": 15,
+              "losses": 4,
+              "net": -4,
+              "wins": 0
+            },
+            "model": {
+              "changed": 15,
+              "losses": 4,
+              "net": -4,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "ঙগ": {
+            "B1": {
+              "changed": 43,
+              "losses": 4,
+              "net": -4,
+              "wins": 0
+            },
+            "model": {
+              "changed": 43,
+              "losses": 4,
+              "net": -4,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "চছ": {
+            "B1": {
+              "changed": 8,
+              "losses": 1,
+              "net": -1,
+              "wins": 0
+            },
+            "model": {
+              "changed": 8,
+              "losses": 1,
+              "net": -1,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "জঞ": {
+            "B1": {
+              "changed": 15,
+              "losses": 11,
+              "net": -11,
+              "wins": 0
+            },
+            "model": {
+              "changed": 15,
+              "losses": 11,
+              "net": -11,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "জয": {
+            "B1": {
+              "changed": 12,
+              "losses": 2,
+              "net": -2,
+              "wins": 0
+            },
+            "model": {
+              "changed": 12,
+              "losses": 2,
+              "net": -2,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "ঞচ": {
+            "B1": {
+              "changed": 9,
+              "losses": 2,
+              "net": 4,
+              "wins": 6
+            },
+            "model": {
+              "changed": 9,
+              "losses": 2,
+              "net": 4,
+              "wins": 6
+            },
+            "passes": false
+          },
+          "ঞজ": {
+            "B1": {
+              "changed": 53,
+              "losses": 3,
+              "net": 6,
+              "wins": 9
+            },
+            "model": {
+              "changed": 53,
+              "losses": 3,
+              "net": 6,
+              "wins": 9
+            },
+            "passes": false
+          },
+          "ণড": {
+            "B1": {
+              "changed": 19,
+              "losses": 10,
+              "net": -8,
+              "wins": 2
+            },
+            "model": {
+              "changed": 19,
+              "losses": 10,
+              "net": -8,
+              "wins": 2
+            },
+            "passes": false
+          },
+          "ণয": {
+            "B1": {
+              "changed": 12,
+              "losses": 8,
+              "net": -8,
+              "wins": 0
+            },
+            "model": {
+              "changed": 12,
+              "losses": 8,
+              "net": -8,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "তত": {
+            "B1": {
+              "changed": 14,
+              "losses": 11,
+              "net": -11,
+              "wins": 0
+            },
+            "model": {
+              "changed": 14,
+              "losses": 11,
+              "net": -11,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "তন": {
+            "B1": {
+              "changed": 6,
+              "losses": 5,
+              "net": -5,
+              "wins": 0
+            },
+            "model": {
+              "changed": 6,
+              "losses": 5,
+              "net": -5,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "তব": {
+            "B1": {
+              "changed": 38,
+              "losses": 26,
+              "net": -26,
+              "wins": 0
+            },
+            "model": {
+              "changed": 38,
+              "losses": 26,
+              "net": -26,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "তয": {
+            "B1": {
+              "changed": 29,
+              "losses": 14,
+              "net": -14,
+              "wins": 0
+            },
+            "model": {
+              "changed": 29,
+              "losses": 14,
+              "net": -14,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "তর": {
+            "B1": {
+              "changed": 84,
+              "losses": 41,
+              "net": -41,
+              "wins": 0
+            },
+            "model": {
+              "changed": 84,
+              "losses": 41,
+              "net": -41,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "দধ": {
+            "B1": {
+              "changed": 46,
+              "losses": 30,
+              "net": -30,
+              "wins": 0
+            },
+            "model": {
+              "changed": 46,
+              "losses": 30,
+              "net": -30,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "দয": {
+            "B1": {
+              "changed": 12,
+              "losses": 8,
+              "net": -8,
+              "wins": 0
+            },
+            "model": {
+              "changed": 12,
+              "losses": 8,
+              "net": -8,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "দর": {
+            "B1": {
+              "changed": 10,
+              "losses": 6,
+              "net": -6,
+              "wins": 0
+            },
+            "model": {
+              "changed": 10,
+              "losses": 6,
+              "net": -6,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "ধয": {
+            "B1": {
+              "changed": 8,
+              "losses": 2,
+              "net": -2,
+              "wins": 0
+            },
+            "model": {
+              "changed": 8,
+              "losses": 2,
+              "net": -2,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "নট": {
+            "B1": {
+              "changed": 86,
+              "losses": 0,
+              "net": 31,
+              "wins": 31
+            },
+            "model": {
+              "changed": 86,
+              "losses": 0,
+              "net": 31,
+              "wins": 31
+            },
+            "passes": true
+          },
+          "নড": {
+            "B1": {
+              "changed": 66,
+              "losses": 9,
+              "net": 6,
+              "wins": 15
+            },
+            "model": {
+              "changed": 66,
+              "losses": 9,
+              "net": 6,
+              "wins": 15
+            },
+            "passes": false
+          },
+          "নত": {
+            "B1": {
+              "changed": 67,
+              "losses": 45,
+              "net": -45,
+              "wins": 0
+            },
+            "model": {
+              "changed": 67,
+              "losses": 45,
+              "net": -45,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "নদ": {
+            "B1": {
+              "changed": 28,
+              "losses": 14,
+              "net": -12,
+              "wins": 2
+            },
+            "model": {
+              "changed": 28,
+              "losses": 14,
+              "net": -12,
+              "wins": 2
+            },
+            "passes": false
+          },
+          "নধ": {
+            "B1": {
+              "changed": 10,
+              "losses": 5,
+              "net": -5,
+              "wins": 0
+            },
+            "model": {
+              "changed": 10,
+              "losses": 5,
+              "net": -5,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "নন": {
+            "B1": {
+              "changed": 38,
+              "losses": 22,
+              "net": -22,
+              "wins": 0
+            },
+            "model": {
+              "changed": 38,
+              "losses": 22,
+              "net": -22,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "নয": {
+            "B1": {
+              "changed": 29,
+              "losses": 12,
+              "net": -12,
+              "wins": 0
+            },
+            "model": {
+              "changed": 29,
+              "losses": 12,
+              "net": -12,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "নস": {
+            "B1": {
+              "changed": 41,
+              "losses": 0,
+              "net": 9,
+              "wins": 9
+            },
+            "model": {
+              "changed": 41,
+              "losses": 0,
+              "net": 9,
+              "wins": 9
+            },
+            "passes": true
+          },
+          "পত": {
+            "B1": {
+              "changed": 44,
+              "losses": 27,
+              "net": -27,
+              "wins": 0
+            },
+            "model": {
+              "changed": 44,
+              "losses": 27,
+              "net": -27,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "বদ": {
+            "B1": {
+              "changed": 8,
+              "losses": 5,
+              "net": -5,
+              "wins": 0
+            },
+            "model": {
+              "changed": 8,
+              "losses": 5,
+              "net": -5,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "বধ": {
+            "B1": {
+              "changed": 8,
+              "losses": 6,
+              "net": -6,
+              "wins": 0
+            },
+            "model": {
+              "changed": 8,
+              "losses": 6,
+              "net": -6,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "বয": {
+            "B1": {
+              "changed": 18,
+              "losses": 8,
+              "net": -8,
+              "wins": 0
+            },
+            "model": {
+              "changed": 18,
+              "losses": 8,
+              "net": -8,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "মপ": {
+            "B1": {
+              "changed": 8,
+              "losses": 1,
+              "net": 3,
+              "wins": 4
+            },
+            "model": {
+              "changed": 8,
+              "losses": 1,
+              "net": 3,
+              "wins": 4
+            },
+            "passes": true
+          },
+          "মব": {
+            "B1": {
+              "changed": 7,
+              "losses": 6,
+              "net": -5,
+              "wins": 1
+            },
+            "model": {
+              "changed": 7,
+              "losses": 6,
+              "net": -5,
+              "wins": 1
+            },
+            "passes": false
+          },
+          "মভ": {
+            "B1": {
+              "changed": 5,
+              "losses": 2,
+              "net": -2,
+              "wins": 0
+            },
+            "model": {
+              "changed": 5,
+              "losses": 2,
+              "net": -2,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "ময": {
+            "B1": {
+              "changed": 9,
+              "losses": 2,
+              "net": -2,
+              "wins": 0
+            },
+            "model": {
+              "changed": 9,
+              "losses": 2,
+              "net": -2,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "রক": {
+            "B1": {
+              "changed": 22,
+              "losses": 2,
+              "net": 7,
+              "wins": 9
+            },
+            "model": {
+              "changed": 22,
+              "losses": 2,
+              "net": 7,
+              "wins": 9
+            },
+            "passes": true
+          },
+          "রগ": {
+            "B1": {
+              "changed": 18,
+              "losses": 5,
+              "net": -4,
+              "wins": 1
+            },
+            "model": {
+              "changed": 18,
+              "losses": 5,
+              "net": -4,
+              "wins": 1
+            },
+            "passes": false
+          },
+          "রচ": {
+            "B1": {
+              "changed": 7,
+              "losses": 0,
+              "net": 6,
+              "wins": 6
+            },
+            "model": {
+              "changed": 7,
+              "losses": 0,
+              "net": 6,
+              "wins": 6
+            },
+            "passes": true
+          },
+          "রণ": {
+            "B1": {
+              "changed": 54,
+              "losses": 27,
+              "net": -27,
+              "wins": 0
+            },
+            "model": {
+              "changed": 54,
+              "losses": 27,
+              "net": -27,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "রত": {
+            "B1": {
+              "changed": 15,
+              "losses": 14,
+              "net": -14,
+              "wins": 0
+            },
+            "model": {
+              "changed": 15,
+              "losses": 14,
+              "net": -14,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "রথ": {
+            "B1": {
+              "changed": 14,
+              "losses": 8,
+              "net": -6,
+              "wins": 2
+            },
+            "model": {
+              "changed": 14,
+              "losses": 8,
+              "net": -6,
+              "wins": 2
+            },
+            "passes": false
+          },
+          "রন": {
+            "B1": {
+              "changed": 19,
+              "losses": 5,
+              "net": 0,
+              "wins": 5
+            },
+            "model": {
+              "changed": 19,
+              "losses": 5,
+              "net": 0,
+              "wins": 5
+            },
+            "passes": false
+          },
+          "রব": {
+            "B1": {
+              "changed": 20,
+              "losses": 12,
+              "net": -10,
+              "wins": 2
+            },
+            "model": {
+              "changed": 20,
+              "losses": 12,
+              "net": -10,
+              "wins": 2
+            },
+            "passes": false
+          },
+          "রম": {
+            "B1": {
+              "changed": 24,
+              "losses": 9,
+              "net": -5,
+              "wins": 4
+            },
+            "model": {
+              "changed": 24,
+              "losses": 9,
+              "net": -5,
+              "wins": 4
+            },
+            "passes": false
+          },
+          "রয": {
+            "B1": {
+              "changed": 28,
+              "losses": 20,
+              "net": -20,
+              "wins": 0
+            },
+            "model": {
+              "changed": 28,
+              "losses": 20,
+              "net": -20,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "রশ": {
+            "B1": {
+              "changed": 5,
+              "losses": 4,
+              "net": -4,
+              "wins": 0
+            },
+            "model": {
+              "changed": 5,
+              "losses": 4,
+              "net": -4,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "রষ": {
+            "B1": {
+              "changed": 13,
+              "losses": 7,
+              "net": -7,
+              "wins": 0
+            },
+            "model": {
+              "changed": 13,
+              "losses": 7,
+              "net": -7,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "রস": {
+            "B1": {
+              "changed": 26,
+              "losses": 0,
+              "net": 5,
+              "wins": 5
+            },
+            "model": {
+              "changed": 26,
+              "losses": 0,
+              "net": 5,
+              "wins": 5
+            },
+            "passes": true
+          },
+          "লট": {
+            "B1": {
+              "changed": 7,
+              "losses": 0,
+              "net": 4,
+              "wins": 4
+            },
+            "model": {
+              "changed": 7,
+              "losses": 0,
+              "net": 4,
+              "wins": 4
+            },
+            "passes": true
+          },
+          "লড": {
+            "B1": {
+              "changed": 15,
+              "losses": 0,
+              "net": 9,
+              "wins": 9
+            },
+            "model": {
+              "changed": 15,
+              "losses": 0,
+              "net": 9,
+              "wins": 9
+            },
+            "passes": true
+          },
+          "লপ": {
+            "B1": {
+              "changed": 14,
+              "losses": 10,
+              "net": -8,
+              "wins": 2
+            },
+            "model": {
+              "changed": 14,
+              "losses": 10,
+              "net": -8,
+              "wins": 2
+            },
+            "passes": false
+          },
+          "লয": {
+            "B1": {
+              "changed": 13,
+              "losses": 7,
+              "net": -7,
+              "wins": 0
+            },
+            "model": {
+              "changed": 13,
+              "losses": 7,
+              "net": -7,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "শয": {
+            "B1": {
+              "changed": 7,
+              "losses": 3,
+              "net": -3,
+              "wins": 0
+            },
+            "model": {
+              "changed": 7,
+              "losses": 3,
+              "net": -3,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "ষট": {
+            "B1": {
+              "changed": 48,
+              "losses": 23,
+              "net": -23,
+              "wins": 0
+            },
+            "model": {
+              "changed": 48,
+              "losses": 23,
+              "net": -23,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "ষঠ": {
+            "B1": {
+              "changed": 17,
+              "losses": 6,
+              "net": -6,
+              "wins": 0
+            },
+            "model": {
+              "changed": 17,
+              "losses": 6,
+              "net": -6,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "ষণ": {
+            "B1": {
+              "changed": 8,
+              "losses": 4,
+              "net": -4,
+              "wins": 0
+            },
+            "model": {
+              "changed": 8,
+              "losses": 4,
+              "net": -4,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "ষয": {
+            "B1": {
+              "changed": 5,
+              "losses": 3,
+              "net": -3,
+              "wins": 0
+            },
+            "model": {
+              "changed": 5,
+              "losses": 3,
+              "net": -3,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "সক": {
+            "B1": {
+              "changed": 9,
+              "losses": 1,
+              "net": 6,
+              "wins": 7
+            },
+            "model": {
+              "changed": 9,
+              "losses": 1,
+              "net": 6,
+              "wins": 7
+            },
+            "passes": true
+          },
+          "সত": {
+            "B1": {
+              "changed": 32,
+              "losses": 15,
+              "net": -15,
+              "wins": 0
+            },
+            "model": {
+              "changed": 32,
+              "losses": 15,
+              "net": -15,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "সথ": {
+            "B1": {
+              "changed": 20,
+              "losses": 11,
+              "net": -11,
+              "wins": 0
+            },
+            "model": {
+              "changed": 20,
+              "losses": 11,
+              "net": -11,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "সয": {
+            "B1": {
+              "changed": 9,
+              "losses": 2,
+              "net": -2,
+              "wins": 0
+            },
+            "model": {
+              "changed": 9,
+              "losses": 2,
+              "net": -2,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "হন": {
+            "B1": {
+              "changed": 6,
+              "losses": 3,
+              "net": -3,
+              "wins": 0
+            },
+            "model": {
+              "changed": 6,
+              "losses": 3,
+              "net": -3,
+              "wins": 0
+            },
+            "passes": false
+          }
+        },
+        {
+          "কট": {
+            "B1": {
+              "changed": 11,
+              "losses": 0,
+              "net": 6,
+              "wins": 6
+            },
+            "model": {
+              "changed": 11,
+              "losses": 0,
+              "net": 6,
+              "wins": 6
+            },
+            "passes": true
+          },
+          "নট": {
+            "B1": {
+              "changed": 86,
+              "losses": 0,
+              "net": 31,
+              "wins": 31
+            },
+            "model": {
+              "changed": 86,
+              "losses": 0,
+              "net": 31,
+              "wins": 31
+            },
+            "passes": true
+          },
+          "নস": {
+            "B1": {
+              "changed": 41,
+              "losses": 0,
+              "net": 9,
+              "wins": 9
+            },
+            "model": {
+              "changed": 41,
+              "losses": 0,
+              "net": 9,
+              "wins": 9
+            },
+            "passes": true
+          },
+          "মপ": {
+            "B1": {
+              "changed": 8,
+              "losses": 1,
+              "net": 3,
+              "wins": 4
+            },
+            "model": {
+              "changed": 8,
+              "losses": 1,
+              "net": 3,
+              "wins": 4
+            },
+            "passes": true
+          },
+          "রক": {
+            "B1": {
+              "changed": 22,
+              "losses": 2,
+              "net": 7,
+              "wins": 9
+            },
+            "model": {
+              "changed": 22,
+              "losses": 2,
+              "net": 7,
+              "wins": 9
+            },
+            "passes": true
+          },
+          "রচ": {
+            "B1": {
+              "changed": 7,
+              "losses": 0,
+              "net": 6,
+              "wins": 6
+            },
+            "model": {
+              "changed": 7,
+              "losses": 0,
+              "net": 6,
+              "wins": 6
+            },
+            "passes": true
+          },
+          "রস": {
+            "B1": {
+              "changed": 26,
+              "losses": 0,
+              "net": 5,
+              "wins": 5
+            },
+            "model": {
+              "changed": 26,
+              "losses": 0,
+              "net": 5,
+              "wins": 5
+            },
+            "passes": true
+          },
+          "লট": {
+            "B1": {
+              "changed": 7,
+              "losses": 0,
+              "net": 4,
+              "wins": 4
+            },
+            "model": {
+              "changed": 7,
+              "losses": 0,
+              "net": 4,
+              "wins": 4
+            },
+            "passes": true
+          },
+          "লড": {
+            "B1": {
+              "changed": 15,
+              "losses": 0,
+              "net": 9,
+              "wins": 9
+            },
+            "model": {
+              "changed": 15,
+              "losses": 0,
+              "net": 9,
+              "wins": 9
+            },
+            "passes": true
+          },
+          "সক": {
+            "B1": {
+              "changed": 9,
+              "losses": 1,
+              "net": 6,
+              "wins": 7
+            },
+            "model": {
+              "changed": 9,
+              "losses": 1,
+              "net": 6,
+              "wins": 7
+            },
+            "passes": true
+          }
+        }
+      ],
+      "survivors": [
+        "কট",
+        "নট",
+        "নস",
+        "মপ",
+        "রক",
+        "রচ",
+        "রস",
+        "লট",
+        "লড",
+        "সক"
+      ]
+    },
+    "suf": {
+      "removed": [
+        "কে",
+        "খানি",
+        "গুলি",
+        "গুলিকে",
+        "গুলির",
+        "গুলো",
+        "গুলোকে",
+        "গুলোর",
+        "টা",
+        "টার",
+        "টি",
+        "টির",
+        "তে",
+        "দের",
+        "দেরকে",
+        "রা"
+      ],
+      "rounds": [
+        {
+          "কে": {
+            "B1": {
+              "changed": 374,
+              "losses": 47,
+              "net": 127,
+              "wins": 174
+            },
+            "model": {
+              "changed": 190,
+              "losses": 40,
+              "net": 25,
+              "wins": 65
+            },
+            "passes": false
+          },
+          "খানা": {
+            "B1": {
+              "changed": 6,
+              "losses": 0,
+              "net": 4,
+              "wins": 4
+            },
+            "model": {
+              "changed": 1,
+              "losses": 0,
+              "net": 1,
+              "wins": 1
+            },
+            "passes": true
+          },
+          "খানি": {
+            "B1": {
+              "changed": 1,
+              "losses": 0,
+              "net": 1,
+              "wins": 1
+            },
+            "model": {
+              "changed": 0,
+              "losses": 0,
+              "net": 0,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "গুলি": {
+            "B1": {
+              "changed": 26,
+              "losses": 7,
+              "net": 6,
+              "wins": 13
+            },
+            "model": {
+              "changed": 12,
+              "losses": 7,
+              "net": -5,
+              "wins": 2
+            },
+            "passes": false
+          },
+          "গুলিকে": {
+            "B1": {
+              "changed": 0,
+              "losses": 0,
+              "net": 0,
+              "wins": 0
+            },
+            "model": {
+              "changed": 0,
+              "losses": 0,
+              "net": 0,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "গুলির": {
+            "B1": {
+              "changed": 10,
+              "losses": 3,
+              "net": 1,
+              "wins": 4
+            },
+            "model": {
+              "changed": 5,
+              "losses": 3,
+              "net": -3,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "গুলো": {
+            "B1": {
+              "changed": 69,
+              "losses": 16,
+              "net": 24,
+              "wins": 40
+            },
+            "model": {
+              "changed": 35,
+              "losses": 16,
+              "net": -5,
+              "wins": 11
+            },
+            "passes": false
+          },
+          "গুলোকে": {
+            "B1": {
+              "changed": 11,
+              "losses": 1,
+              "net": 5,
+              "wins": 6
+            },
+            "model": {
+              "changed": 2,
+              "losses": 1,
+              "net": -1,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "গুলোর": {
+            "B1": {
+              "changed": 33,
+              "losses": 12,
+              "net": 0,
+              "wins": 12
+            },
+            "model": {
+              "changed": 20,
+              "losses": 12,
+              "net": -9,
+              "wins": 3
+            },
+            "passes": false
+          },
+          "টা": {
+            "B1": {
+              "changed": 34,
+              "losses": 7,
+              "net": 15,
+              "wins": 22
+            },
+            "model": {
+              "changed": 13,
+              "losses": 7,
+              "net": -3,
+              "wins": 4
+            },
+            "passes": false
+          },
+          "টাকে": {
+            "B1": {
+              "changed": 2,
+              "losses": 0,
+              "net": 2,
+              "wins": 2
+            },
+            "model": {
+              "changed": 1,
+              "losses": 0,
+              "net": 1,
+              "wins": 1
+            },
+            "passes": true
+          },
+          "টার": {
+            "B1": {
+              "changed": 4,
+              "losses": 0,
+              "net": 4,
+              "wins": 4
+            },
+            "model": {
+              "changed": 0,
+              "losses": 0,
+              "net": 0,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "টি": {
+            "B1": {
+              "changed": 217,
+              "losses": 37,
+              "net": 73,
+              "wins": 110
+            },
+            "model": {
+              "changed": 112,
+              "losses": 32,
+              "net": 6,
+              "wins": 38
+            },
+            "passes": false
+          },
+          "টিকে": {
+            "B1": {
+              "changed": 25,
+              "losses": 1,
+              "net": 16,
+              "wins": 17
+            },
+            "model": {
+              "changed": 12,
+              "losses": 1,
+              "net": 5,
+              "wins": 6
+            },
+            "passes": true
+          },
+          "টির": {
+            "B1": {
+              "changed": 70,
+              "losses": 13,
+              "net": 24,
+              "wins": 37
+            },
+            "model": {
+              "changed": 42,
+              "losses": 13,
+              "net": 1,
+              "wins": 14
+            },
+            "passes": false
+          },
+          "তে": {
+            "B1": {
+              "changed": 80,
+              "losses": 10,
+              "net": 40,
+              "wins": 50
+            },
+            "model": {
+              "changed": 30,
+              "losses": 9,
+              "net": -1,
+              "wins": 8
+            },
+            "passes": false
+          },
+          "দের": {
+            "B1": {
+              "changed": 177,
+              "losses": 28,
+              "net": 75,
+              "wins": 103
+            },
+            "model": {
+              "changed": 96,
+              "losses": 18,
+              "net": 36,
+              "wins": 54
+            },
+            "passes": false
+          },
+          "দেরকে": {
+            "B1": {
+              "changed": 26,
+              "losses": 16,
+              "net": -16,
+              "wins": 0
+            },
+            "model": {
+              "changed": 12,
+              "losses": 8,
+              "net": -8,
+              "wins": 0
+            },
+            "passes": false
+          },
+          "রা": {
+            "B1": {
+              "changed": 100,
+              "losses": 13,
+              "net": 48,
+              "wins": 61
+            },
+            "model": {
+              "changed": 47,
+              "losses": 11,
+              "net": 13,
+              "wins": 24
+            },
+            "passes": false
+          }
+        },
+        {
+          "খানা": {
+            "B1": {
+              "changed": 6,
+              "losses": 0,
+              "net": 4,
+              "wins": 4
+            },
+            "model": {
+              "changed": 1,
+              "losses": 0,
+              "net": 1,
+              "wins": 1
+            },
+            "passes": true
+          },
+          "টাকে": {
+            "B1": {
+              "changed": 2,
+              "losses": 0,
+              "net": 2,
+              "wins": 2
+            },
+            "model": {
+              "changed": 1,
+              "losses": 0,
+              "net": 1,
+              "wins": 1
+            },
+            "passes": true
+          },
+          "টিকে": {
+            "B1": {
+              "changed": 25,
+              "losses": 1,
+              "net": 16,
+              "wins": 17
+            },
+            "model": {
+              "changed": 12,
+              "losses": 1,
+              "net": 5,
+              "wins": 6
+            },
+            "passes": true
+          }
+        }
+      ],
+      "survivors": [
+        "খানা",
+        "টাকে",
+        "টিকে"
+      ]
+    }
+  },
+  "status": "negative result: dev confirmation failed; nothing shipped"
+}

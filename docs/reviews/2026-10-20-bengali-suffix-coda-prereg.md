@@ -3,6 +3,7 @@
 **Status:** preregistered 2026-10-20, committed before any code change, train
 run or dev run for this work. The results record will be a separate document;
 this file is not edited after the first commit except to link to it.
+Results: [negative result](2026-10-20-bengali-suffix-coda.md) (dev did not improve; nothing shipped).
 
 Plan item 5 of the [quality assessment](2026-10-10-bengali-quality-assessment.md)
 (suffix-boundary deletion) and the per-entry loan-coda follow-up from the
