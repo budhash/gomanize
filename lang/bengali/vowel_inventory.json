@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "scope": "halant-clusters-v2",
+  "note": "Shared Bengali vowel-model eligibility (lang/bengali/vowel_model.go embeds it; tools/bengali/vowels.py reads it). Spellings are NFC with format characters removed; nukta letters are decomposed. A word is eligible only if every unit is listed here. Clusters are max_cluster or fewer consonants joined by halant; members before a halant have no inherent slot. An inherent slot before an independent vowel makes the word ineligible.",
+  "consonants": ["ক", "খ", "গ", "ঘ", "ঙ", "চ", "ছ", "জ", "ঝ", "ট", "ঠ", "ড", "ঢ", "ণ", "ত", "থ", "দ", "ধ", "ন", "প", "ফ", "ব", "ভ", "ম", "য", "র", "ল", "শ", "ষ", "স", "হ", "ড়"],
+  "matras": ["া", "ি", "ী", "ু", "ূ", "ে", "ো"],
+  "independent_vowels": ["অ", "আ", "ই", "ঈ", "উ", "ঊ", "এ", "ও"],
+  "halant": "্",
+  "max_cluster": 3,
+  "legacy_scope": "simple-whole-words-v1"
+}

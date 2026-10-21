@@ -35,7 +35,7 @@ func TestBengaliVowelFeatureParity(t *testing.T) {
 	labels := map[int]bool{}
 	for _, tc := range cases {
 		// Runtime normalizes through vowelWordView first; the fixture includes non-NFC words.
-		got, ok := vowelFeatures(vowelWordView(tc.Word), tc.Index)
+		got, ok := vowelFeatures(vowelWordView(tc.Word), tc.Index, model.maxCluster)
 		if !ok || !reflect.DeepEqual(got, tc.Features) {
 			t.Fatalf("%s@%d: %v != %v", tc.Word, tc.Index, got, tc.Features)
 		}
@@ -73,7 +73,7 @@ func TestBengaliVowelModelScopeAndStyle(t *testing.T) {
 		}
 	}
 	for _, word := range []string{"মধ্য", "হও", "হওয়া", "ক্ষতি", "বাংলা", "চাঁদ", "কঅ", "কও", "উৎসব", "কাা", "ঐ", "aক"} {
-		if _, ok := vowelUnits([]rune(vowelWordView(word))); ok {
+		if vowelEligible(vowelWordView(word), inventory.MaxCluster) {
 			t.Errorf("unsupported word accepted: %s", word)
 		}
 		before := e.Transliterate(word)

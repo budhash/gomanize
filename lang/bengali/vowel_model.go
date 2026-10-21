@@ -11,11 +11,57 @@ import (
 	"github.com/budhash/gomanize/script/brahmic"
 )
 
-// This opt-in model only handles the simple-word inventory shared with
-// tools/bengali/vowels.py. Unsupported words retain the B1 rules in full.
+// This opt-in model only handles the eligibility inventory shared with
+// tools/bengali/vowels.py (vowel_inventory.json). Unsupported words retain the
+// B1 rules in full.
 //
 //go:embed vowel_tree.json
 var vowelTreeJSON []byte
+
+//go:embed vowel_inventory.json
+var vowelInventoryJSON []byte
+
+type vowelInventory struct {
+	Schema       int      `json:"schema"`
+	Scope        string   `json:"scope"`
+	LegacyScope  string   `json:"legacy_scope"`
+	Consonants   []string `json:"consonants"`
+	Matras       []string `json:"matras"`
+	Independent  []string `json:"independent_vowels"`
+	Halant       string   `json:"halant"`
+	MaxCluster   int      `json:"max_cluster"`
+	consonantSet map[string]bool
+	matraSet     map[rune]bool
+	vowelSet     map[rune]bool
+	halant       rune
+}
+
+// inventory is the shared eligibility data; a malformed file disables the model.
+var inventory = decodeInventory(vowelInventoryJSON)
+
+func decodeInventory(data []byte) *vowelInventory {
+	var inv vowelInventory
+	if json.Unmarshal(data, &inv) != nil || inv.Schema != 1 || inv.Scope == "" || inv.LegacyScope == "" || inv.MaxCluster < 2 || len([]rune(inv.Halant)) != 1 {
+		return nil
+	}
+	inv.halant = []rune(inv.Halant)[0]
+	inv.consonantSet, inv.matraSet, inv.vowelSet = map[string]bool{}, map[rune]bool{}, map[rune]bool{}
+	for _, c := range inv.Consonants {
+		inv.consonantSet[c] = true
+	}
+	for _, sets := range []struct {
+		from []string
+		to   map[rune]bool
+	}{{inv.Matras, inv.matraSet}, {inv.Independent, inv.vowelSet}} {
+		for _, s := range sets.from {
+			if len([]rune(s)) != 1 {
+				return nil
+			}
+			sets.to[[]rune(s)[0]] = true
+		}
+	}
+	return &inv
+}
 
 type vowelNode struct {
 	Feature string     `json:"f"`
@@ -31,6 +77,9 @@ type vowelTree struct {
 	Scope    string     `json:"scope"`
 	Features []string   `json:"features"`
 	Tree     *vowelNode `json:"tree"`
+	// maxCluster is the cluster policy implied by Scope: 1 for the legacy
+	// simple-word scope, the inventory's max_cluster for its current scope.
+	maxCluster int
 }
 
 var vowelOnce sync.Once
@@ -55,7 +104,15 @@ func validVowelNode(n *vowelNode, depth int) bool {
 
 func decodeVowels(data []byte) *vowelTree {
 	var model vowelTree
-	if json.Unmarshal(data, &model) != nil || model.Schema != 1 || model.Scope != "simple-whole-words-v1" || strings.Join(model.Classes, ",") != "absent,default,raised" || strings.Join(model.Features, ",") != strings.Join(vowelFeatureNames, ",") || !validVowelNode(model.Tree, 0) {
+	if inventory == nil || json.Unmarshal(data, &model) != nil || model.Schema != 1 || strings.Join(model.Classes, ",") != "absent,default,raised" || strings.Join(model.Features, ",") != strings.Join(vowelFeatureNames, ",") || !validVowelNode(model.Tree, 0) {
+		return nil
+	}
+	switch model.Scope {
+	case inventory.Scope:
+		model.maxCluster = inventory.MaxCluster
+	case inventory.LegacyScope:
+		model.maxCluster = 1
+	default:
 		return nil
 	}
 	return &model
@@ -68,11 +125,10 @@ func vowelWordView(s string) string {
 	return strings.ReplaceAll(s, "ো", "ো")
 }
 
-func vowelConsonant(s string) bool {
-	return s == "ড়" || (len([]rune(s)) == 1 && strings.Contains("কখগঘঙচছজঝটঠডঢণতথদধনপফবভমযরলশষসহ", s))
-}
-func vowelMatra(r rune) bool       { return strings.ContainsRune("ািীুূেো", r) }
-func vowelIndependent(r rune) bool { return strings.ContainsRune("অআইঈউঊএও", r) }
+func vowelConsonant(s string) bool { return inventory != nil && inventory.consonantSet[s] }
+func vowelMatra(r rune) bool       { return inventory != nil && inventory.matraSet[r] }
+func vowelIndependent(r rune) bool { return inventory != nil && inventory.vowelSet[r] }
+func vowelHalant(s string) bool    { return inventory != nil && s == inventory.Halant }
 
 type vowelUnit struct {
 	index    int
@@ -80,17 +136,41 @@ type vowelUnit struct {
 	inherent bool
 }
 
-func vowelUnits(runes []rune) ([]vowelUnit, bool) {
+// vowelUnits mirrors tools/bengali/vowels.py units: consonants, halants, matras
+// and independent vowels from the shared inventory. A consonant before a halant
+// has no inherent slot; clusters have at most maxCluster members (1 = legacy).
+func vowelUnits(runes []rune, maxCluster int) ([]vowelUnit, bool) {
+	if inventory == nil {
+		return nil, false
+	}
 	var out []vowelUnit
+	members := 0
 	for i := 0; i < len(runes); {
 		ch, size := string(runes[i]), 1
 		if i+1 < len(runes) && runes[i] == 'ড' && runes[i+1] == '়' {
 			ch, size = "ড়", 2
 		}
+		afterHalant := len(out) > 0 && vowelHalant(out[len(out)-1].spelling)
+		if afterHalant && !vowelConsonant(ch) {
+			return nil, false
+		}
 		slot := false
 		switch {
 		case vowelConsonant(ch):
-			slot = i+size == len(runes) || !vowelMatra(runes[i+size])
+			if afterHalant {
+				members++
+			} else {
+				members = 1
+			}
+			if members > maxCluster {
+				return nil, false
+			}
+			end := i + size
+			slot = end == len(runes) || (!vowelMatra(runes[end]) && runes[end] != inventory.halant)
+		case runes[i] == inventory.halant:
+			if maxCluster < 2 || len(out) == 0 || !vowelConsonant(out[len(out)-1].spelling) || i+1 == len(runes) {
+				return nil, false
+			}
 		case vowelIndependent(runes[i]):
 		case vowelMatra(runes[i]):
 			if len(out) == 0 || !vowelConsonant(out[len(out)-1].spelling) || out[len(out)-1].inherent {
@@ -110,9 +190,21 @@ func vowelUnits(runes []rune) ([]vowelUnit, bool) {
 	return out, len(out) > 0
 }
 
-func vowelFeatures(word string, index int) (map[string]string, bool) {
+// vowelEligible reports whether the model decides any slot of word (already
+// normalized by vowelWordView) under the given cluster policy.
+func vowelEligible(word string, maxCluster int) bool {
+	units, ok := vowelUnits([]rune(word), maxCluster)
+	for _, unit := range units {
+		if unit.inherent {
+			return ok
+		}
+	}
+	return false
+}
+
+func vowelFeatures(word string, index, maxCluster int) (map[string]string, bool) {
 	runes := []rune(word)
-	units, ok := vowelUnits(runes)
+	units, ok := vowelUnits(runes, maxCluster)
 	if !ok {
 		return nil, false
 	}
@@ -185,7 +277,7 @@ func vowelModelDecision(w *core.Word, u *core.Unit) (int, bool) {
 	}
 	word := vowelWordView(w.Original)
 	index := len([]rune(vowelWordView(string(raw[:u.Start.Rune]))))
-	features, ok := vowelFeatures(word, index)
+	features, ok := vowelFeatures(word, index, learnedVowels.maxCluster)
 	if !ok {
 		return 0, false
 	}

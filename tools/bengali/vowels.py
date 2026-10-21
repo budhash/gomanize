@@ -2,14 +2,20 @@
 
 Class 0 = absent, 1 = Google O (/ɔ/), 2 = Google o (/o/).
 No fuzzy edit alignment, Latin spelling targets, or guessed labels.
+Eligibility comes from lang/bengali/vowel_inventory.json, shared with the Go runtime.
 """
 from collections import Counter
 from functools import lru_cache
+import json
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from bengali_training_data import native_key
+from bengali_training_data import ROOT, native_key
 
+INVENTORY_PATH = ROOT/'lang/bengali/vowel_inventory.json'
+INVENTORY = json.loads(INVENTORY_PATH.read_text())
+SCOPE, LEGACY_SCOPE = INVENTORY['scope'], INVENTORY['legacy_scope']
+HALANT, MAX_CLUSTER = INVENTORY['halant'], INVENTORY['max_cluster']
 CONS = dict(zip('কখগঘঙচছজঝটঠডঢণতথদধনপফবভমযরলশষসহ',
                 'k kh g gh N c ch j jh T Th D Dh n t th d dh n p f b bh m j r l sh sh sh h'.split()))
 CONS['ড়'] = 'r'
@@ -17,26 +23,51 @@ VOWELS = {'অ': ('O', 'o'), 'আ': ('a',), 'ই': ('i', 'i^'), 'ঈ': ('i', 'i^
           'উ': ('u', 'u^'), 'ঊ': ('u', 'u^'), 'এ': ('e', 'E', 'e^'), 'ও': ('o', 'o^')}
 MATRAS = {'া': ('a',), 'ি': ('i',), 'ী': ('i',), 'ু': ('u',), 'ূ': ('u',),
           'ে': ('e', 'E'), 'ো': ('o',)}
+if (list(CONS) != INVENTORY['consonants'] or list(MATRAS) != INVENTORY['matras'] or
+        list(VOWELS) != INVENTORY['independent_vowels']):
+    raise ValueError('aligner phones do not match the shared vowel inventory')
 FEATURES = ('cons', 'prev', 'next', 'next2', 'first', 'last', 'length', 'position')
+# Consonant-only phone alternatives (never vowel labels).
+OWN = {'শ': ('sh', 's'), 'ষ': ('sh', 's'), 'স': ('sh', 's'), 'ফ': ('f', 'p')}
+# Extra phones for a non-first cluster member, keyed by (previous member, member).
+# ঞ is not in the shared inventory, so জ্ঞ words stay ineligible and the জ/ঞ
+# entry never fires (recorded as a deviation in the 2026-10-21 record).
+CLUSTER_EXTRA = {('ক', 'ষ'): ('kh',), ('জ', 'ঞ'): ('g',)}
+# Added from Google train alignment failures only (2026-10-21 record): the first
+# member of these clusters may be silent (ক্ষ read as a single kh).
+SILENT_FIRST = {('ক', 'ষ')}
 
 
-def units(native):
+def units(native, max_cluster=MAX_CLUSTER):
     """Return (source rune index, spelling, has-inherent-slot), or None.
 
-    Whole words with conjuncts, modifiers, silent glides, diphthongs, uncommon
-    letters, or malformed vowel attachments fall back to B1 at inference too.
+    Units are consonants, halants, matras and independent vowels from the shared
+    inventory. A consonant before a halant has no inherent slot; clusters have at
+    most max_cluster members (1 = the legacy simple-word scope). Modifiers, silent
+    glides, diphthongs, uncommon letters, malformed attachments and longer or
+    unterminated clusters fall back to B1 at inference too.
     """
     word = native_key(native)
     out = []
     i = 0
+    members = 0  # consonants in the current halant-joined run
     while i < len(word):
         ch = word[i]
         if word[i:i+2] == 'ড়':
             ch = 'ড়'
+        if out and out[-1][1] == HALANT and ch not in CONS:
+            return None
         if ch in CONS:
             end = i + len(ch)
-            inherent = end == len(word) or word[end] not in MATRAS
+            members = members + 1 if out and out[-1][1] == HALANT else 1
+            if members > max_cluster:
+                return None
+            inherent = end == len(word) or word[end] not in MATRAS and word[end] != HALANT
             out.append((i, ch, inherent))
+        elif ch == HALANT:
+            if max_cluster < 2 or not out or out[-1][1] not in CONS or i+1 == len(word):
+                return None
+            out.append((i, ch, False))
         elif ch in VOWELS:
             out.append((i, ch, False))
         elif ch in MATRAS:
@@ -51,6 +82,12 @@ def units(native):
         # The renderer owns pre-independent-vowel behavior; keep B1 there.
         return None
     return out or None
+
+
+def eligible(native, max_cluster=MAX_CLUSTER):
+    """A word the model decides: supported units with at least one inherent slot."""
+    parsed = units(native, max_cluster)
+    return parsed is not None and any(slot for _, _, slot in parsed)
 
 
 def features(native, index):
@@ -71,25 +108,36 @@ def align(native, transcription):
         return 'unsupported', None
     phones = tuple(t for t in transcription.split() if t != '.')
 
+    def consonant_phones(unit):
+        ch = parsed[unit][1]
+        own = [(phone,) for phone in OWN.get(ch, (CONS[ch],))]
+        if unit < 2 or parsed[unit-1][1] != HALANT:
+            if unit+2 < len(parsed) and parsed[unit+1][1] == HALANT and (ch, parsed[unit+2][1]) in SILENT_FIRST:
+                return own + [()]
+            return own
+        previous = parsed[unit-2][1]
+        # Non-first cluster member: own phone, gemination of the previous member,
+        # silence, or a listed cluster reading. Vowel handling is unchanged.
+        extra = [(phone,) for phone in OWN.get(previous, (CONS[previous],))]
+        extra += [(phone,) for phone in CLUSTER_EXTRA.get((previous, ch), ())]
+        return list(dict.fromkeys(own + extra + [()]))
+
     @lru_cache(None)
     def visit(unit, pos):
         if unit == len(parsed):
             return {()} if pos == len(phones) else set()
         index, ch, inherent = parsed[unit]
+        if ch == HALANT:
+            return visit(unit+1, pos)
         if ch in CONS:
-            # These alternatives change consonants, never vowel labels.
-            alternatives = (CONS[ch],)
-            if ch in 'শষস':
-                alternatives = ('sh', 's')
-            if ch == 'ফ':
-                alternatives = ('f', 'p')
+            alternatives = consonant_phones(unit)
         else:
-            alternatives = VOWELS.get(ch, MATRAS.get(ch))
+            alternatives = [(phone,) for phone in VOWELS.get(ch, MATRAS.get(ch))]
         answers = set()
-        for phone in alternatives:
-            if pos >= len(phones) or phones[pos] != phone:
+        for match in alternatives:
+            if phones[pos:pos+len(match)] != match:
                 continue
-            after = pos + 1
+            after = pos + len(match)
             choices = [(after, None)] if not inherent else [(after, 0)]
             if inherent and after < len(phones) and phones[after] in ('O', 'o'):
                 choices.append((after+1, 1 if phones[after] == 'O' else 2))

@@ -6,8 +6,8 @@ import json
 from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from bengali_training_data import DEFAULT, GOOGLE_SHA, google_rows, training_rows, verify
-from vowels import FEATURES, dataset
+from bengali_training_data import DEFAULT, GOOGLE_SHA, GOOGLE_TSV_SHA, google_rows, training_rows, verify
+from vowels import FEATURES, INVENTORY_PATH, SCOPE, dataset
 
 
 def impurity(counts):
@@ -77,8 +77,9 @@ def main():
     dev, dev_stats = dataset([r for r in source if r[0] in groups['google-dev']])
     learned = tree(train, args.depth, args.min_leaf)
     artifact = {'schema': 1, 'classes': ['absent', 'default', 'raised'], 'features': FEATURES,
-                'scope': 'simple-whole-words-v1',
-                'provenance': {'google_sha256': GOOGLE_SHA,
+                'scope': SCOPE,
+                'provenance': {'google_sha256': GOOGLE_SHA, 'google_tsv_sha256': GOOGLE_TSV_SHA,
+                               'inventory_sha256': hashlib.sha256(INVENTORY_PATH.read_bytes()).hexdigest(),
                                'split_manifest_sha256': hashlib.sha256((DEFAULT/'manifest.json').read_bytes()).hexdigest(),
                                # Paths relative to tools/; includes the shared key and loader modules.
                                'training_scripts_sha256': {name: hashlib.sha256((Path(__file__).parents[1]/name).read_bytes()).hexdigest()
